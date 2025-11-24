@@ -1,3 +1,4 @@
+<div class="page__break"></div>
 <h2>{{ profile.profile_name }}</h2>
 <div>
     <div>
@@ -126,102 +127,105 @@
             </tr>
         </tbody>
     </table>
-</div>
 
-<h3>Moment Capacity by Yielding</h3>
-<div>
-    <table class="borderless ml-2">
-        <tbody>
-            <tr>
-                <td>Moment capacity, <i>M<sub>np</sub></i></td>
-                <td>=</td>
-                <td><i>min( ZF<sub>y</sub> , 1.5 F<sub>y</sub>S<sub>x</sub> )</i></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>=</td>
-                <td>{{ profile.Mn_yield }} <i>kN-m</i></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
 
-<h3>Moment Capacity by Local Buckling</h3>
-<div>
-    <div class="ideal__profile">
-        <figure>
-            <img src="inputs/{{ profile.profile_name }}-lb-web.png">
-        </figure>
-        <figure>
-            <img src="inputs/{{ profile.profile_name }}-lb-flange.png">
-        </figure>
+    <h3>Moment Capacity by Yielding</h3>
+    <div>
+        <table class="borderless ml-2">
+            <tbody>
+                <tr>
+                    <td>Moment capacity, <i>M<sub>np</sub></i></td>
+                    <td>=</td>
+                    <td><i>min( ZF<sub>y</sub> , 1.5 F<sub>y</sub>S<sub>x</sub> )</i></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>=</td>
+                    <td>{{ profile.Mn_yield }} <i>kN-m</i></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <table class="borderless width__100 fig__table">
-        <tbody>
-            <tr>
-                <td><img src="inputs/{{ profile.profile_name }}-lb-table.png"></td>
-            </tr>
-        </tbody>
-    </table>
+    <h3>Moment Capacity by Local Buckling</h3>
+    <div>
+        <div class="ideal__profile">
+            <figure>
+                <img src="inputs/{{ profile.profile_name }}-lb-web.png">
+            </figure>
+            <figure>
+                <img src="inputs/{{ profile.profile_name }}-lb-flange.png">
+            </figure>
+        </div>
 
-    <p>The weighted average method is utilized to compute the nominal flexure strength due to the limit state of local buckling –</p>
-    <p>For web elements under flexural compression –</p>
-    <table class="borderless width__80 fig__table">
-        <tbody>
-            <tr>
-                <td><img src="inputs/{{ profile.profile_name }}-lb-web-cap.png"></td>
-            </tr>
-        </tbody>
-    </table>
+        <table class="borderless width__100 fig__table">
+            <tbody>
+                <tr>
+                    <td><img src="inputs/{{ profile.profile_name }}-lb-table.png"></td>
+                </tr>
+            </tbody>
+        </table>
 
-    <p>For flange elements under uniform compression –</p>
-    <table class="borderless width__100 fig__table">
-        <tbody>
-            <tr>
-                <td><img src="inputs/{{ profile.profile_name }}-lb-flange-cap.png"></td>
-            </tr>
-        </tbody>
-    </table>
+        <p>The weighted average method is utilized to compute the nominal flexure strength due to the limit state of local buckling –</p>
+        <p>For web elements under flexural compression –</p>
+        <table class="borderless width__80 fig__table">
+            <tbody>
+                <tr>
+                    <td><img src="inputs/{{ profile.profile_name }}-lb-web-cap.png"></td>
+                </tr>
+            </tbody>
+        </table>
 
-    <table class="borderless ml-2">
-        <tbody>
-            <tr>
-                <td>Total moment capacity, <i>M<sub>nlb</sub></i></td>
-                <td>=</td>
-                <td><i>M<sub>nlb,w</sub> + M<sub>nlb,f</sub></i></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td>=</td>
-                <td>{{ profile.Mn_lb }} <i>kN-m</i></td>
-            </tr>
-        </tbody>
-    </table>
+        <p>For flange elements under uniform compression –</p>
+        <table class="borderless width__100 fig__table">
+            <tbody>
+                <tr>
+                    <td><img src="inputs/{{ profile.profile_name }}-lb-flange-cap.png"></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="borderless ml-2">
+            <tbody>
+                <tr>
+                    <td>Total moment capacity, <i>M<sub>nlb</sub></i></td>
+                    <td>=</td>
+                    <td><i>M<sub>nlb,w</sub> + M<sub>nlb,f</sub></i></td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>=</td>
+                    <td>{{ profile.Mn_lb }} <i>kN-m</i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h3>Moment Capacity by Lateral Torsional Buckling</h3>
+    <div>
+        <p>The member is considered to be continuously braced by the glass panel. Therefore, lateral torsional buckling (LTB) not governs.</p>
+    </div>
+
+    <div>
+        <p>The nominal bending strength is the minimum value obtained considering the limit states of yielding, local buckling and lateral-torsional buckling. Therefore –</p>
+
+        <table class="borderless ml-2">
+            <tbody>
+                <tr>
+                    <td>Nominal Moment Capacity, <i>M<sub>n</sub> = min( M<sub>np</sub> , M<sub>nlb</sub> , M<sub>nmb</sub> )</i></td>
+                    <td>=</td>
+                    <td>{{ [profile.Mn_yield, profile.Mn_lb] | min }} <i>kN-m</i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>So, the design moment capacity, <i>φM<sub>n</sub></i></td>
+                    <td>=</td>
+                    <td>{{ profile.phi_Mn }} <i>kN-m</i></td>
+                    <td><i>; φ = 0.9</i></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 </div>
 
-<h3>Moment Capacity by Lateral Torsional Buckling</h3>
-<div>
-    <p>The member is considered to be continuously braced by the glass panel. Therefore, lateral torsional buckling (LTB) not governs.</p>
-</div>
 
-<div>
-    <p>The nominal bending strength is the minimum value obtained considering the limit states of yielding, local buckling and lateral-torsional buckling. Therefore –</p>
-
-    <table class="borderless ml-2">
-        <tbody>
-            <tr>
-                <td>Nominal Moment Capacity, <i>M<sub>n</sub> = min( M<sub>np</sub> , M<sub>nlb</sub> , M<sub>nmb</sub> )</i></td>
-                <td>=</td>
-                <td>{{ [profile.Mn_yield, profile.Mn_lb] | min }} <i>kN-m</i></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>So, the design moment capacity, <i>φM<sub>n</sub></i></td>
-                <td>=</td>
-                <td>{{ profile.phi_Mn }} <i>kN-m</i></td>
-                <td><i>; φ = 0.9</i></td>
-            </tr>
-        </tbody>
-    </table>
-</div>
