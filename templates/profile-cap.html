@@ -1,0 +1,14 @@
+<section class="chapter__front">
+    <h1>Design Moment Capacity of Profiles</h1>
+</section>
+<section>
+    {% for profile in alum_profiles %}
+        {% include "partials/alum-cap.html" %}
+    {% endfor %}
+</section>
+
+<section>
+    {% for profile in steel_profiles %}
+        {% include "partials/steel-cap.html" %}
+    {% endfor %}
+</section>

@@ -5,6 +5,69 @@ project_info:
   rev_no: 02
   date: 20/11/2025
 
+alum_profiles:
+  - profile_name: M 125x60x2.5
+    web_length: 125
+    flange_length: 60
+    web_thk: 2.5
+    flange_thk: 4.49
+    tor_constant: 2327814.4
+    area: 1284.3
+    I_xx: 3558480.9
+    I_yy: 889366.9
+    Y: 80
+    X: 33.5
+    S_x: 44481.0
+    S_y: 26548.3
+    plastic_x: 35.9
+    plastic_y: 58.4
+    Z_x: 60554.7
+    F_y: 172.4
+    Mn_yield: 10.44
+    Mn_lb: 9.68
+    phi_Mn: 8.71
+  
+  - profile_name: M 145x67x2.5
+    web_length: 145
+    flange_length: 67
+    web_thk: 2.5
+    flange_thk: 4.49
+    tor_constant: 2327814.4
+    area: 1284.3
+    I_xx: 3558480.9
+    I_yy: 889366.9
+    Y: 80
+    X: 33.5
+    S_x: 44481.0
+    S_y: 26548.3
+    plastic_x: 35.9
+    plastic_y: 58.4
+    Z_x: 60554.7
+    F_y: 172.4
+    Mn_yield: 10.44
+    Mn_lb: 9.68
+    phi_Mn: 8.71
+
+steel_profiles:
+  - profile_name: RHS 110x45x2.5
+    web_length: 125
+    flange_length: 60
+    web_thk: 2.5
+    flange_thk: 4.49
+    tor_constant: 2327814.4
+    area: 1284.3
+    I_xx: 3558480.9
+    I_yy: 889366.9
+    Y: 80
+    X: 33.5
+    S_x: 44481.0
+    S_y: 26548.3
+    Z_x: 60554.7
+    F_y: 172.4
+    Mn: 10.44
+    phi_Mn: 8.71
+
+
 wind:
   enclosure_type: Enclosed
   roof_type: Flat
