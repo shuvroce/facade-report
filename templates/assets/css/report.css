@@ -635,6 +635,21 @@ a.crossref {
     width: 100%;
 }
 
+.calc__fig4 {
+    width: 165mm;
+    object-fit: contain;
+    overflow: hidden;
+    margin: 0.5rem auto;
+}
+
+.calc__fig4 img {
+    display: block;
+    margin: 0.5rem auto;
+    /* border: 2px dashed black; */
+    padding: 0.1rem;
+    width: 100%;
+}
+
 .dgu__head {
     font-weight: bold;
     text-decoration: underline;
@@ -707,5 +722,7 @@ ol.ref li::before {
     padding: 0.1rem;
     width: 100%;
 }
+
+
 
 

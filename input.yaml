@@ -214,6 +214,21 @@ categories:
         glue_req: 3.2
         glue_pro: 6.0
 
+      - glass_type: dgu
+        length: 2700
+        width: 900
+        thickness1: 8.0
+        gap: 12 
+        thickness2: 8.0
+        grade1: FT
+        grade2: FT
+        wind_load: 2.5
+        support_type: Point Fixed
+        bite_req: 12.4
+        bite_pro: 1.6
+        glue_req: 3.2
+        glue_pro: 6.0
+
     frame_type: single
     conn_type: type-01
     anchorage_type: box
