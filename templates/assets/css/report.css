@@ -693,4 +693,19 @@ ol.ref li::before {
     width: 100%;
 }
 
+.map__fig {
+    width: 160mm;
+    object-fit: contain;
+    overflow: hidden;
+    margin: 0.5rem auto;
+}
+
+.map__fig img {
+    display: block;
+    margin: 0.5rem auto;
+    /* border: 2px dashed black; */
+    padding: 0.1rem;
+    width: 100%;
+}
+
 

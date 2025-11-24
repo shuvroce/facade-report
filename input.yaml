@@ -86,6 +86,11 @@ wind:
   K_ht: 1.0
   topography_type: Homogeneous
   topography_note: Not in hilly reason
+  topography_type:
+  topo_crest_side:
+  topo_height:
+  topo_length:
+  topo_distance:
   gust_factor: 0.85
   b_rigidity: Rigid
   b_freq: 1.3
