@@ -128,7 +128,7 @@ categories:
         lr1: 3.6
         lr2: 3.6
         stress_ratio: 0.54
-        load_x_length4: 
+        load_x_area2: 
         def1: 16.2
         def2: 16.2
         allow_def: 20.6
@@ -149,7 +149,7 @@ categories:
         gtf: 4.0
         lr: 6.4
         stress_ratio: 0.54
-        load_x_length4: 
+        load_x_area2: 
         def: 12.2
         allow_def: 16.5
         def_ratio: 0.74
@@ -173,7 +173,7 @@ categories:
         gtf: 4.0
         lr: 6.4
         stress_ratio: 0.54
-        load_x_length4: 
+        load_x_area2: 
         def: 12.2
         allow_def: 16.5
         def_ratio: 0.74
@@ -204,7 +204,7 @@ categories:
         lr1: 3.6
         lr2: 3.6
         stress_ratio: 0.54
-        load_x_length4: 
+        load_x_area2: 
         def1: 16.2
         def2: 16.2
         allow_def: 20.6

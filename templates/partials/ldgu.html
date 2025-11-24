@@ -1,4 +1,4 @@
-<h2>Verification of Glass Panel</h2>
+<h2>Verification of Glass Panel {{ loop_index }}</h2>
 <div class="calc__fig2">
     <img src="assets/images/fig_ldgu.png" alt="LDGU Diagram">
     <figcaption>LDGU Glass (Section & Plan)</figcaption>
@@ -6,7 +6,7 @@
 
 <div>
     <h3>Panel Info</h3>
-    <table class="width__50">
+    <table class="width__60">
         <tbody>
             <tr>
                 <td>Glass Size</td>
@@ -90,7 +90,7 @@
             <tr>
                 <td>Total glass thickness, <i>t<sub>g</sub> = t<sub>1</sub> + t<sub>2</sub></i></td>
                 <td>=</td>
-                <td>{{ gu.thickness1_1 + gu.thickness1_2 + thickness2}} <i>mm</i></td>
+                <td>{{ gu.thickness1_1 + gu.thickness1_2 + gu.thickness2 }} <i>mm</i></td>
                 <td><i>; without air/gas gap</i></td>
             </tr>
             <tr>
@@ -268,10 +268,10 @@
         <table class="borderless table__80">
             <tbody>
                 <tr>
-                    <td>Load × Length<sup>4</sup></td>
+                    <td>Load × Area<sup>2</sup></td>
                     <td>=</td>
-                    <td>{{ gu.load_x_length4}} <i>kN-m<sup>2</sup></i></td>
-                    <td></td>
+                    <td>{{ gu.load_x_area2}} <i>kN-m<sup>2</sup></i></td>
+                    <td><i>; (Load × Free Length<sup>4</sup> for three, two and one edge supported glass)</i></td>
                 </tr>
                 <tr>
                     <td>Aspect Ratio, <i>AR = a/b</i></td>
@@ -283,7 +283,7 @@
                     <td>Deflection, <i>δ<sub>1</sub></i></td>
                     <td>=</td>
                     <td>{{gu.def1}} <i>mm</i></td>
-                    <td></td>
+                    <td><i>; from above chart</i></td>
                 </tr>
             </tbody>
         </table>
@@ -307,9 +307,9 @@
         <table class="borderless table__80">
             <tbody>
                 <tr>
-                    <td>Load × Length<sup>4</sup></td>
+                    <td>Load × Area<sup>2</sup></td>
                     <td>=</td>
-                    <td>{{ gu.load_x_length4}} <i>kN-m<sup>2</sup></i></td>
+                    <td>{{ gu.load_x_area2}} <i>kN-m<sup>2</sup></i></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -322,7 +322,7 @@
                     <td>Deflection, <i>δ<sub>2</sub></i></td>
                     <td>=</td>
                     <td>{{gu.def2}} <i>mm</i></td>
-                    <td></td>
+                    <td><i>; from above chart</i></td>
                 </tr>
             </tbody>
         </table>
@@ -333,9 +333,9 @@
                     <td><u>Therefore,</u></td>
                 </tr>
                 <tr>
-                    <td>Critical Deflection, <i>δ</i></td>
+                    <td>Critical Deflection, <i>δ = max(δ<sub>1</sub> , δ<sub>2</sub>)</i></td>
                     <td>=</td>
-                    <td>{{ [gu.def1, gu.def2] | min }} <i>mm</i></td>
+                    <td>{{ [gu.def1, gu.def2] | max }} <i>mm</i></td>
                     <td></td>
                 </tr>
                 <tr>

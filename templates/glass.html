@@ -1,3 +1,5 @@
 {% for gu in cat.glass_units %}
+    {% set loop_index = loop.index %}
     {% include "glass-base.html" %}
 {% endfor %}
+
