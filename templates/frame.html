@@ -1,0 +1,7 @@
+{% if cat.frame_type == "single" %}
+    {% include "partials/single-frame.html" %}
+{% elif cat.frame_type == "cont" %}
+    {% include "partials/cont-frame.html" %}
+{% else %}
+    {% include "partials/fin-frame.html" %}
+{% endif %}

@@ -1,0 +1,147 @@
+project_info:
+  ref_no: RFA-001/CW/STR/2025
+  project_name: Water Suppy and Distribution, Dhaka
+  project_client: VolumeZero Ltd.
+  rev_no: 02
+  date: 20/11/2025
+
+wind:
+  enclosure_type: Enclosed
+  roof_type: Flat
+  b_height: 52.0
+  b_length: 36.2
+  b_width: 16.5
+  location: Dhaka
+  wind_speed: 65.7
+  exposure_cat: A
+  exposure_note: Urban area
+  occupancy_cat: III
+  occupancy_note: Other structure
+  Imp_factor: 1.0
+  K_d: 0.85
+  K_h: 1.05
+  K_ht: 1.0
+  topography_type: Homogeneous
+  topography_note: Not in hilly reason
+  gust_factor: 0.85
+  b_rigidity: Rigid
+  b_freq: 1.3
+  damping: 0.02
+  GC_pi: 0.18
+  C_pl: 0.8
+  q_zk: 2.1
+  q_h: 2.5
+  int_pressure: 0.5
+  leeward_pressure: 1.64
+  sidewall_pressure: 2.67
+
+categories:
+  - category_name: Typ. Cont. Facade
+    num_glass_units: 2
+    glass_units:
+      - glass_type: dgu
+        length: 2700
+        width: 900
+        thickness1: 8.0
+        gap: 12 
+        thickness2: 8.0
+        grade1: FT
+        grade2: FT
+        wind_load: 2.5
+        support_type: Four Edges
+        nfl1: 2.5
+        nfl2: 2.5
+        gtf1: 3.6
+        gtf2: 3.6
+        ls1: 2.0
+        ls2: 2.0
+        lr1: 3.6
+        lr2: 3.6
+        stress_ratio: 0.54
+        r_0: 2.3
+        r_1: 1.2
+        r_2: 3.6
+        min_thk1: 7.46
+        min_thk2: 7.46
+        x1: 2.4
+        x2: 2.4
+        def1: 16.2
+        def2: 16.2
+        allow_def: 20.6
+        def_ratio: 0.84
+        bite_req: 12.4
+        bite_pro: 1.6
+        glue_req: 3.2
+        glue_pro: 6.0
+      
+      - glass_type: sgu
+        length: 2700
+        width: 900
+        thickness: 12.0
+        grade: FT
+        wind_load: 2.5
+        support_type: Four Edges
+        nfl: 2.5
+        gtf: 4.0
+        lr: 6.4
+        stress_ratio: 0.54
+        r_0: 2.5
+        r_1: 1.6
+        r_2: 2.6
+        min_thk: 7.46
+        x: 2.56
+        def: 12.2
+        allow_def: 16.5
+        def_ratio: 0.74
+        bite_req: 13.2
+        bite_pro: 16.0
+        glue_req: 4.2
+        glue_pro: 6.0
+
+    frame_type: single
+    conn_type: type-01
+    anchorage_type: box
+  
+  - category_name: Typ. Cont. Facade
+    num_glass_units: 1
+    glass_units:
+      - glass_type: dgu
+        length: 2700
+        width: 900
+        thickness1: 8.0
+        gap: 12 
+        thickness2: 8.0
+        grade1: FT
+        grade2: FT
+        wind_load: 2.5
+        support_type: Four Edges
+        nfl1: 2.5
+        nfl2: 2.5
+        gtf1: 3.6
+        gtf2: 3.6
+        ls1: 2.0
+        ls2: 2.0
+        lr1: 3.6
+        lr2: 3.6
+        stress_ratio: 0.54
+        r_0: 2.3
+        r_1: 1.2
+        r_2: 3.6
+        min_thk1: 7.46
+        min_thk2: 7.46
+        x1: 2.4
+        x2: 2.4
+        def1: 16.2
+        def2: 16.2
+        allow_def: 20.6
+        def_ratio: 0.84
+        bite_req: 12.4
+        bite_pro: 1.6
+        glue_req: 3.2
+        glue_pro: 6.0
+    
+    frame_type: single
+    conn_type: type-01
+    anchorage_type: box
+
+

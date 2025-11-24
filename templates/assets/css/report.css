@@ -1,0 +1,696 @@
+/* ========== Custom font ============ */
+@font-face {
+    font-family: 'Open Sans';
+    src: url(../fonts/OpenSans-Regular.ttf);
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url(../fonts/OpenSans-Bold.ttf);
+    font-weight: bold;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url(../fonts/OpenSans-Italic.ttf);
+    font-weight: normal;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Open Sans';
+    src: url(../fonts/OpenSans-BoldItalic.ttf);
+    font-weight: bold;
+    font-style: italic;
+}
+
+
+* {
+    margin: 0;
+    padding: 0;
+    outline: 0;
+    border: 0;
+    appearance: none;
+    /* list-style: none; */
+    text-decoration: none;
+    box-sizing: border-box;
+}
+
+body {
+    counter-reset: section tables figures;
+    /* font-family: 'Open Sans', sans-serif; */
+    font-family: 'Arial', serif;
+    line-height: 1.8;
+    font-size: 10.5pt;
+}
+
+
+/* ========== General Heading, caption numbering ========= */
+h1 {
+    counter-increment: section;
+    counter-reset: subsection subsubsection subsubsubsection tables figures;
+    string-set: chapter content();
+}
+
+h2 {
+    counter-increment: subsection;
+    counter-reset: subsubsection;
+}
+
+h3 {
+    counter-increment: subsubsection;
+    counter-reset: subsubsubsection;
+}
+
+h4 { counter-increment: subsubsubsection; }
+
+h1::before {
+    content: "Chapter " counter(section) ": ";
+    counter-reset: chapter 1;
+}
+
+h2::before {
+    content: counter(section) "." counter(subsection) " ";
+}
+
+h3::before {
+    content: counter(section) "." counter(subsection) "." counter(subsubsection) " ";
+}
+
+h4::before {
+    content: counter(section) "." counter(subsection) "." counter(subsubsection) "." counter(subsubsubsection) " ";
+}
+
+
+/* ============== General Style ============= */
+h1, h2, h3 { text-transform: uppercase; }
+h4, h5 { text-transform: capitalize; }
+
+h1 {
+    font-size: 26pt;
+}
+
+h2 {
+    font-size: 13pt;
+    font-weight: bold;
+    margin-top: 0.7rem;
+}
+
+h3, h4 {
+    font-size: 11pt;
+    margin-top: 1rem;
+    margin-bottom: 0.4rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+    font-style: italic;
+}
+
+p {
+    margin-top: 0.2rem;
+    margin-bottom: 0.5rem;
+    text-align: justify;
+}
+
+u {
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+ol {
+    list-style: decimal;
+    padding-left: 2.5rem;
+}
+
+ul {
+    list-style: disc;
+    padding-left: 2.5rem;
+}
+
+ul li {
+    padding-left: 0.6rem;
+}
+
+ol li {
+    padding-left: 0.6rem;
+}
+
+figcaption {
+    counter-increment: figures;
+    font-style: italic;
+    text-align: center;
+    caption-side: bottom;
+}
+
+figcaption::before {
+    content: "Figure " counter(section) "." counter(figures) " – ";
+}
+
+caption {
+    counter-increment: tables;
+    font-weight: bold;
+    caption-side: top;
+    text-align: left;
+}
+
+caption::before {
+    content: "Table " counter(section) "." counter(tables) " – ";
+}
+
+table {
+    margin-bottom: 1rem;
+}
+
+table, th, td, tr {
+    border: 1px solid black;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 10.5pt;
+}
+
+th, td {
+    padding: 0 0.35rem;
+}
+
+th {
+    word-wrap: break-word;
+    /* word-break: break-word; */
+}
+
+table p {
+    margin: 0.1rem;
+    text-align: left;
+}
+
+.eqn {
+    font-family: 'Cambria Math';
+    font-style: italic;
+    font-size: 10pt;
+    word-break: keep-all;
+    word-wrap: nowrap;
+}
+
+.list__none {
+    list-style: none;
+}
+
+.ml-1 { margin-left: 1rem; }
+.ml-2 { margin-left: 2rem; }
+.mt-1 { margin-top: 1rem; }
+.mt-2 { margin-top: 2rem; }
+.mb-1 { margin-bottom: 1rem; }
+.mb-2 { margin-bottom: 2rem; }
+
+.width__40 { width: 40%; }
+.width__50 { width: 50%; }
+.width__60 { width: 60%; }
+.width__70 { width: 70%; }
+.width__80 { width: 80%; }
+.width__90 { width: 90%; }
+.width__100 { width: 100%; }
+
+
+/* ============== General Table and figure ================= */
+table.head__gray th {
+    background-color: #f3f3f3;
+}
+
+table.head__gray tr:nth-child(odd) {
+    background-color: #f3f3f3;
+}
+
+table.borderless, table.borderless * {
+    border: none !important;
+}
+
+table.eqn td {
+    padding: 0.2rem;
+}
+
+table.width__40 { width: 40%; }
+table.width__50 { width: 50%; }
+table.width__60 { width: 60%; }
+table.width__70 { width: 70%; }
+table.width__80 { width: 80%; }
+table.width__90 { width: 90%; }
+table.width__100 { width: 100%; }
+
+table.align__center * { text-align: center !important; }
+table.align__center caption { text-align: left !important; }
+
+.table__sidewise {
+    display: flex;
+    gap: 1rem;
+    width: 100%;
+}
+
+.table__note {
+    font-weight: normal;
+    padding-top: 0.7rem;
+    break-after: avoid;
+}
+
+
+.table__summary {
+    margin-bottom: 1rem;
+}
+
+.table__summary span {
+    font-weight: bold;
+    font-style: italic;
+    text-decoration: underline;
+    text-underline-offset: 0.3rem;
+}
+
+
+/* ========= General Page Setup ========== */
+@page {
+    size: A4;
+    margin: 40mm 20mm 15mm 20mm;
+    bleed: 0;
+    /* marks: crop; */
+    /* font-size: 11pt; */
+
+    @top-center {
+        content: element(header);
+        vertical-align: bottom;
+        width: 100%;
+    }
+
+    @bottom-left {
+        content: "Chapter" ": " string(chapter);
+        font-family: "Arial";
+        font-size: 8pt;
+        font-style: italic;
+        border-top: 1px solid black;
+        vertical-align: top;
+        width: 100%;
+    }
+
+    @bottom-right {
+        content: "Page " counter(page) " of " counter(pages);
+        font-family: "Arial";
+        font-size: 8pt;
+        border-top: 1px solid black;
+        vertical-align: top;
+        width: 100%;
+    }
+}
+
+.page__header {
+    position: running(header);
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid black;
+    font-size: 9pt;
+    font-weight: bold;
+    justify-content: space-between;
+    padding-bottom: 0.1rem;
+    margin-bottom: 0.5rem;
+    align-items: flex-end;
+}
+
+.page__header p { margin: 0; }
+
+.page__header_left {
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+}
+
+.page__header_title {
+    text-transform: uppercase;
+    font-size: 10pt;
+    font-style: italic;
+    padding-bottom: 0.1rem;
+}
+
+.page__header_logo {
+    width: 9rem;
+    height: 3rem;
+    overflow: hidden;
+}
+
+.page__header_logo img {
+    /* width: 8rem; */
+    height: 3rem;
+}
+
+.page__header_web a {
+    text-decoration: none;
+    color: black;
+    /* font-size: 9pt; */
+    font-weight: normal;
+}
+
+.page__header_right {
+    display: flex;
+    flex-direction: column;
+    margin-top: 1.5rem;
+}
+
+.page__header_right p {
+    text-align: right;
+}
+
+.pagedjs_page .pagedjs_margin-top-center>.pagedjs_margin-content>* {
+    display: flex !important;
+}
+
+
+/* ================= Cover Page ============== */
+.coverpage {
+    page: coverpage;
+    break-after: always;
+}
+
+@page coverpage {
+    margin: 20mm 20mm 15mm 20mm;
+    @top-center {
+        content: element(coverheader);
+    }
+
+    @bottom-left { content: none; }
+    @bottom-right { content: none; }
+}
+
+.cover__header {
+    position: running(coverheader);
+    display: flex;
+    gap: 1rem;
+    border-bottom: 1px solid black;
+    font-size: 8pt;
+    /* font-weight: normal; */
+    font-style: italic;
+    justify-content: space-between;
+    padding-bottom: 0.1rem;
+    text-transform: uppercase;
+}
+
+.cover__header p {
+    margin: 0;
+}
+
+.coverpage p {
+    text-align: center;
+    line-height: 1;
+}
+
+.project__title_intro {
+    font-size: 21pt;
+    /* font-weight: bold; */
+    text-transform: capitalize;
+    font-variant: small-caps;
+    margin-top: 15mm;
+}
+
+.project__title_main {
+    font-size: 23pt;
+    font-weight: bold;
+    text-transform: capitalize;
+    font-variant: small-caps;
+}
+
+.project__rev {
+    font-size: 12pt;
+    /* font-weight: bold; */
+    margin-top: 10mm;
+}
+
+.project__date {
+    margin-top: 65mm;
+    /* font-weight: bold; */
+}
+
+.company__info {
+    margin-top: 70mm;
+}
+
+.company__info img {
+    display: block;
+    /* width: 9rem; */
+    height: 3.2rem;
+    overflow: hidden;
+    margin: 0 auto;
+}
+
+
+/* ========== ToC, LoF, LoT Pages ============ */
+.frontmatter {
+    page: frontmatter;
+    break-after: always;
+    counter-reset: page 2;
+}
+
+@page frontmatter {
+    @bottom-right {
+        content: counter(page, lower-roman);
+    }
+    @bottom-left {
+        content: none;
+    }
+}
+
+.frontmatter h2 {
+    font-size: 11pt;
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+.frontmatter h2::before {
+    content: none;
+    /* counter-reset: chapter 1; */
+}
+
+.frontmatter table {
+    margin: 0 auto;
+}
+
+.frontmatter table, .frontmatter th, .frontmatter td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+.record table thead th {
+    font-weight: bold;
+    text-align: center;
+}
+
+.record table tbody td {
+    text-align: center;
+}
+
+.record table tbody span {
+    display: block;
+    font-size: 8pt;
+}
+
+
+/* ========== Chapter Front Page ============ */
+.chapter__front {
+    page: chapterfront;
+    break-after: always;
+    text-align: center;
+    margin-top: 100mm;
+    text-transform: uppercase;
+}
+
+@page chapterfront {
+    @bottom-left { content: none; }
+    @bottom-right { content: none; }
+}
+
+.chapter__front h1 {
+    font-weight: bold;
+    font-size: 22pt;
+    break-after: always;
+    break-before: always;
+    margin: 95mm auto;
+    text-align: center;
+}
+
+
+/* ============== Page break ============== */
+.page__break {
+    break-before: always;
+}
+
+.page__break_avoid {
+    break-inside: avoid;
+}
+
+h1, h2, h3, h4, h5, table, figure {
+    break-inside: avoid;
+}
+
+h2, h3, h4, h5, caption {
+    break-after: avoid;
+    /* string-set: footer content(); */
+}
+
+figcaption {
+    break-before: avoid;
+}
+
+table p {
+    break-after: avoid;
+}
+
+
+
+
+
+/* ================ Others (Specific) =============== */
+.ok {
+    color: green;
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+.not-ok {
+    color: red;
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+}
+
+a.crossref {
+    color: inherit;
+    text-decoration: underline dotted;
+}
+
+.footnote {
+    font-size: 8pt;
+    vertical-align: super;
+}
+
+.footnote__content {
+    font-size: 8pt;
+    border-top: 0.5px solid #aaa;
+    margin-top: 1rem;
+    padding-top: 0.5rem;
+}
+
+.ref__fig {
+    width: 156mm;
+    object-fit: contain;
+    overflow: hidden;
+    margin: 0.5rem auto;
+}
+
+.ref__fig img {
+    display: block;
+    margin: 0.5rem auto;
+    border: 2px dashed black;
+    padding: 0.1rem;
+    width: 100%;
+}
+
+.calc__fig {
+    width: 140mm;
+    object-fit: contain;
+    overflow: hidden;
+    margin: 0.3rem auto;
+    margin-bottom: 1rem;
+}
+
+.calc__fig img {
+    display: block;
+    margin: 0.1rem auto;
+    /* padding: 0.1rem; */
+    width: 100%;
+}
+
+.calc__fig2 {
+    width: 100mm;
+    object-fit: contain;
+    overflow: hidden;
+    margin: 0.3rem auto;
+    margin-bottom: 1rem;
+}
+
+.calc__fig2 img {
+    display: block;
+    margin: 0.1rem auto;
+    /* padding: 0.1rem; */
+    width: 100%;
+}
+
+.calc__fig3 {
+    width: 150mm;
+    object-fit: contain;
+    overflow: hidden;
+    margin: 0.3rem auto;
+    margin-bottom: 1rem;
+}
+
+.calc__fig3 img {
+    display: block;
+    margin: 0.1rem auto;
+    /* padding: 0.1rem; */
+    width: 100%;
+}
+
+.dgu__head {
+    font-weight: bold;
+    text-decoration: underline;
+    text-underline-offset: 0.2rem;
+    break-after: avoid;
+}
+
+.list__bullet li {
+    list-style-type: circle;
+    padding-left: 2rem;
+}
+
+ol.ref {
+    counter-reset: item;
+    list-style: none;
+    padding-left: 1rem;
+}
+
+ol.ref li {
+    counter-increment: item;
+    margin: 0.3rem 0;
+    padding-left: 1rem;    /* space for marker */
+    text-indent: -1rem;    /* pull first line left */
+}
+
+ol.ref li::before {
+    content: "[" counter(item, decimal-leading-zero) "] ";
+    display: inline-block;
+    width: 1rem;           /* same as padding-left for alignment */
+}
+
+.ideal__profile {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 3.5rem;
+    width: 100%;
+}
+
+.ideal__profile figure {
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.ideal__profile img {
+    display: block;
+    width: 100%;
+}
+
+.fig__table {
+    object-fit: contain;
+    overflow: hidden;
+}
+
+.fig__table img {
+    display: block;
+    width: 100%;
+}
+
+

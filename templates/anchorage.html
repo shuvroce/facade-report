@@ -1,0 +1,7 @@
+{% if cat.anchorage_type == "box" %}
+    {% include "partials/box.html" %}
+{% elif cat.anchorage_type == "u" %}
+    {% include "partials/u.html" %}
+{% else %}
+    {% include "partials/l.html" %}
+{% endif %}

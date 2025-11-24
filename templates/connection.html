@@ -1,0 +1,9 @@
+{% if cat.conn_type == "type-01" %}
+    {% include "partials/conn-01.html" %}
+{% elif cat.conn_type == "type-02" %}
+    {% include "partials/conn-02.html" %}
+{% elif cat.conn_type == "type-03" %}
+    {% include "partials/conn-03.html" %}
+{% else %}
+    {% include "partials/conn-04.html" %}
+{% endif %}

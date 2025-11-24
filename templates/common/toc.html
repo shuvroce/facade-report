@@ -1,0 +1,69 @@
+<section class="frontmatter">
+    <h2>Table of Contents</h2>
+    <table class="width__90">
+        <thead>
+            <tr>
+                <th>Chapter Name</th>
+                <th>Page No.</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Chapter 1: Introduction</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Chapter 2: Design Criteria</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Chapter 3: Design Criteria</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Chapter 4: Design Moment Capacity of Profiles</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Chapter 5: Wind Pressure Calculation</td>
+                <td></td>
+            </tr>
+
+            {% set chapter_start = 6 %}
+            {% for cat in categories %}
+            <tr>
+                <td>Chapter {{ chapter_start + loop.index0 }}: [{{ loop.index }}] {{ cat.category_name }}</td>
+                <td>{{ cat.page or "" }}</td>
+            </tr>
+            {% endfor %}
+
+            <tr>
+                <td>Chapter {{ chapter_start + categories|length }}: Reference</td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+<section class="frontmatter record">
+    <h2>Document Preparation Records</h2>
+    <table class="width__90">
+        <thead>
+            <tr>
+                <th>Date of Issue</th>
+                <th>Revision</th>
+                <th>Prepared by</th>
+                <th>Checked & verified by</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ project_info.date }}</td>
+                <td>{{ project_info.rev_no }}</td>
+                <td>Md. Akram Hossain <span>Structural Engineer</span></td>
+                <td>Bashir Ahmed Khan <span>Managing Director</span></td>
+            </tr>
+        </tbody>
+    </table>
+</section>

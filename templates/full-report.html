@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Structural Design Report</title>
+
+    <link rel="stylesheet" href="/css/katex.min.css">
+    <link rel="stylesheet" href="/css/report.css">
+</head>
+
+<body>
+    {% include "common/header.html" %}
+    {% include "common/cover.html" %}
+    {% include "common/toc.html" %}
+    {% include "common/intro.html" %}
+    {% include "profile-cap.html" %}
+    {% include "wind.html" %}
+
+    {% for cat in categories %}
+        {% set loop_index = loop.index %}
+        {% include "category.html" %}
+    {% endfor %}
+
+    {% include "common/reference.html" %}
+
+</body>
+
+</html>

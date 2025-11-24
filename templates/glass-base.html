@@ -1,0 +1,9 @@
+{% if gu.glass_type == "sgu" %}
+    {% include "partials/sgu.html" %}
+{% elif gu.glass_type == "dgu" %}
+    {% include "partials/dgu.html" %}
+{% elif gu.glass_type == "lgu" %}
+    {% include "partials/lgu.html" %}
+{% else %}
+    {% include "partials/ldgu.html" %}
+{% endif %}
