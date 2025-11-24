@@ -69,32 +69,16 @@ steel_profiles:
 
 
 wind:
-  enclosure_type: Enclosed
-  roof_type: Flat
+  wind_speed: 65.7
   b_height: 52.0
   b_length: 36.2
   b_width: 16.5
-  location: Dhaka
-  wind_speed: 65.7
   exposure_cat: A
-  exposure_note: Urban area
   occupancy_cat: III
-  occupancy_note: Other structure
   Imp_factor: 1.0
   K_d: 0.85
   K_h: 1.05
   K_ht: 1.0
-  topography_type: Homogeneous
-  topography_note: Not in hilly reason
-  topography_type:
-  topo_crest_side:
-  topo_height:
-  topo_length:
-  topo_distance:
-  gust_factor: 0.85
-  b_rigidity: Rigid
-  b_freq: 1.3
-  damping: 0.02
   GC_pi: 0.18
   C_pl: 0.8
   q_zk: 2.1
@@ -102,6 +86,24 @@ wind:
   int_pressure: 0.5
   leeward_pressure: 1.64
   sidewall_pressure: 2.67
+
+  b_rigidity: Rigid
+  b_freq: 1.3
+  damping: 0.02
+  gust_factor: 0.85
+
+  enclosure_type: Enclosed
+  roof_type: Flat
+  exposure_note: Urban area
+  occupancy_note: Other structure
+  location: Dhaka
+
+  topography_type: Homogeneous
+  topography_type:
+  topo_crest_side:
+  topo_height:
+  topo_length:
+  topo_distance:
 
 categories:
   - category_name: Typ. Cont. Facade
@@ -126,13 +128,7 @@ categories:
         lr1: 3.6
         lr2: 3.6
         stress_ratio: 0.54
-        r_0: 2.3
-        r_1: 1.2
-        r_2: 3.6
-        min_thk1: 7.46
-        min_thk2: 7.46
-        x1: 2.4
-        x2: 2.4
+        load_x_length4: 
         def1: 16.2
         def2: 16.2
         allow_def: 20.6
@@ -153,17 +149,69 @@ categories:
         gtf: 4.0
         lr: 6.4
         stress_ratio: 0.54
-        r_0: 2.5
-        r_1: 1.6
-        r_2: 2.6
-        min_thk: 7.46
-        x: 2.56
+        load_x_length4: 
         def: 12.2
         allow_def: 16.5
         def_ratio: 0.74
         bite_req: 13.2
         bite_pro: 16.0
         glue_req: 4.2
+        glue_pro: 6.0
+      
+      - glass_type: lgu
+        length: 2700
+        width: 900
+        thickness1: 8.0
+        thickness_inner: 1.52
+        thickness2: 8.0
+        chart_thickness: 16.0
+        h_eff: 14.2
+        grade: FT
+        wind_load: 2.5
+        support_type: Four Edges
+        nfl: 2.5
+        gtf: 4.0
+        lr: 6.4
+        stress_ratio: 0.54
+        load_x_length4: 
+        def: 12.2
+        allow_def: 16.5
+        def_ratio: 0.74
+        bite_req: 13.2
+        bite_pro: 16.0
+        glue_req: 4.2
+        glue_pro: 6.0
+      
+      - glass_type: ldgu
+        length: 2700
+        width: 900
+        thickness1_1: 8.0
+        thickness_inner: 1.52
+        thickness1_2: 8.0
+        chart_thickness: 16.0
+        gap: 12
+        thickness2: 12.0
+        grade1: FT
+        grade2: FT
+        wind_load: 2.5
+        support_type: Four Edges
+        nfl1: 2.5
+        nfl2: 2.5
+        gtf1: 3.6
+        gtf2: 3.6
+        ls1: 2.0
+        ls2: 2.0
+        lr1: 3.6
+        lr2: 3.6
+        stress_ratio: 0.54
+        load_x_length4: 
+        def1: 16.2
+        def2: 16.2
+        allow_def: 20.6
+        def_ratio: 0.84
+        bite_req: 12.4
+        bite_pro: 1.6
+        glue_req: 3.2
         glue_pro: 6.0
 
     frame_type: single

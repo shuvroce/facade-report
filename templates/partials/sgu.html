@@ -134,73 +134,10 @@
 
 <div>
     <h3>Check for Deflection</h3>
-    {% if gu.support_type == "Four Edges" %}
-    <div>
-        <table class="borderless table__80">
-            <tbody>
-                <tr>
-                    <td><i>r<sub>0</sub> = 0.553 - 3.83(a/b) + 1.11(a/b)<sup>2</sup> - 0.0969(a/b)<sup>3</sup></i></td>
-                    <td>=</td>
-                    <td>{{ gu.r_0 }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><i>r<sub>1</sub> = -2.29 + 5.83(a/b) - 2.17(a/b)<sup>2</sup> + 0.2067(a/b)<sup>3</sup></i></td>
-                    <td>=</td>
-                    <td>{{ gu.r_1 }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><i>r<sub>2</sub> = 1.485 - 1.908(a/b) + 0.815(a/b)<sup>2</sup> - 0.0822(a/b)<sup>3</sup></i></td>
-                    <td>=</td>
-                    <td>{{ gu.r_2 }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><i>Minimum thickness, t<sub>min</sub></i></td>
-                    <td>=</td>
-                    <td>{{ gu.min_thk }} <i>mm</i></td>
-                    <td><i>; ASTM E1300, Table 4</i></td>
-                </tr>
-                <tr>
-                    <td><i>Service wind load, q = 0.7P<sub>z</sub></i></td>
-                    <td>=</td>
-                    <td>{{ gu.wind_load * 0.7 }} <i>kPa</i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><i>x = ln{ln[q(ab)<sup>2</sup> / Et<sub>min</sub><sup>4</sup>]}</i></td>
-                    <td>=</td>
-                    <td>{{ gu.x }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Deflection, <i>δ = t<sub>min</sub> × exp(r<sub>0</sub> + r<sub>1</sub> × x + r<sub>2</sub> × x<sup>2</sup>)</i></td>
-                    <td>=</td>
-                    <td>{{ gu.def }} <i>mm</i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Allowable deflection, <i>δ<sub>a</sub> = b/60</i></td>
-                    <td>=</td>
-                    <td>{{ gu.allow_def }} <i>mm</i></td>
-                    <td><i>; AS 1288:2006</i></td>
-                </tr>
-                <tr>
-                    <td>Deflection ratio</td>
-                    <td>=</td>
-                    <td>{{ gu.def_ratio }}</td>
-                    <td class="{% if gu.def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
-                        {% if gu.def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    {% else %}
     <div class="calc__fig">
-        {% if gu.support_type == "Three Edges" %}
+        {% if gu.support_type == "Four Edges" %}
+            <img src="assets/images/glass-deflection-charts/monolithic/four-edge/{{ gu.thickness }}mm.png" alt="Deflection Chart">
+        {% elif gu.support_type == "Three Edges" %}
             <img src="assets/images/glass-deflection-charts/monolithic/three-edge/{{ gu.thickness }}mm.png" alt="Deflection Chart">
         {% elif gu.support_type == "Two Edges" %}
             <img src="assets/images/glass-deflection-charts/monolithic/two-edge/all-thk.png" alt="Deflection Chart">
@@ -216,13 +153,13 @@
                 <tr>
                     <td>Load × Length<sup>4</sup></td>
                     <td>=</td>
-                    <td>{{ gu.load_free_length4}} <i>kN-m<sup>2</sup></i></td>
+                    <td>{{ gu.load_x_length4}} <i>kN-m<sup>2</sup></i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Aspect Ratio, <i>AR = a/b</i></td>
                     <td>=</td>
-                    <td>{{gu.aspect_ratio}}</td>
+                    <td>{{gu.length / gu.width | round(2) }}</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -248,7 +185,6 @@
             </tbody>
         </table>
     </div>
-    {% endif %}
 </div>
 
 <div>

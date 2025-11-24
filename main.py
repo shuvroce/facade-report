@@ -15,10 +15,6 @@ env = Environment(loader=FileSystemLoader(template_dir))
 template = env.get_template("full-report.html")
 html_out = template.render(data)
 
-# Optional: save HTML for debugging
-# with open("report.html", "w", encoding="utf-8") as f:
-#     f.write(html_out)
-
 # Output file
 report_pdf = "report.pdf"
 

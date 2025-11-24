@@ -212,10 +212,11 @@
             <tbody>
                 <tr>
                     <td><u>Therefore,</u></td>
+                </tr>
                 <tr>
                     <td>Load resisting capacity of the glass, <i>LR = min(LR<sub>1</sub>, LR<sub>2</sub>)</i></td>
                     <td>=</td>
-                    <td>{{ [gu.lr1, gu.lr2] | min }} <i>m<sup>2</sup></i></td>
+                    <td>{{ [gu.lr1, gu.lr2] | min }} <i>kPa</i></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -233,124 +234,12 @@
 
 <div>
     <h3>Check for Deflection</h3>
-    {% if gu.support_type == "Four Edges" %}
-    <div>
-        <table class="borderless table__80">
-            <tbody>
-                <tr>
-                    <td><i>r<sub>0</sub> = 0.553 - 3.83(a/b) + 1.11(a/b)<sup>2</sup> - 0.0969(a/b)<sup>3</sup></i></td>
-                    <td>=</td>
-                    <td>{{ gu.r_0 }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><i>r<sub>1</sub> = -2.29 + 5.83(a/b) - 2.17(a/b)<sup>2</sup> + 0.2067(a/b)<sup>3</sup></i></td>
-                    <td>=</td>
-                    <td>{{ gu.r_1 }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><i>r<sub>2</sub> = 1.485 - 1.908(a/b) + 0.815(a/b)<sup>2</sup> - 0.0822(a/b)<sup>3</sup></i></td>
-                    <td>=</td>
-                    <td>{{ gu.r_2 }}</td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <p class="dgu__head">For Outer Panel:</p>
-        <table class="borderless table__80">
-            <tbody>
-                <tr>
-                    <td><i>Service wind load, q<sub>1</sub> = 0.7 P<sub>z</sub>/LS<sub>1</sub></i></td>
-                    <td>=</td>
-                    <td>{{ 0.7 * gu.wind_load / gu.ls1 }} <i>kPa</i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><i>Outer panel minimum thickness, t<sub>1,min</sub></i></td>
-                    <td>=</td>
-                    <td>{{ gu.min_thk1 }} <i>mm</i></td>
-                    <td><i>; ASTM E1300, Table 4</i></td>
-                </tr>
-                <tr>
-                    <td><i>x<sub>1</sub> = ln{ln[q<sub>1</sub>(ab)<sup>2</sup> / Et<sub>1,min</sub><sup>4</sup>]}</i></td>
-                    <td>=</td>
-                    <td>{{ gu.x1 }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Deflection, <i>δ<sub>1</sub> = t<sub>1,min</sub> × exp(r<sub>0</sub> + r<sub>1</sub> × x<sub>1</sub> + r<sub>2</sub> × x<sub>1</sub><sup>2</sup>)</i></td>
-                    <td>=</td>
-                    <td>{{ gu.def1 }} <i>mm</i></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-        
-        <p class="dgu__head">For Inner Panel:</p>
-        <table class="borderless table__80">
-            <tbody>
-                <tr>
-                    <td><i>Service wind load, q<sub>2</sub> = 0.7 P<sub>z</sub>/LS<sub>2</sub></i></td>
-                    <td>=</td>
-                    <td>{{ 0.7 * gu.wind_load / gu.ls2 }} <i>kPa</i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td><i>Inner panel minimum thickness, t<sub>2,min</sub></i></td>
-                    <td>=</td>
-                    <td>{{ gu.min_thk2 }} <i>mm</i></td>
-                    <td><i>; ASTM E1300, Table 4</i></td>
-                </tr>
-                <tr>
-                    <td><i>x<sub>2</sub> = ln{ln[q<sub>2</sub>(ab)<sup>2</sup> / Et<sub>2,min</sub><sup>4</sup>]}</i></td>
-                    <td>=</td>
-                    <td>{{ gu.x2 }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Deflection, <i>δ<sub>2</sub> = t<sub>2,min</sub> × exp(r<sub>0</sub> + r<sub>1</sub> × x<sub>2</sub> + r<sub>2</sub> × x<sub>2</sub><sup>2</sup>)</i></td>
-                    <td>=</td>
-                    <td>{{ gu.def2 }} <i>mm</i></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-
-        <table class="borderless width__80" style="margin-top: 1rem;">
-            <tbody>
-                <tr>
-                    <td><u>Therefore,</u></td>
-                </tr>
-                <tr>
-                    <td>Center of Glass deflection, <i>δ = max(δ<sub>1</sub>, δ<sub>2</sub>)</i></td>
-                    <td>=</td>
-                    <td>{{ [gu.def1, gu.def2] | max }} <i>m<sup>2</sup></i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Allowable deflection, <i>δ<sub>a</sub> = b/90</i></td>
-                    <td>=</td>
-                    <td>{{ gu.allow_def }} <i>mm</i></td>
-                    <td><i>; AS 1288:2006</i></td>
-                </tr>
-                <tr>
-                    <td>Deflection ratio</td>
-                    <td>=</td>
-                    <td>{{ gu.def_ratio }}</td>
-                    <td class="{% if gu.def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
-                        {% if gu.def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    {% else %}
+    <p class="dgu__head">For Outer Panel:</p>
     <div class="calc__fig">
-        {% if gu.support_type == "Three Edges" %}
-            <img src="assets/images/glass-deflection-charts/monolithic/three-edge/{{ gu.thickness }}mm.png" alt="Deflection Chart">
+        {% if gu.support_type == "Four Edges" %}
+            <img src="assets/images/glass-deflection-charts/monolithic/four-edge/{{ gu.thickness1 }}mm.png" alt="Deflection Chart">
+        {% elif gu.support_type == "Three Edges" %}
+            <img src="assets/images/glass-deflection-charts/monolithic/three-edge/{{ gu.thickness1 }}mm.png" alt="Deflection Chart">
         {% elif gu.support_type == "Two Edges" %}
             <img src="assets/images/glass-deflection-charts/monolithic/two-edge/all-thk.png" alt="Deflection Chart">
         {% else %}
@@ -365,19 +254,73 @@
                 <tr>
                     <td>Load × Length<sup>4</sup></td>
                     <td>=</td>
-                    <td>{{ gu.load_free_length4}} <i>kN-m<sup>2</sup></i></td>
+                    <td>{{ gu.load_x_length4}} <i>kN-m<sup>2</sup></i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Aspect Ratio, <i>AR = a/b</i></td>
                     <td>=</td>
-                    <td>{{gu.aspect_ratio}}</td>
+                    <td>{{gu.length / gu.width | round(2) }}</td>
                     <td></td>
                 </tr>
                 <tr>
-                    <td>Deflection, <i>δ</i></td>
+                    <td>Deflection, <i>δ<sub>1</sub></i></td>
                     <td>=</td>
-                    <td>{{gu.def}} <i>mm</i></td>
+                    <td>{{gu.def1}} <i>mm</i></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+
+    <p class="dgu__head">For Inner Panel:</p>
+    <div class="calc__fig">
+        {% if gu.support_type == "Four Edges" %}
+            <img src="assets/images/glass-deflection-charts/monolithic/four-edge/{{ gu.thickness2 }}mm.png" alt="Deflection Chart">
+        {% elif gu.support_type == "Three Edges" %}
+            <img src="assets/images/glass-deflection-charts/monolithic/three-edge/{{ gu.thickness2 }}mm.png" alt="Deflection Chart">
+        {% elif gu.support_type == "Two Edges" %}
+            <img src="assets/images/glass-deflection-charts/monolithic/two-edge/all-thk.png" alt="Deflection Chart">
+        {% else %}
+            <img src="assets/images/glass-deflection-charts/monolithic/one-edge/all-thk.png" alt="Deflection Chart">
+        {% endif %}
+        <figcaption>Deflection Chart</figcaption>
+    </div>
+
+    <div>
+        <table class="borderless table__80">
+            <tbody>
+                <tr>
+                    <td>Load × Length<sup>4</sup></td>
+                    <td>=</td>
+                    <td>{{ gu.load_x_length4}} <i>kN-m<sup>2</sup></i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Aspect Ratio, <i>AR = a/b</i></td>
+                    <td>=</td>
+                    <td>{{gu.length / gu.width | round(2) }}</td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Deflection, <i>δ<sub>2</sub></i></td>
+                    <td>=</td>
+                    <td>{{gu.def2}} <i>mm</i></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <table class="borderless width__80" style="margin-top: 1rem;">
+            <tbody>
+                <tr>
+                    <td><u>Therefore,</u></td>
+                </tr>
+                <tr>
+                    <td>Critical Deflection, <i>δ</i></td>
+                    <td>=</td>
+                    <td>{{ [gu.def1, gu.def2] | min }} <i>mm</i></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -390,15 +333,15 @@
                     <td>Deflection ratio</td>
                     <td>=</td>
                     <td>{{ gu.def_ratio }} <i>mm</i></td>
-                    <td class="{% if gu.ratio < 1 %}ok{% else %}not-ok{% endif %}">
-                        {% if gu.ratio < 1 %} OK {% else %} NOT OK {% endif %}
+                    <td class="{% if gu.def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
+                        {% if gu.def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
                 </tr>
             </tbody>
         </table>
     </div>
-    {% endif %}
 </div>
+
 
 <div>
     <h3>Verification of Silicone Bite</h3>
