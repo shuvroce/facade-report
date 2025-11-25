@@ -104,7 +104,7 @@ wind:
   topo_distance:
 
 categories:
-  - category_name: Typ. Cont. Facade
+  - category_name: Typ. Floor-to-floor Facade
     # num_glass_units: 2
     glass_units:
       - glass_type: dgu
@@ -283,11 +283,48 @@ categories:
         beta_pullover: 0.37
         beta_pullout: 0.58
 
-
     anchorage:
       - clump_type: Box Clump
         reaction_Ry: 12.3
         reaction_Rz: 3.2
+        design_Ry: 22.0
+        design_Rz: 7.5
+        N_ua: 0
+        N_ug: 0
+        V_ua: 7.5
+        V_ug: 30.0
+
+        bp_size: 250 x 120 x 6
+        anchor_nos: 4
+        anchor_size: M12 x 110
+        anchor_dia: 12
+        embed_depth: 70
+
+        A_seN: 84.3
+        f_uta: 500
+
+        phi_Ncbg: 37.2
+
+        phi_Vsa: 16.4
+        A_VC: 70500
+        A_VCO: 45000
+        C_a1: 100
+        C_a2: 500
+        h_a: 300
+        psi_ecV: 1.0
+        psi_edV: 1.0
+        psi_cV: 1.0
+        psi_hV: 1.0
+        l_e: 70
+        V_b: 15.5
+        phi_Vcbg: 17.0
+        phi_Vcp: 67.2
+        
+
+
+
+
+
   
   - category_name: Typ. Cont. Facade
     # num_glass_units: 1
