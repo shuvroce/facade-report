@@ -183,9 +183,9 @@ table p {
 }
 
 .eqn {
-    font-family: 'Cambria Math';
+    /* font-family: 'Cambria Math'; */
     font-style: italic;
-    font-size: 10pt;
+    /* font-size: 10pt; */
     word-break: keep-all;
     word-wrap: nowrap;
 }
@@ -570,9 +570,10 @@ a.crossref {
 
 .footnote__content {
     font-size: 8pt;
-    border-top: 0.5px solid #aaa;
-    margin-top: 1rem;
-    padding-top: 0.5rem;
+    font-style: italic;
+    /* border-top: 0.5px solid #aaa; */
+    /* margin-top: 0.5rem; */
+    /* padding-top: 0.3rem; */
 }
 
 .ref__fig {

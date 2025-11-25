@@ -135,6 +135,36 @@
         </table>
     </div>
 
+    <div class="mt-1">
+        <table class="width__50">
+            <caption>External Wall Pressure Coefficient</caption>
+            <thead>
+                <tr>
+                    <th>Surface</th>
+                    <th>L/B</th>
+                    <th>C<sub>p</sub></th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>Windward Wall</td>
+                    <td>All</td>
+                    <td>0.8</td>
+                </tr>
+                <tr>
+                    <td>Side Wall</td>
+                    <td>All</td>
+                    <td>- 0.7</td>
+                </tr>
+                <tr>
+                    <td>Leeward Wall</td>
+                    <td>{{ (wind.b_width / wind.b_length) | round(2) }}</td>
+                    <td>{{ wind.C_pl }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
     <div class="page__break_avoid">
         <p><span class="footnote">a </span><u>Exposure Category:</u></p>
         <p>
@@ -215,35 +245,7 @@
         </div>
     {% endif %}
 
-    <div class="mt-2">
-        <table class="width__50">
-            <caption>External Wall Pressure Coefficient</caption>
-            <thead>
-                <tr>
-                    <th>Surface</th>
-                    <th>L/B</th>
-                    <th>C<sub>p</sub></th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Windward Wall</td>
-                    <td>All</td>
-                    <td>0.8</td>
-                </tr>
-                <tr>
-                    <td>Side Wall</td>
-                    <td>All</td>
-                    <td>- 0.7</td>
-                </tr>
-                <tr>
-                    <td>Leeward Wall</td>
-                    <td>{{ (wind.b_width / wind.b_length) | round(2) }}</td>
-                    <td>{{ wind.C_pl }}</td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    
 
     <div class="ref__fig">
         <img src="assets/images/bnbc-wind-speed.png">
@@ -472,6 +474,13 @@
         </figure>
     </div>
     
+    <div>
+        <figure class="ref__fig">
+            <img src="assets/images/cnc2.png">
+            <figcaption>Roof and Wall Zone demarcation (Non-rectangula plan view)</figcaption>
+        </figure>
+    </div>
+    
     
     <div class="page__break">
         <div class="page__break_avoid">
@@ -485,7 +494,7 @@
                     </tr>
                 </tbody>
             </table>
-            <p>
+            <p class="footnote__content">
                 Zone 5 (Edge) width, a = Min<sup>m</sup> of (10% of least horizontal dimension, 0.4h);
                 but not less than 0.9 m.
             </p>

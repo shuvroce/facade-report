@@ -392,14 +392,14 @@
     <div class="calc_fig4">
         <figure>
             <img src="inputs/{{ gu.length }}-{{ gu.width }}-rfem-model-3d.png">
-            <caption>3d Model</caption>
+            <figcaption>3d Model</figcaption>
         </figure>
     </div>
 
     <div class="calc_fig4">
         <figure>
             <img src="inputs/{{ gu.length }}-{{ gu.width }}-rfem-model-data.png">
-            <caption>RFEM Model Data</caption>
+            <figcaption>RFEM Model Data</figcaption>
         </figure>
     </div>
 </div>
@@ -443,57 +443,60 @@
     </table>
 </div>
 
-<div>
-    <h3>Verification of Silicone Bite</h3>
-    <div class="calc__fig2">
-        <img src="assets/images/silicone.png" alt="Silicone Bite">
+
+{% if gu.support_type != "Point Fixed" %}
+    <div>
+        <h3>Verification of Silicone Bite</h3>
+        <div class="calc__fig2">
+            <img src="assets/images/silicone.png" alt="Silicone Bite">
+        </div>
+        <table class="borderless table__90">
+            <tbody>
+                <tr>
+                    <td>Max. Design Wind/suction pressure, <i>P<sub>z</sub></i></td>
+                    <td>=</td>
+                    <td>{{ gu.wind_load }} <i>kN/m<sup>2</sup></i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Effective load width, <i>B</i></td>
+                    <td>=</td>
+                    <td>{{ gu.width }} <i>mm</i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Design strength of Sealant, <i>F<sub>s</sub></i></td>
+                    <td>=</td>
+                    <td>140 <i>N/mm<sup>2</sup></i></td>
+                    <td><i>; ASTM C1401 – 02</i></td>
+                </tr>
+                <tr>
+                    <td>Bite size/width required, <i>t<sub>r</sub> = (P<sub>z</sub> × B) / (2 F<sub>s</sub>)</i></td>
+                    <td>=</td>
+                    <td>{{ gu.bite_req }} <i>mm</i></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td>Bite size/width provided, <i>t<sub>p</sub></i></td>
+                    <td>=</td>
+                    <td>{{ gu.bite_pro }} <i>mm</i></td>
+                    <td><i>; ≥ t<sub>r</sub></i></td>
+                    <td class="ok">OK</td>
+                </tr>
+                <tr>
+                    <td>Glue line thickness required, <i>e<sub>r</sub> = t<sub>r</sub> / 3</i></td>
+                    <td>=</td>
+                    <td>{{ gu.glue_req }} <i>mm</i></td>
+                    <td>; ≥ 6 <i>mm</i></td>
+                </tr>
+                <tr>
+                    <td>Glue line thickness provided, <i>e<sub>p</sub></i></td>
+                    <td>=</td>
+                    <td>{{ gu.glue_pro }} <i>mm</i></td>
+                    <td><i>; ≥ e<sub>r</sub></i></td>
+                    <td class="ok">OK</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
-    <table class="borderless table__90">
-        <tbody>
-            <tr>
-                <td>Max. Design Wind/suction pressure, <i>P<sub>z</sub></i></td>
-                <td>=</td>
-                <td>{{ gu.wind_load }} <i>kN/m<sup>2</sup></i></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Effective load width, <i>B</i></td>
-                <td>=</td>
-                <td>{{ gu.width }} <i>mm</i></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Design strength of Sealant, <i>F<sub>s</sub></i></td>
-                <td>=</td>
-                <td>140 <i>N/mm<sup>2</sup></i></td>
-                <td><i>; ASTM C1401 – 02</i></td>
-            </tr>
-            <tr>
-                <td>Bite size/width required, <i>t<sub>r</sub> = (P<sub>z</sub> × B) / (2 F<sub>s</sub>)</i></td>
-                <td>=</td>
-                <td>{{ gu.bite_req }} <i>mm</i></td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Bite size/width provided, <i>t<sub>p</sub></i></td>
-                <td>=</td>
-                <td>{{ gu.bite_pro }} <i>mm</i></td>
-                <td><i>; ≥ t<sub>r</sub></i></td>
-                <td class="ok">OK</td>
-            </tr>
-            <tr>
-                <td>Glue line thickness required, <i>e<sub>r</sub> = t<sub>r</sub> / 3</i></td>
-                <td>=</td>
-                <td>{{ gu.glue_req }} <i>mm</i></td>
-                <td>; ≥ 6 <i>mm</i></td>
-            </tr>
-            <tr>
-                <td>Glue line thickness provided, <i>e<sub>p</sub></i></td>
-                <td>=</td>
-                <td>{{ gu.glue_pro }} <i>mm</i></td>
-                <td><i>; ≥ e<sub>r</sub></i></td>
-                <td class="ok">OK</td>
-            </tr>
-        </tbody>
-    </table>
-</div>
+{% endif %}

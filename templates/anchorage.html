@@ -1,7 +1,9 @@
-{% if cat.anchorage_type == "box" %}
-    {% include "partials/box.html" %}
-{% elif cat.anchorage_type == "u" %}
-    {% include "partials/u.html" %}
-{% else %}
-    {% include "partials/l.html" %}
-{% endif %}
+{% for anchor in cat.anchorage %}
+    {% if anchor.clump_type == "Box Clump" %}
+        {% include "partials/box-clump.html" %}
+    {% elif anchor.clump_type == "U Clump" %}
+        {% include "partials/u-clump.html" %}
+    {% else %}
+        {% include "partials/l-clump.html" %}
+    {% endif %}
+{% endfor %}

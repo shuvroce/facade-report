@@ -67,7 +67,6 @@ steel_profiles:
     Mn: 10.44
     phi_Mn: 8.71
 
-
 wind:
   wind_speed: 65.7
   b_height: 52.0
@@ -99,7 +98,6 @@ wind:
   location: Dhaka
 
   topography_type: Homogeneous
-  topography_type:
   topo_crest_side:
   topo_height:
   topo_length:
@@ -107,7 +105,7 @@ wind:
 
 categories:
   - category_name: Typ. Cont. Facade
-    num_glass_units: 2
+    # num_glass_units: 2
     glass_units:
       - glass_type: dgu
         length: 2700
@@ -229,50 +227,81 @@ categories:
         glue_req: 3.2
         glue_pro: 6.0
 
-    frame_type: single
-    conn_type: type-01
-    anchorage_type: box
+    frames:
+      - frame_type: Floor-to-floor
+        length: 3400
+        width: 1200
+        tran_spacing: 2700
+        zone: Zone 4 (Mid Zone)
+        system_type: Semi-unitized
+
+        glass_thk: 16
+        wind_pos: 2.4
+        wind_neg: 3.2
+
+        mullion: M 125x60x2.5 + RHS 85x50x4
+        I_xa: 3558480.9
+        I_xs: 1262531.3
+        LS_a: 0.48
+        LS_s: 0.52
+        mul_mu: 10.45
+        mul_vu: 11.57
+        mul_def: 10.1
+        mul_allow_def: 20
+        mul_phi_Mn_a: 8.71
+        mul_phi_Mn_s: 8.10
+        mul_dc_ratio_a: 0.58
+        mul_dc_ratio_s: 0.67
+
+        transom: T 125x60x2.5
+        tran_mu: 1.35
+        tran_vu: 1.6
+        tran_def_wind: 1.2 
+        tran_def_dead: 1.6
+        tran_allow_def: 6.8
+        tran_phi_Mn: 4.26
+        tran_dc_ratio: 0.23
+
+        joint_fy: 1.2
+        joint_fz: 2.6
+
+        reaction_Ry: 12.3
+        reaction_Rz: 3.2
+
+    connections:
+      - conn_type: Type 01
+
+    anchorage:
+      - clump_type: Box Clump
   
   - category_name: Typ. Cont. Facade
-    num_glass_units: 1
+    # num_glass_units: 1
     glass_units:
-      - glass_type: dgu
+      - glass_type: sgu
         length: 2700
         width: 900
-        thickness1: 8.0
-        gap: 12 
-        thickness2: 8.0
-        grade1: FT
-        grade2: FT
+        thickness: 12.0
+        grade: FT
         wind_load: 2.5
         support_type: Four Edges
-        nfl1: 2.5
-        nfl2: 2.5
-        gtf1: 3.6
-        gtf2: 3.6
-        ls1: 2.0
-        ls2: 2.0
-        lr1: 3.6
-        lr2: 3.6
+        nfl: 2.5
+        gtf: 4.0
+        lr: 6.4
         stress_ratio: 0.54
-        r_0: 2.3
-        r_1: 1.2
-        r_2: 3.6
-        min_thk1: 7.46
-        min_thk2: 7.46
-        x1: 2.4
-        x2: 2.4
-        def1: 16.2
-        def2: 16.2
-        allow_def: 20.6
-        def_ratio: 0.84
-        bite_req: 12.4
-        bite_pro: 1.6
-        glue_req: 3.2
+        load_x_area2: 
+        def: 12.2
+        allow_def: 16.5
+        def_ratio: 0.74
+        bite_req: 13.2
+        bite_pro: 16.0
+        glue_req: 4.2
         glue_pro: 6.0
     
     frame_type: single
+
     conn_type: type-01
+
     anchorage_type: box
+    
 
 
