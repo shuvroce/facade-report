@@ -1,7 +1,11 @@
 {% for frame in cat.frames %}
+    {% set conn = cat.connections[0] %}
+    {% set anchor = cat.anchorage[0] %}
+
     {% if frame.frame_type == "Fin Frame" %}
         {% include "partials/fin-frame.html" %}
     {% else %}
         {% include "partials/typ-frame.html" %}
     {% endif %}
 {% endfor %}
+

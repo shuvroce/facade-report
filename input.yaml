@@ -262,17 +262,32 @@ categories:
         tran_phi_Mn: 4.26
         tran_dc_ratio: 0.23
 
+    connections:
+      - screw_nos: 4
+        cleat_size: 25 x 32 x 3.5 (L = 85)
+        screw_dia: 4.8
+        head_dia: 10.5
+
         joint_fy: 1.2
         joint_fz: 2.6
+        design_fy: 4.5
+        design_fz: 1.2
+        resultant_shear: 2.3
 
-        reaction_Ry: 12.3
-        reaction_Rz: 3.2
+        t1: 3.5
+        t2: 2.5
+        tc: 2.5
+        phi_Pnv: 3.35
+        phi_Pnot: 1.06
+        phi_Pnov: 5.71
+        beta_pullover: 0.37
+        beta_pullout: 0.58
 
-    connections:
-      - conn_type: Type 01
 
     anchorage:
       - clump_type: Box Clump
+        reaction_Ry: 12.3
+        reaction_Rz: 3.2
   
   - category_name: Typ. Cont. Facade
     # num_glass_units: 1
@@ -296,12 +311,5 @@ categories:
         bite_pro: 16.0
         glue_req: 4.2
         glue_pro: 6.0
-    
-    frame_type: single
-
-    conn_type: type-01
-
-    anchorage_type: box
-    
 
 
