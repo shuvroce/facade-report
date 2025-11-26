@@ -39,8 +39,8 @@
             <tr>
                 <td>
                     <ul>
-                        <li>1 – {{ anchor.bp_size }} mm – Base plate (50 gr.)</li>
-                        <li>{{ anchor.anchor_nos }} – {{ anchor.anchor_size }} Royal Bolt (Grade 5.8 / or Equivalent)</li>
+                        <li>1 – {{ anchor.bp_length_N }} x {{ anchor.bp_width_B }} x {{ anchor.bp_thk }} mm – Base plate (50 gr.)</li>
+                        <li>{{ anchor.anchor_nos }} – M{{ anchor.anchor_dia }} x {{ anchor.embed_depth }} (embed. depth) Royal Bolt (Grade 5.8 / or Equivalent)</li>
                     </ul>
                 </td>
                 <td>
@@ -55,7 +55,7 @@
 
     <div class="page__break"></div>
     <h3>Design of Anchor Bolts</h3>
-    <table class="borderless width__90 fig__table">
+    <table class="borderless width__80 fig__table">
         <tbody>
             <tr>
                 <td><img src="assets/images/box-clump-plan.png"></td>
@@ -65,7 +65,7 @@
     </table>
 
     <p>Applying static equilibrium equation, ∑ F<sub>y</sub><sup>→+</sup> = 0 , ∑ F<sub>z</sub><sup>↑+</sup> = 0,</p>
-    <table class="borderless width__80 ml-2">
+    <table class="borderless ml-2">
         <tbody>
             <tr>
                 <td>Horizontal reaction force, <i>R<sub>y</sub></i></td>
@@ -89,7 +89,7 @@
     </table>
 
     <p><b><u>Anchor Bolt Data –</u></b></p>
-    <table class="borderless width__70">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Diameter of anchor bolt, d<sub>a</sub></td>
@@ -135,7 +135,7 @@
     </table>
 
     <p><u>Where,</u></p>
-    <table class="borderless width__100 ml-1">
+    <table class="borderless ml-1">
         <tbody>
             <tr>
                 <td>φ</td>
@@ -190,6 +190,7 @@
         </tbody>
     </table>
 
+    <div class="page__break"></div>
     <h4>Concrete Breakout Strength in Shear</h4>
     <table class="borderless width__100">
         <tbody>
@@ -205,7 +206,7 @@
         <img src="assets/images/box-conc-breakout.png">
     </div>
     
-    <table class="borderless width__100 ml-1">
+    <table class="borderless ml-1">
         <tbody>
             <tr>
                 <td><i>A<sub>VC</sub></i></td>
@@ -320,7 +321,7 @@
     </table>
 
     <p><u>Where,</u></p>
-    <table class="borderless width__100 ml-1">
+    <table class="borderless ml-1">
         <tbody>
             <tr>
                 <td><i>k<sub>cp</sub></i></td>
@@ -371,7 +372,7 @@
     </table>
 
     <p><u>Where,</u></p>
-    <table class="borderless width__100 ml-1">
+    <table class="borderless ml-1">
         <tbody>
             <tr>
                 <td>K</td>
@@ -426,7 +427,303 @@
 
     <div class="page__break"></div>
     <h3>Design of Base Plate</h3>
+    <table class="borderless">
+        <tbody>
+            <tr>
+                <td>Max. horizontal reaction force, R<sub>y</sub></td>
+                <td>=</td>
+                <td>{{ anchor.design_Ry }} <i>kN</i></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Max. vertical reaction force, R<sub>z</sub></td>
+                <td>=</td>
+                <td>{{ anchor.design_Rz }} <i>kN</i></td>
+                <td><i>; P<sub>u</sub></i></td>
+            </tr>
+            <tr>
+                <td>Plate length, N</td>
+                <td>=</td>
+                <td>{{ anchor.bp_length_N }} <i>mm</i></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Plate width, B</td>
+                <td>=</td>
+                <td>{{ anchor.bp_width_B }} <i>mm</i></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Compressive strength of concrete, f'<sub>c</sub></td>
+                <td>=</td>
+                <td>27.5 <i>MPa</i></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
 
+    <h4>Plate Thickness for Bearing Interface</h4>
+    <table class="borderless width__100">
+        <tbody>
+            <tr>
+                <td><img src="assets/images/eqn-bp-thk-bearing.png" style="width: 50mm;"></td>
+                <td style="text-align: right;">(AISC Design Guide 1, 2nd ed.)</td>
+            </tr>
+        </tbody>
+    </table>
 
+    <p><u>Where,</u></p>
+    <table class="borderless ml-1">
+        <tbody>
+            <tr>
+                <td>φ</td>
+                <td>–</td>
+                <td>Strength reduction factor</td>
+            </tr>
+            <tr>
+                <td>N</td>
+                <td>–</td>
+                <td>Length of plate (mm)</td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td>–</td>
+                <td>Width of plate (mm)</td>
+            </tr>
+            <tr>
+                <td><i>A<sub>p</sub> = B × N</i></td>
+                <td>–</td>
+                <td>Effective plate area (mm<sup>2</sup>)</td>
+            </tr>
+            <tr>
+                <td><i>l = max( m , n , λn' )</i></td>
+                <td>–</td>
+                <td>Critical cantilever length (mm)</td>
+            </tr>
+            <tr>
+                <td colspan="3" style="padding-left: 3rem;"><i>m = (N - 0.95d) / 2 , n = (B - 0.8b) / 2 , λn' = λ √(db) / 4</i></td>
+            </tr>
+            <tr>
+                <td>d</td>
+                <td>–</td>
+                <td>Depth of profile (mm)</td>
+            </tr>
+            <tr>
+                <td><i>b</i></td>
+                <td>–</td>
+                <td>Width of flange (mm)</td>
+            </tr>
+            <tr>
+                <td><i>q = P<sub>u</sub> / N</i></td>
+                <td>–</td>
+                <td>Line load due to bearing pressure (N/mm)</td>
+            </tr>
+            <tr>
+                <td><i>P<sub>u</sub></i></td>
+                <td>–</td>
+                <td>Compressive load (kN)</td>
+            </tr>
+            <tr>
+                <td><i>M<sub>u</sub> = (ql<sup>2</sup>) / 2</i></td>
+                <td>–</td>
+                <td>Required bending moment (kN-m)</td>
+            </tr>
+            <tr>
+                <td><i>F<sub>y</sub></i></td>
+                <td>–</td>
+                <td>Yield strength of plate (MPa)</td>
+            </tr>
+            <tr>
+                <td>t<sub>p</sub></td>
+                <td>–</td>
+                <td>Provided plate thickness (mm)</td>
+            </tr>
+        </tbody>
+    </table>
 
+    <table class="width__100 align__center">
+        <thead>
+            <tr>
+                <th>φ</th>
+                <th>N</th>
+                <th>B</th>
+                <th><i>A<sub>p</sub></i></th>
+                <th>d</th>
+                <th>b</th>
+                <th>m</th>
+                <th>n</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0.9</td>
+                <td>{{ anchor.bp_length_N }}</td>
+                <td>{{ anchor.bp_width_B }}</td>
+                <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
+                <td>{{ anchor.bp_d }}</td>
+                <td>{{ anchor.bp_b }}</td>
+                <td>{{ anchor.bp_m }}</td>
+                <td>{{ anchor.bp_n }}</td>
+            </tr>
+        </tbody>
+    </table>
+    
+    <table class="width__100 align__center">
+        <thead>
+            <tr>
+                <th>λn'</th>
+                <th>l</th>
+                <th>P<sub>u</sub></th>
+                <th>q</th>
+                <th>M<sub>u</sub></th>
+                <th>F<sub>y</sub></th>
+                <th>t</th>
+                <th>t<sub>p</sub></th>
+                <th>Check</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{{ anchor.bp_lambda_n }}</td>
+                <td>{{ [anchor.bp_m, anchor.bp_n, anchor.bp_lambda_n] | max }}</td>
+                <td>{{ anchor.design_Rz }}</td>
+                <td>{{ anchor.bp_q }}</td>
+                <td>{{ anchor.bp_bearing_Mu }}</td>
+                <td>345</td>
+                <td>{{ anchor.bp_thk_bearing }}</td>
+                <td>{{ anchor.bp_thk }}</td>
+                <td class="ok">OK</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="page__break"></div>
+    <h4>Check for Plate Area</h4>
+    <table class="borderless width__100">
+        <tbody>
+            <tr>
+                <td><img src="assets/images/eqn-bp-area.png" style="width: 45mm;"></td>
+                <td style="text-align: right;">(AISC Design Guide 1, 2nd ed.)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><u>Where,</u></p>
+    <table class="borderless ml-1">
+        <tbody>
+            <tr>
+                <td>φ</td>
+                <td>–</td>
+                <td>Concrete resistance factor</td>
+            </tr>
+            <tr>
+                <td><i>P<sub>u</sub></i></td>
+                <td>–</td>
+                <td>Axial compression (kN)</td>
+            </tr>
+            <tr>
+                <td><i>f'<sub>c</sub></i></td>
+                <td>–</td>
+                <td>Compressive strength of concrete (MPa)</td>
+            </tr>
+            <tr>
+                <td><i>A<sub>1</sub></i></td>
+                <td>–</td>
+                <td>Required plate area in contact with concrete surface (mm<sup>2</sup>)</td>
+            </tr>
+            <tr>
+                <td><i>A<sub>1,p</sub> = BN</i></td>
+                <td>–</td>
+                <td>Provided plate area in contact with concrete surface (mm<sup>2</sup>)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="width__100 align__center">
+        <thead>
+            <tr>
+                <th>φ</th>
+                <th><i>P<sub>u</sub></i></th>
+                <th><i>f'<sub>c</sub></i></th>
+                <th><i>A<sub>1</sub></i></th>
+                <th>B</th>
+                <th>N</th>
+                <th><i>A<sub>1,p</sub></i></th>
+                <th>Check</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0.65</td>
+                <td>{{ anchor.design_Rz }}</td>
+                <td>27.5</td>
+                <td>{{ anchor.bp_A1 }}</td>
+                <td>{{ anchor.bp_width_B }}</td>
+                <td>{{ anchor.bp_length_N }}</td>
+                <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
+                <td class="ok">OK</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h4>Check for Concrete Bearing Stress</h4>
+    <table class="borderless width__100">
+        <tbody>
+            <tr>
+                <td><img src="assets/images/eqn-bp-conc-bearing-stress.png" style="width: 100mm;"></td>
+                <td style="text-align: right;">(AISC Design Guide 1, 2nd ed.)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><u>Where,</u></p>
+    <table class="borderless ml-1">
+        <tbody>
+            <tr>
+                <td>φ</td>
+                <td>–</td>
+                <td>Concrete resistance factor</td>
+            </tr>
+            <tr>
+                <td><i>A<sub>1</sub></i></td>
+                <td>–</td>
+                <td>Base plate area in contact with concrete surface (mm<sup>2</sup>)</td>
+            </tr>
+            <tr>
+                <td><i>A<sub>2</sub></i></td>
+                <td>–</td>
+                <td>Concrete supporting surface (mm<sup>2</sup>)</td>
+            </tr>
+            <tr>
+                <td><i>f'<sub>c</sub></i></td>
+                <td>–</td>
+                <td>Compressive strength of concrete (MPa)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table class="width__100 align__center">
+        <thead>
+            <tr>
+                <th>φ</th>
+                <th><i>A<sub>1</sub></i></th>
+                <th><i>A<sub>2</sub></i></th>
+                <th><i>f'<sub>c</sub></i></th>
+                <th><i>f<sub>p,max</sub></i></th>
+                <th><i>P<sub>u</sub> / A<sub>1</sub></i></th>
+                <th>Check</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0.65</td>
+                <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
+                <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
+                <td>27.5</td>
+                <td>{{ anchor.bp_fp_max }}</td>
+                <td>{{ (anchor.design_Rz / anchor.bp_length_N * anchor.bp_width_B) | round(2) }}</td>
+                <td class="ok">OK</td>
+            </tr>
+        </tbody>
+    </table>
 </div>

@@ -294,9 +294,7 @@ categories:
         V_ua: 7.5
         V_ug: 30.0
 
-        bp_size: 250 x 120 x 6
         anchor_nos: 4
-        anchor_size: M12 x 110
         anchor_dia: 12
         embed_depth: 70
 
@@ -319,13 +317,32 @@ categories:
         V_b: 15.5
         phi_Vcbg: 17.0
         phi_Vcp: 67.2
-        
+
+        bp_length_N: 250
+        bp_width_B: 120
+        bp_thk: 6
+        bp_d: 85
+        bp_b: 50
+        bp_m: 30
+        bp_n: 20
+        bp_lambda_n: 18
+        bp_q: 12
+        bp_bearing_Mu: 5.6
+        bp_thk_bearing: 5.2
+        bp_Tu:
+        bp_x:
+        bp_tension_Mu:
+        bp_Beff:
+        bp_thk_tension:
+        bp_A1: 3422.5
+        bp_fp_max:
 
 
 
 
 
-  
+
+
   - category_name: Typ. Cont. Facade
     # num_glass_units: 1
     glass_units:

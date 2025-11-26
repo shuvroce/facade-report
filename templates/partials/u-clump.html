@@ -1,0 +1,69 @@
+
+
+<h4>Plate Thickness for Tension Interface</h4>
+    <table class="borderless width__100">
+        <tbody>
+            <tr>
+                <td><img src="assets/images/eqn-bp-thk-tension.png"></td>
+                <td style="text-align: right;">(AISC Design Guide 1, 2nd ed.)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p><u>Where,</u></p>
+    <table class="borderless width__100">
+        <tbody>
+            <tr>
+                <td>φ</td>
+                <td>–</td>
+                <td>Strength reduction factor</td>
+            </tr>
+            <tr>
+                <td><i>M<sub>u</sub> = T<sub>u</sub> x</i></td>
+                <td>–</td>
+                <td>Required bending moment (kN-m)</td>
+            </tr>
+            <tr>
+                <td>T<sub>u</sub></td>
+                <td>–</td>
+                <td>Tension force in single anchor bolt (kN)</td>
+            </tr>
+            <tr>
+                <td><i>x</i></td>
+                <td>–</td>
+                <td>Anchor bolt center to flange edge distance (mm)</td>
+            </tr>
+            <tr>
+                <td>B<sub>eff</sub></td>
+                <td>–</td>
+                <td>Effective plate width (mm)</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <table>
+        <thead>
+            <tr>
+                <th>φ</th>
+                <th><i>T<sub>u</sub></i></th>
+                <th><i>x</i></th>
+                <th><i>M<sub>u</sub></i></th>
+                <th><i>B<sub>eff</sub></i></th>
+                <th>t</th>
+                <th><i>t<sub>p</sub></i></th>
+                <th>Check</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>0.9</td>
+                <td>{{ anchor.bp_Tu }}</td>
+                <td>{{ anchor.bp_x }}</td>
+                <td>{{ anchor.bp_tension_Mu }}</td>
+                <td>{{ anchor.bp_Beff }}</td>
+                <td>{{ anchor.bp_thk_tension }}</td>
+                <td>{{ anchor.bp_thk }}</td>
+                <td class="ok">OK</td>
+            </tr>
+        </tbody>
+    </table>
