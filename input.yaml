@@ -1,32 +1,11 @@
 project_info:
-  ref_no: RFA-001/CW/STR/2025
-  project_name: Water Suppy and Distribution, Dhaka
-  project_client: VolumeZero Ltd.
+  ref_no: RFA-001/REV-02/AEL/CW/2025
+  project_name: Taj & Vivanta Hotel, Dhaka
+  project_client: Borak Real Estate (Pvt.) Ltd.
   rev_no: 02
-  date: 20/11/2025
+  date: June 28, 2025
 
 alum_profiles:
-  - profile_name: M 125x60x2.5
-    web_length: 125
-    flange_length: 60
-    web_thk: 2.5
-    flange_thk: 4.49
-    tor_constant: 2327814.4
-    area: 1284.3
-    I_xx: 3558480.9
-    I_yy: 889366.9
-    Y: 80
-    X: 33.5
-    S_x: 44481.0
-    S_y: 26548.3
-    plastic_x: 35.9
-    plastic_y: 58.4
-    Z_x: 60554.7
-    F_y: 172.4
-    Mn_yield: 10.44
-    Mn_lb: 9.68
-    phi_Mn: 8.71
-  
   - profile_name: M 145x67x2.5
     web_length: 145
     flange_length: 67
@@ -47,54 +26,117 @@ alum_profiles:
     Mn_yield: 10.44
     Mn_lb: 9.68
     phi_Mn: 8.71
-
-steel_profiles:
-  - profile_name: RHS 110x45x2.5
+  
+  - profile_name: M 125x60x2.5
     web_length: 125
     flange_length: 60
     web_thk: 2.5
-    flange_thk: 4.49
-    tor_constant: 2327814.4
-    area: 1284.3
-    I_xx: 3558480.9
-    I_yy: 889366.9
-    Y: 80
-    X: 33.5
-    S_x: 44481.0
-    S_y: 26548.3
-    Z_x: 60554.7
+    flange_thk: 4.66
+    tor_constant: 1583468.5
+    area: 1143.6
+    I_xx: 2304351.5
+    I_yy: 617307.5
+    Y: 69.3
+    X: 30
+    S_x: 33251.83
+    S_y: 20576.92
+    plastic_x: 27.9
+    plastic_y: 52.0
+    Z_x: 45686.8
     F_y: 172.4
-    Mn: 10.44
-    phi_Mn: 8.71
+    Mn_yield: 7.87
+    Mn_lb: 7.48
+    phi_Mn: 6.74
+  
+  - profile_name: T 125x60x2.5
+    web_length: 125
+    flange_length: 60
+    web_thk: 2.5
+    flange_thk: 5.2
+    tor_constant: 1609131.5
+    area: 1230.5
+    I_xx: 2323239.2
+    I_yy: 400621.3
+    Y: 70.4
+    X: 36.3
+    S_x: 33000.6
+    S_y: 11036.4
+    plastic_x: 27.6
+    plastic_y: 48.8
+    Z_x: 47005.1
+    F_y: 110
+    Mn_yield: 5.81
+    Mn_lb: 5.24
+    phi_Mn: 4.71
+  
+  - profile_name: T 145x67x2
+    web_length: 145
+    flange_length: 67
+    web_thk: 2.0
+    flange_thk: 4.1
+    tor_constant: 1942368.4
+    area: 1153.7
+    I_xx: 3062951.0
+    I_yy: 515834.0
+    Y: 80.6
+    X: 39.4
+    S_x: 38001.9
+    S_y: 13092.2
+    plastic_x: 34.4
+    plastic_y: 57.1
+    Z_x: 52781.8
+    F_y: 110
+    Mn_yield: 5.17
+    Mn_lb: 4.90
+    phi_Mn: 4.41
+
+steel_profiles:
+  - profile_name: RHS 110x54x2.5
+    web_length: 110
+    flange_length: 54
+    web_thk: 2.5
+    flange_thk: 2.5
+    tor_constant: 963838.5
+    area: 795
+    I_xx: 1262531.3
+    I_yy: 413991.3
+    Y: 55
+    X: 27
+    S_x: 22955.1
+    S_y: 15333.0
+    Z_x: 28293.75
+    F_y: 318
+    Mn: 9.0
+    phi_Mn: 8.1
 
 wind:
   wind_speed: 65.7
-  b_height: 52.0
-  b_length: 36.2
-  b_width: 16.5
+  b_height: 101.0
+  b_length: 97.0
+  b_width: 54.0
   exposure_cat: A
   occupancy_cat: III
-  Imp_factor: 1.0
+  Imp_factor: 1.15
   K_d: 0.85
-  K_h: 1.05
+  K_h: 1.39
   K_ht: 1.0
   GC_pi: 0.18
-  C_pl: 0.8
-  q_zk: 2.1
-  q_h: 2.5
-  int_pressure: 0.5
-  leeward_pressure: 1.64
-  sidewall_pressure: 2.67
+  C_pl: 0.5
+  q_zk: 2.586
+  q_h: 3.6
+  int_pressure: 0.63
+  leeward_pressure: 2.52
+  sidewall_pressure: 3.27
 
-  b_rigidity: Rigid
-  b_freq: 1.3
+  b_rigidity: Flexible
+  b_freq: 0.235
   damping: 0.02
-  gust_factor: 0.85
+  gust_factor: 1.04
 
   enclosure_type: Enclosed
   roof_type: Flat
-  exposure_note: Urban area
-  occupancy_note: Other structure
+  exposure_note: The building is located in Gulshan, Dhaka (urban area), surrounded by tall buildings which can be categorized as ‘Surface Roughness A’ as defined in BNBC 2020, Section 2.4.6.2. There is no water body in front of the building. The surroundings of the site are outlined in the map. ‘Exposure Category A’ shall apply where the ground surface roughness condition as defined by Surface Roughness A, prevails in the upwind direction for a distance of at least 792 m or 20 times the height of building, whichever is greater. For this building, Maxm of (792, 20h) = 2022 m. From the map, within the radius of 2022 m, Surface Roughness A prevails. Therefore, ‘Exposure Category A’ is considered for this building.
+  occupancy_note: Likely to gather more than 300 people at the same time
   location: Dhaka
 
   topography_type: Homogeneous
@@ -104,162 +146,83 @@ wind:
   topo_distance:
 
 categories:
-  - category_name: Typ. Floor-to-floor Facade
-    # num_glass_units: 2
+  - category_name: Typ. Cont. Facade (1st - 17th, Zone 4)
     glass_units:
       - glass_type: dgu
-        length: 2700
-        width: 900
+        length: 2900
+        width: 1530
         thickness1: 8.0
         gap: 12 
         thickness2: 8.0
         grade1: FT
-        grade2: FT
-        wind_load: 2.5
+        grade2: HS
+        wind_load: 3.17
         support_type: Four Edges
-        nfl1: 2.5
-        nfl2: 2.5
-        gtf1: 3.6
-        gtf2: 3.6
+        nfl1: 1.4
+        nfl2: 1.4
+        gtf1: 3.8
+        gtf2: 1.9
         ls1: 2.0
         ls2: 2.0
-        lr1: 3.6
-        lr2: 3.6
-        stress_ratio: 0.54
-        load_x_area2: 
-        def1: 16.2
-        def2: 16.2
-        allow_def: 20.6
-        def_ratio: 0.84
-        bite_req: 12.4
-        bite_pro: 1.6
-        glue_req: 3.2
+        lr1: 10.64
+        lr2: 5.32
+        stress_ratio: 0.596
+        load_x_area2: 62.4
+        def1: 18.5
+        def2: 18.5
+        allow_def: 25.5
+        def_ratio: 0.72
+        bite_req: 19.3
+        bite_pro: 20.0
+        glue_req: 6.0
         glue_pro: 6.0
       
       - glass_type: sgu
-        length: 2700
-        width: 900
-        thickness: 12.0
-        grade: FT
-        wind_load: 2.5
+        length: 2900
+        width: 1530
+        thickness: 10.0
+        grade: HS
+        wind_load: 3.17
         support_type: Four Edges
-        nfl: 2.5
-        gtf: 4.0
-        lr: 6.4
-        stress_ratio: 0.54
-        load_x_area2: 
-        def: 12.2
-        allow_def: 16.5
-        def_ratio: 0.74
-        bite_req: 13.2
-        bite_pro: 16.0
-        glue_req: 4.2
-        glue_pro: 6.0
-      
-      - glass_type: lgu
-        length: 2700
-        width: 900
-        thickness1: 8.0
-        thickness_inner: 1.52
-        thickness2: 8.0
-        chart_thickness: 16.0
-        h_eff: 14.2
-        grade: FT
-        wind_load: 2.5
-        support_type: Four Edges
-        nfl: 2.5
-        gtf: 4.0
-        lr: 6.4
-        stress_ratio: 0.54
-        load_x_area2: 
-        def: 12.2
-        allow_def: 16.5
-        def_ratio: 0.74
-        bite_req: 13.2
-        bite_pro: 16.0
-        glue_req: 4.2
-        glue_pro: 6.0
-      
-      - glass_type: ldgu
-        length: 2700
-        width: 900
-        thickness1_1: 8.0
-        thickness_inner: 1.52
-        thickness1_2: 8.0
-        chart_thickness: 16.0
-        gap: 12
-        thickness2: 12.0
-        grade1: FT
-        grade2: FT
-        wind_load: 2.5
-        support_type: Four Edges
-        nfl1: 2.5
-        nfl2: 2.5
-        gtf1: 3.6
-        gtf2: 3.6
-        ls1: 2.0
-        ls2: 2.0
-        lr1: 3.6
-        lr2: 3.6
-        stress_ratio: 0.54
-        load_x_area2: 
-        def1: 16.2
-        def2: 16.2
-        allow_def: 20.6
-        def_ratio: 0.84
-        bite_req: 12.4
-        bite_pro: 1.6
-        glue_req: 3.2
-        glue_pro: 6.0
-
-      - glass_type: dgu
-        length: 2700
-        width: 900
-        thickness1: 8.0
-        gap: 12 
-        thickness2: 8.0
-        grade1: FT
-        grade2: FT
-        wind_load: 2.5
-        support_type: Point Fixed
-        bite_req: 12.4
-        bite_pro: 1.6
-        glue_req: 3.2
+        nfl: 1.7
+        gtf: 2.0
+        lr: 3.4
+        stress_ratio: 0.632
+        load_x_area2: 63.4
+        def: 20.17
+        allow_def: 25.5
+        def_ratio: 0.79
+        bite_req: 19.3
+        bite_pro: 20.0
+        glue_req: 6.0
         glue_pro: 6.0
 
     frames:
-      - frame_type: Floor-to-floor
-        length: 3400
-        width: 1200
-        tran_spacing: 2700
+      - frame_type: Cont.
+        length: 3600
+        width: 1530
+        tran_spacing: 2900
         zone: Zone 4 (Mid Zone)
         system_type: Semi-unitized
-
         glass_thk: 16
-        wind_pos: 2.4
-        wind_neg: 3.2
+        wind_pos: 2.42
+        wind_neg: 2.74
 
-        mullion: M 125x60x2.5 + RHS 85x50x4
-        I_xa: 3558480.9
-        I_xs: 1262531.3
-        LS_a: 0.48
-        LS_s: 0.52
-        mul_mu: 10.45
-        mul_vu: 11.57
-        mul_def: 10.1
-        mul_allow_def: 20
-        mul_phi_Mn_a: 8.71
-        mul_phi_Mn_s: 8.10
-        mul_dc_ratio_a: 0.58
-        mul_dc_ratio_s: 0.67
+        mullion: M 145x67x2.5
+        mul_mu: 8.53
+        mul_vu: 11.86
+        mul_def: 12.2
+        mul_allow_def: 20.57
+        mul_phi_Mn: 8.71
+        mul_dc_ratio: 0.97
 
-        transom: T 125x60x2.5
-        tran_mu: 1.35
-        tran_vu: 1.6
-        tran_def_wind: 1.2 
-        tran_def_dead: 1.6
-        tran_allow_def: 6.8
-        tran_phi_Mn: 4.26
+        transom: T 145x67x2
+        tran_mu: 1.07
+        tran_vu: 2.19
+        tran_def_wind: 0.67 
+        tran_def_dead: 0.71
+        tran_allow_def: 8.74
+        tran_phi_Mn: 4.71
         tran_dc_ratio: 0.23
 
     connections:
@@ -268,10 +231,10 @@ categories:
         screw_dia: 4.8
         head_dia: 10.5
 
-        joint_fy: 1.2
-        joint_fz: 2.6
+        joint_fy: 1.37
+        joint_fz: 0.22
         design_fy: 4.5
-        design_fz: 1.2
+        design_fz: 1.0
         resultant_shear: 2.3
 
         t1: 3.5
@@ -284,13 +247,265 @@ categories:
         beta_pullout: 0.58
 
     anchorage:
+      - clump_type: L Clump
+        reaction_Ry: 17.1
+        reaction_Rz: 2.4
+        design_Ry: 52.0
+        design_Rz: 6.5
+        
+        front_anchor:
+          N_ua: 7.8
+          N_ug: 15.6
+          V_ua: 4.46
+          V_ug: 8.91
+
+          anchor_nos: 2
+          anchor_dia: 12
+          embed_depth: 70
+
+          A_seN: 
+          f_uta: 
+
+          phi_Ncbg: 
+
+          phi_Vsa: 
+          A_VC: 
+          A_VCO: 
+          C_a1: 
+          C_a2: 
+          h_a: 
+          psi_ecV: 
+          psi_edV: 
+          psi_cV: 
+          psi_hV: 
+          l_e: 
+          V_b: 
+          phi_Vcbg: 
+          phi_Vcp: 
+
+          bp_length_N: 250
+          bp_width_B: 190
+          bp_thk: 8.5
+          bp_d: 
+          bp_b: 
+          bp_m: 
+          bp_n: 
+          bp_lambda_n: 
+          bp_q: 
+          bp_bearing_Mu: 
+          bp_thk_bearing: 
+          bp_Tu:
+          bp_x:
+          bp_tension_Mu:
+          bp_Beff:
+          bp_thk_tension:
+          bp_A1: 
+          bp_fp_max:
+
+          fin_length: 145
+          fin_width: 160
+          fin_thk: 5
+          fin_Vu: 
+          fin_e: 
+          fin_thk_req: 
+          fin_bgv: 
+          fin_bnt: 
+          fin_block_Anv: 
+          fin_block_Ant: 
+
+          thr_bolt_nos: 2
+          thr_bolt_dia: 10
+          thr_bolt_length: 100 
+          thr_bolt_AseN: 
+          thr_Vu: 
+          thr_shear_phi_Rn: 
+          thr_bearing_lc: 
+          thr_bearing_phi_Rn1: 
+          thr_bearing_phi_Rn2: 
+
+          weld_fR: 
+
+        top_anchor:
+          V_ua: 5.5
+          V_ug: 22.0
+
+          anchor_nos: 4
+          anchor_dia: 12
+          embed_depth: 70
+
+          A_seN: 
+          f_uta: 
+
+          phi_Ncbg: 
+
+          phi_Vsa: 
+          A_VC: 
+          A_VCO: 
+          C_a1: 
+          C_a2: 
+          h_a: 
+          psi_ecV: 
+          psi_edV: 
+          psi_cV: 
+          psi_hV: 
+          l_e: 
+          V_b: 
+          phi_Vcbg: 
+          phi_Vcp: 
+
+          bp_length_N: 250
+          bp_width_B: 120
+          bp_thk: 6
+          bp_d: 
+          bp_b: 
+          bp_m: 
+          bp_n: 
+          bp_lambda_n: 
+          bp_q: 
+          bp_bearing_Mu: 
+          bp_thk_bearing: 
+          bp_A1: 
+          bp_fp_max: 
+
+
+  - category_name: Various Project
+    glass_units:
+      # taj cat 2 lgu
+      - glass_type: lgu
+        length: 2600
+        width: 1530
+        thickness1: 8.0
+        thickness_inner: 1.52
+        thickness2: 8.0
+        chart_thickness: 16.0
+        grade: FT
+        wind_load: 7.9
+        support_type: Four Edges
+        nfl: 4.0
+        gtf: 4.0
+        lr: 16.0
+        stress_ratio: 0.49
+        load_x_area2: 125.0
+        def: 22.0
+        allow_def: 25.5
+        def_ratio: 0.86
+        bite_req: 43.2
+        bite_pro: 40.0
+        glue_req: 14.0
+        glue_pro: 12.0
+      
+      # made up
+      - glass_type: ldgu
+        length: 2700
+        width: 1200
+        thickness1_1: 6.0
+        thickness_inner: 1.52
+        thickness1_2: 6.0
+        chart_thickness: 12
+        gap: 12
+        thickness2: 8.0
+        grade1: FT
+        grade2: FT
+        wind_load: 3.2
+        support_type: Four Edges
+        nfl1: 3.2
+        nfl2: 1.8
+        gtf1: 3.6
+        gtf2: 3.6
+        ls1: 1.3
+        ls2: 4.38
+        lr1: 14.9
+        lr2: 28.4
+        stress_ratio: 0.21
+        load_x_area2: 33.6
+        def1: 14.37
+        def2: 3.7
+        allow_def: 20.0
+        def_ratio: 0.72
+        bite_req: 13.71
+        bite_pro: 16.0
+        glue_req: 4.57
+        glue_pro: 6.0
+
+      # suvastu 4.1
+      - glass_type: sgu
+        length: 2450
+        width: 1169
+        thickness: 10.0
+        grade: FT
+        wind_load: 2.55
+        support_type: Point Fixed
+        bite_req: 12.4
+        bite_pro: 1.6
+        glue_req: 3.2
+        glue_pro: 6.0
+
+    frames:
+      # taj 10.3
+      - frame_type: Floor-to-floor
+        length: 3400
+        width: 1530
+        tran_spacing: 2900
+        zone: Zone 4 (Mid Zone)
+        system_type: Semi-unitized
+
+        glass_thk: 16
+        wind_pos: 3.08
+        wind_neg: 3.17
+
+        mullion: M 145x67x2.5 + RHS 110x54x2.5
+        I_xa: 3558480.9
+        I_xs: 1262531.3
+        LS_a: 0.48
+        LS_s: 0.52
+        mul_mu: 10.45
+        mul_vu: 11.57
+        mul_def: 10.8
+        mul_allow_def: 19.4
+        mul_phi_Mn_a: 8.71
+        mul_phi_Mn_s: 8.1
+        mul_dc_ratio_a: 0.58
+        mul_dc_ratio_s: 0.67
+
+        transom: T 145x67x2
+        tran_mu: 1.11
+        tran_vu: 2.29
+        tran_def_wind: 0.57 
+        tran_def_dead: 0.65
+        tran_allow_def: 8.74
+        tran_phi_Mn: 4.71
+        tran_dc_ratio: 0.24
+
+    connections:
+      - screw_nos: 4
+        cleat_size: 25 x 32 x 3.5 (L = 85)
+        screw_dia: 4.8
+        head_dia: 10.5
+
+        joint_fy: 1.44
+        joint_fz: 0.23
+        design_fy: 4.5
+        design_fz: 1.0
+        resultant_shear: 2.3
+
+        t1: 3.5
+        t2: 2.5
+        tc: 2.5
+        phi_Pnv: 3.35
+        phi_Pnot: 1.06
+        phi_Pnov: 5.71
+        beta_pullover: 0.37
+        beta_pullout: 0.58
+
+    anchorage:
+      # swiss 5.5
       - clump_type: Box Clump
-        reaction_Ry: 12.3
-        reaction_Rz: 3.2
-        design_Ry: 22.0
-        design_Rz: 7.5
+        reaction_Ry: 8.25
+        reaction_Rz: 2.46
+        design_Ry: 30
+        design_Rz: 8.0
         V_ua: 7.5
-        V_ug: 30.0
+        V_ug: 15.0
 
         anchor_nos: 4
         anchor_dia: 12
@@ -298,8 +513,6 @@ categories:
 
         A_seN: 84.3
         f_uta: 500
-
-        phi_Ncbg: 37.2
 
         phi_Vsa: 16.4
         A_VC: 70500
@@ -314,125 +527,21 @@ categories:
         l_e: 70
         V_b: 15.5
         phi_Vcbg: 17.0
+        phi_Ncbg: 37.2
         phi_Vcp: 67.2
 
         bp_length_N: 250
         bp_width_B: 120
         bp_thk: 6
-        bp_d: 85
-        bp_b: 50
-        bp_m: 30
-        bp_n: 20
+        bp_d: 80
+        bp_b: 110
+        bp_m: 87
+        bp_n: 7.75
         bp_lambda_n: 18
-        bp_q: 12
-        bp_bearing_Mu: 5.6
-        bp_thk_bearing: 5.2
-        bp_A1: 3422.5
-        bp_fp_max: 
-
-      - clump_type: U Clump
-        reaction_Ry: 12.1
-        reaction_Rz: 2.4
-        design_Ry: 20.0
-        design_Rz: 4.0
-        N_ua: 0
-        N_ug: 0
-        V_ua: 7.5
-        V_ug: 30.0
-
-        anchor_nos: 4
-        anchor_dia: 12
-        embed_depth: 70
-
-        A_seN: 84.3
-        f_uta: 500
-
-        phi_Ncbg: 37.2
-
-        phi_Vsa: 16.4
-        A_VC: 70500
-        A_VCO: 45000
-        C_a1: 100
-        C_a2: 500
-        h_a: 300
-        psi_ecV: 1.0
-        psi_edV: 1.0
-        psi_cV: 1.0
-        psi_hV: 1.0
-        l_e: 70
-        V_b: 15.5
-        phi_Vcbg: 17.0
-        phi_Vcp: 67.2
-
-        bp_length_N: 250
-        bp_width_B: 150
-        bp_thk: 6
-        bp_d: 85
-        bp_b: 50
-        bp_m: 30
-        bp_n: 20
-        bp_lambda_n: 18
-        bp_q: 12
-        bp_bearing_Mu: 5.6
-        bp_thk_bearing: 5.2
-        bp_Tu:
-        bp_x:
-        bp_tension_Mu:
-        bp_Beff:
-        bp_thk_tension:
-        bp_A1: 3422.5
-        bp_fp_max:
-
-        fin_length: 145
-        fin_width: 150
-        fin_thk: 5
-        fin_Vu: 10.2
-        fin_e: 80.5
-        fin_thk_req: 4.8
-        fin_bgv: 120
-        fin_bnt: 80.5
-        fin_block_Anv: 510.0
-        fin_block_Ant: 372.5
-
-        thr_bolt_nos: 2
-        thr_bolt_dia: 10
-        thr_bolt_length: 110
-        thr_bolt_AseN: 58.0
-        thr_Vu: 5.1
-        thr_shear_phi_Rn: 16.5
-        thr_bearing_lc: 80.5
-        thr_bearing_phi_Rn1: 163
-        thr_bearing_phi_Rn2: 40.5
-
-        weld_fR: 40.2
-
-
-
-
-
-
-
-  - category_name: Typ. Cont. Facade
-    # num_glass_units: 1
-    glass_units:
-      - glass_type: sgu
-        length: 2700
-        width: 900
-        thickness: 12.0
-        grade: FT
-        wind_load: 2.5
-        support_type: Four Edges
-        nfl: 2.5
-        gtf: 4.0
-        lr: 6.4
-        stress_ratio: 0.54
-        load_x_area2: 
-        def: 12.2
-        allow_def: 16.5
-        def_ratio: 0.74
-        bite_req: 13.2
-        bite_pro: 16.0
-        glue_req: 4.2
-        glue_pro: 6.0
+        bp_q: 32.0
+        bp_bearing_Mu: 0.121
+        bp_thk_bearing: 3.61
+        bp_A1: 526.5
+        bp_fp_max: 15.2
 
 
