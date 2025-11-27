@@ -1,69 +1,107 @@
+<div class="page__break"></div>
+<h2>Design of Anchorage and Support (U-Clump)</h2>
 
-
-<h4>Plate Thickness for Tension Interface</h4>
-    <table class="borderless width__100">
+<div>
+    <h3>Data Analysis</h3>
+    <p>Support reactions of mullion for U clump (end node) (<i>; from 'Support reaction forces' table</i>) –</p>
+    <table class="width__80 align__center">
         <tbody>
             <tr>
-                <td><img src="assets/images/eqn-bp-thk-tension.png"></td>
-                <td style="text-align: right;">(AISC Design Guide 1, 2nd ed.)</td>
+                <td></td>
+                <td>SLS</td>
+                <td>1.4D</td>
+                <td>0.9D – 1.6W</td>
+            </tr>
+            <tr>
+                <td>Horizontal reaction, <i>R<sub>y</sub> (kN)</i></td>
+                <td>{{ anchor.reaction_Ry }}</td>
+                <td>–</td>
+                <td>{{ (anchor.reaction_Ry * 1.6) | round(2) }}</td>
+            </tr>
+            <tr>
+                <td>Vertical reaction, <i>R<sub>z</sub> (kN)</i></td>
+                <td>{{ anchor.reaction_Rz }}</td>
+                <td>{{ (anchor.reaction_Rz * 1.4) | round(2)}}</td>
+                <td>{{ (anchor.reaction_Rz * 0.9) | round(2)}}</td>
             </tr>
         </tbody>
     </table>
 
-    <p><u>Where,</u></p>
-    <table class="borderless width__100">
+    <p class="mt-1">Considered Design Load for clump (<i>Higher load for safety</i>) –</p>
+    <ul>
+        <li>Horizontal reaction, <i>R<sub>y</sub></i> = {{ anchor.design_Ry }} <i>kN</i></li>
+        <li>Vertical reaction, <i>R<sub>z</sub></i> = {{ anchor.design_Rz }} <i>kN</i></li>
+    </ul>
+
+    <p class="mt-2">Bracket Specification –</p>
+    <table class="borderless width__100 fig__table">
         <tbody>
             <tr>
-                <td>φ</td>
-                <td>–</td>
-                <td>Strength reduction factor</td>
-            </tr>
-            <tr>
-                <td><i>M<sub>u</sub> = T<sub>u</sub> x</i></td>
-                <td>–</td>
-                <td>Required bending moment (kN-m)</td>
-            </tr>
-            <tr>
-                <td>T<sub>u</sub></td>
-                <td>–</td>
-                <td>Tension force in single anchor bolt (kN)</td>
-            </tr>
-            <tr>
-                <td><i>x</i></td>
-                <td>–</td>
-                <td>Anchor bolt center to flange edge distance (mm)</td>
-            </tr>
-            <tr>
-                <td>B<sub>eff</sub></td>
-                <td>–</td>
-                <td>Effective plate width (mm)</td>
+                <td>
+                    <ul>
+                        <li>1 – {{ anchor.bp_length_N }} x {{ anchor.bp_width_B }} x {{ anchor.bp_thk }} mm – Base plate (50 gr.)</li>
+                        <li>2 – {{ anchor.fin_length }} x {{ anchor.fin_width }} x {{ anchor.fin_thk }} mm – Fin plate (50 gr.)</li>
+                        <li>{{ anchor.anchor_nos }} – M{{ anchor.anchor_dia }} x {{ anchor.embed_depth }} (embed. depth) Royal Bolt (Grade 5.8 / or Equivalent)</li>
+                        <li>{{ anchor.thr_bolt_nos }} – M{{ anchor.thr_bolt_dia }} x {{ anchor.thr_bolt_length }} Through Bolt (SS Grade A4-70 / or Equivalent)</li>
+                    </ul>
+                </td>
+                <td>
+                    <figure>
+                        <img src="assets/images/u-clump-3d.png">
+                        <figcaption>Typical U-clump</figcaption>
+                    </figure>
+                </td>
             </tr>
         </tbody>
     </table>
 
-    <table>
-        <thead>
-            <tr>
-                <th>φ</th>
-                <th><i>T<sub>u</sub></i></th>
-                <th><i>x</i></th>
-                <th><i>M<sub>u</sub></i></th>
-                <th><i>B<sub>eff</sub></i></th>
-                <th>t</th>
-                <th><i>t<sub>p</sub></i></th>
-                <th>Check</th>
-            </tr>
-        </thead>
+    <div class="page__break"></div>
+    <h3>Design of Anchor Bolts</h3>
+    <table class="borderless width__100 fig__table">
         <tbody>
             <tr>
-                <td>0.9</td>
-                <td>{{ anchor.bp_Tu }}</td>
-                <td>{{ anchor.bp_x }}</td>
-                <td>{{ anchor.bp_tension_Mu }}</td>
-                <td>{{ anchor.bp_Beff }}</td>
-                <td>{{ anchor.bp_thk_tension }}</td>
-                <td>{{ anchor.bp_thk }}</td>
-                <td class="ok">OK</td>
+                <td><img src="assets/images/u-clump-plan.png"></td>
+                <td><img src="assets/images/u-clump-section.png"></td>
             </tr>
         </tbody>
     </table>
+
+    <p>Applying static equilibrium equation, ∑ F<sub>y</sub><sup>→+</sup> = 0 , ∑ F<sub>z</sub><sup>↑+</sup> = 0,</p>
+    <table class="borderless ml-2">
+        <tbody>
+            <tr>
+                <td>Horizontal reaction force, <i>R<sub>y</sub></i></td>
+                <td>=</td>
+                <td>{{ anchor.design_Ry }} <i>kN</i></td>
+                <td><i>; tension</i></td>
+            </tr>
+            <tr>
+                <td>Horizontal force in single bolt</td>
+                <td>=</td>
+                <td>{{ (anchor.design_Ry / anchor.anchor_nos) | round(2) }} <i>kN</i></td>
+                <td><i>; {{ anchor.anchor_nos }} bolts</i></td>
+            </tr>
+            <tr>
+                <td>Vertical reaction force, <i>R<sub>z</sub></i></td>
+                <td>=</td>
+                <td>{{ anchor.design_Rz }} <i>kN</i></td>
+                <td><i>; shear</i></td>
+            </tr>
+            <tr>
+                <td>Vertical force in single bolt</td>
+                <td>=</td>
+                <td>{{ (anchor.design_Rz / anchor.anchor_nos) | round(2) }} <i>kN</i></td>
+                <td><i>; {{ anchor.anchor_nos }} bolts</i></td>
+            </tr>
+        </tbody>
+    </table>
+
+    {% include "partials/anchor-bolt.html" %}
+
+    <div class="page__break"></div>
+    {% include "partials/through-bolt.html" %}
+
+    {% include "partials/fin-plate.html" %}
+    
+    {% include "partials/base-plate.html" %}
+</div>

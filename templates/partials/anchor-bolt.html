@@ -1,0 +1,344 @@
+<p><b><u>Anchor Bolt Data –</u></b></p>
+<table class="borderless">
+    <tbody>
+        <tr>
+            <td>Diameter of anchor bolt, d<sub>a</sub></td>
+            <td>=</td>
+            <td>{{ anchor.anchor_dia }} <i>mm</i></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Effective embedment length, h<sub>ef</sub></td>
+            <td>=</td>
+            <td>{{ anchor.embed_depth }} <i>mm</i></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Compressive strength of concrete, f’<sub>c</sub></td>
+            <td>=</td>
+            <td>27.5 <i>MPa</i></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>Yield strength of anchor, F<sub>y</sub></td>
+            <td>=</td>
+            <td>400 <i>MPa</i></td>
+            <td><i>; Grade 5.8</i></td>
+        </tr>
+        <tr>
+            <td>Ultimate strength of anchor, F<sub>u</sub></td>
+            <td>=</td>
+            <td>500 <i>MPa</i></td>
+            <td></td>
+        </tr>
+    </tbody>
+</table>
+
+
+<h4>Steel Strength in Tension</h4>
+
+
+
+
+
+
+<h4>Steel Strength in Shear</h4>
+<table class="borderless width__100">
+    <tbody>
+        <tr>
+            <td><i>φV<sub>sa</sub> = φ 0.6 A<sub>se,V</sub> f<sub>uta</sub> &nbsp;&nbsp;&nbsp; (kN)</i></td>
+            <td style="text-align: right;">(Eqn. 6.K.19, BNBC 2020)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><u>Where,</u></p>
+<table class="borderless ml-1">
+    <tbody>
+        <tr>
+            <td>φ</td>
+            <td>–</td>
+            <td>Strength reduction factor</td>
+        </tr>
+        <tr>
+            <td><i>A<sub>se,V</sub> = (π / 4) (d<sub>a</sub> - 0.9382P)<sup>2</sup></i></td>
+            <td>–</td>
+            <td>Tensile stress area (mm<sup>2</sup>)</td>
+        </tr>
+        <tr>
+            <td><i>f<sub>uta</sub> = min( 860 , 1.9 F<sub>y</sub> , f<sub>u</sub> )</i></td>
+            <td>–</td>
+            <td>Allowable tensile strength of Anchor (MPa)</td>
+        </tr>
+        <tr>
+            <td>β</td>
+            <td>–</td>
+            <td>Strength ratio</td>
+        </tr>
+        <tr>
+            <td><i>V<sub>ua</sub></i></td>
+            <td>–</td>
+            <td>Shear force in single anchor (kN)</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="width__100 align__center">
+    <thead>
+        <tr>
+            <th>φ</th>
+            <th><i>A<sub>se,V</sub></i></th>
+            <th><i>f<sub>uta</sub></i></th>
+            <th><i>φV<sub>sa</sub></i></th>
+            <th><i>V<sub>ua</sub></i></th>
+            <th><i>β<sub>V</sub></i></th>
+            <th>Check</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0.65</td>
+            <td>{{ anchor.A_seN }}</td>
+            <td>{{ anchor.f_uta }}</td>
+            <td>{{ anchor.phi_Vsa }}</td>
+            <td>{{ anchor.V_ua }}</td>
+            <td>{{ (anchor.V_ua / anchor.phi_Vsa) | round(2) }}</td>
+            <td class="ok">OK</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page__break"></div>
+<h4>Concrete Breakout Strength in Shear</h4>
+<table class="borderless width__100">
+    <tbody>
+        <tr>
+            <td><i>φV<sub>cbg</sub> = φ (A<sub>VC</sub> / A<sub>VCO</sub>) ψ<sub>ec,V</sub> ψ<sub>ed,V</sub> ψ<sub>c,V</sub> ψ<sub>h,V</sub> V<sub>b</sub> &nbsp;&nbsp;&nbsp; (kN)</i></td>
+            <td style="text-align: right;">(Eqn. 6.K.22, BNBC 2020)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><u>Where,</u></p>
+<div class="calc__fig">
+    <img src="assets/images/box-conc-breakout.png">
+</div>
+
+<table class="borderless ml-1">
+    <tbody>
+        <tr>
+            <td><i>A<sub>VC</sub></i></td>
+            <td>–</td>
+            <td>Concrete failure area for anchor group (mm<sup>2</sup>)</td>
+        </tr>
+        <tr>
+            <td><i>A<sub>VCO</sub> = 4.5 C<sub>a1</sub><sup>2</sup></i></td>
+            <td>–</td>
+            <td>Conc. failure area of single anchor w/o edge influence (mm<sup>2</sup>)</td>
+        </tr>
+        <tr>
+            <td><i>ψ<sub>ec,V</sub></i></td>
+            <td>–</td>
+            <td>Modification factor for eccentricity</td>
+        </tr>
+        <tr>
+            <td><img src="assets/images/anchor-eqn1.png" style="width: 50mm;"></i></td>
+            <td>–</td>
+            <td>Modification factor for edge distance</td>
+        </tr>
+        <tr>
+            <td><i>ψ<sub>c,V</sub></i></td>
+            <td>–</td>
+            <td>Modification factor for concrete condition (cracked)</td>
+        </tr>
+        <tr>
+            <td><img src="assets/images/anchor-eqn2.png" style="width: 45mm;"></td>
+            <td>–</td>
+            <td>Modification factor for concrete depth <i>h<sub>a</sub> < 1.5 C<sub>a1</sub></i></td>
+        </tr>
+        <tr>
+            <td><img src="assets/images/anchor-eqn3.png" style="width: 65mm;"></td>
+            <td>–</td>
+            <td>Basic concrete breakout strength of single anchor (kN)</td>
+        </tr>
+        <tr>
+            <td><i>l<sub>e</sub> = min( h<sub>ef</sub> , 8d<sub>a</sub> )</i></td>
+            <td>–</td>
+            <td>Load bearing length of anchor for shear (mm)</td>
+        </tr>
+        <tr>
+            <td><i>V<sub>ug</sub></i></td>
+            <td>–</td>
+            <td>Shear force in group of anchors (kN)</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="width__100 align__center">
+    <thead>
+        <tr>
+            <th>φ</th>
+            <th><i>A<sub>VC</sub></i></th>
+            <th><i>A<sub>VCO</sub></i></th>
+            <th><i>C<sub>a1</sub></i></th>
+            <th><i>C<sub>a2</sub></i></th>
+            <th><i>h<sub>a</sub></i></th>
+            <th><i>ψ<sub>ec,V</sub></i></th>
+            <th><i>ψ<sub>ed,V</sub></i></th>
+            <th><i>ψ<sub>c,V</sub></i></th>
+            <th><i>ψ<sub>h,V</sub></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0.65</td>
+            <td>{{ anchor.A_VC }}</td>
+            <td>{{ anchor.A_VCO }}</td>
+            <td>{{ anchor.C_a1 }}</td>
+            <td>{{ anchor.C_a2 }}</td>
+            <td>{{ anchor.h_a }}</td>
+            <td>{{ anchor.psi_ecV }}</td>
+            <td>{{ anchor.psi_edV }}</td>
+            <td>{{ anchor.psi_cV }}</td>
+            <td>{{ anchor.psi_hV }}</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="width__80 align__center mt-1">
+    <thead>
+        <tr>
+            <th><i>l<sub>e</sub></i></th>
+            <th><i>V<sub>b</sub></i></th>
+            <th><i>φV<sub>cbg</sub></i></th>
+            <th><i>V<sub>ug</sub></i></th>
+            <th><i>β<sub>V</sub></i></th>
+            <th>Check</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ anchor.l_e }}</td>
+            <td>{{ anchor.V_b }}</td>
+            <td>{{ anchor.phi_Vcbg }}</td>
+            <td>{{ anchor.V_ug }}</td>
+            <td>{{ (anchor.V_ug / anchor.phi_Vcbg) | round(2) }}</td>
+            <td class="ok">OK</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Concrete Pryout Strength in Shear</h4>
+<table class="borderless width__100">
+    <tbody>
+        <tr>
+            <td><i>φV<sub>cp</sub> = φ k<sub>cp</sub> N<sub>cp</sub> &nbsp;&nbsp;&nbsp; (kN)</i></td>
+            <td style="text-align: right;">(Eqn. 6.K.31, BNBC 2020)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><u>Where,</u></p>
+<table class="borderless ml-1">
+    <tbody>
+        <tr>
+            <td><i>k<sub>cp</sub></i></td>
+            <td>–</td>
+            <td>Concrete pryout factor</td>
+        </tr>
+        <tr>
+            <td><i>N<sub>cp</sub> = N<sub>cbg</sub></i></td>
+            <td>–</td>
+            <td>Concrete breakout strength in tension (kN)</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="width__100 align__center">
+    <thead>
+        <tr>
+            <th>φ</th>
+            <th><i>k<sub>cp</sub></i></th>
+            <th><i>N<sub>cp</sub></i></th>
+            <th><i>φV<sub>cp</sub></i></th>
+            <th><i>V<sub>ug</sub></i></th>
+            <th><i>β<sub>V</sub></i></th>
+            <th>Check</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0.7</td>
+            <td>2</td>
+            <td>{{ (anchor.phi_Ncbg / 0.7) | round(2) }}</td>
+            <td>{{ anchor.phi_Vcp }}</td>
+            <td>{{ anchor.V_ug }}</td>
+            <td>{{ (anchor.V_ug / anchor.phi_Vcp) | round(2) }}</td>
+            <td class="ok">OK</td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Tightening Torque Requirement</h4>
+<table class="borderless width__100">
+    <tbody>
+        <tr>
+            <td><i>T = KDF &nbsp;&nbsp;&nbsp; (Nm)</i></td>
+            <td style="text-align: right;"></td>
+        </tr>
+    </tbody>
+</table>
+
+<p><u>Where,</u></p>
+<table class="borderless ml-1">
+    <tbody>
+        <tr>
+            <td>K</td>
+            <td>–</td>
+            <td>Nut factor</td>
+        </tr>
+        <tr>
+            <td>D</td>
+            <td>–</td>
+            <td>Nominal bolt diameter (mm)</td>
+        </tr>
+        <tr>
+            <td><i>F = 0.75 f<sub>yp</sub> A<sub>se</sub></i></td>
+            <td>–</td>
+            <td>Pre-load (kN)</td>
+        </tr>
+        <tr>
+            <td><i>f<sub>yp</sub> = 0.9 f<sub>y</sub></i></td>
+            <td>–</td>
+            <td>Proof strength (MPa)</td>
+        </tr>
+        <tr>
+            <td><i>A<sub>se</sub> = (π / 4) (d<sub>a</sub> - 0.9382P)<sup>2</sup></i></td>
+            <td>–</td>
+            <td>Bolt stress area (mm<sup>2</sup>)</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="width__100 align__center">
+    <thead>
+        <tr>
+            <th>K</th>
+            <th>D</th>
+            <th><i>f<sub>yp</sub></i></th>
+            <th><i>A<sub>se</sub></i></th>
+            <th>F</th>
+            <th>T</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0.2</td>
+            <td>{{ anchor.anchor_dia }}</td>
+            <td>360</td>
+            <td>{{ anchor.A_seN }}</td>
+            <td>{{ (0.75 * 360 * anchor.A_seN / 1000) | round(2) }}</td>
+            <td>{{ (0.2 * anchor.anchor_dia * (0.75 * 360 * anchor.A_seN / 1000)) | round(1) }}</td>
+        </tr>
+    </tbody>
+</table>

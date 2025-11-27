@@ -289,8 +289,6 @@ categories:
         reaction_Rz: 3.2
         design_Ry: 22.0
         design_Rz: 7.5
-        N_ua: 0
-        N_ug: 0
         V_ua: 7.5
         V_ug: 30.0
 
@@ -329,6 +327,54 @@ categories:
         bp_q: 12
         bp_bearing_Mu: 5.6
         bp_thk_bearing: 5.2
+        bp_A1: 3422.5
+        bp_fp_max: 
+
+      - clump_type: U Clump
+        reaction_Ry: 12.1
+        reaction_Rz: 2.4
+        design_Ry: 20.0
+        design_Rz: 4.0
+        N_ua: 0
+        N_ug: 0
+        V_ua: 7.5
+        V_ug: 30.0
+
+        anchor_nos: 4
+        anchor_dia: 12
+        embed_depth: 70
+
+        A_seN: 84.3
+        f_uta: 500
+
+        phi_Ncbg: 37.2
+
+        phi_Vsa: 16.4
+        A_VC: 70500
+        A_VCO: 45000
+        C_a1: 100
+        C_a2: 500
+        h_a: 300
+        psi_ecV: 1.0
+        psi_edV: 1.0
+        psi_cV: 1.0
+        psi_hV: 1.0
+        l_e: 70
+        V_b: 15.5
+        phi_Vcbg: 17.0
+        phi_Vcp: 67.2
+
+        bp_length_N: 250
+        bp_width_B: 150
+        bp_thk: 6
+        bp_d: 85
+        bp_b: 50
+        bp_m: 30
+        bp_n: 20
+        bp_lambda_n: 18
+        bp_q: 12
+        bp_bearing_Mu: 5.6
+        bp_thk_bearing: 5.2
         bp_Tu:
         bp_x:
         bp_tension_Mu:
@@ -336,6 +382,29 @@ categories:
         bp_thk_tension:
         bp_A1: 3422.5
         bp_fp_max:
+
+        fin_length: 145
+        fin_width: 150
+        fin_thk: 5
+        fin_Vu: 10.2
+        fin_e: 80.5
+        fin_thk_req: 4.8
+        fin_bgv: 120
+        fin_bnt: 80.5
+        fin_block_Anv: 510.0
+        fin_block_Ant: 372.5
+
+        thr_bolt_nos: 2
+        thr_bolt_dia: 10
+        thr_bolt_length: 110
+        thr_bolt_AseN: 58.0
+        thr_Vu: 5.1
+        thr_shear_phi_Rn: 16.5
+        thr_bearing_lc: 80.5
+        thr_bearing_phi_Rn1: 163
+        thr_bearing_phi_Rn2: 40.5
+
+        weld_fR: 40.2
 
 
 

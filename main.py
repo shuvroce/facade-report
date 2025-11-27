@@ -2,23 +2,20 @@ import yaml
 import os
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
+import pikepdf
 
-# --- Load YAML ---
+# PDF with Jinja2
 with open("input.yaml", "r") as f:
     data = yaml.safe_load(f)
 
-# Templates directory
 template_dir = os.path.join(os.path.dirname(__file__), "templates")
 
-# Jinja render
 env = Environment(loader=FileSystemLoader(template_dir))
 template = env.get_template("full-report.html")
 html_out = template.render(data)
 
-# Output file
 report_pdf = "report.pdf"
 
-# PDF generation with correct CSS loading
 HTML(string=html_out, base_url=template_dir).write_pdf(
     report_pdf,
     stylesheets=[
@@ -27,3 +24,30 @@ HTML(string=html_out, base_url=template_dir).write_pdf(
 )
 
 
+# Post-processing
+def collapse_outlines(item):
+    while item:
+        if "/First" in item:
+            item.Count = 0
+            collapse_outlines(item.First)
+        
+        if "/Next" in item:
+            item = item.Next
+        else:
+            break
+
+with pikepdf.Pdf.open("report.pdf") as pdf:
+    pdf.Root.PageMode = pikepdf.Name("/UseOutlines")
+    pdf.Root.PageLayout = pikepdf.Name("/SinglePage")
+    
+    if "/Outlines" in pdf.Root and "/First" in pdf.Root.Outlines:
+        pdf.Root.Outlines.Count = 0
+        
+        collapse_outlines(pdf.Root.Outlines.First)
+    
+    pdf.save("_report.pdf")
+
+os.remove("report.pdf")
+os.rename("_report.pdf", "report.pdf")
+
+print("Report created successfully!")
