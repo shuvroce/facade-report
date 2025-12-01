@@ -2,7 +2,7 @@
 <h2>{{ profile.profile_name }}</h2>
 <div>
     <div>
-        <img src="inputs/{{ profile.profile_name }}.png">
+        <img src="inputs/{{ profile.profile_name }}.png" class="fig__130">
     </div>
     
     <table class="width__90">
@@ -84,10 +84,10 @@
         </tbody>
     </table>
 
-    <table borderless width__90>
+    <table class="borderless width__100">
         <tbody>
             <tr>
-                <td><img src="inputs/{{ profile.profile_name }}p.png"></td>
+                <td><img src="inputs/{{ profile.profile_name }}p.png" class="fig__140"></td>
             </tr>
         </tbody>
     </table>
@@ -149,14 +149,14 @@
 
     <h3>Moment Capacity by Local Buckling</h3>
     <div>
-        <div class="ideal__profile">
-            <figure>
-                <img src="inputs/{{ profile.profile_name }}-lb-web.png">
-            </figure>
-            <figure>
-                <img src="inputs/{{ profile.profile_name }}-lb-flange.png">
-            </figure>
-        </div>
+        <table class="borderless width__100 fig__table align__center">
+            <tbody>
+                <tr>
+                    <td><img style="width: 50mm;" src="inputs/{{ profile.profile_name }}-lb-web.png"></td>
+                    <td><img style="width: 50mm;" src="inputs/{{ profile.profile_name }}-lb-flange.png"></td>
+                </tr>
+            </tbody>
+        </table>
 
         <table class="borderless width__100 fig__table">
             <tbody>
@@ -168,7 +168,7 @@
 
         <p>The weighted average method is utilized to compute the nominal flexure strength due to the limit state of local buckling –</p>
         <p>For web elements under flexural compression –</p>
-        <table class="borderless width__80 fig__table">
+        <table class="borderless width__70 fig__table">
             <tbody>
                 <tr>
                     <td><img src="inputs/{{ profile.profile_name }}-lb-web-cap.png"></td>
@@ -180,7 +180,7 @@
         <table class="borderless width__100 fig__table">
             <tbody>
                 <tr>
-                    <td><img src="inputs/{{ profile.profile_name }}-lb-flange-cap.png"></td>
+                    <td><img src="inputs/{{ profile.profile_name }}-lb-flange-cap.png" class="fig__100"></td>
                 </tr>
             </tbody>
         </table>

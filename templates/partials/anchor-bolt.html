@@ -35,7 +35,10 @@
 </table>
 
 
+{% if anchor.clump_type != "Box Clump" %}
 <h4>Steel Strength in Tension</h4>
+
+{% endif %}
 
 
 
@@ -278,6 +281,11 @@
         </tr>
     </tbody>
 </table>
+
+{% if anchor.clump_type != "Box Clump" %}
+<h4>Interaction to Tensile and Shear Force</h4>
+
+{% endif %}
 
 <h4>Tightening Torque Requirement</h4>
 <table class="borderless width__100">

@@ -247,6 +247,10 @@ table.width__100 { width: 100%; }
 
 table.align__center * { text-align: center !important; }
 table.align__center caption { text-align: left !important; }
+table.align__center td img {
+    display: block;
+    margin: 0 auto;
+}
 
 .table__sidewise {
     display: flex;

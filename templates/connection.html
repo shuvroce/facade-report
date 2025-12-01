@@ -82,7 +82,7 @@
     </table>
 </div>
 
-<div>
+<div class="mt-2">
     <h3>Design Capacity of Cleat and Screw</h3>
 
     <h4>Shear Strength Limited by Tilting and Bearing</h4>
@@ -323,8 +323,8 @@
                 <td>0.65</td>
                 <td>{{ conn.resultant_shear }}</td>
                 <td>{{ conn.design_fz / (conn.screw_nos / 2) }}</td>
-                <td>{{ (conn.phi_Pnv / 0.65) | round(2) }}</td>
-                <td>{{ (conn.phi_Pnov / 0.65) | round(2) }}</td>
+                <td>{{ (conn.phi_Pnv / 0.5) | round(2) }}</td>
+                <td>{{ (conn.phi_Pnov / 0.5) | round(2) }}</td>
                 <td>{{ conn.beta_pullover }}</td>
                 <td>{{ (1.1 * 0.65) | round(2) }}</td>
                 <td class="ok">OK</td>
@@ -355,8 +355,8 @@
                 <td>0.6</td>
                 <td>{{ conn.resultant_shear }}</td>
                 <td>{{ conn.design_fz / (conn.screw_nos / 2) }}</td>
-                <td>{{ (conn.phi_Pnv / 0.6) | round(2) }}</td>
-                <td>{{ (conn.phi_Pnot / 0.6) | round(2) }}</td>
+                <td>{{ (conn.phi_Pnv / 0.5) | round(2) }}</td>
+                <td>{{ (conn.phi_Pnot / 0.5) | round(2) }}</td>
                 <td>{{ conn.beta_pullout }}</td>
                 <td>{{ (1.15 * 0.6) | round(2) }}</td>
                 <td class="ok">OK</td>

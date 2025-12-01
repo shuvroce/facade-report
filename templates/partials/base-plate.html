@@ -5,13 +5,21 @@
             <td>Max. horizontal reaction force, R<sub>y</sub></td>
             <td>=</td>
             <td>{{ anchor.design_Ry }} <i>kN</i></td>
-            <td><i>; P<sub>u</sub></i></td>
+            <td><i>
+                {% if anchor.clump_type != "Box Clump" %}
+                    ; P<sub>u</sub>
+                {% endif %}
+            </i></td>
         </tr>
         <tr>
             <td>Max. vertical reaction force, R<sub>z</sub></td>
             <td>=</td>
             <td>{{ anchor.design_Rz }} <i>kN</i></td>
-            <td></td>
+            <td><i>
+                {% if anchor.clump_type == "Box Clump" %}
+                    ; P<sub>u</sub>
+                {% endif %}
+            </i></td>
         </tr>
         <tr>
             <td>Plate length, N</td>
@@ -68,12 +76,24 @@
             <td>Effective plate area (mm<sup>2</sup>)</td>
         </tr>
         <tr>
-            <td><i>l = max( m , n , λn' )</i></td>
+            <td><i>
+                {% if anchor.clump_type == "Box Clump" %}
+                    l = max( m , n )
+                {% else %}
+                    l = max( m , n , λn' )
+                {% endif %}
+            </i></td>
             <td>–</td>
             <td>Critical cantilever length (mm)</td>
         </tr>
         <tr>
-            <td colspan="3" style="padding-left: 3rem;"><i>m = (N - 0.95d) / 2 , n = (B - 0.8b) / 2 , λn' = λ √(db) / 4</i></td>
+            <td colspan="3" style="padding-left: 3.5rem;"><i>
+                {% if anchor.clump_type == "Box Clump" %}
+                    m = (N - 0.95d) / 2 , n = (B - 0.95b) / 2
+                {% else %}
+                    m = (N - 0.95d) / 2 , n = (B - 0.8b) / 2 , λn' = λ √(db) / 4
+                {% endif %}
+            </i></td>
         </tr>
         <tr>
             <td>d</td>
@@ -143,8 +163,10 @@
 <table class="width__100 align__center">
     <thead>
         <tr>
+            {% if anchor.clump_type != "Box Clump" %}
             <th>λn'</th>
-            <th>l</th>
+            {% endif %}
+            <th><i>l</i></th>
             <th>P<sub>u</sub></th>
             <th>q</th>
             <th>M<sub>u</sub></th>
@@ -156,7 +178,9 @@
     </thead>
     <tbody>
         <tr>
+            {% if anchor.clump_type != "Box Clump" %}
             <td>{{ anchor.bp_lambda_n }}</td>
+            {% endif %}
             <td>{{ [anchor.bp_m, anchor.bp_n, anchor.bp_lambda_n] | max }}</td>
             <td>{{ anchor.design_Rz }}</td>
             <td>{{ anchor.bp_q }}</td>
@@ -169,6 +193,8 @@
     </tbody>
 </table>
 
+
+{% if anchor.clump_type != "Box Clump" %}
 <h4>Plate Thickness for Tension Interface</h4>
 <table class="borderless width__100">
     <tbody>
@@ -236,6 +262,8 @@
         </tr>
     </tbody>
 </table>
+{% endif %}
+
 
 <h4>Check for Plate Area</h4>
 <table class="borderless width__100">
@@ -360,7 +388,13 @@
             <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
             <td>27.5</td>
             <td>{{ anchor.bp_fp_max }}</td>
-            <td>{{ (anchor.design_Rz / anchor.bp_length_N * anchor.bp_width_B) | round(2) }}</td>
+            <td>
+                {% if anchor.clump_type == "Box Clump" %}
+                    {{ ((anchor.design_Rz * 1000) / (anchor.bp_length_N * anchor.bp_width_B)) | round(2) }}
+                {% else %}
+                    {{ ((anchor.design_Ry * 1000) / (anchor.bp_length_N * anchor.bp_width_B)) | round(2) }}
+                {% endif %}
+            </td>
             <td class="ok">OK</td>
         </tr>
     </tbody>
