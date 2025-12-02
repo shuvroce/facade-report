@@ -37,6 +37,10 @@ def collapse_outlines(item):
             break
 
 with pikepdf.Pdf.open("report.pdf") as pdf:
+    pdf.docinfo["/Title"] = "Structural Calculation & Design Report"
+    pdf.docinfo["/Author"] = "Md. Akram Hossain"
+    # pdf.docinfo["/Subject"] = "Short description of the document"
+    
     pdf.Root.PageMode = pikepdf.Name("/UseOutlines")
     pdf.Root.PageLayout = pikepdf.Name("/SinglePage")
     

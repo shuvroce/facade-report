@@ -1,5 +1,54 @@
 {% for gu in cat.glass_units %}
     {% set loop_index = loop.index %}
-    {% include "glass-base.html" %}
+
+    {% set bite_req = ((gu.wind_load * gu.width) / (2 * 140)) %}
+    {% set bite_pro = (((bite_req * 2) | round(0, 'ceil')) / 2) %}
+    {% set glue_req = (bite_req / 3) %}
+    {% set glue_pro = (((glue_req * 2) | round(0, 'ceil')) / 2) %}
+
+    {% if gu.glass_type == "sgu" and gu.length < 5000 and gu.support_type != "Point Fixed" %}
+        {% set sgu_lr = (gu.nfl * gu.gtf) %}
+        {% set sgu_stress_ratio = (gu.wind_load / sgu_lr) %}
+        {% set sgu_allow_def = (gu.width / 60) %}
+        {% set sgu_def_ratio = (gu.def / sgu_allow_def) %}
+        {% include "partials/sgu.html" %}
+
+    {% elif gu.glass_type == "dgu" and gu.length < 5000 and gu.support_type != "Point Fixed" %}
+        {% set dgu_ls1 = ((gu.thickness1 ** 3 + gu.thickness2 ** 3) / (gu.thickness1 ** 3)) %}
+        {% set dgu_ls2 = ((gu.thickness1 ** 3 + gu.thickness2 ** 3) / (gu.thickness2 ** 3)) %}
+        {% set dgu_lr1 = (gu.nfl1 * gu.gtf1 * dgu_ls1) %}
+        {% set dgu_lr2 = (gu.nfl2 * gu.gtf2 * dgu_ls2) %}
+        {% set dgu_lr = ([dgu_lr1, dgu_lr2] | min) %}
+        {% set dgu_stress_ratio = (gu.wind_load / dgu_lr) %}
+        {% set dgu_def = ([gu.def1, gu.def2] | max) %}
+        {% set dgu_allow_def = (gu.width / 90) %}
+        {% set dgu_def_ratio = (dgu_def / dgu_allow_def) %}
+        {% include "partials/dgu.html" %}
+
+    {% elif gu.glass_type == "lgu" and gu.length < 5000 and gu.support_type != "Point Fixed" %}
+        {% set lgu_lr = (gu.nfl * gu.gtf) %}
+        {% set lgu_stress_ratio = (gu.wind_load / lgu_lr) %}
+        {% set lgu_allow_def = (gu.width / 60) %}
+        {% set lgu_def_ratio = (gu.def / lgu_allow_def) %}
+        {% include "partials/lgu.html" %}
+
+    {% elif gu.glass_type == "ldgu" and gu.length < 5000 and gu.support_type != "Point Fixed" %}
+        {% set ldgu_thickness1 = gu.thickness1_1 + gu.thickness1_1 %}
+        {% set ldgu_ls1 = ((ldgu_thickness1 ** 3 + gu.thickness2 ** 3) / (ldgu_thickness1 ** 3)) %}
+        {% set ldgu_ls2 = ((ldgu_thickness1 ** 3 + gu.thickness2 ** 3) / (gu.thickness2 ** 3)) %}
+        {% set ldgu_lr1 = (gu.nfl1 * gu.gtf1 * ldgu_ls1) %}
+        {% set ldgu_lr2 = (gu.nfl2 * gu.gtf2 * ldgu_ls2) %}
+        {% set ldgu_lr = ([ldgu_lr1, ldgu_lr2] | min) %}
+        {% set ldgu_stress_ratio = (gu.wind_load / ldgu_lr) %}
+        {% set ldgu_def = ([gu.def1, gu.def2] | max) %}
+        {% set ldgu_allow_def = (gu.width / 90) %}
+        {% set ldgu_def_ratio = (ldgu_def / ldgu_allow_def) %}
+        {% include "partials/ldgu.html" %}
+
+    {% else %}
+        {% include "partials/glass-rfem.html" %}
+
+    {% endif %}
+
 {% endfor %}
 

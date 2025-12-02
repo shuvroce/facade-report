@@ -156,13 +156,13 @@
                 </tr>
                     <td>Load Share factor, <i>LS<sub>1</sub></i></td>
                     <td>=</td>
-                    <td>{{ gu.ls1 }}</td>
+                    <td>{{ ldgu_ls1 }}</td>
                     <td><i>; ASTM E1300, Table 5</i></td>
                 </tr>
                 <tr>
                     <td>Load resisting capacity, <i>LR<sub>1</sub> = NFL<sub>1</sub> x GTF<sub>1</sub> x LS<sub>1</sub></i></td>
                     <td>=</td>
-                    <td>{{ gu.lr1 }} <i>kPa</i></td>
+                    <td>{{ ldgu_lr1 }} <i>kPa</i></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -213,13 +213,13 @@
                 </tr>
                     <td>Load Share factor, <i>LS<sub>2</sub></i></td>
                     <td>=</td>
-                    <td>{{ gu.ls2 }}</td>
+                    <td>{{ ldgu_ls2 }}</td>
                     <td><i>; ASTM E1300, Table 5</i></td>
                 </tr>
                 <tr>
                     <td>Load resisting capacity, <i>LR<sub>2</sub> = NFL<sub>2</sub> x GTF<sub>2</sub> x LS<sub>2</sub></i></td>
                     <td>=</td>
-                    <td>{{ gu.lr2 }} <i>kPa</i></td>
+                    <td>{{ ldgu_lr2 }} <i>kPa</i></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -231,15 +231,15 @@
                 <tr>
                     <td>Load resisting capacity of the glass, <i>LR = min(LR<sub>1</sub>, LR<sub>2</sub>)</i></td>
                     <td>=</td>
-                    <td>{{ [gu.lr1, gu.lr2] | min }} <i>kPa</i></td>
+                    <td>{{ ldgu_lr }} <i>kPa</i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Load resistance ratio = <i>P<sub>z</sub>/LR</i></td>
                     <td>=</td>
-                    <td>{{ gu.stress_ratio }}</td>
-                    <td class="{% if gu.stress_ratio < 1 %}ok{% else %}not-ok{% endif %}">
-                        {% if gu.stress_ratio < 1 %} OK {% else %} NOT OK {% endif %}
+                    <td>{{ ldgu_stress_ratio }}</td>
+                    <td class="{% if ldgu_stress_ratio < 1 %}ok{% else %}not-ok{% endif %}">
+                        {% if ldgu_stress_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -333,21 +333,21 @@
                 <tr>
                     <td>Critical Deflection, <i>δ = max(δ<sub>1</sub> , δ<sub>2</sub>)</i></td>
                     <td>=</td>
-                    <td>{{ [gu.def1, gu.def2] | max }} <i>mm</i></td>
+                    <td>{{ ldgu_def }} <i>mm</i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Allowable deflection, <i>δ<sub>a</sub></i></td>
                     <td>=</td>
-                    <td>{{ gu.allow_def }} <i>mm</i></td>
+                    <td>{{ ldgu_allow_def }} <i>mm</i></td>
                     <td><i>; AS 1288:2006</i></td>
                 </tr>
                 <tr>
                     <td>Deflection ratio</td>
                     <td>=</td>
-                    <td>{{ gu.def_ratio }} <i>mm</i></td>
-                    <td class="{% if gu.def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
-                        {% if gu.def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
+                    <td>{{ ldgu_def_ratio }} <i>mm</i></td>
+                    <td class="{% if ldgu_def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
+                        {% if ldgu_def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -383,26 +383,26 @@
             <tr>
                 <td>Bite size/width required, <i>t<sub>r</sub> = (P<sub>z</sub> × B) / (2 F<sub>s</sub>)</i></td>
                 <td>=</td>
-                <td>{{ gu.bite_req }} <i>mm</i></td>
+                <td>{{ bite_req }} <i>mm</i></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Bite size/width provided, <i>t<sub>p</sub></i></td>
                 <td>=</td>
-                <td>{{ gu.bite_pro }} <i>mm</i></td>
+                <td>{{ bite_pro }} <i>mm</i></td>
                 <td><i>; ≥ t<sub>r</sub></i></td>
                 <td class="ok">OK</td>
             </tr>
             <tr>
                 <td>Glue line thickness required, <i>e<sub>r</sub> = t<sub>r</sub> / 3</i></td>
                 <td>=</td>
-                <td>{{ gu.glue_req }} <i>mm</i></td>
+                <td>{{ glue_req }} <i>mm</i></td>
                 <td>; ≥ 6 <i>mm</i></td>
             </tr>
             <tr>
                 <td>Glue line thickness provided, <i>e<sub>p</sub></i></td>
                 <td>=</td>
-                <td>{{ gu.glue_pro }} <i>mm</i></td>
+                <td>{{ glue_pro }} <i>mm</i></td>
                 <td><i>; ≥ e<sub>r</sub></i></td>
                 <td class="ok">OK</td>
             </tr>

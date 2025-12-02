@@ -154,8 +154,8 @@
             <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
             <td>{{ anchor.bp_d }}</td>
             <td>{{ anchor.bp_b }}</td>
-            <td>{{ anchor.bp_m }}</td>
-            <td>{{ anchor.bp_n }}</td>
+            <td>{{ bp_m }}</td>
+            <td>{{ bp_n }}</td>
         </tr>
     </tbody>
 </table>
@@ -179,16 +179,18 @@
     <tbody>
         <tr>
             {% if anchor.clump_type != "Box Clump" %}
-            <td>{{ anchor.bp_lambda_n }}</td>
+            <td>{{ bp_lambda_n }}</td>
             {% endif %}
-            <td>{{ [anchor.bp_m, anchor.bp_n, anchor.bp_lambda_n] | max }}</td>
-            <td>{{ anchor.design_Rz }}</td>
-            <td>{{ anchor.bp_q }}</td>
-            <td>{{ anchor.bp_bearing_Mu }}</td>
+            <td>{{ bp_l }}</td>
+            <td>{{ bp_Pu }}</td>
+            <td>{{ bp_q }}</td>
+            <td>{{ bp_bearing_Mu }}</td>
             <td>345</td>
-            <td>{{ anchor.bp_thk_bearing }}</td>
+            <td>{{ bp_thk_bearing }}</td>
             <td>{{ anchor.bp_thk }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if anchor.bp_thk > bp_thk_bearing %}ok{% else %}not-ok{% endif %}">
+                {% if anchor.bp_thk > bp_thk_bearing %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>
@@ -254,11 +256,13 @@
             <td>0.9</td>
             <td>{{ anchor.bp_Tu }}</td>
             <td>{{ anchor.bp_x }}</td>
-            <td>{{ anchor.bp_tension_Mu }}</td>
+            <td>{{ bp_tension_Mu }}</td>
             <td>{{ anchor.bp_Beff }}</td>
-            <td>{{ anchor.bp_thk_tension }}</td>
+            <td>{{ bp_thk_tension }}</td>
             <td>{{ anchor.bp_thk }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if anchor.bp_thk > bp_thk_tension %}ok{% else %}not-ok{% endif %}">
+                {% if anchor.bp_thk > bp_thk_tension %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>
@@ -322,13 +326,15 @@
     <tbody>
         <tr>
             <td>0.65</td>
-            <td>{{ anchor.design_Rz }}</td>
+            <td>{{ bp_Pu }}</td>
             <td>27.5</td>
-            <td>{{ anchor.bp_A1 }}</td>
+            <td>{{ bp_A1 }}</td>
             <td>{{ anchor.bp_width_B }}</td>
             <td>{{ anchor.bp_length_N }}</td>
             <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if (anchor.bp_length_N * anchor.bp_width_B) > bp_A1 %}ok{% else %}not-ok{% endif %}">
+                {% if (anchor.bp_length_N * anchor.bp_width_B) > bp_A1 %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>
@@ -387,15 +393,11 @@
             <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
             <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
             <td>27.5</td>
-            <td>{{ anchor.bp_fp_max }}</td>
-            <td>
-                {% if anchor.clump_type == "Box Clump" %}
-                    {{ ((anchor.design_Rz * 1000) / (anchor.bp_length_N * anchor.bp_width_B)) | round(2) }}
-                {% else %}
-                    {{ ((anchor.design_Ry * 1000) / (anchor.bp_length_N * anchor.bp_width_B)) | round(2) }}
-                {% endif %}
+            <td>{{ bp_fp_max }}</td>
+            <td>{{ (bp_Pu / bp_A1) }}</td>
+            <td class="{% if bp_fp_max > (bp_Pu / bp_A1) %}ok{% else %}not-ok{% endif %}">
+                {% if bp_fp_max > (bp_Pu / bp_A1) %} OK {% else %} NOT OK {% endif %}
             </td>
-            <td class="ok">OK</td>
         </tr>
     </tbody>
 </table>

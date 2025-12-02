@@ -1,4 +1,20 @@
 {% for conn in cat.connections %}
+{% set R_yA = conn.design_fy / (conn.screw_nos / 2) %}
+{% set R_zA = conn.design_fz / (conn.screw_nos / 2) %}
+{% set R_yB = conn.design_fy / (conn.screw_nos / 2) %}
+{% set R_zB = conn.design_fz / (conn.screw_nos / 2) %}
+{% set resultant_shear = (R_yB **2 + R_zB **2)** 0.5 %}
+
+{% set Pnv1 = 4.2 * (conn.t2**3 * conn.screw_dia)**0.5 * 207 %}
+{% set Pnv2 = 2.7 * (conn.t1 * conn.screw_dia) * 207 %}
+{% set Pnv3 = 2.7 * (conn.t2 * conn.screw_dia) * 207 %}
+{% set phi_Pnv = 0.5 * ([Pnv1, Pnv2, Pnv3] | min) %}
+{% set phi_Pnot = 0.5 * 0.85 * conn.tc * conn.screw_dia * 207 %}
+{% set d_w = [conn.head_dia, 19.1] | min %}
+{% set phi_Pnov = 0.5 * 1.5 * conn.t1 * d_w * 207 %}
+{% set beta_pullover = (resultant_shear / (phi_Pnv / 0.5)) + (0.71 * R_zA / (phi_Pnov / 0.5)) %}
+{% set beta_pullout = (resultant_shear / (phi_Pnv / 0.5)) + (R_zA / (phi_Pnot / 0.5)) %}
+
 <div class="page__break"></div>
 <h2>Design of Connection</h2>
 
@@ -51,31 +67,31 @@
             <tr>
                 <td>For screws on transom (A *), <i>R<sub>yA</sub> = F<sub>y</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ conn.design_fy / (conn.screw_nos / 2) }} <i>kN</i></td>
+                <td>{{ R_yA }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td style="padding-left: 4rem;"><i>R<sub>zA</sub> = F<sub>z</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ conn.design_fz / (conn.screw_nos / 2) }} <i>kN</i></td>
+                <td>{{ R_zA }} <i>kN</i></td>
                 <td><i>; tension</i></td>
             </tr>
             <tr>
                 <td>For screws on mullion (B *), <i>R<sub>yB</sub> = F<sub>y</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ conn.design_fy / (conn.screw_nos / 2) }} <i>kN</i></td>
+                <td>{{ R_yB }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td style="padding-left: 4rem;"><i>R<sub>zB</sub> = F<sub>z</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ conn.design_fz / (conn.screw_nos / 2) }} <i>kN</i></td>
+                <td>{{ R_zB }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td>Resultant shear, <i>V<sub>u</sub> = √( R<sub>yB</sub><sup>2</sup> + R<sub>zB</sub><sup>2</sup> )</i></td>
                 <td>=</td>
-                <td>{{ conn.resultant_shear }} <i>kN</i></td>
+                <td>{{ resultant_shear }} <i>kN</i></td>
                 <td></td>
             </tr>
         </tbody>
@@ -155,10 +171,12 @@
                 <td>{{ conn.screw_dia }}</td>
                 <td>207</td>
                 <td>207</td>
-                <td>{{ conn.phi_Pnv }}</td>
-                <td>{{ conn.resultant_shear }}</td>
-                <td>{{ (conn.resultant_shear / conn.phi_Pnv) | round(2) }}</td>
-                <td class="ok">OK</td>
+                <td>{{ phi_Pnv }}</td>
+                <td>{{ resultant_shear }}</td>
+                <td>{{ (resultant_shear / phi_Pnv) | round(2) }}</td>
+                <td class="{% if (resultant_shear / phi_Pnv) < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if (resultant_shear / phi_Pnv) < 1 %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -215,10 +233,12 @@
                 <td>{{ conn.tc }}</td>
                 <td>{{ conn.screw_dia }}</td>
                 <td>207</td>
-                <td>{{ conn.phi_Pnot }}</td>
-                <td>{{ conn.design_fz / (conn.screw_nos / 2) }}</td>
-                <td>{{ (conn.design_fz / (conn.screw_nos / 2) / conn.phi_Pnot) | round(2) }}</td>
-                <td class="ok">OK</td>
+                <td>{{ phi_Pnot }}</td>
+                <td>{{ R_zA }}</td>
+                <td>{{ (R_zA / phi_Pnot) | round(2) }}</td>
+                <td class="{% if (R_zA / phi_Pnot) < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if (R_zA / phi_Pnot) < 1 %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -270,11 +290,13 @@
             <tr>
                 <td>0.5</td>
                 <td>{{ conn.head_dia }}</td>
-                <td>{{ [conn.head_dia, 19.1] | min }}</td>
-                <td>{{ conn.phi_Pnov }}</td>
-                <td>{{ conn.design_fz / (conn.screw_nos / 2) }}</td>
-                <td>{{ (conn.design_fz / (conn.screw_nos / 2) / conn.phi_Pnov) | round(2) }}</td>
-                <td class="ok">OK</td>
+                <td>{{ d_w }}</td>
+                <td>{{ phi_Pnov }}</td>
+                <td>{{ R_zA }}</td>
+                <td>{{ (R_zA / phi_Pnov) | round(2) }}</td>
+                <td class="{% if (R_zA / phi_Pnov) < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if (R_zA / phi_Pnov) < 1 %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -321,13 +343,15 @@
         <tbody>
             <tr>
                 <td>0.65</td>
-                <td>{{ conn.resultant_shear }}</td>
-                <td>{{ conn.design_fz / (conn.screw_nos / 2) }}</td>
-                <td>{{ (conn.phi_Pnv / 0.5) | round(2) }}</td>
-                <td>{{ (conn.phi_Pnov / 0.5) | round(2) }}</td>
-                <td>{{ conn.beta_pullover }}</td>
+                <td>{{ resultant_shear }}</td>
+                <td>{{ R_zA }}</td>
+                <td>{{ (phi_Pnv / 0.5) | round(2) }}</td>
+                <td>{{ (phi_Pnov / 0.5) | round(2) }}</td>
+                <td>{{ beta_pullover }}</td>
                 <td>{{ (1.1 * 0.65) | round(2) }}</td>
-                <td class="ok">OK</td>
+                <td class="{% if beta_pullover < (1.1 * 0.65) %}ok{% else %}not-ok{% endif %}">
+                    {% if beta_pullover < (1.1 * 0.65) %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -353,13 +377,15 @@
         <tbody>
             <tr>
                 <td>0.6</td>
-                <td>{{ conn.resultant_shear }}</td>
-                <td>{{ conn.design_fz / (conn.screw_nos / 2) }}</td>
-                <td>{{ (conn.phi_Pnv / 0.5) | round(2) }}</td>
-                <td>{{ (conn.phi_Pnot / 0.5) | round(2) }}</td>
-                <td>{{ conn.beta_pullout }}</td>
+                <td>{{ resultant_shear }}</td>
+                <td>{{ R_zA }}</td>
+                <td>{{ (phi_Pnv / 0.5) | round(2) }}</td>
+                <td>{{ (phi_Pnot / 0.5) | round(2) }}</td>
+                <td>{{ beta_pullout }}</td>
                 <td>{{ (1.15 * 0.6) | round(2) }}</td>
-                <td class="ok">OK</td>
+                <td class="{% if beta_pullout < (1.15 * 0.6) %}ok{% else %}not-ok{% endif %}">
+                    {% if beta_pullout < (1.15 * 0.6) %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>

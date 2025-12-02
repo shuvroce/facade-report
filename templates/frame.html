@@ -4,8 +4,29 @@
 
     {% if frame.frame_type == "Fin Frame" %}
         {% include "partials/fin-frame.html" %}
+    
     {% else %}
+        {% if frame.length <= 4100 %}
+            {% set mul_allow_def = frame.length / 175 %}
+        {% else %}
+            {% set mul_allow_def = (frame.length / 240) + 6.35 %}
+        {% endif %}
+        {% set tran_allow_def = frame.width / 175 %}
+
+        {% if "RHS" in frame.mullion %}
+            {% set ls_a = frame.I_xa / (frame.I_xa + 3 * frame.I_xs) %}
+            {% set ls_s = 1 - ls_a  %}
+            {% set mul_mu_a = frame.mul_mu * ls_a %}
+            {% set mul_mu_s = frame.mul_mu * ls_s %}
+            {% set mul_dc_ratio_a = mul_mu_a / frame.mul_phi_Mn_a %}
+            {% set mul_dc_ratio_s = mul_mu_s / frame.mul_phi_Mn_s %}
+        {% else %}
+            {% set mul_dc_ratio = frame.mul_mu / frame.mul_phi_Mn %}
+            {% set tran_dc_ratio = frame.tran_mu / frame.tran_phi_Mn %}
+        {% endif %}
+
         {% include "partials/typ-frame.html" %}
     {% endif %}
+
 {% endfor %}
 

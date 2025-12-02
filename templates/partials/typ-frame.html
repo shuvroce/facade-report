@@ -132,12 +132,12 @@
                 <tr>
                     <td>Load share factor for aluminum</td>
                     <td><i>LS<sub>a</sub> = I<sub>xa</sub> / ( I<sub>xa</sub> + nI<sub>xs</sub> )</i></td>
-                    <td>{{ frame.LS_a }}</td>
+                    <td>{{ ls_a }}</td>
                 </tr>
                 <tr>
                     <td>Load share factor for Steel</td>
                     <td><i>LS<sub>s</sub> = nI<sub>xs</sub> / ( I<sub>xa</sub> + nI<sub>xs</sub> )</i></td>
-                    <td>{{ frame.LS_s }}</td>
+                    <td>{{ ls_s }}</td>
                 </tr>
             </tbody>
         </table>
@@ -455,7 +455,7 @@
                 <tr>
                     <td>Moment shared by alum. profile, <i>M<sub>ua</sub> = LS<sub>a</sub> × M<sub>u</sub></i></td>
                     <td>=</td>
-                    <td>{{ (frame.mul_mu * frame.LS_a) | round(2) }} <i>kN-m</i></td>
+                    <td>{{ mul_mu_a | round(2) }} <i>kN-m</i></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -467,8 +467,10 @@
                 <tr>
                     <td>P-M-M (D/C) ratio</td>
                     <td>=</td>
-                    <td>{{ frame.mul_dc_ratio_a }} &nbsp;&nbsp;&nbsp; <1 </td>
-                    <td class="ok">OK</td>
+                    <td>{{ mul_dc_ratio_a }} &nbsp;&nbsp;&nbsp; <1 </td>
+                    <td class="{% if mul_dc_ratio_a < 1 %}ok{% else %}not-ok{% endif %}">
+                        {% if mul_dc_ratio_a < 1 %} OK {% else %} NOT OK {% endif %}
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -485,7 +487,7 @@
                 <tr>
                     <td>Moment shared by steel tube, <i>M<sub>us</sub> = LS<sub>s</sub> × M<sub>u</sub></i></td>
                     <td>=</td>
-                    <td>{{ (frame.mul_mu * frame.LS_s) | round(2) }} <i>kN-m</i></td>
+                    <td>{{ mul_mu_s | round(2) }} <i>kN-m</i></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -497,8 +499,10 @@
                 <tr>
                     <td>P-M-M (D/C) ratio</td>
                     <td>=</td>
-                    <td>{{ frame.mul_dc_ratio_s }} &nbsp;&nbsp;&nbsp; <1 </td>
-                    <td class="ok">OK</td>
+                    <td>{{ mul_dc_ratio_s }} &nbsp;&nbsp;&nbsp; <1 </td>
+                    <td class="{% if mul_dc_ratio_s < 1 %}ok{% else %}not-ok{% endif %}">
+                        {% if mul_dc_ratio_s < 1 %} OK {% else %} NOT OK {% endif %}
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -522,8 +526,10 @@
             <tr>
                 <td>P-M-M (D/C) ratio</td>
                 <td>=</td>
-                <td>{{ frame.mul_dc_ratio }} &nbsp;&nbsp;&nbsp; <1 </td>
-                <td class="ok">OK</td>
+                <td>{{ mul_dc_ratio }} &nbsp;&nbsp;&nbsp; <1 </td>
+                <td class="{% if mul_dc_ratio < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if mul_dc_ratio < 1 %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -541,8 +547,10 @@
             <tr>
                 <td>Max. allowable deflection, δ<sub>a</sub></td>
                 <td>=</td>
-                <td>{{ frame.mul_allow_def }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
-                <td class="ok">OK</td>
+                <td>{{ mul_allow_def }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
+                <td class="{% if mul_allow_def > frame.mul_def %}ok{% else %}not-ok{% endif %}">
+                    {% if mul_allow_def > frame.mul_def %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -569,8 +577,10 @@
             <tr>
                 <td>P-M-M (D/C) ratio</td>
                 <td>=</td>
-                <td>{{ frame.tran_dc_ratio }} &nbsp;&nbsp;&nbsp; <1 </td>
-                <td class="ok">OK</td>
+                <td>{{ tran_dc_ratio }} &nbsp;&nbsp;&nbsp; <1 </td>
+                <td class="{% if tran_dc_ratio < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if tran_dc_ratio < 1 %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -588,8 +598,10 @@
             <tr>
                 <td>Max. allowable deflection, δ<sub>a</sub></td>
                 <td>=</td>
-                <td>{{ frame.tran_allow_def }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
-                <td class="ok">OK</td>
+                <td>{{ tran_allow_def }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
+                <td class="{% if tran_allow_def > frame.tran_def_wind %}ok{% else %}not-ok{% endif %}">
+                    {% if tran_allow_def > frame.tran_def_wind %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>
@@ -607,7 +619,9 @@
                 <td>Max. allowable deflection, δ<sub>a</sub></td>
                 <td>=</td>
                 <td>3.0 <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
-                <td class="ok">OK</td>
+                <td class="{% if 3.0 > frame.tran_def_dead %}ok{% else %}not-ok{% endif %}">
+                    {% if 3.0 > frame.tran_def_dead %} OK {% else %} NOT OK {% endif %}
+                </td>
             </tr>
         </tbody>
     </table>

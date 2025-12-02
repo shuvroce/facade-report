@@ -1,9 +1,73 @@
 {% for anchor in cat.anchorage %}
+    {% if anchor.clump_type != "L Clump" %}
+        {% if anchor.anchor_dia == 10 %}
+            {% set A_seN = 58.0 %}
+        {% elif anchor.anchor_dia == 12 %}
+            {% set A_seN = 84.3 %}
+        {% elif anchor.anchor_dia == 16 %}
+            {% set A_seN = 156.7 %}
+        {% endif %}
+
+        {% set N_ua = anchor.N_ua | default(0, true) %}
+        {% set N_ug = anchor.N_ug | default(0, true) %}
+        {% set N_p5 = anchor.N_p5 | default(20, true) %}
+
+        {% set phi_Nsa = 0.75 * A_seN * 500 %}
+        {% set A_NCO = 9 * anchor.embed_depth**2 %}
+        {% set psi_edN = [(0.7 + (0.3 * anchor.C_a1) / (1.5 * anchor.embed_depth)) , 1] | min %}
+        {% set N_b = 7 * 27.5**0.5 * anchor.embed_depth**1.5 %}
+        {% set phi_Ncbg = 0.65 * (anchor.A_NC / A_NCO) * psi_edN * N_b %}
+        {% set phi_Npn = 0.7 * N_p5 %}
+        {% set beta_N1 = N_ua / phi_Nsa %}
+        {% set beta_N2 = N_ug / phi_Ncbg %}
+        {% set beta_N3 = N_ua / phi_Npn %}
+
+        {% set phi_Vsa = 0.65 * 0.6 * A_seN * 500 %}
+        {% set A_VCO = 4.5 * anchor.C_a1**2 %}
+        {% set psi_edV = [(0.7 + (0.3 * 1000) / (1.5 * anchor.C_a1)) , 1] | min %}
+        {% set psi_hV = [((1.5 * anchor.C_a1 / anchor.h_a)**0.5), 1] | max %}
+        {% set d_a = anchor.anchor_dia %}
+        {% set l_e = [anchor.embed_depth, (8 * d_a)] | min %}
+        {% set V_b = 0.6 * (l_e / d_a)**0.2 * d_a**0.5 * 27.5**0.5 * anchor.C_a1**1.5 %}
+        {% set phi_Vcbg = 0.65 * (anchor.A_VC / A_VCO) * psi_edV * psi_hV * V_b %}
+        {% set phi_Vcp = 0.7 * 2 * phi_Ncbg %}
+        {% set beta_V1 = anchor.V_ua / phi_Vsa %}
+        {% set beta_V2 = anchor.V_ug / phi_Vcbg %}
+        {% set beta_V3 = anchor.V_ug / phi_Vcp %}
+
+        {% set beta_N = [beta_N1, beta_N2, beta_N3] | max %}
+        {% set beta_V = [beta_V1, beta_V2, beta_V3] | max %}
+        {% set beta_NV = beta_N**1.67 + beta_V**1.6 %}
+
+        {% set bp_m = (anchor.bp_length_N - 0.95 * anchor.bp_d) / 2 %}
+        {% if anchor.clump_type == "Box Clump" %}
+            {% set bp_Pu = anchor.design_Rz %}
+            {% set bp_n = (anchor.bp_width_B - 0.95 * anchor.bp_b) / 2 %}
+        {% elif anchor.clump_type == "U Clump" %}
+            {% set bp_Pu = anchor.design_Ry %}
+            {% set bp_n = (anchor.bp_width_B - 0.8 * anchor.bp_b) / 2 %}
+        {% endif %}
+
+        {% set bp_lambda_n = (anchor.bp_d * anchor.bp_b)**0.5 / 4 %}
+        {% set bp_l = [bp_m, bp_n, bp_lambda_n] | max %}
+        {% set bp_q = bp_Pu / anchor.bp_length_N %}
+        {% set bp_bearing_Mu = (bp_q * bp_l)**2 / 2 %}
+        {% set bp_thk_bearing = ((4 * bp_bearing_Mu) / (0.9 * 345 * anchor.bp_width_B))**0.5 %}
+
+        {% set bp_A1 = bp_Pu / (0.65 * 0.85 * 27.5) %}
+        {% set bp_fp_max = [(0.65 * 0.85 * 27.5), (0.65 * 1.7 * 27.5)] | min %}
+    {% endif %}
+
     {% if anchor.clump_type == "Box Clump" %}
         {% include "partials/box-clump.html" %}
+
     {% elif anchor.clump_type == "U Clump" %}
+        {% set bp_tension_Mu = anchor.bp_Tu * anchor.bp_x %}
+        {% set bp_thk_tension = ((4 * bp_tension_Mu) / (0.9 * 345 * anchor.bp_Beff))**0.5 %}
         {% include "partials/u-clump.html" %}
+
     {% else %}
         {% include "partials/l-clump.html" %}
     {% endif %}
+
 {% endfor %}
