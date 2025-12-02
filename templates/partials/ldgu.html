@@ -156,13 +156,13 @@
                 </tr>
                     <td>Load Share factor, <i>LS<sub>1</sub></i></td>
                     <td>=</td>
-                    <td>{{ ldgu_ls1 }}</td>
+                    <td>{{ ldgu_ls1 | round(2) }}</td>
                     <td><i>; ASTM E1300, Table 5</i></td>
                 </tr>
                 <tr>
                     <td>Load resisting capacity, <i>LR<sub>1</sub> = NFL<sub>1</sub> x GTF<sub>1</sub> x LS<sub>1</sub></i></td>
                     <td>=</td>
-                    <td>{{ ldgu_lr1 }} <i>kPa</i></td>
+                    <td>{{ ldgu_lr1 | round(2) }} <i>kPa</i></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -213,31 +213,31 @@
                 </tr>
                     <td>Load Share factor, <i>LS<sub>2</sub></i></td>
                     <td>=</td>
-                    <td>{{ ldgu_ls2 }}</td>
+                    <td>{{ ldgu_ls2 | round(2) }}</td>
                     <td><i>; ASTM E1300, Table 5</i></td>
                 </tr>
                 <tr>
                     <td>Load resisting capacity, <i>LR<sub>2</sub> = NFL<sub>2</sub> x GTF<sub>2</sub> x LS<sub>2</sub></i></td>
                     <td>=</td>
-                    <td>{{ ldgu_lr2 }} <i>kPa</i></td>
+                    <td>{{ ldgu_lr2 | round(2) }} <i>kPa</i></td>
                     <td></td>
                 </tr>
             </tbody>
         </table>
 
         <p><u>Therefore,</u></p>
-        <table class="borderless ml-1">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Load resisting capacity of the glass, <i>LR = min(LR<sub>1</sub>, LR<sub>2</sub>)</i></td>
                     <td>=</td>
-                    <td>{{ ldgu_lr }} <i>kPa</i></td>
+                    <td>{{ ldgu_lr | round(2) }} <i>kPa</i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Load resistance ratio = <i>P<sub>z</sub>/LR</i></td>
                     <td>=</td>
-                    <td>{{ ldgu_stress_ratio }}</td>
+                    <td>{{ ldgu_stress_ratio | round(2) }}</td>
                     <td class="{% if ldgu_stress_ratio < 1 %}ok{% else %}not-ok{% endif %}">
                         {% if ldgu_stress_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
@@ -328,7 +328,7 @@
         </table>
 
         <p><u>Therefore,</u></p>
-        <table class="borderless width__80 ml-1">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Critical Deflection, <i>δ = max(δ<sub>1</sub> , δ<sub>2</sub>)</i></td>
@@ -339,13 +339,13 @@
                 <tr>
                     <td>Allowable deflection, <i>δ<sub>a</sub></i></td>
                     <td>=</td>
-                    <td>{{ ldgu_allow_def }} <i>mm</i></td>
+                    <td>{{ ldgu_allow_def | round(2) }} <i>mm</i></td>
                     <td><i>; AS 1288:2006</i></td>
                 </tr>
                 <tr>
                     <td>Deflection ratio</td>
                     <td>=</td>
-                    <td>{{ ldgu_def_ratio }} <i>mm</i></td>
+                    <td>{{ ldgu_def_ratio | round(2) }} <i>mm</i></td>
                     <td class="{% if ldgu_def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
                         {% if ldgu_def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
@@ -360,7 +360,7 @@
     <div class="calc__fig2">
         <img src="assets/images/silicone.png" alt="Silicone Bite">
     </div>
-    <table class="borderless table__90">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Max. Design Wind/suction pressure, <i>P<sub>z</sub></i></td>
@@ -383,7 +383,7 @@
             <tr>
                 <td>Bite size/width required, <i>t<sub>r</sub> = (P<sub>z</sub> × B) / (2 F<sub>s</sub>)</i></td>
                 <td>=</td>
-                <td>{{ bite_req }} <i>mm</i></td>
+                <td>{{ bite_req | round(2) }} <i>mm</i></td>
                 <td></td>
             </tr>
             <tr>
@@ -396,7 +396,7 @@
             <tr>
                 <td>Glue line thickness required, <i>e<sub>r</sub> = t<sub>r</sub> / 3</i></td>
                 <td>=</td>
-                <td>{{ glue_req }} <i>mm</i></td>
+                <td>{{ glue_req | round(2) }} <i>mm</i></td>
                 <td>; ≥ 6 <i>mm</i></td>
             </tr>
             <tr>

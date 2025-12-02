@@ -62,36 +62,36 @@
 
     <p class="page__break">As the eccentricity is very small, hence ignoring the eccentricity and applying static equilibrium equation, ∑ F<sub>y</sub><sup>→+</sup> = 0 , ∑ F<sub>z</sub><sup>↑+</sup> = 0,</p>
     
-    <table class="borderless width__70 ml-2">
+    <table class="borderless ml-2 mt-1">
         <tbody>
             <tr>
                 <td>For screws on transom (A *), <i>R<sub>yA</sub> = F<sub>y</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ R_yA }} <i>kN</i></td>
+                <td>{{ R_yA | round(2) }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td style="padding-left: 4rem;"><i>R<sub>zA</sub> = F<sub>z</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ R_zA }} <i>kN</i></td>
+                <td>{{ R_zA | round(2) }} <i>kN</i></td>
                 <td><i>; tension</i></td>
             </tr>
             <tr>
                 <td>For screws on mullion (B *), <i>R<sub>yB</sub> = F<sub>y</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ R_yB }} <i>kN</i></td>
+                <td>{{ R_yB | round(2) }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td style="padding-left: 4rem;"><i>R<sub>zB</sub> = F<sub>z</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ R_zB }} <i>kN</i></td>
+                <td>{{ R_zB | round(2) }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td>Resultant shear, <i>V<sub>u</sub> = √( R<sub>yB</sub><sup>2</sup> + R<sub>zB</sub><sup>2</sup> )</i></td>
                 <td>=</td>
-                <td>{{ resultant_shear }} <i>kN</i></td>
+                <td>{{ resultant_shear | round(2) }} <i>kN</i></td>
                 <td></td>
             </tr>
         </tbody>
@@ -108,7 +108,7 @@
     </div>
     
     <p><u>Where,</u></p>
-    <table class="borderless width__100 ml-1">
+    <table class="borderless ml-1">
         <tbody>
             <tr>
                 <td>φ</td>
@@ -171,8 +171,8 @@
                 <td>{{ conn.screw_dia }}</td>
                 <td>207</td>
                 <td>207</td>
-                <td>{{ phi_Pnv }}</td>
-                <td>{{ resultant_shear }}</td>
+                <td>{{ phi_Pnv | round(2) }}</td>
+                <td>{{ resultant_shear | round(2) }}</td>
                 <td>{{ (resultant_shear / phi_Pnv) | round(2) }}</td>
                 <td class="{% if (resultant_shear / phi_Pnv) < 1 %}ok{% else %}not-ok{% endif %}">
                     {% if (resultant_shear / phi_Pnv) < 1 %} OK {% else %} NOT OK {% endif %}
@@ -194,7 +194,7 @@
     </table>
     
     <p><u>Where,</u></p>
-    <table class="borderless width__100 ml-1">
+    <table class="borderless ml-1">
         <tbody>
             <tr>
                 <td>φ</td>
@@ -233,8 +233,8 @@
                 <td>{{ conn.tc }}</td>
                 <td>{{ conn.screw_dia }}</td>
                 <td>207</td>
-                <td>{{ phi_Pnot }}</td>
-                <td>{{ R_zA }}</td>
+                <td>{{ phi_Pnot | round(2) }}</td>
+                <td>{{ R_zA | round(2) }}</td>
                 <td>{{ (R_zA / phi_Pnot) | round(2) }}</td>
                 <td class="{% if (R_zA / phi_Pnot) < 1 %}ok{% else %}not-ok{% endif %}">
                     {% if (R_zA / phi_Pnot) < 1 %} OK {% else %} NOT OK {% endif %}
@@ -291,8 +291,8 @@
                 <td>0.5</td>
                 <td>{{ conn.head_dia }}</td>
                 <td>{{ d_w }}</td>
-                <td>{{ phi_Pnov }}</td>
-                <td>{{ R_zA }}</td>
+                <td>{{ phi_Pnov | round(2) }}</td>
+                <td>{{ R_zA | round(2) }}</td>
                 <td>{{ (R_zA / phi_Pnov) | round(2) }}</td>
                 <td class="{% if (R_zA / phi_Pnov) < 1 %}ok{% else %}not-ok{% endif %}">
                     {% if (R_zA / phi_Pnov) < 1 %} OK {% else %} NOT OK {% endif %}
@@ -307,7 +307,7 @@
     </div>
     
     <p><u>Where,</u></p>
-    <table class="borderless width__100 ml-1">
+    <table class="borderless ml-1">
         <tbody>
             <tr>
                 <td>φ</td>
@@ -343,11 +343,11 @@
         <tbody>
             <tr>
                 <td>0.65</td>
-                <td>{{ resultant_shear }}</td>
-                <td>{{ R_zA }}</td>
+                <td>{{ resultant_shear | round(2) }}</td>
+                <td>{{ R_zA | round(2) }}</td>
                 <td>{{ (phi_Pnv / 0.5) | round(2) }}</td>
                 <td>{{ (phi_Pnov / 0.5) | round(2) }}</td>
-                <td>{{ beta_pullover }}</td>
+                <td>{{ beta_pullover | round(2) }}</td>
                 <td>{{ (1.1 * 0.65) | round(2) }}</td>
                 <td class="{% if beta_pullover < (1.1 * 0.65) %}ok{% else %}not-ok{% endif %}">
                     {% if beta_pullover < (1.1 * 0.65) %} OK {% else %} NOT OK {% endif %}
@@ -377,11 +377,11 @@
         <tbody>
             <tr>
                 <td>0.6</td>
-                <td>{{ resultant_shear }}</td>
-                <td>{{ R_zA }}</td>
+                <td>{{ resultant_shear | round(2) }}</td>
+                <td>{{ R_zA | round(2) }}</td>
                 <td>{{ (phi_Pnv / 0.5) | round(2) }}</td>
                 <td>{{ (phi_Pnot / 0.5) | round(2) }}</td>
-                <td>{{ beta_pullout }}</td>
+                <td>{{ beta_pullout | round(2) }}</td>
                 <td>{{ (1.15 * 0.6) | round(2) }}</td>
                 <td class="{% if beta_pullout < (1.15 * 0.6) %}ok{% else %}not-ok{% endif %}">
                     {% if beta_pullout < (1.15 * 0.6) %} OK {% else %} NOT OK {% endif %}

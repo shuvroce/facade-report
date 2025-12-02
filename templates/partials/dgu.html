@@ -27,7 +27,7 @@
 
 <div>
     <h3>Data Analysis</h3>
-    <table class="borderless width__90">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Glass length, a</td>
@@ -110,7 +110,7 @@
         <figcaption>Non-factored Load Chart</figcaption>
     </div>
     <div>
-        <table class="borderless width__100">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Max non factored load, <i>NFL<sub>1</sub></i></td>
@@ -140,7 +140,7 @@
                 </tr>
                     <td>Load Share factor, <i>LS<sub>1</sub></i></td>
                     <td>=</td>
-                    <td>{{ dgu_ls1 }}</td>
+                    <td>{{ dgu_ls1 | round(2) }}</td>
                     <td><i>; ASTM E1300, Table 5</i></td>
                 </tr>
                 <tr>
@@ -167,7 +167,7 @@
         <figcaption>Non-factored Load Chart</figcaption>
     </div>
     <div>
-        <table class="borderless width__100">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Max non factored load, <i>NFL<sub>2</sub></i></td>
@@ -197,7 +197,7 @@
                 </tr>
                     <td>Load Share factor, <i>LS<sub>2</sub></i></td>
                     <td>=</td>
-                    <td>{{ dgu_ls2 }}</td>
+                    <td>{{ dgu_ls2 | round(2) }}</td>
                     <td><i>; ASTM E1300, Table 5</i></td>
                 </tr>
                 <tr>
@@ -209,7 +209,7 @@
             </tbody>
         </table>
 
-        <table class="borderless width__80" style="margin-top: 1rem;">
+        <table class="borderless mt-1">
             <tbody>
                 <tr>
                     <td><u>Therefore,</u></td>
@@ -217,7 +217,7 @@
                 <tr>
                     <td>Load resisting capacity of the glass, <i>LR = min(LR<sub>1</sub>, LR<sub>2</sub>)</i></td>
                     <td>=</td>
-                    <td>{{ dgu_lr }} <i>kPa</i></td>
+                    <td>{{ dgu_lr | round(2) }} <i>kPa</i></td>
                     <td></td>
                 </tr>
                 <tr>
@@ -250,7 +250,7 @@
     </div>
 
     <div>
-        <table class="borderless table__80">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Load × Area<sup>2</sup> **</td>
@@ -291,7 +291,7 @@
     </div>
 
     <div>
-        <table class="borderless table__80">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Load × Area<sup>2</sup></td>
@@ -314,7 +314,7 @@
             </tbody>
         </table>
 
-        <table class="borderless width__80" style="margin-top: 1rem;">
+        <table class="borderless mt-1">
             <tbody>
                 <tr>
                     <td><u>Therefore,</u></td>
@@ -334,7 +334,7 @@
                 <tr>
                     <td>Deflection ratio</td>
                     <td>=</td>
-                    <td>{{ dgu_def_ratio }} <i>mm</i></td>
+                    <td>{{ dgu_def_ratio | round(2) }} <i>mm</i></td>
                     <td class="{% if dgu_def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
                         {% if dgu_def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
@@ -350,7 +350,7 @@
     <div class="calc__fig2">
         <img src="assets/images/silicone.png" alt="Silicone Bite">
     </div>
-    <table class="borderless table__90">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Max. Design Wind/suction pressure, <i>P<sub>z</sub></i></td>

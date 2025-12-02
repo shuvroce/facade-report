@@ -4,7 +4,7 @@
     {% set bite_req = ((gu.wind_load * gu.width) / (2 * 140)) %}
     {% set bite_pro = (((bite_req * 2) | round(0, 'ceil')) / 2) %}
     {% set glue_req = (bite_req / 3) %}
-    {% set glue_pro = (((glue_req * 2) | round(0, 'ceil')) / 2) %}
+    {% set glue_pro = [6.0, (((glue_req * 2) | round(0, 'ceil')) / 2)] | max %}
 
     {% if gu.glass_type == "sgu" and gu.length < 5000 and gu.support_type != "Point Fixed" %}
         {% set sgu_lr = (gu.nfl * gu.gtf) %}

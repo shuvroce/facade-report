@@ -24,7 +24,7 @@
 
     <div>
         <h3>Data Analysis</h3>
-        <table class="borderless width__90">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Glass length, a</td>
@@ -100,7 +100,7 @@
 
     <div>
         <h3>Data Analysis</h3>
-        <table class="borderless width__90">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Glass length, a</td>
@@ -195,7 +195,7 @@
 
     <div>
         <h3>Data Analysis</h3>
-        <table class="borderless width__90">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Glass length, a</td>
@@ -289,7 +289,7 @@
 
     <div>
         <h3>Data Analysis</h3>
-        <table class="borderless width__90">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Glass length, a</td>
@@ -443,7 +443,7 @@
     <div class="calc__fig2">
         <img src="assets/images/silicone.png" alt="Silicone Bite">
     </div>
-    <table class="borderless table__90">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Max. Design Wind/suction pressure, <i>P<sub>z</sub></i></td>
@@ -466,7 +466,7 @@
             <tr>
                 <td>Bite size/width required, <i>t<sub>r</sub> = (P<sub>z</sub> × B) / (2 F<sub>s</sub>)</i></td>
                 <td>=</td>
-                <td>{{ bite_req }} <i>mm</i></td>
+                <td>{{ bite_req | round(2) }} <i>mm</i></td>
                 <td></td>
             </tr>
             <tr>
@@ -479,7 +479,7 @@
             <tr>
                 <td>Glue line thickness required, <i>e<sub>r</sub> = t<sub>r</sub> / 3</i></td>
                 <td>=</td>
-                <td>{{ glue_req }} <i>mm</i></td>
+                <td>{{ glue_req | round(2) }} <i>mm</i></td>
                 <td>; ≥ 6 <i>mm</i></td>
             </tr>
             <tr>

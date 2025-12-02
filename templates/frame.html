@@ -22,8 +22,8 @@
             {% set mul_dc_ratio_s = mul_mu_s / frame.mul_phi_Mn_s %}
         {% else %}
             {% set mul_dc_ratio = frame.mul_mu / frame.mul_phi_Mn %}
-            {% set tran_dc_ratio = frame.tran_mu / frame.tran_phi_Mn %}
         {% endif %}
+        {% set tran_dc_ratio = frame.tran_mu / frame.tran_phi_Mn %}
 
         {% include "partials/typ-frame.html" %}
     {% endif %}

@@ -140,13 +140,13 @@
                 <tr>
                     <td>Load resisting capacity, <i>LR = NFL x GTF</i></td>
                     <td>=</td>
-                    <td>{{ lgu_lr }} <i>kPa</i></td>
+                    <td>{{ lgu_lr | round(2) }} <i>kPa</i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Load resistance ratio = <i>P<sub>z</sub>/LR</i></td>
                     <td>=</td>
-                    <td>{{ lgu_stress_ratio }}</td>
+                    <td>{{ lgu_stress_ratio | round(2) }}</td>
                     <td class="{% if lgu_stress_ratio < 1 %}ok{% else %}not-ok{% endif %}">
                         {% if lgu_stress_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
@@ -195,13 +195,13 @@
                 <tr>
                     <td>Allowable deflection, <i>δ<sub>a</sub></i></td>
                     <td>=</td>
-                    <td>{{ lgu_allow_def }} <i>mm</i></td>
+                    <td>{{ lgu_allow_def | round(2) }} <i>mm</i></td>
                     <td><i>; AS 1288:2006</i></td>
                 </tr>
                 <tr>
                     <td>Deflection ratio</td>
                     <td>=</td>
-                    <td>{{ lgu_def_ratio }} <i>mm</i></td>
+                    <td>{{ lgu_def_ratio | round(2) }} <i>mm</i></td>
                     <td class="{% if lgu_def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
                         {% if lgu_def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
@@ -217,7 +217,7 @@
     <div class="calc__fig2">
         <img src="assets/images/silicone.png" alt="Silicone Bite">
     </div>
-    <table class="borderless table__90">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Max. Design Wind/suction pressure, <i>P<sub>z</sub></i></td>
@@ -240,7 +240,7 @@
             <tr>
                 <td>Bite size/width required, <i>t<sub>r</sub> = (P<sub>z</sub> × B) / (2 F<sub>s</sub>)</i></td>
                 <td>=</td>
-                <td>{{ bite_req }} <i>mm</i></td>
+                <td>{{ bite_req | round(2) }} <i>mm</i></td>
                 <td></td>
             </tr>
             <tr>
@@ -253,7 +253,7 @@
             <tr>
                 <td>Glue line thickness required, <i>e<sub>r</sub> = t<sub>r</sub> / 3</i></td>
                 <td>=</td>
-                <td>{{ glue_req }} <i>mm</i></td>
+                <td>{{ glue_req | round(2) }} <i>mm</i></td>
                 <td>; ≥ 6 <i>mm</i></td>
             </tr>
             <tr>

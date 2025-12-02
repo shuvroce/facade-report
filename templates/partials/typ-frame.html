@@ -132,12 +132,12 @@
                 <tr>
                     <td>Load share factor for aluminum</td>
                     <td><i>LS<sub>a</sub> = I<sub>xa</sub> / ( I<sub>xa</sub> + nI<sub>xs</sub> )</i></td>
-                    <td>{{ ls_a }}</td>
+                    <td>{{ ls_a | round(2) }}</td>
                 </tr>
                 <tr>
                     <td>Load share factor for Steel</td>
                     <td><i>LS<sub>s</sub> = nI<sub>xs</sub> / ( I<sub>xa</sub> + nI<sub>xs</sub> )</i></td>
-                    <td>{{ ls_s }}</td>
+                    <td>{{ ls_s | round(2) }}</td>
                 </tr>
             </tbody>
         </table>
@@ -232,13 +232,13 @@
             <tr>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-mul-max-moment.png">
+                        <img style="width: 80mm;" src="inputs/{{ loop_index }}-sap-mul-max-moment.png">
                         <figcaption>Max. Moment on mullion (0.9D – 1.6W)</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-tran-max-moment.png">
+                        <img style="width: 80mm;" src="inputs/{{ loop_index }}-sap-tran-max-moment.png">
                         <figcaption>Max. Moment on transom (0.9D – 1.6W)</figcaption>
                     </figure>
                 </td>
@@ -444,7 +444,7 @@
 
     {% if "RHS" in frame.mullion %}
         <h4>Design of Aluminum Part</h4>
-        <table class="borderless width__100">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Max. bending moment, <i>M<sub>u</sub></i> (under ULS)</td>
@@ -467,7 +467,7 @@
                 <tr>
                     <td>P-M-M (D/C) ratio</td>
                     <td>=</td>
-                    <td>{{ mul_dc_ratio_a }} &nbsp;&nbsp;&nbsp; <1 </td>
+                    <td>{{ mul_dc_ratio_a | round(2) }} &nbsp;&nbsp;&nbsp; <1 </td>
                     <td class="{% if mul_dc_ratio_a < 1 %}ok{% else %}not-ok{% endif %}">
                         {% if mul_dc_ratio_a < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
@@ -476,7 +476,7 @@
         </table>
 
         <h4>Design of Embedded Steel Tube Part</h4>
-        <table class="borderless width__100">
+        <table class="borderless">
             <tbody>
                 <tr>
                     <td>Max. bending moment, <i>M<sub>u</sub></i> (under ULS)</td>
@@ -499,7 +499,7 @@
                 <tr>
                     <td>P-M-M (D/C) ratio</td>
                     <td>=</td>
-                    <td>{{ mul_dc_ratio_s }} &nbsp;&nbsp;&nbsp; <1 </td>
+                    <td>{{ mul_dc_ratio_s | round(2) }} &nbsp;&nbsp;&nbsp; <1 </td>
                     <td class="{% if mul_dc_ratio_s < 1 %}ok{% else %}not-ok{% endif %}">
                         {% if mul_dc_ratio_s < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
@@ -509,7 +509,7 @@
     
     {% else %}
     <h4>Design for Moment</h4>
-    <table class="borderless width__100">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Max. bending moment, <i>M<sub>u</sub></i> (under ULS)</td>
@@ -526,7 +526,7 @@
             <tr>
                 <td>P-M-M (D/C) ratio</td>
                 <td>=</td>
-                <td>{{ mul_dc_ratio }} &nbsp;&nbsp;&nbsp; <1 </td>
+                <td>{{ mul_dc_ratio | round(2) }} &nbsp;&nbsp;&nbsp; <1 </td>
                 <td class="{% if mul_dc_ratio < 1 %}ok{% else %}not-ok{% endif %}">
                     {% if mul_dc_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
@@ -536,7 +536,7 @@
     {% endif %}
 
     <h4>Check for Deflection</h4>
-    <table class="borderless width__100">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Max. deflection (under SLS), δ</td>
@@ -547,7 +547,7 @@
             <tr>
                 <td>Max. allowable deflection, δ<sub>a</sub></td>
                 <td>=</td>
-                <td>{{ mul_allow_def }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
+                <td>{{ mul_allow_def | round(2) }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
                 <td class="{% if mul_allow_def > frame.mul_def %}ok{% else %}not-ok{% endif %}">
                     {% if mul_allow_def > frame.mul_def %} OK {% else %} NOT OK {% endif %}
                 </td>
@@ -560,7 +560,7 @@
     <h3>Design of Transom</h3>
 
     <h4>Design for Moment</h4>
-    <table class="borderless width__100">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Max. bending moment, <i>M<sub>u</sub></i> (under ULS)</td>
@@ -577,7 +577,7 @@
             <tr>
                 <td>P-M-M (D/C) ratio</td>
                 <td>=</td>
-                <td>{{ tran_dc_ratio }} &nbsp;&nbsp;&nbsp; <1 </td>
+                <td>{{ tran_dc_ratio | round(2) }} &nbsp;&nbsp;&nbsp; <1 </td>
                 <td class="{% if tran_dc_ratio < 1 %}ok{% else %}not-ok{% endif %}">
                     {% if tran_dc_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
@@ -587,7 +587,7 @@
 
     <h4>Check for Deflection</h4>
     <p><u>For wind load –</u></p>
-    <table class="borderless width__100">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Max. deflection (under SLS), δ</td>
@@ -598,7 +598,7 @@
             <tr>
                 <td>Max. allowable deflection, δ<sub>a</sub></td>
                 <td>=</td>
-                <td>{{ tran_allow_def }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
+                <td>{{ tran_allow_def | round(2) }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
                 <td class="{% if tran_allow_def > frame.tran_def_wind %}ok{% else %}not-ok{% endif %}">
                     {% if tran_allow_def > frame.tran_def_wind %} OK {% else %} NOT OK {% endif %}
                 </td>
@@ -607,7 +607,7 @@
     </table>
     
     <p><u>For dead load –</u></p>
-    <table class="borderless width__100">
+    <table class="borderless">
         <tbody>
             <tr>
                 <td>Max. deflection (under SLS), δ</td>

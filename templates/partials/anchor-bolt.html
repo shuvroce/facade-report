@@ -103,7 +103,7 @@
             <td>0.65</td>
             <td>{{ A_seN }}</td>
             <td>500</td>
-            <td>{{ phi_Vsa }}</td>
+            <td>{{ phi_Vsa | round(2) }}</td>
             <td>{{ anchor.V_ua }}</td>
             <td>{{ beta_V1 | round(2) }}</td>
             <td class="{% if beta_V1 < 1 %}ok{% else %}not-ok{% endif %}">
@@ -198,14 +198,14 @@
         <tr>
             <td>0.65</td>
             <td>{{ anchor.A_VC }}</td>
-            <td>{{ A_VCO }}</td>
+            <td>{{ A_VCO | round(2) }}</td>
             <td>{{ anchor.C_a1 }}</td>
             <td>–</td>
             <td>{{ anchor.h_a }}</td>
             <td>1.0</td>
-            <td>{{ psi_edV }}</td>
+            <td>{{ psi_edV | round(1) }}</td>
             <td>1.0</td>
-            <td>{{ psi_hV }}</td>
+            <td>{{ psi_hV | round(1) }}</td>
         </tr>
     </tbody>
 </table>
@@ -224,8 +224,8 @@
     <tbody>
         <tr>
             <td>{{ l_e }}</td>
-            <td>{{ V_b }}</td>
-            <td>{{ phi_Vcbg }}</td>
+            <td>{{ V_b | round(2) }}</td>
+            <td>{{ phi_Vcbg | round(2) }}</td>
             <td>{{ anchor.V_ug }}</td>
             <td>{{ beta_V2 | round(2) }}</td>
             <td class="{% if beta_V2 < 1 %}ok{% else %}not-ok{% endif %}">
@@ -278,7 +278,7 @@
             <td>0.7</td>
             <td>2</td>
             <td>{{ (phi_Ncbg / 0.7) | round(2) }}</td>
-            <td>{{ phi_Vcp }}</td>
+            <td>{{ phi_Vcp | round(2) }}</td>
             <td>{{ anchor.V_ug }}</td>
             <td>{{ beta_V3 | round(2) }}</td>
             <td class="{% if beta_V3 < 1 %}ok{% else %}not-ok{% endif %}">
