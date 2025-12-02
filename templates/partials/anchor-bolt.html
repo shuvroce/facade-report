@@ -1,4 +1,4 @@
-<p><b><u>Anchor Bolt Data –</u></b></p>
+<p><u>Anchor Bolt Data –</u></p>
 <table class="borderless">
     <tbody>
         <tr>
@@ -37,12 +37,251 @@
 
 {% if anchor.clump_type != "Box Clump" %}
 <h4>Steel Strength in Tension</h4>
+<table class="borderless width__100">
+    <tbody>
+        <tr>
+            <td><i>φN<sub>sa</sub> = φ A<sub>se,N</sub> f<sub>uta</sub> &nbsp;&nbsp;&nbsp; (kN)</i></td>
+            <td style="text-align: right;">(Eqn. 6.K.3, BNBC 2020)</td>
+        </tr>
+    </tbody>
+</table>
 
+<p><u>Where,</u></p>
+<table class="borderless ml-1">
+    <tbody>
+        <tr>
+            <td>φ</td>
+            <td>–</td>
+            <td>Strength reduction factor</td>
+        </tr>
+        <tr>
+            <td><i>A<sub>se,N</sub> = (π / 4) (d<sub>a</sub> - 0.9382P)<sup>2</sup></i></td>
+            <td>–</td>
+            <td>Tensile stress area (mm<sup>2</sup>)</td>
+        </tr>
+        <tr>
+            <td><i>f<sub>uta</sub> = min( 860 , 1.9 F<sub>y</sub> , f<sub>u</sub> )</i></td>
+            <td>–</td>
+            <td>Allowable tensile strength of Anchor (MPa)</td>
+        </tr>
+        <tr>
+            <td><i>N<sub>ua</sub></i></td>
+            <td>–</td>
+            <td>Tensile force in single anchor (kN)</td>
+        </tr>
+        <tr>
+            <td>β</td>
+            <td>–</td>
+            <td>Strength ratio</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="width__100 align__center">
+    <thead>
+        <tr>
+            <th>φ</th>
+            <th><i>A<sub>se,N</sub></i></th>
+            <th><i>f<sub>uta</sub></i></th>
+            <th><i>φN<sub>sa</sub></i></th>
+            <th><i>N<sub>ua</sub></i></th>
+            <th><i>β<sub>N</sub></i></th>
+            <th>Check</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0.75</td>
+            <td>{{ A_seN }}</td>
+            <td>500</td>
+            <td>{{ phi_Nsa | round(2) }}</td>
+            <td>{{ anchor.N_ua }}</td>
+            <td>{{ beta_N1 | round(2) }}</td>
+            <td class="{% if beta_N1 < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if beta_N1 < 1 %} OK {% else %} NOT OK {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Concrete Breakout Strength in Tension</h4>
+<table class="borderless width__100">
+    <tbody>
+        <tr>
+            <td><i>φN<sub>cbg</sub> = φ (A<sub>NC</sub> / A<sub>NCO</sub>) ψ<sub>ec,N</sub> ψ<sub>ed,N</sub> ψ<sub>c,N</sub> ψ<sub>cp,N</sub> N<sub>b</sub> &nbsp;&nbsp;&nbsp; (kN)</i></td>
+            <td style="text-align: right;">(Eqn. 6.K.5, BNBC 2020)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><u>Where,</u></p>
+<div class="calc__fig">
+    <img src="assets/images/u-conc-breakout-tension.png">
+</div>
+
+<table class="borderless ml-1">
+    <tbody>
+        <tr>
+            <td><i>A<sub>NC</sub></i></td>
+            <td>–</td>
+            <td>Concrete failure area for anchor group (mm<sup>2</sup>)</td>
+        </tr>
+        <tr>
+            <td><i>A<sub>NCO</sub> = 9 h<sub>ef</sub><sup>2</sup></i></td>
+            <td>–</td>
+            <td>Conc. failure area of single anchor w/o edge influence (mm<sup>2</sup>)</td>
+        </tr>
+        <tr>
+            <td><i>ψ<sub>ec,N</sub></i></td>
+            <td>–</td>
+            <td>Modification factor for eccentricity</td>
+        </tr>
+        <tr>
+            <td><img src="assets/images/anchor-eqn4.png" style="width: 50mm;"></i></td>
+            <td>–</td>
+            <td>Modification factor for edge distance</td>
+        </tr>
+        <tr>
+            <td><i>ψ<sub>c,N</sub></i></td>
+            <td>–</td>
+            <td>Modification factor for concrete condition (cracked)</td>
+        </tr>
+        <tr>
+            <td><i>ψ<sub>cp,N</sub></i></td>
+            <td>–</td>
+            <td>Modification factor for post-installed anchor (cracked)</td>
+        </tr>
+        <tr>
+            <td><img src="assets/images/anchor-eqn5.png" style="width: 40mm;"></td>
+            <td>–</td>
+            <td>Basic concrete breakout strength (kN)</td>
+        </tr>
+        <tr>
+            <td><i>k<sub>c</sub></i></td>
+            <td>–</td>
+            <td>Installation type factor</td>
+        </tr>
+        <tr>
+            <td>λ</td>
+            <td>–</td>
+            <td>Modification factor for light-weight concrete</td>
+        </tr>
+        <tr>
+            <td><i>N<sub>ug</sub></i></td>
+            <td>–</td>
+            <td>Tensile force in group of anchors (kN)</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page__break"></div>
+<table class="width__100 align__center">
+    <thead>
+        <tr>
+            <th>φ</th>
+            <th><i>A<sub>NC</sub></i></th>
+            <th><i>A<sub>NCO</sub></i></th>
+            <th><i>C<sub>a,min</sub></i></th>
+            <th><i>ψ<sub>ec,N</sub></i></th>
+            <th><i>ψ<sub>ed,N</sub></i></th>
+            <th><i>ψ<sub>c,N</sub></i></th>
+            <th><i>ψ<sub>cp,N</sub></i></th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0.65</td>
+            <td>{{ anchor.A_NC }}</td>
+            <td>{{ A_NCO | round(2) }}</td>
+            <td>{{ anchor.C_a1 }}</td>
+            <td>1.0</td>
+            <td>{{ psi_edN | round(1) }}</td>
+            <td>1.0</td>
+            <td>1.0</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="width__80 align__center mt-1">
+    <thead>
+        <tr>
+            <th><i>k<sub>c</sub></i></th>
+            <th>λ</th>
+            <th><i>N<sub>b</sub></i></th>
+            <th><i>φN<sub>cbg</sub></i></th>
+            <th><i>N<sub>ug</sub></i></th>
+            <th><i>β<sub>N</sub></i></th>
+            <th>Check</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>7</td>
+            <td>1.0</td>
+            <td>{{ N_b | round(2) }}</td>
+            <td>{{ phi_Ncbg | round(2) }}</td>
+            <td>{{ anchor.N_ug }}</td>
+            <td>{{ beta_N2 | round(2) }}</td>
+            <td class="{% if beta_N2 < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if beta_N2 < 1 %} OK {% else %} NOT OK {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<h4>Pullout Strength in Tension</h4>
+<table class="borderless width__100">
+    <tbody>
+        <tr>
+            <td><i>φN<sub>pn</sub> = φ ψ<sub>c,p</sub> N<sub>p</sub> &nbsp;&nbsp;&nbsp; (kN)</i></td>
+            <td style="text-align: right;">(Eqn. 6.K.14, BNBC 2020)</td>
+        </tr>
+    </tbody>
+</table>
+
+<p><u>Where,</u></p>
+<table class="borderless ml-1">
+    <tbody>
+        <tr>
+            <td><i>ψ<sub>c,p</sub></i></td>
+            <td>–</td>
+            <td>Modification factor for concrete condition (cracked)</td>
+        </tr>
+        <tr>
+            <td><i>N<sub>p</sub> = N<sub>cbg</sub></i></td>
+            <td>–</td>
+            <td>Basic concrete breakout strength (5% fractile test, ACI 355.2) (kN)</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="width__100 align__center">
+    <thead>
+        <tr>
+            <th>φ</th>
+            <th><i>ψ<sub>c,p</sub></i></th>
+            <th><i>N<sub>p</sub></i></th>
+            <th><i>φN<sub>pn</sub></i></th>
+            <th><i>N<sub>ua</sub></i></th>
+            <th><i>β<sub>N</sub></i></th>
+            <th>Check</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>0.7</td>
+            <td>1.0</td>
+            <td>{{ N_p5 }}</td>
+            <td>{{ phi_Npn | round(2) }}</td>
+            <td>{{ anchor.N_ua }}</td>
+            <td>{{ beta_N3 | round(2) }}</td>
+            <td class="{% if beta_N3 < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if beta_N3 < 1 %} OK {% else %} NOT OK {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
 {% endif %}
-
-
-
-
 
 
 <h4>Steel Strength in Shear</h4>
@@ -126,7 +365,11 @@
 
 <p><u>Where,</u></p>
 <div class="calc__fig">
-    <img src="assets/images/box-conc-breakout.png">
+    {% if anchor.clump_type == "Box Clump" %}
+        <img src="assets/images/box-conc-breakout.png">
+    {% elif anchor.clump_type == "U Clump" %}
+        <img src="assets/images/u-conc-breakout-shear.png">
+    {% endif %}
 </div>
 
 <table class="borderless ml-1">
@@ -179,6 +422,7 @@
     </tbody>
 </table>
 
+<div class="page__break"></div>
 <table class="width__100 align__center">
     <thead>
         <tr>
@@ -196,12 +440,18 @@
     </thead>
     <tbody>
         <tr>
-            <td>0.65</td>
+            <td>0.7</td>
             <td>{{ anchor.A_VC }}</td>
             <td>{{ A_VCO | round(2) }}</td>
             <td>{{ anchor.C_a1 }}</td>
             <td>–</td>
-            <td>{{ anchor.h_a }}</td>
+            <td>
+                {% if anchor.clump_type == "U Clump" %}
+                    –
+                {% elif anchor.clump_type == "Box Clump" %}
+                    {{ anchor.h_a }}
+                {% endif %}
+            </td>
             <td>1.0</td>
             <td>{{ psi_edV | round(1) }}</td>
             <td>1.0</td>
@@ -277,7 +527,7 @@
         <tr>
             <td>0.7</td>
             <td>2</td>
-            <td>{{ (phi_Ncbg / 0.7) | round(2) }}</td>
+            <td>{{ (phi_Ncbg / 0.65) | round(2) }}</td>
             <td>{{ phi_Vcp | round(2) }}</td>
             <td>{{ anchor.V_ug }}</td>
             <td>{{ beta_V3 | round(2) }}</td>
@@ -290,7 +540,63 @@
 
 {% if anchor.clump_type != "Box Clump" %}
 <h4>Interaction to Tensile and Shear Force</h4>
+<table class="borderless width__100">
+    <tbody>
+        <tr>
+            <td>
+                {% if ([beta_N1, beta_N2, beta_N3] | min) < 0.2 or ([beta_V1, beta_V2, beta_V3] | min) < 0.2 %}
+                <i>β<sub>NV</sub> = (β<sub>N</sub>)<sup>ζ</sup> + (β<sub>V</sub>)<sup>ζ</sup> ≤ 1.0 &nbsp;&nbsp;&nbsp; (kN)</i>
+                {% else %}
+                <i>β<sub>NV</sub> = (β<sub>N</sub>)<sup>ζ</sup> + (β<sub>V</sub>)<sup>ζ</sup> ≤ 1.2 &nbsp;&nbsp;&nbsp; (kN)</i>
+                {% endif %}
+            </td>
+            <td style="text-align: right;">(Sec. K.7, BNBC 2020)</td>
+        </tr>
+    </tbody>
+</table>
 
+<p><u>Where,</u></p>
+<table class="borderless ml-1">
+    <tbody>
+        <tr>
+            <td><i>β<sub>N</sub></i></td>
+            <td>–</td>
+            <td>Highest design ratio from all tension failure mode</td>
+        </tr>
+        <tr>
+            <td><i>β<sub>V</sub></i></td>
+            <td>–</td>
+            <td>Highest design ratio from all shear failure mode</td>
+        </tr>
+    </tbody>
+</table>
+
+<table class="width__100 align__center">
+    <thead>
+        <tr>
+            <th>β<sub>N</sub></th>
+            <th>β<sub>V</sub></th>
+            <th>ζ</th>
+            <th>β<sub>NV</sub></th>
+            <th>Check</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>{{ beta_N | round(2) }}</td>
+            <td>{{ beta_V | round(2) }}</td>
+            <td>1.67</td>
+            <td>{{ beta_NV | round(2) }}</td>
+            <td>
+                {% if ([beta_N1, beta_N2, beta_N3] | min) < 0.2 or ([beta_V1, beta_V2, beta_V3] | min) < 0.2 %}
+                    <p class="{% if beta_NV < 1 %}ok{% else %}not-ok{% endif %}">{% if beta_NV < 1 %} OK {% else %} NOT OK {% endif %}</p>
+                {% else %}
+                    <p class="{% if beta_NV < 1.2 %}ok{% else %}not-ok{% endif %}">{% if beta_NV < 1.2 %} OK {% else %} NOT OK {% endif %}</p>
+                {% endif %}
+            </td>
+        </tr>
+    </tbody>
+</table>
 {% endif %}
 
 <h4>Tightening Torque Requirement</h4>

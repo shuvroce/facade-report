@@ -536,6 +536,10 @@ table.align__center td img {
     break-before: always;
 }
 
+.page__break-after {
+    break-after: always;
+}
+
 .page__break_avoid {
     break-inside: avoid;
 }

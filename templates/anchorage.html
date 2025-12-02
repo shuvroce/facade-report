@@ -11,26 +11,27 @@
         {% set N_ua = anchor.N_ua | default(0, true) %}
         {% set N_ug = anchor.N_ug | default(0, true) %}
         {% set N_p5 = anchor.N_p5 | default(20, true) %}
+        {% set h_a = anchor.h_a | default(1000, true) %}
 
-        {% set phi_Nsa = 0.75 * A_seN * 500 %}
+        {% set phi_Nsa = 0.75 * A_seN * 500 / 1000 %}
         {% set A_NCO = 9 * anchor.embed_depth**2 %}
-        {% set psi_edN = [(0.7 + (0.3 * anchor.C_a1) / (1.5 * anchor.embed_depth)) , 1] | min %}
-        {% set N_b = 7 * 27.5**0.5 * anchor.embed_depth**1.5 %}
+        {% set psi_edN = [(0.7 + (0.3 * anchor.C_a1) / (1.5 * anchor.embed_depth)) , 1.0] | min %}
+        {% set N_b = 7 * 27.5**0.5 * anchor.embed_depth**1.5 / 1000 %}
         {% set phi_Ncbg = 0.65 * (anchor.A_NC / A_NCO) * psi_edN * N_b %}
         {% set phi_Npn = 0.7 * N_p5 %}
         {% set beta_N1 = N_ua / phi_Nsa %}
         {% set beta_N2 = N_ug / phi_Ncbg %}
         {% set beta_N3 = N_ua / phi_Npn %}
 
-        {% set phi_Vsa = 0.65 * 0.6 * A_seN * 500 %}
+        {% set phi_Vsa = 0.65 * 0.6 * A_seN * 500 / 1000 %}
         {% set A_VCO = 4.5 * anchor.C_a1**2 %}
-        {% set psi_edV = [(0.7 + (0.3 * 1000) / (1.5 * anchor.C_a1)) , 1] | min %}
-        {% set psi_hV = [((1.5 * anchor.C_a1 / anchor.h_a)**0.5), 1] | max %}
+        {% set psi_edV = [(0.7 + (0.3 * 1000) / (1.5 * anchor.C_a1)) , 1.0] | min %}
+        {% set psi_hV = [((1.5 * anchor.C_a1 / h_a)**0.5), 1.0] | max %}
         {% set d_a = anchor.anchor_dia %}
         {% set l_e = [anchor.embed_depth, (8 * d_a)] | min %}
-        {% set V_b = 0.6 * (l_e / d_a)**0.2 * d_a**0.5 * 27.5**0.5 * anchor.C_a1**1.5 %}
-        {% set phi_Vcbg = 0.65 * (anchor.A_VC / A_VCO) * psi_edV * psi_hV * V_b %}
-        {% set phi_Vcp = 0.7 * 2 * phi_Ncbg %}
+        {% set V_b = 0.6 * (l_e / d_a)**0.2 * d_a**0.5 * 27.5**0.5 * anchor.C_a1**1.5 / 1000 %}
+        {% set phi_Vcbg = 0.7 * (anchor.A_VC / A_VCO) * psi_edV * psi_hV * V_b %}
+        {% set phi_Vcp = (0.7 * 2 * phi_Ncbg) / 0.65 %}
         {% set beta_V1 = anchor.V_ua / phi_Vsa %}
         {% set beta_V2 = anchor.V_ug / phi_Vcbg %}
         {% set beta_V3 = anchor.V_ug / phi_Vcp %}
@@ -50,11 +51,11 @@
 
         {% set bp_lambda_n = (anchor.bp_d * anchor.bp_b)**0.5 / 4 %}
         {% set bp_l = [bp_m, bp_n, bp_lambda_n] | max %}
-        {% set bp_q = bp_Pu / anchor.bp_length_N %}
-        {% set bp_bearing_Mu = (bp_q * bp_l)**2 / 2 %}
-        {% set bp_thk_bearing = ((4 * bp_bearing_Mu) / (0.9 * 345 * anchor.bp_width_B))**0.5 %}
+        {% set bp_q = bp_Pu * 1000 / anchor.bp_length_N %}
+        {% set bp_bearing_Mu = ((bp_q * bp_l**2) / 2) / (1000**2) %}
+        {% set bp_thk_bearing = ((4 * bp_bearing_Mu) / (0.9 * 345 * anchor.bp_width_B))**0.5 * 1000 %}
 
-        {% set bp_A1 = bp_Pu / (0.65 * 0.85 * 27.5) %}
+        {% set bp_A1 = bp_Pu * 1000 / (0.65 * 0.85 * 27.5) %}
         {% set bp_fp_max = [(0.65 * 0.85 * 27.5), (0.65 * 1.7 * 27.5)] | min %}
     {% endif %}
 
@@ -62,8 +63,46 @@
         {% include "partials/box-clump.html" %}
 
     {% elif anchor.clump_type == "U Clump" %}
-        {% set bp_tension_Mu = anchor.bp_Tu * anchor.bp_x %}
-        {% set bp_thk_tension = ((4 * bp_tension_Mu) / (0.9 * 345 * anchor.bp_Beff))**0.5 %}
+        {% if anchor.thr_bolt_dia == 10 %}
+            {% set thr_bolt_AseN = 58.0 %}
+        {% elif anchor.thr_bolt_dia == 12 %}
+            {% set thr_bolt_AseN = 84.3 %}
+        {% elif anchor.thr_bolt_dia == 16 %}
+            {% set thr_bolt_AseN = 156.7 %}
+        {% endif %}
+
+        {% set thr_Vh = anchor.design_Ry / (anchor.thr_bolt_nos * 2) %}
+        {% set thr_Vv = anchor.design_Rz / (anchor.thr_bolt_nos * 2) %}
+        {% set thr_Vu = (thr_Vh**2 + thr_Vv**2)**0.5 %}
+        {% set thr_Ab = (3.1416 * anchor.thr_bolt_dia**2) / 4 %}
+        {% set thr_shear_phi_Rn = 0.75 * 280 * thr_Ab / 1000 %}
+        {% set thr_bearing_phi_Rn1 = 0.75 * 1.2 * anchor.thr_bearing_lc * anchor.fin_thk * 450 / 1000 %}
+        {% set thr_bearing_phi_Rn2 = 0.75 * 2.4 * anchor.thr_bolt_dia * anchor.fin_thk * 450 / 1000 %}
+        {% set thr_bearing_phi_Rn = [thr_bearing_phi_Rn1, thr_bearing_phi_Rn2] | min %}
+        
+        {% set fin_Vh = anchor.design_Ry / 2 %}
+        {% set fin_Vv = anchor.design_Rz / 2 %}
+        {% set fin_Vu = (fin_Vh**2 + fin_Vv**2)**0.5 %}
+        {% set fin_Mu = fin_Vv * anchor.fin_e / 1000 %}
+        {% set fin_thk_req = (4 * fin_Mu) / (0.9 * 345 * anchor.fin_width**2) %}
+        {% set fin_dh = anchor.thr_bolt_dia + 2 %}
+        {% set fin_shear_phi_Rn_yield = 0.6 * 345 * anchor.fin_width * anchor.fin_thk / 1000 %}
+        {% set fin_rupture_Anv = (anchor.fin_width - anchor.thr_bolt_nos * fin_dh) * anchor.fin_thk %}
+        {% set fin_shear_phi_Rn_rupture = 0.75 * 0.6 * 450 * fin_rupture_Anv / 1000 %}
+        {% set fin_block_Anv = (anchor.fin_bgv - ((2 * anchor.thr_bolt_nos - 1) * (fin_dh / 2))) * anchor.fin_thk %}
+        {% set fin_block_Ant = (anchor.fin_bnt - (fin_dh / 2)) * anchor.fin_thk %}
+        {% set fin_block_phi_Rn1 = (0.75 * 0.6 * 450 * fin_block_Anv + 450 * fin_block_Ant) / 1000  %}
+        {% set fin_block_phi_Rn2 = (0.75 * 0.6 * 345 * anchor.fin_bgv * anchor.fin_thk + 450 * fin_block_Ant) / 1000 %}
+        {% set fin_block_phi_Rn = [fin_block_phi_Rn1, fin_block_phi_Rn2] | min %}
+
+        {% set weld_fn = (anchor.design_Ry * 1000 / 2) / (anchor.fin_width * 2) %}
+        {% set weld_fv = (anchor.design_Rz * 1000 / 2) / (anchor.fin_width * 2) %}
+        {% set weld_fb = ((anchor.design_Rz * 1000) * anchor.fin_e) / ((anchor.fin_width**2) / 3) %}
+        {% set weld_fR = (weld_fn**2 + weld_fv**2 + weld_fb**2)**0.5 %}
+
+        {% set bp_tension_Mu = anchor.N_ua * anchor.bp_x / 1000 %}
+        {% set bp_thk_tension = ((4 * bp_tension_Mu * 1000**2) / (0.9 * 345 * anchor.bp_Beff))**0.5 %}
+        
         {% include "partials/u-clump.html" %}
 
     {% else %}

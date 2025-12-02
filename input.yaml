@@ -416,5 +416,43 @@ categories:
         bp_thk: 6
         bp_d: 80
         bp_b: 110
+      
+      # taj 12.5
+      - clump_type: U Clump
+        reaction_Ry: 12.1
+        reaction_Rz: 2.4
+        design_Ry: 20.0
+        design_Rz: 4.0
+        N_ua: 5.0
+        N_ug: 20.0
+        V_ua: 1.0
+        V_ug: 2.0
+        anchor_nos: 4
+        anchor_dia: 12
+        embed_depth: 70
+        A_NC: 78000
+        A_VC: 32400
+        C_a1: 60
+
+        thr_bolt_nos: 2
+        thr_bolt_dia: 10
+        thr_bolt_length: 100
+        thr_bearing_lc: 60
+        
+        fin_length: 145
+        fin_width: 150
+        fin_thk: 5
+        fin_e: 60
+        fin_bgv: 115
+        fin_bnt: 60
+        
+        bp_length_N: 250
+        bp_width_B: 150
+        bp_thk: 8
+        bp_d: 82
+        bp_b: 150
+        bp_x: 44
+        bp_Beff: 88
+
 
 

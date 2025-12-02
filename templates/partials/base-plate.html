@@ -194,6 +194,7 @@
         </tr>
     </tbody>
 </table>
+<div class="page__break-after"></div>
 
 
 {% if anchor.clump_type != "Box Clump" %}
@@ -254,7 +255,7 @@
     <tbody>
         <tr>
             <td>0.9</td>
-            <td>{{ anchor.bp_Tu }}</td>
+            <td>{{ anchor.N_ua }}</td>
             <td>{{ anchor.bp_x }}</td>
             <td>{{ bp_tension_Mu | round(2) }}</td>
             <td>{{ anchor.bp_Beff }}</td>
@@ -339,6 +340,10 @@
     </tbody>
 </table>
 
+{% if clump_type == "U Clump" %}
+<div class="page__break"></div>
+{% endif %}
+
 <h4>Check for Concrete Bearing Stress</h4>
 <table class="borderless width__100">
     <tbody>
@@ -394,9 +399,9 @@
             <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
             <td>27.5</td>
             <td>{{ bp_fp_max | round(2) }}</td>
-            <td>{{ (bp_Pu / bp_A1) | round(2) }}</td>
-            <td class="{% if bp_fp_max > (bp_Pu / bp_A1) %}ok{% else %}not-ok{% endif %}">
-                {% if bp_fp_max > (bp_Pu / bp_A1) %} OK {% else %} NOT OK {% endif %}
+            <td>{{ (bp_Pu * 1000 / (anchor.bp_length_N * anchor.bp_width_B)) | round(2) }}</td>
+            <td class="{% if bp_fp_max > (bp_Pu / (anchor.bp_length_N * anchor.bp_width_B)) %}ok{% else %}not-ok{% endif %}">
+                {% if bp_fp_max > (bp_Pu / (anchor.bp_length_N * anchor.bp_width_B)) %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>

@@ -8,10 +8,10 @@
 {% set Pnv1 = 4.2 * (conn.t2**3 * conn.screw_dia)**0.5 * 207 %}
 {% set Pnv2 = 2.7 * (conn.t1 * conn.screw_dia) * 207 %}
 {% set Pnv3 = 2.7 * (conn.t2 * conn.screw_dia) * 207 %}
-{% set phi_Pnv = 0.5 * ([Pnv1, Pnv2, Pnv3] | min) %}
-{% set phi_Pnot = 0.5 * 0.85 * conn.tc * conn.screw_dia * 207 %}
+{% set phi_Pnv = 0.5 * ([Pnv1, Pnv2, Pnv3] | min) / 1000 %}
+{% set phi_Pnot = 0.5 * 0.85 * conn.tc * conn.screw_dia * 207 / 1000 %}
 {% set d_w = [conn.head_dia, 19.1] | min %}
-{% set phi_Pnov = 0.5 * 1.5 * conn.t1 * d_w * 207 %}
+{% set phi_Pnov = 0.5 * 1.5 * conn.t1 * d_w * 207 / 1000 %}
 {% set beta_pullover = (resultant_shear / (phi_Pnv / 0.5)) + (0.71 * R_zA / (phi_Pnov / 0.5)) %}
 {% set beta_pullout = (resultant_shear / (phi_Pnv / 0.5)) + (R_zA / (phi_Pnot / 0.5)) %}
 

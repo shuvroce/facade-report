@@ -420,21 +420,27 @@
                 <td><i>M<sub>y</sub></i></td>
                 <td><i>M<sub>z</sub></i></td>
             </tr>
-            <tr>
-                <td>
-                    {% if anchor.clump_type != "Box Clump" %}
-                        Middle Node
-                    {% else %}
-                        End Node
-                    {% endif %}
-                </td>
-                <td>–</td>
-                <td>{{ anchor.reaction_Ry }}</td>
-                <td>{{ anchor.reaction_Rz }}</td>
-                <td>–</td>
-                <td>–</td>
-                <td>–</td>
-            </tr>
+            {% if anchor.clump_type == "Box Clump" %}
+                <tr>
+                    <td>End Node</td>
+                    <td>–</td>
+                    <td>{{ anchor.reaction_Ry }}</td>
+                    <td>{{ anchor.reaction_Rz }}</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+            {% else %}
+                <tr>
+                    <td>Middle Node</td>
+                    <td>–</td>
+                    <td>{{ anchor.reaction_Ry }}</td>
+                    <td>{{ anchor.reaction_Rz }}</td>
+                    <td>–</td>
+                    <td>–</td>
+                    <td>–</td>
+                </tr>
+            {% endif %}
         </tbody>
     </table>
 </div>

@@ -1,5 +1,5 @@
 <h3>Design of Fin Plate</h3>
-<table class="borderless ml-1">
+<table class="borderless">
     <tbody>
         <tr>
             <td>Max. horizontal reaction force, R<sub>y</sub></td>
@@ -15,7 +15,7 @@
         <tr>
             <td>Shear force on each plate, V<sub>h</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Ry / 2 }} <i>kN</i></td>
+            <td>{{ fin_Vh }} <i>kN</i></td>
         </tr>
         <tr>
             <td>Max. vertical reaction force, R<sub>z</sub></td>
@@ -25,12 +25,12 @@
         <tr>
             <td>Shear force on each plate, V<sub>v</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Rz / 2 }} <i>kN</i></td>
+            <td>{{ fin_Vv }} <i>kN</i></td>
         </tr>
         <tr>
             <td>Resultant shear force, <i>V<sub>u</sub> = √(V<sub>h</sub><sup>2</sup> + V<sub>v</sub><sup>2</sup>)</i></td>
             <td>=</td>
-            <td>{{ anchor.fin_Vu }} <i>kN</i></td>
+            <td>{{ fin_Vu | round(2) }} <i>kN</i></td>
         </tr>
     </tbody>
 </table>
@@ -105,11 +105,11 @@
         <tr>
             <td>0.9</td>
             <td>{{ anchor.fin_width }}</td>
-            <td>{{ anchor.design_Rz / 2 }}</td>
+            <td>{{ fin_Vv }}</td>
             <td>{{ anchor.fin_e }}</td>
-            <td>{{ ((anchor.design_Rz / 2) * (anchor.fin_e / 1000)) | round(2) }}</td>
+            <td>{{ fin_Mu | round(2) }}</td>
             <td>345</td>
-            <td>{{ anchor.fin_thk_req }}</td>
+            <td>{{ fin_thk_req | round(3) }}</td>
             <td>{{ anchor.fin_thk }}</td>
             <td class="ok">OK</td>
         </tr>
@@ -148,8 +148,8 @@
             <td>{{ anchor.fin_width }}</td>
             <td>{{ anchor.fin_thk }}</td>
             <td>{{ anchor.fin_width * anchor.fin_thk }}</td>
-            <td>{{ (0.6 * 345 * anchor.fin_width * anchor.fin_thk / 1000) | round(2) }}</td>
-            <td>{{ anchor.fin_Vu }}</td>
+            <td>{{ fin_shear_phi_Rn_yield | round(2) }}</td>
+            <td>{{ fin_Vu | round(2) }}</td>
             <td class="ok">OK</td>
         </tr>
     </tbody>
@@ -187,13 +187,10 @@
             <td>{{ anchor.fin_width }}</td>
             <td>{{ anchor.fin_thk }}</td>
             <td>{{ anchor.thr_bolt_nos }}</td>
-            <td>{{ anchor.thr_bolt_nos + 2 }}</td>
-            <td>
-                {% set rupture_Anv = (anchor.fin_width - anchor.thr_bolt_nos * (anchor.thr_bolt_nos + 2)) * anchor.fin_thk %}
-                {{ rupture_Anv | round(1) }}
-            </td>
-            <td>{{ (0.6 * 450 * rupture_Anv / 1000) | round(1) }}</td>
-            <td>{{ anchor.fin_Vu }}</td>
+            <td>{{ fin_dh }}</td>
+            <td>{{ fin_rupture_Anv | round(1) }}</td>
+            <td>{{ fin_shear_phi_Rn_rupture | round(1) }}</td>
+            <td>{{ fin_Vu | round(2) }}</td>
             <td class="ok">OK</td>
         </tr>
     </tbody>
@@ -342,9 +339,9 @@
             <td>{{ anchor.fin_bnt }}</td>
             <td>{{ anchor.fin_thk }}</td>
             <td>{{ anchor.thr_bolt_nos }}</td>
-            <td>{{ anchor.thr_bolt_nos + 2 }}</td>
+            <td>{{ fin_dh }}</td>
             <td>{{ anchor.fin_bgv * anchor.fin_thk }}</td>
-            <td>{{ anchor.fin_block_Anv }}</td>
+            <td>{{ fin_block_Anv | round(2) }}</td>
         </tr>
     </tbody>
 </table>
@@ -352,7 +349,7 @@
 <table class="width__100 align__center mt-1">
     <thead>
         <tr>
-            <th>A<sub>nv</sub></th>
+            <th>A<sub>nt</sub></th>
             <th>U<sub>bs</sub> *</th>
             <th>φR<sub>n1</sub></th>
             <th>φR<sub>n2</sub></th>
@@ -363,18 +360,12 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ anchor.fin_block_Ant }}</td>
+            <td>{{ fin_block_Ant | round(2) }}</td>
             <td>1.0</td>
-            <td>
-                {% set fin_block_phi_Rn1 = (0.75 * 0.6 * 450 * anchor.fin_block_Anv + 450 * anchor.fin_block_Ant) / 1000  %}
-                {{ fin_block_phi_Rn1 | round(1) }}
-            </td>
-            <td>
-                {% set fin_block_phi_Rn2 = (0.75 * 0.6 * 345 * anchor.fin_bgv * anchor.fin_thk + 450 * anchor.fin_block_Ant) / 1000 %}
-                {{ fin_block_phi_Rn2 | round(1) }}
-            </td>
-            <td>{{ [fin_block_phi_Rn1, fin_block_phi_Rn2] | min | round(1) }}</td>
-            <td>{{ anchor.fin_Vu }}</td>
+            <td>{{ fin_block_phi_Rn1 | round(1) }}</td>
+            <td>{{ fin_block_phi_Rn2 | round(1) }}</td>
+            <td>{{ fin_block_phi_Rn | round(1) }}</td>
+            <td>{{ fin_Vu | round(2) }}</td>
             <td class="ok">OK</td>
         </tr>
     </tbody>
@@ -417,7 +408,7 @@
         <tr>
             <td class="pl-2 pb-1">Tensile stress, <i>f<sub>n</sub> = P / L</i></td>
             <td class="pb-1">=</td>
-            <td class="pb-1">{{ ((anchor.design_Ry / 2) / (anchor.fin_width * 2)) | round(1) }} <i>N/mm</i></td>
+            <td class="pb-1">{{ weld_fn | round(1) }} <i>N/mm</i></td>
             <td class="pb-1"><i>; As line load</i></td>
         </tr>
         <tr>
@@ -435,7 +426,7 @@
         <tr>
             <td class="pl-2 pb-1">Shear stress, <i>f<sub>v</sub> = V / L</i></td>
             <td class="pb-1">=</td>
-            <td class="pb-1">{{ ((anchor.design_Ry / 2) / (anchor.fin_width * 2)) | round(1) }} <i>N/mm</i></td>
+            <td class="pb-1">{{ weld_fv | round(1) }} <i>N/mm</i></td>
             <td class="pb-1"></td>
         </tr>
         <tr>
@@ -447,7 +438,7 @@
         <tr>
             <td class="pl-2">Bending moment, M = V × e</td>
             <td>=</td>
-            <td>{{ ((anchor.design_Ry / 2) * anchor.fin_e / 1000) | round(2) }} <i>kN-m</i></td>
+            <td>{{ ((anchor.design_Ry / 2) * (anchor.fin_e / 1000)) | round(2) }} <i>kN-m</i></td>
             <td></td>
         </tr>
         <tr>
@@ -459,13 +450,13 @@
         <tr>
             <td class="pl-2 pb-1">Bending stress, <i>f<sub>b</sub> = M / Z<sub>w</sub></i></td>
             <td class="pb-1">=</td>
-            <td class="pb-1">{{ (((anchor.design_Ry / 2) * anchor.fin_e) / ((anchor.fin_width**2) / 3)) | round(1) }}</td>
+            <td class="pb-1">{{ weld_fb | round(1) }} <i>N/mm</i></td>
             <td class="pb-1"></td>
         </tr>
         <tr>
             <td>Resultant stress, <i>f<sub>R</sub> = √(f<sub>n</sub><sup>2</sup> + f<sub>v</sub><sup>2</sup> + f<sub>b</sub><sup>2</sup>)</i></td>
             <td>=</td>
-            <td>{{ anchor.weld_fR }} <i>N/mm</i></td>
+            <td>{{ weld_fR | round(2) }} <i>N/mm</i></td>
             <td></td>
         </tr>
     </tbody>
@@ -519,7 +510,7 @@
             <td>482.7</td>
             <td>4.0</td>
             <td>{{ (0.75 * 0.6 * 482.7 * 0.707 * 4) | round(1) }}</td>
-            <td>{{ anchor.weld_fR }}</td>
+            <td>{{ weld_fR | round(2) }}</td>
             <td class="ok">OK</td>
         </tr>
     </tbody>
