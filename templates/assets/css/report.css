@@ -413,6 +413,7 @@ table.align__center td img {
 }
 
 .project__title_intro {
+    font-family: 'Century Gothic';
     font-size: 21pt;
     /* font-weight: bold; */
     text-transform: capitalize;
@@ -421,6 +422,7 @@ table.align__center td img {
 }
 
 .project__title_main {
+    font-family: 'Corbel';
     font-size: 23pt;
     font-weight: bold;
     text-transform: capitalize;
