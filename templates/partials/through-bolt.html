@@ -105,7 +105,9 @@
             <td>{{ thr_shear_phi_Rn | round(1) }}</td>
             <td>{{ thr_Vu | round(2) }}</td>
             <td>{{ (thr_Vu / thr_shear_phi_Rn) | round(2) }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if (thr_Vu / thr_shear_phi_Rn) < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if (thr_Vu / thr_shear_phi_Rn) < 1 %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>
@@ -170,7 +172,9 @@
             <td>{{ thr_bearing_phi_Rn | round(2) }}</td>
             <td>{{ thr_Vu | round(2) }}</td>
             <td>{{ (thr_Vu / thr_bearing_phi_Rn) | round(2) }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if (thr_Vu / thr_bearing_phi_Rn) < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if (thr_Vu / thr_bearing_phi_Rn) < 1 %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>

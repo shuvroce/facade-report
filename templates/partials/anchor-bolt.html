@@ -35,7 +35,7 @@
 </table>
 
 
-{% if anchor.clump_type != "Box Clump" %}
+{% if anchor.clump_type == "U Clump" or anchor.clump_type == "L Clump Front" %}
 <h4>Steel Strength in Tension</h4>
 <table class="borderless width__100">
     <tbody>
@@ -104,6 +104,7 @@
     </tbody>
 </table>
 
+<div class="page__break"></div>
 <h4>Concrete Breakout Strength in Tension</h4>
 <table class="borderless width__100">
     <tbody>
@@ -116,7 +117,11 @@
 
 <p><u>Where,</u></p>
 <div class="calc__fig">
-    <img src="assets/images/u-conc-breakout-tension.png">
+    {% if anchor.clump_type == "U Clump" %}
+        <img src="assets/images/u-conc-breakout-tension.png">
+    {% elif anchor.clump_type == "L Clump Front" %}
+        <img src="assets/images/l-front-conc-breakout-tension.png">
+    {% endif %}
 </div>
 
 <table class="borderless ml-1">
@@ -281,6 +286,10 @@
         </tr>
     </tbody>
 </table>
+
+<h4>Concrete Side-face Blowout Strength in Tension</h4>
+<p>Splitting during installation rather than side face blowout strength governs post-installed anchor.</p>
+<p><i>Ref. Sec. K.5.4, BNBC 2020.</i></p>
 {% endif %}
 
 
@@ -369,6 +378,10 @@
         <img src="assets/images/box-conc-breakout.png">
     {% elif anchor.clump_type == "U Clump" %}
         <img src="assets/images/u-conc-breakout-shear.png">
+    {% elif anchor.clump_type == "L Clump Top" %}
+        <img src="assets/images/l-top-conc-breakout-shear.png">
+    {% elif anchor.clump_type == "L Clump Front" %}
+        <img src="assets/images/l-front-conc-breakout-shear.png">
     {% endif %}
 </div>
 
@@ -446,7 +459,7 @@
             <td>{{ anchor.C_a1 }}</td>
             <td>–</td>
             <td>
-                {% if anchor.clump_type == "U Clump" %}
+                {% if anchor.clump_type == "U Clump" or anchor.clump_type == "L Clump Front" %}
                     –
                 {% elif anchor.clump_type == "Box Clump" %}
                     {{ anchor.h_a }}
@@ -538,7 +551,7 @@
     </tbody>
 </table>
 
-{% if anchor.clump_type != "Box Clump" %}
+{% if anchor.clump_type == "U Clump" or anchor.clump_type == "L Clump Front" %}
 <h4>Interaction to Tensile and Shear Force</h4>
 <table class="borderless width__100">
     <tbody>

@@ -5,7 +5,13 @@
             <td>Max. horizontal reaction force, R<sub>y</sub></td>
             <td>=</td>
             <td>{{ anchor.design_Ry }} <i>kN</i></td>
-            <td rowspan="6"><img src="assets/images/u-fin-plate.png" class="fig__70"></td>
+            <td rowspan="6">
+                {% if anchor.clump_type == "U Clump" %}
+                    <img src="assets/images/u-fin-plate.png" class="fig__70">
+                {% elif anchor.clump_type == "U Clump" %}
+                    <img src="assets/images/l-fin-plate.png" class="fig__70">
+                {% endif %}
+            </td>
         </tr>
         <tr>
             <td>No. of plate, n</td>
@@ -109,9 +115,11 @@
             <td>{{ anchor.fin_e }}</td>
             <td>{{ fin_Mu | round(2) }}</td>
             <td>345</td>
-            <td>{{ fin_thk_req | round(3) }}</td>
+            <td>{{ fin_thk_req | round(4) }}</td>
             <td>{{ anchor.fin_thk }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if anchor.fin_thk > fin_thk_req %}ok{% else %}not-ok{% endif %}">
+                {% if anchor.fin_thk > fin_thk_req %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>
@@ -150,7 +158,9 @@
             <td>{{ anchor.fin_width * anchor.fin_thk }}</td>
             <td>{{ fin_shear_phi_Rn_yield | round(2) }}</td>
             <td>{{ fin_Vu | round(2) }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if fin_shear_phi_Rn_yield > fin_Vu %}ok{% else %}not-ok{% endif %}">
+                {% if fin_shear_phi_Rn_yield > fin_Vu %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>
@@ -191,7 +201,9 @@
             <td>{{ fin_rupture_Anv | round(1) }}</td>
             <td>{{ fin_shear_phi_Rn_rupture | round(1) }}</td>
             <td>{{ fin_Vu | round(2) }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if fin_shear_phi_Rn_rupture > fin_Vu %}ok{% else %}not-ok{% endif %}">
+                {% if fin_shear_phi_Rn_rupture > fin_Vu %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>
@@ -366,7 +378,9 @@
             <td>{{ fin_block_phi_Rn2 | round(1) }}</td>
             <td>{{ fin_block_phi_Rn | round(1) }}</td>
             <td>{{ fin_Vu | round(2) }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if fin_block_phi_Rn > fin_Vu %}ok{% else %}not-ok{% endif %}">
+                {% if fin_block_phi_Rn > fin_Vu %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>
@@ -420,7 +434,7 @@
         <tr>
             <td class="pl-2">Shear force on each plate weld, V</td>
             <td>=</td>
-            <td>{{ anchor.design_Ry / 2 }} <i>kN</i></td>
+            <td>{{ anchor.design_Rz / 2 }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
@@ -444,7 +458,7 @@
         <tr>
             <td class="pl-2">Section modulus of weld, <i>Z<sub>w</sub> = d<sup>2</sup> / 3</i></td>
             <td>=</td>
-            <td>{{ (anchor.fin_width**2) / 3 }} <i>mm<sup>2</sup></i></td>
+            <td>{{ ((anchor.fin_width**2) / 3) | round(2) }} <i>mm<sup>2</sup></i></td>
             <td><i>; For double line weld</i></td>
         </tr>
         <tr>
@@ -511,7 +525,9 @@
             <td>4.0</td>
             <td>{{ (0.75 * 0.6 * 482.7 * 0.707 * 4) | round(1) }}</td>
             <td>{{ weld_fR | round(2) }}</td>
-            <td class="ok">OK</td>
+            <td class="{% if (0.75 * 0.6 * 482.7 * 0.707 * 4) > weld_fR %}ok{% else %}not-ok{% endif %}">
+                {% if (0.75 * 0.6 * 482.7 * 0.707 * 4) > weld_fR %} OK {% else %} NOT OK {% endif %}
+            </td>
         </tr>
     </tbody>
 </table>

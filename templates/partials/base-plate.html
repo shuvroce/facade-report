@@ -1,4 +1,7 @@
 <h3>Design of Base Plate</h3>
+<div>
+    <img style="width: 80mm;" src="assets/images/l-front-bp-plan.png">
+</div>
 <table class="borderless">
     <tbody>
         <tr>
@@ -340,7 +343,7 @@
     </tbody>
 </table>
 
-{% if clump_type == "U Clump" %}
+{% if anchor.clump_type == "U Clump" or anchor.clump_type == "L Clump Front" %}
 <div class="page__break"></div>
 {% endif %}
 

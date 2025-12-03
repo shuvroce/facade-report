@@ -1,0 +1,89 @@
+<div class="page__break"></div>
+<h2>Design of Anchorage and Support (L-Clump)</h2>
+
+<div>
+    <h3>Data Analysis</h3>
+    <p>Support reactions of mullion for L clump (middle node) (<i>; from 'Support reaction forces' table</i>) –</p>
+    <table class="width__80 align__center">
+        <tbody>
+            <tr>
+                <td></td>
+                <td>SLS</td>
+                <td>1.4D</td>
+                <td>0.9D – 1.6W</td>
+            </tr>
+            <tr>
+                <td>Horizontal reaction, <i>R<sub>y</sub> (kN)</i></td>
+                <td>{{ anchor.reaction_Ry }}</td>
+                <td>–</td>
+                <td>{{ (anchor.reaction_Ry * 1.6) | round(2) }}</td>
+            </tr>
+            <tr>
+                <td>Vertical reaction, <i>R<sub>z</sub> (kN)</i></td>
+                <td>{{ anchor.reaction_Rz }}</td>
+                <td>{{ (anchor.reaction_Rz * 1.4) | round(2)}}</td>
+                <td>{{ (anchor.reaction_Rz * 0.9) | round(2)}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <p class="mt-1">Considered Design Load for clump (<i>Higher load for safety</i>) –</p>
+    <ul>
+        <li>Horizontal reaction, <i>R<sub>y</sub></i> = {{ anchor.design_Ry }} <i>kN</i></li>
+        <li>Vertical reaction, <i>R<sub>z</sub></i> = {{ anchor.design_Rz }} <i>kN</i></li>
+    </ul>
+</div>
+
+<p class="mt-2">Bracket Specification –</p>
+<table class="borderless width__100 fig__table">
+    <tbody>
+        <tr>
+            <td>
+                <ul>
+                    {% set top = cat.anchorage[0] %}
+                    {% set front = cat.anchorage[1] %}
+
+                    <li>1 – {{ top.bp_length_N }} x {{ top.bp_width_B }} x {{ top.bp_thk }} mm – Base plate @ top (50 gr.)</li>
+                    <li>{{ top.anchor_nos }} – M{{ top.anchor_dia }} x {{ top.embed_depth }}** Royal Bolt @ top (Grade 5.8 / or Equivalent)</li>
+                    <li>1 – {{ front.bp_length_N }} x {{ front.bp_width_B }} x {{ front.bp_thk }} mm – Base plate @ front (50 gr.)</li>
+                    <li>2 – {{ front.fin_length }} x {{ front.fin_width }} x {{ front.fin_thk }} mm – Fin plate (50 gr.)</li>
+                    <li>{{ front.anchor_nos }} – M{{ front.anchor_dia }} x {{ front.embed_depth }}** Royal Bolt @ front (Grade 5.8 / or Equivalent)</li>
+                    <li>{{ front.thr_bolt_nos }} – M{{ front.thr_bolt_dia }} x {{ front.thr_bolt_length }} Through Bolt (SS Grade A4-70 / or Equivalent)</li>
+                </ul>
+            </td>
+            <td>
+                <figure>
+                    <img style="width: 60mm;" src="assets/images/l-clump-3d.png">
+                    <figcaption>Typical L-clump</figcaption>
+                </figure>
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2" class="footnote__content">** Embedment depth</td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page__break"></div>
+<h3>Force Analysis for Anchor Bolts</h3>
+<table class="borderless width__100 fig__table">
+    <tbody>
+        <tr>
+            <td><img src="inputs/l-clump-plan.png"></td>
+            <td><img src="inputs/l-clump-section.png"></td>
+        </tr>
+    </tbody>
+</table>
+
+<p>From the equations of static equilibrium (wind; negative),</p>
+<table class="borderless fig__table width__100">
+    <tbody>
+        <tr>
+            <td><img style="width: 160mm;" src="inputs/l-clump-forces.png"></td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="page__break"></div>
+<h3>Design of Top Anchors (A*)</h3>
+{% include "partials/anchor-bolt.html" %}

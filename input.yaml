@@ -214,97 +214,61 @@ categories:
         tc: 2.5
 
     anchorage:
-      - clump_type: L Clump
-        reaction_Ry: 17.1
-        reaction_Rz: 2.4
-        design_Ry: 52.0
-        design_Rz: 6.5
+      - clump_type: L Clump Top
+        reaction_Ry: 29.9
+        reaction_Rz: 2.65
+        design_Ry: 40.1
+        design_Rz: 3.0
         
-        front_anchor:
-          N_ua: 7.8
-          N_ug: 15.6
-          V_ua: 4.46
-          V_ug: 8.91
+        V_ua: 6.02
+        V_ug: 12.1
+        anchor_nos: 4
+        anchor_dia: 12
+        embed_depth: 70
+        A_NC: 115200
+        A_VC: 115200
+        C_a1: 142
+        h_a: 200
+        bp_length_N: 350
+        bp_width_B: 220
+        bp_thk: 8
 
-          anchor_nos: 2
-          anchor_dia: 12
-          embed_depth: 70
-          A_VC: 
-          C_a1: 
-          h_a: 
+      - clump_type: L Clump Front
+        reaction_Ry: 29.9
+        reaction_Rz: 2.65
+        design_Ry: 40.1
+        design_Rz: 3.0
+        
+        N_ua: 8.02
+        N_ug: 16.04
+        V_ua: 2.06
+        V_ug: 4.12
+        anchor_nos: 2
+        anchor_dia: 12
+        embed_depth: 70
+        A_NC: 72000
+        A_VC: 67500
+        C_a1: 100
 
-          bp_length_N: 250
-          bp_width_B: 190
-          bp_thk: 8.5
-
-          bp_Tu:
-          bp_x:
-          bp_Beff:
-
-          fin_length: 145
-          fin_width: 160
-          fin_thk: 5
-          fin_Vu: 
-          fin_e: 
-          fin_thk_req: 
-          fin_bgv: 
-          fin_bnt: 
-          fin_block_Anv: 
-          fin_block_Ant: 
-
-          thr_bolt_nos: 2
-          thr_bolt_dia: 10
-          thr_bolt_length: 100 
-          thr_bolt_AseN: 
-          thr_Vu: 
-          thr_shear_phi_Rn: 
-          thr_bearing_lc: 
-          thr_bearing_phi_Rn1: 
-          thr_bearing_phi_Rn2: 
-
-          weld_fR: 
-
-        top_anchor:
-          V_ua: 5.5
-          V_ug: 22.0
-
-          anchor_nos: 4
-          anchor_dia: 12
-          embed_depth: 70
-
-          A_seN: 
-          f_uta: 
-
-          phi_Ncbg: 
-
-          phi_Vsa: 
-          A_VC: 
-          A_VCO: 
-          C_a1: 
-          C_a2: 
-          h_a: 
-          psi_ecV: 
-          psi_edV: 
-          psi_cV: 
-          psi_hV: 
-          l_e: 
-          V_b: 
-          phi_Vcbg: 
-          phi_Vcp: 
-
-          bp_length_N: 250
-          bp_width_B: 120
-          bp_thk: 6
-          bp_d: 
-          bp_b: 
-          bp_m: 
-          bp_n: 
-          bp_lambda_n: 
-          bp_q: 
-          bp_bearing_Mu: 
-          bp_thk_bearing: 
-          bp_A1: 
-          bp_fp_max: 
+        thr_bolt_nos: 2
+        thr_bolt_dia: 10
+        thr_bolt_length: 100
+        thr_bearing_lc: 56
+        
+        fin_length: 145
+        fin_width: 160
+        fin_thk: 5
+        fin_e: 92
+        fin_bgv: 120
+        fin_bnt: 63
+        
+        bp_length_N: 220
+        bp_width_B: 190
+        bp_thk: 8
+        bp_d: 82
+        bp_b: 160
+        bp_x: 34
+        bp_Beff: 68
 
 
   - category_name: Various Project

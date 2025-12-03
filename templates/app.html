@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Structural Report Generator</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+    <style>
+        /* Tab content */
+        .tab-content {
+            display: none;
+            border: 2px solid #ccc;
+            border-top: none;
+            padding: 1rem;
+            border-radius: 0 5px 5px 5px;
+        }
+        .tab-content.active {
+            display: block;
+        }
+
+        fieldset {
+            border: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        input, textarea, button {
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Structural Report Generator</h1>
+
+    <!-- Tab navigation -->
+    <div class="tab-nav">
+        <div class="tabs-left">
+            <button type="button" class="tab-btn active" data-tab="projectInfo">Project Info</button>
+            <button type="button" class="tab-btn" data-tab="wind">Wind</button>
+            <button type="button" class="tab-btn" data-tab="profiles">Profiles</button>
+            <button type="button" class="tab-btn" data-tab="categories">Categories</button>
+        </div>
+        <div class="tabs-right">
+            <button type="submit" form="reportForm">Create Report</button>
+        </div>
+    </div>
+
+    <form id="reportForm" method="POST" action="/generate_report">
+
+        <!-- Project Info -->
+        <div id="projectInfo" class="tab-content active">
+            <fieldset>
+                <input type="text" name="ref_no" placeholder="Ref No" required>
+                <input type="text" name="project_name" placeholder="Project Name" required>
+                <input type="text" name="project_client" placeholder="Client" required>
+                <input type="text" name="rev_no" placeholder="Revision No" required>
+                <input type="date" name="date" placeholder="Date" required>
+            </fieldset>
+        </div>
+
+        <!-- Wind Section -->
+        <div id="wind" class="tab-content">
+            <fieldset>
+                <input type="number" step="0.01" name="wind_speed" placeholder="Wind Speed (m/s)" required>
+                <input type="number" step="0.01" name="b_height" placeholder="Building Height (m)" required>
+                <input type="number" step="0.01" name="b_length" placeholder="Building Length (m)" required>
+                <input type="number" step="0.01" name="b_width" placeholder="Building Width (m)" required>
+                <input type="text" name="exposure_cat" placeholder="Exposure Category" required>
+                <input type="text" name="occupancy_cat" placeholder="Occupancy Category" required>
+                <input type="number" step="0.01" name="Imp_factor" placeholder="Importance Factor" required>
+                <input type="number" step="0.01" name="K_d" placeholder="Direction Factor" required>
+                <input type="number" step="0.01" name="K_h" placeholder="Height Factor" required>
+                <input type="number" step="0.01" name="K_ht" placeholder="Topography Factor" required>
+                <input type="number" step="0.01" name="GC_pi" placeholder="Gust Effect Factor" required>
+                <input type="number" step="0.01" name="C_pl" placeholder="Pressure Coefficient" required>
+                <input type="number" step="0.01" name="q_zk" placeholder="Velocity Pressure q_zk" required>
+                <input type="number" step="0.01" name="q_h" placeholder="Velocity Pressure q_h" required>
+                <input type="number" step="0.01" name="int_pressure" placeholder="Internal Pressure" required>
+                <input type="number" step="0.01" name="leeward_pressure" placeholder="Leeward Pressure" required>
+                <input type="number" step="0.01" name="sidewall_pressure" placeholder="Sidewall Pressure" required>
+
+                <input type="text" name="b_rigidity" placeholder="Building Rigidity" required>
+                <input type="number" step="0.01" name="b_freq" placeholder="Building Frequency" required>
+                <input type="number" step="0.01" name="damping" placeholder="Damping Ratio" required>
+                <input type="number" step="0.01" name="gust_factor" placeholder="Gust Factor" required>
+
+                <input type="text" name="enclosure_type" placeholder="Enclosure Type" required>
+                <input type="text" name="roof_type" placeholder="Roof Type" required>
+                <textarea name="exposure_note" placeholder="Exposure Note" required></textarea>
+                <textarea name="occupancy_note" placeholder="Occupancy Note" required></textarea>
+                <input type="text" name="location" placeholder="Location" required>
+
+                <input type="text" name="topography_type" placeholder="Topography Type" required>
+                <input type="number" step="0.01" name="topo_crest_side" placeholder="Topography Crest Side (optional)">
+                <input type="number" step="0.01" name="topo_height" placeholder="Topography Height (optional)">
+                <input type="number" step="0.01" name="topo_length" placeholder="Topography Length (optional)">
+                <input type="number" step="0.01" name="topo_distance" placeholder="Topography Distance (optional)">
+            </fieldset>
+        </div>
+
+        <!-- Profiles Tab (Aluminum + Steel) -->
+        <div class="tab-content" id="profiles">
+            <fieldset id="alumProfiles">
+                <legend>Aluminum Profiles</legend>
+                <button type="button" onclick="addAlumProfile()">Add Aluminum Profile</button>
+            </fieldset>
+
+            <fieldset id="steelProfiles">
+                <legend>Steel Profiles</legend>
+                <button type="button" onclick="addSteelProfile()">Add Steel Profile</button>
+            </fieldset>
+        </div>
+
+        <!-- Categories -->
+        <div id="categories" class="tab-content">
+            <fieldset>
+                <button type="button" onclick="addCategory()">Add Category</button>
+            </fieldset>
+        </div>
+    </form>
+</div>
+
+<script>
+    // Tab switching
+    const tabButtons = document.querySelectorAll('.tab-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    tabButtons.forEach(btn => {
+        btn.addEventListener('click', () => {
+            // Remove active classes
+            tabButtons.forEach(b => b.classList.remove('active'));
+            tabContents.forEach(c => c.classList.remove('active'));
+
+            // Activate selected tab
+            btn.classList.add('active');
+            document.getElementById(btn.dataset.tab).classList.add('active');
+        });
+    });
+</script>
+
+<script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>
