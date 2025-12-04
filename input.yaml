@@ -1,9 +1,9 @@
 project_info:
-  ref_no: RFA-001/REV-02/AEL/CW/2025
+  ref_no: 'RFA-001/REV-02/AEL/CW/2025'
   project_name: Taj & Vivanta Hotel, Dhaka
   project_client: Borak Real Estate (Pvt.) Ltd.
   rev_no: 02
-  date: June 28, 2025
+  date: 'June 28, 2025'
 
 alum_profiles:
   - profile_name: M 145x67x2.5

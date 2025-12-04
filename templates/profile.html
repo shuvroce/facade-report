@@ -6,7 +6,9 @@
         {% include "partials/alum-cap.html" %}
     {% endfor %}
 
-    {% for profile in steel_profiles %}
-        {% include "partials/steel-cap.html" %}
-    {% endfor %}
+    {% if steel_profiles %}
+        {% for profile in steel_profiles %}
+            {% include "partials/steel-cap.html" %}
+        {% endfor %}
+    {% endif %}
 </section>
