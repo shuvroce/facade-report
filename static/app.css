@@ -190,7 +190,7 @@ textarea {
     margin-top: 10px;
     font-weight: bold;
     display: block;
-    margin-left: 1.5rem;
+    /* margin-left: 1.5rem; */
 }
 
 /* Nested (Sub-list) Styling */
@@ -228,7 +228,7 @@ summary {
 
 .sub-add-btn {
     background: #0895d1;
-    margin-left: 0rem;
+    /* margin-left: 0rem; */
     display: inline-block;
     margin-top: -10px;
 }

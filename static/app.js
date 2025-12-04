@@ -363,6 +363,21 @@ document.addEventListener('DOMContentLoaded', () => {
             setupNestedHandlers(newElement);
         }
 
+        // Attach any top-level add buttons inside the template clone so those buttons work when cloned
+        const innerAddBtns = newElement.querySelectorAll('.add-btn[data-list]');
+        innerAddBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                const listId = btn.getAttribute('data-list');
+                const subTemplateId = btn.getAttribute('data-template');
+                const targetListElement = document.getElementById(listId);
+                if (targetListElement && subTemplateId) {
+                    addItem(targetListElement, subTemplateId);
+                } else {
+                    console.error('Could not find target list or template for inner add button:', listId, subTemplateId);
+                }
+            });
+        });
+
         // 3.6. Append the new item
         listElement.appendChild(newElement);
     }
