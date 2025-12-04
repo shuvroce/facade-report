@@ -6,7 +6,7 @@ body {
 }
 
 .container {
-    max-width: 1200px;
+    max-width: 900px;
     margin: 0 auto;
     background: #fff;
     border-radius: 8px;
@@ -27,11 +27,12 @@ body {
 }
 
 .tab_btn {
+    font-family: Arial, Helvetica, sans-serif;
     padding: 10px 20px;
     border: none;
     background: transparent;
     cursor: pointer;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: #555;
     transition: color 0.3s;
@@ -39,20 +40,21 @@ body {
 }
 
 .tab_btn.active {
-    color: #007bff;
+    color: #10587e;
 }
 
 .line {
     position: absolute;
     bottom: -2px;
     height: 3px;
-    background: #007bff;
-    transition: all 0.3s ease;
+    background: #10587e;
+    transition: all 0.2s ease;
     width: 0;
     left: 0;
 }
 
 .action_btn-box .action_btn {
+    font-family: Arial, Helvetica, sans-serif;
     padding: 10px 15px;
     margin-left: 10px;
     border: none;
@@ -61,7 +63,7 @@ body {
     font-weight: bold;
     background-color: #28a745;
     color: white;
-    transition: background-color 0.3s;
+    transition: background-color 0.2s;
 }
 
 .action_btn:hover {
@@ -74,7 +76,7 @@ body {
 
 .content {
     display: none;
-    animation: fadeIn 0.5s;
+    animation: fadeIn 0.3s;
 }
 
 .content.active {
@@ -87,10 +89,10 @@ body {
 }
 
 h2 {
-    color: #007bff;
+    color: #173909;
     margin-bottom: 20px;
     border-bottom: 1px dashed #eee;
-    padding-bottom: 10px;
+    /* padding-bottom: 10px; */
 }
 
 h3 {
@@ -101,11 +103,12 @@ h3 {
 .form-section {
     display: flex;
     flex-wrap: wrap;
-    gap: 15px;
+    row-gap: 10px;
+    column-gap: 15px;
 }
 
 input[type="text"], input[type="number"], textarea, select {
-    padding: 10px;
+    padding: 5px;
     border: 1px solid #ccc;
     border-radius: 4px;
     flex: 1 1 calc(33% - 15px); /* Three inputs per row */
@@ -113,9 +116,13 @@ input[type="text"], input[type="number"], textarea, select {
     box-sizing: border-box;
 }
 
+select {
+    background-color: #fffafa;
+}
+
 textarea {
     flex: 1 1 100%;
-    height: 80px;
+    height: 60px;
     resize: vertical;
 }
 
@@ -130,7 +137,7 @@ textarea {
 
 .dynamic-item {
     border: 1px solid #ccc;
-    padding: 15px;
+    padding: 10px;
     margin-bottom: 10px;
     border-radius: 4px;
     background-color: #fff;
@@ -138,11 +145,11 @@ textarea {
 }
 
 .item-header {
-    margin-bottom: 10px;
+    /* margin-bottom: 10px; */
     border-bottom: 1px dotted #eee;
     padding-bottom: 5px;
     display: flex;
-    gap: 10px;
+    /* gap: 10px; */
 }
 
 .item-header input, .item-header select {
@@ -152,14 +159,8 @@ textarea {
 .item-fields {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
-}
-
-.item-fields label {
-    font-weight: bold;
-    flex: 1 1 100%;
-    margin-top: 5px;
-    color: #007bff;
+    row-gap: 10px;
+    column-gap: 5px;
 }
 
 .item-fields input {
@@ -180,15 +181,16 @@ textarea {
 }
 
 .add-btn {
-    background: #007bff;
+    background: #0869d1;
     color: white;
     border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
+    padding: 8px 10px;
+    border-radius: 5px;
     cursor: pointer;
-    margin-top: 15px;
+    margin-top: 10px;
     font-weight: bold;
     display: block;
+    margin-left: 1.5rem;
 }
 
 /* Nested (Sub-list) Styling */
@@ -197,7 +199,11 @@ details {
     border: 1px solid #eee;
     border-radius: 4px;
     padding: 10px;
-    background-color: #f0f8ff;
+    /* background-color: #f2f4f6; */
+}
+
+.profile-details {
+    border-left: 3px solid #008ed0;
 }
 
 summary {
@@ -208,7 +214,7 @@ summary {
 }
 
 .sub-list {
-    margin: 10px 0 5px 0;
+    margin: 10px -10px 0px -10px;
     padding: 10px;
     border: none;
     background-color: transparent;
@@ -217,13 +223,14 @@ summary {
 .sub-item {
     padding: 10px;
     background-color: #ffffff;
-    border-left: 3px solid #007bff;
+    border-left: 3px solid #008ed0;
 }
 
 .sub-add-btn {
-    background: #17a2b8;
-    margin-left: auto;
+    background: #0895d1;
+    margin-left: 0rem;
     display: inline-block;
+    margin-top: -10px;
 }
 
 /* Output Section */
@@ -231,7 +238,7 @@ summary {
     margin-top: 20px;
     padding: 20px;
     background-color: #333;
-    border-radius: 4px;
+    border-radius: 8px;
     color: white;
 }
 
@@ -250,10 +257,12 @@ summary {
 /* Ensure the native collapsible marker is displayed */
 .profile-summary {
     list-style: disclosure-closed; /* For the closed state */
-    padding-left: 10px; /* Give space for the arrow */
-    margin-left: -10px; /* Pull the content back for alignment */
+    padding-left: 5px; /* Give space for the arrow */
+    margin-left: 20px; /* Pull the content back for alignment */
+    margin-bottom: -0.2rem;
 }
 
 .profile-item details[open] > .profile-summary {
     list-style: disclosure-open; /* For the open state */
+    margin-bottom: 1rem;
 }

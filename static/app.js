@@ -42,6 +42,9 @@ document.addEventListener('DOMContentLoaded', () => {
         ]
     };
 
+    const glassGradeOptions = ['FT', 'HS', 'AN'];
+    const supportTypeOptions = ['Four Edges', 'Three Edges', 'Two Edges', 'One Edge'];
+
     const glassFieldPlaceholders = {
         'length': 'Glass Length (mm)',
         'width': 'Glass Width (mm)',
@@ -190,11 +193,38 @@ document.addEventListener('DOMContentLoaded', () => {
             
             const label = document.createElement('label');
             
-            const input = document.createElement('input');
-            input.type = type;
-            input.step = '0.1';
-            input.name = fieldName;
-            input.placeholder = glassFieldPlaceholders[fieldName] || fieldName;
+            let input;
+            
+            // Create dropdown for glass grade
+            if (fieldName.match(/^grade/i)) {
+                input = document.createElement('select');
+                input.name = fieldName;
+                glassGradeOptions.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.textContent = option;
+                    input.appendChild(opt);
+                });
+            }
+            // Create dropdown for support type
+            else if (fieldName === 'support_type') {
+                input = document.createElement('select');
+                input.name = fieldName;
+                supportTypeOptions.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.textContent = option;
+                    input.appendChild(opt);
+                });
+            }
+            // Create text or number input for other fields
+            else {
+                input = document.createElement('input');
+                input.type = type;
+                input.step = '0.1';
+                input.name = fieldName;
+                input.placeholder = glassFieldPlaceholders[fieldName] || fieldName;
+            }
             
             fieldsContainer.appendChild(label);
             fieldsContainer.appendChild(input);
