@@ -1,56 +1,84 @@
-import yaml
 import os
+import yaml
+import tempfile
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 import pikepdf
 
-# PDF with Jinja2
-with open("input.yaml", "r") as f:
-    data = yaml.safe_load(f)
+BASE_DIR = os.path.dirname(__file__)
+INPUT_YAML = os.path.join(BASE_DIR, "input.yaml")
+OUT_PDF = os.path.join(BASE_DIR, "report.pdf")
+TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
+CSS_PATH = os.path.join(TEMPLATE_DIR, "assets", "css", "report.css")
 
-template_dir = os.path.join(os.path.dirname(__file__), "templates")
-
-env = Environment(loader=FileSystemLoader(template_dir))
-template = env.get_template("full-report.html")
-html_out = template.render(data)
-
-report_pdf = "report.pdf"
-
-HTML(string=html_out, base_url=template_dir).write_pdf(
-    report_pdf,
-    stylesheets=[
-        CSS(filename=os.path.join(template_dir, "assets/css/report.css"))
-    ]
-)
-
-# Post-processing
 def collapse_outlines(item):
     while item:
         if "/First" in item:
             item.Count = 0
             collapse_outlines(item.First)
-        
         if "/Next" in item:
             item = item.Next
         else:
             break
 
-with pikepdf.Pdf.open("report.pdf") as pdf:
-    pdf.docinfo["/Title"] = "Structural Calculation & Design Report"
-    pdf.docinfo["/Author"] = "Md. Akram Hossain"
-    # pdf.docinfo["/Subject"] = "Short description of the document"
-    
-    pdf.Root.PageMode = pikepdf.Name("/UseOutlines")
-    pdf.Root.PageLayout = pikepdf.Name("/SinglePage")
-    
-    if "/Outlines" in pdf.Root and "/First" in pdf.Root.Outlines:
-        pdf.Root.Outlines.Count = 0
-        
-        collapse_outlines(pdf.Root.Outlines.First)
-    
-    pdf.save("_report.pdf")
+def generate_report_from_data(
+    data,
+    out_pdf=None,
+    template_dir=None,
+    css_path=None,
+    title="Structural Calculation & Design Report",
+    author="Md. Akram Hossain",
+):
+    BASE_DIR = os.path.dirname(__file__)
+    if template_dir is None:
+        template_dir = os.path.join(BASE_DIR, "templates")
+    if css_path is None:
+        css_path = os.path.join(template_dir, "assets", "css", "report.css")
 
-os.remove("report.pdf")
-os.rename("_report.pdf", "report.pdf")
+    tmp_created = False
+    if out_pdf is None:
+        tmp = tempfile.NamedTemporaryFile(delete=False, suffix=".pdf", dir=BASE_DIR)
+        out_pdf = tmp.name
+        tmp.close()
+        tmp_created = True
 
-print("Report created successfully!")
+    try:
+        env = Environment(loader=FileSystemLoader(template_dir))
+        template = env.get_template("full-report.html")
+        html_out = template.render(data)
+
+        HTML(string=html_out, base_url=template_dir).write_pdf(
+            out_pdf,
+            stylesheets=[CSS(filename=css_path)]
+        )
+
+        # Allow overwriting input file so pikepdf can save back to same path
+        with pikepdf.Pdf.open(out_pdf, allow_overwriting_input=True) as pdf:
+            pdf.docinfo["/Title"] = title
+            pdf.docinfo["/Author"] = author
+            pdf.Root.PageMode = pikepdf.Name("/UseOutlines")
+            pdf.Root.PageLayout = pikepdf.Name("/SinglePage")
+            if "/Outlines" in pdf.Root and "/First" in pdf.Root.Outlines:
+                pdf.Root.Outlines.Count = 0
+                collapse_outlines(pdf.Root.Outlines.First)
+            pdf.save(out_pdf)
+
+        return out_pdf
+
+    except Exception:
+        if tmp_created and os.path.exists(out_pdf):
+            os.remove(out_pdf)
+        raise
+
+def main():
+    if not os.path.exists(INPUT_YAML):
+        raise SystemExit(f"Missing input: {INPUT_YAML}")
+
+    with open(INPUT_YAML, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f) or {}
+
+    out = generate_report_from_data(data, out_pdf=OUT_PDF)
+    print(f"Report written to {out}")
+
+if __name__ == "__main__":
+    main()

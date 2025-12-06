@@ -5,7 +5,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Report Generator</title>
-    <link rel="stylesheet" href="/static/app.css">
+    <!-- <link rel="stylesheet" href="/static/app.css"> -->
     <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
 </head>
 
@@ -136,6 +136,7 @@
                 <div class="output-container">
                     <h3>Generated YAML Output</h3>
                     <button class="action_btn" id="download-yaml-btn" disabled>💾 Download YAML</button>
+                    <div id="status-notification" class="status">Idle</div>
                     <pre id="yaml-output-display">Click 'Generate YAML' to see the output.</pre>
                 </div>
             </div>
@@ -323,7 +324,7 @@
     </div>
     
     
-    <script src="/static/app.js"></script>
+    <!-- <script src="/static/app.js"></script> -->
     <script src="{{ url_for('static', filename='app.js') }}"></script>
 
 </body>

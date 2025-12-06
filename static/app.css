@@ -371,3 +371,44 @@ summary {
     list-style: disclosure-open; /* For the open state */
     margin-bottom: 1rem;
 }
+
+
+/* Status notification */
+.status {
+    margin-top: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    display: inline-block;
+    font-weight: 600;
+    color: #fff;
+    background: rgba(255,255,255,0.06);
+}
+
+.status.processing {
+    background: #0d6efd; /* blue */
+}
+
+.status.success {
+    background: #28a745; /* green */
+}
+
+.status.error {
+    background: #dc3545; /* red */
+}
+
+/* small spinner for processing state */
+.status.processing::after {
+    content: "";
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin-left: 10px;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.5);
+    border-top-color: #fff;
+    animation: sr-spin 0.9s linear infinite;
+}
+
+@keyframes sr-spin {
+    to { transform: rotate(360deg); }
+}

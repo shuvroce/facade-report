@@ -420,6 +420,16 @@ document.addEventListener('DOMContentLoaded', () => {
     const reportBtn = document.getElementById('generate-report-btn'); // NEW: Get the report button
     const yamlOutputDisplay = document.getElementById('yaml-output-display');
 
+    // for notifications
+    const statusEl = document.getElementById('status-notification');
+
+    function setStatus(text, cls = '') {
+        if (!statusEl) return;
+        statusEl.textContent = text;
+        // reset classes and add base + state class
+        statusEl.className = 'status' + (cls ? ' ' + cls : '');
+    }
+
 
     function getFormData(form) {
         const data = {};
@@ -596,42 +606,76 @@ document.addEventListener('DOMContentLoaded', () => {
     reportBtn.addEventListener('click', () => {
         const formData = getFormData(form);
         const yamlContent = toYamlString(formData);
-        
-        // 1. Display the generated YAML for user feedback
+
+        // Display the generated YAML for user feedback
         yamlOutputDisplay.textContent = yamlContent;
-        
-        // 2. Execute the Python script with the generated YAML content
-        callPythonToGenerateReport(yamlContent);
+
+        // Update UI: show processing and disable buttons
+        setStatus('Processing...', 'processing');
+        generateBtn.disabled = true;
+        reportBtn.disabled = true;
+
+        // Execute report generation and handle status updates in the async function
+        callPythonToGenerateReport(yamlContent)
+            .then(() => {
+                setStatus('Generation complete!', 'success');
+            })
+            .catch((err) => {
+                setStatus('Generation failed: ' + (err && err.message ? err.message : err), 'error');
+            })
+            .finally(() => {
+                // Re-enable after a short delay so user sees the result
+                setTimeout(() => {
+                    generateBtn.disabled = false;
+                    reportBtn.disabled = false;
+                }, 900);
+            });
     });
 
     // Helper to call the Python environment to create input.yaml and run report.py
     function callPythonToGenerateReport(yamlContent) {
-        // In a real application, this function would send the YAML content 
-        // to a server endpoint (e.g., using fetch or XMLHttpRequest) that 
-        // handles file writing and Python execution (e.g., a Flask/Django route).
-
-        alert('Sending YAML data to the server for report generation (input.yaml will be created and report.py executed).');
-        console.log('Generated YAML content:\n', yamlContent);
-        console.log('--- Simulating report.py execution with this data ---');
-
-        // Example: Using fetch to send data to a theoretical '/generate_report' endpoint
-        fetch('/generate_report', {
+        // Return the fetch promise so the caller can await/chain
+        return fetch('/generate_report', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ yaml_data: yamlContent })
+            body: JSON.stringify({ yaml_content: yamlContent })
         })
-        .then(response => response.json())
-        .then(data => {
-            if (data.success) {
-                // Trigger PDF download from the server response
-                window.location.href = data.pdf_url; 
-            } else {
-                alert('Report generation failed: ' + data.error);
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errJson => {
+                    const msg = errJson && errJson.error ? errJson.error : `Server responded with ${response.status}`;
+                    throw new Error(msg);
+                }).catch(() => {
+                    throw new Error(`Server responded with ${response.status}`);
+                });
             }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+
+            // Try to set filename from YAML project name (optional)
+            let suggestedName = 'report.pdf';
+            try {
+                const firstPart = yamlContent.split('\n').find(line => line.trim().startsWith('project_info.project_name:'));
+                if (firstPart) {
+                    suggestedName = firstPart.split(':').slice(1).join(':').trim().replace(/\s+/g, '_') || suggestedName;
+                    if (!suggestedName.toLowerCase().endsWith('.pdf')) suggestedName += '_report.pdf';
+                }
+            } catch (e) { /* ignore */ }
+
+            a.download = suggestedName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
         })
         .catch(error => {
             console.error('Error during report generation:', error);
-            alert('A network error occurred during report generation.');
+            // Re-throw to be handled by the caller for UI update
+            throw error;
         });
     }
     
@@ -639,14 +683,7 @@ document.addEventListener('DOMContentLoaded', () => {
     downloadBtn.addEventListener('click', () => {
         const yamlContent = downloadBtn.getAttribute('data-yaml-content');
         if (yamlContent) {
-            // Get the project name for a custom filename
-            const projectNameInput = form.querySelector('input[name="project_info.project_name"]');
-            const projectName = projectNameInput ? projectNameInput.value : 'project_data';
-            
-            // Clean the project name to create a safe filename
-            const cleanProjectName = projectName.replace(/[^a-z0-9]/gi, '_').toLowerCase();
-            
-            downloadYaml(yamlContent, `${cleanProjectName}.yaml`);
+            downloadYaml(yamlContent, 'input.yaml');
         }
     });
 });
