@@ -191,8 +191,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 type = 'number';
             }
             
-            const label = document.createElement('label');
-            
             let input;
             
             // Create dropdown for glass grade
@@ -226,7 +224,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.placeholder = glassFieldPlaceholders[fieldName] || fieldName;
             }
             
-            fieldsContainer.appendChild(label);
             fieldsContainer.appendChild(input);
         });
     }
@@ -247,15 +244,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 type = 'text';
             }
             
-            const label = document.createElement('label');
-            
             const input = document.createElement('input');
             input.type = type;
             input.step = '0.1';
             input.name = fieldName;
             input.placeholder = frameFieldPlaceholders[fieldName] || fieldName;
             
-            fieldsContainer.appendChild(label);
             fieldsContainer.appendChild(input);
         });
     }
@@ -278,15 +272,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 type = 'text';
             }
 
-            const label = document.createElement('label');
-            
             const input = document.createElement('input');
             input.type = type;
             input.step = '0.1';
             input.name = fieldName;
             input.placeholder = anchorageFieldPlaceholders[fieldName] || fieldName;
             
-            fieldsContainer.appendChild(label);
             fieldsContainer.appendChild(input);
         });
     }

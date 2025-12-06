@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    <div class="container">
+    <nav>
         <div class="nav_bar">
             <div class="tab_box">
                 <button class="tab_btn active">Project Info</button>
@@ -24,302 +24,308 @@
                 <button class="action_btn" id="generate-report-btn">Generate Report</button>
             </div>
         </div>
+    </nav>
+    
+    <div class="container">
+        <div class="content__box">
+            <div>
+                <form id="yaml-form" onsubmit="event.preventDefault();">
+                    <div class="content_box">
+                        <div class="content active" data-tab="project_info">
+                            <h2>Project Info</h2>
+                            <div class="form-section">
+                                <input type="text" name="project_info.ref_no" placeholder="Ref. No. (RFA-001/REV-02/AEL/CW/2025)">
+                                <input type="text" name="project_info.project_name" placeholder="Project Name">
+                                <input type="text" name="project_info.project_client" placeholder="Project Client">
+                                <input type="text" name="project_info.rev_no" placeholder="Revision No.">
+                                <input type="text" name="project_info.date" placeholder="Date (June 28, 2025)">
+                            </div>
+                        </div>
 
-        <form id="yaml-form" onsubmit="event.preventDefault();">
-            <div class="content_box">
-                <div class="content active" data-tab="project_info">
-                    <h2>Project Info</h2>
-                    <div class="form-section">
-                        <input type="text" name="project_info.ref_no" placeholder="Ref. No. (RFA-001/REV-02/AEL/CW/2025)">
-                        <input type="text" name="project_info.project_name" placeholder="Project Name">
-                        <input type="text" name="project_info.project_client" placeholder="Project Client">
-                        <input type="text" name="project_info.rev_no" placeholder="Revision No.">
-                        <input type="text" name="project_info.date" placeholder="Date (June 28, 2025)">
+                        <div class="content" data-tab="profiles">
+                            <h2>Profiles</h2>
+                            <h3>Aluminum Profiles</h3>
+                            <div class="dynamic-list" id="alum-profiles-list"></div>
+                            <button type="button" class="add-btn" data-list="alum-profiles-list" data-template="alum-profile-template">Add Aluminum Profile</button>
+
+                            <h3>Steel Profiles</h3>
+                            <div class="dynamic-list" id="steel-profiles-list"></div>
+                            <button type="button" class="add-btn" data-list="steel-profiles-list" data-template="steel-profile-template">Add Steel Profile</button>
+                        </div>
+
+                        <div class="content" data-tab="wind">
+                            <h2>Wind Parameters</h2>
+                            <div class="form-section">
+                                <input type="text" name="wind.location" placeholder="Location">
+                                <select name="wind.enclosure_type">
+                                    <option value="Enclosed">Enclosed</option>
+                                    <option value="Partially Enclosed">Partially Enclosed</option>
+                                    <option value="Open">Open</option>
+                                </select>
+                                <select name="wind.roof_type">
+                                    <option value="Flat">Flat Roof</option>
+                                    <option value="Monoslope">Monoslope Roof</option>
+                                    <option value="Gable">Gable Roof</option>
+                                    <option value="Hip">Hip Roof</option>
+                                </select>
+                                <input type="number" step="0.1" name="wind.wind_speed" placeholder="Wind Speed (m/s)">
+                                <input type="number" step="0.1" name="wind.b_height" placeholder="Building Height (m)">
+                                <input type="number" step="0.1" name="wind.b_length" placeholder="Building Length (m)">
+                                <input type="number" step="0.1" name="wind.b_width" placeholder="Building Width (m)">
+                                <select name="wind.exposure_cat">
+                                    <option value="A">Exposure A</option>
+                                    <option value="B">Exposure B</option>
+                                    <option value="C">Exposure C</option>
+                                </select>
+                                <select name="wind.occupancy_cat">
+                                    <option value="I">Occupancy I</option>
+                                    <option value="II">Occupancy II</option>
+                                    <option value="III">Occupancy III</option>
+                                    <option value="IV">Occupancy IV</option>
+                                </select>
+                                <select name="wind.Imp_factor">
+                                    <option value="0.77">I = 0.77</option>
+                                    <option value="0.87">I = 0.87</option>
+                                    <option value="1.0">I = 1.0</option>
+                                    <option value="1.15">I = 1.15</option>
+                                </select>
+                                <input type="number" step="0.1" name="wind.K_d" placeholder="Directionality Factor, Kd">
+                                <select name="wind.GC_pi">
+                                    <option value="0.18">GCpi 0.18 (Enclosed)</option>
+                                    <option value="0.55">GCpi 0.55 (Partially Enclosed)</option>
+                                    <option value="0">GCpi 0.0 (Open)</option>
+                                </select>
+                                <input type="number" step="0.1" name="wind.C_pl" placeholder="External Pressure Coefficient (Leeward), Cpl">
+                                <input type="number" step="0.1" name="wind.K_h" placeholder="Velocity Pressure Coefficient at H, Kh">
+                                <input type="number" step="0.1" name="wind.q_zk" placeholder="Velocity Pressure (in terms of Kz.Kzt), qz">
+                                <input type="number" step="0.1" name="wind.K_ht" placeholder="Topographic Factor at H, Kht">
+                                <input type="number" step="0.1" name="wind.q_h" placeholder="Velocity pressure at H, qh">
+                                <input type="number" step="0.1" name="wind.int_pressure" placeholder="Internal Pressure, Phi (kPa)">
+                                <input type="number" step="0.1" name="wind.leeward_pressure" placeholder="Leeward Pressure, Phl (kPa)">
+                                <input type="number" step="0.1" name="wind.sidewall_pressure" placeholder="Sidewall Pressure, Phs (kPa)">
+                                <select name="wind.b_rigidity">
+                                    <option value="Rigid">Rigid</option>
+                                    <option value="Flexible">Flexible</option>
+                                </select>
+                                <input type="number" step="0.1" name="wind.b_freq" placeholder="Building Natural Frequency, fn1 (Hz)">
+                                <input type="number" step="0.1" name="wind.damping" placeholder="Damping Ratio">
+                                <input type="number" step="0.1" name="wind.gust_factor" placeholder="Gust Effect Factor, G">
+                                <select name="wind.topography_type">
+                                    <option value="Homogeneous">Homogeneous Topo.</option>
+                                    <option value="Hill">Hill Topo.</option>
+                                    <option value="Ridge">Ridge Topo.</option>
+                                    <option value="Escarpment">Escarpment Topo.</option>
+                                </select>
+                                <input type="text" name="wind.topo_crest_side" placeholder="Topo Crest Side">
+                                <input type="number" name="wind.topo_height" placeholder="Topo Height">
+                                <input type="number" name="wind.topo_length" placeholder="Topo Length">
+                                <input type="number" name="wind.topo_distance" placeholder="Topo Distance">
+                                <textarea name="wind.exposure_note" placeholder="Exposure Note"></textarea>
+                                <textarea name="wind.occupancy_note" placeholder="Occupancy Note"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="content" data-tab="categories">
+                            <h2>Categories</h2>
+                            <div class="dynamic-list" id="categories-list"></div>
+                            <button type="button" class="add-btn" data-list="categories-list" data-template="category-template">Add Category</button>
+                        </div>
                     </div>
-                </div>
+                </form>
 
-                <div class="content" data-tab="profiles">
-                    <h2>Profiles</h2>
-                    <h3>Aluminum Profiles</h3>
-                    <div class="dynamic-list" id="alum-profiles-list"></div>
-                    <button type="button" class="add-btn" data-list="alum-profiles-list" data-template="alum-profile-template">Add Aluminum Profile</button>
-
-                    <h3>Steel Profiles</h3>
-                    <div class="dynamic-list" id="steel-profiles-list"></div>
-                    <button type="button" class="add-btn" data-list="steel-profiles-list" data-template="steel-profile-template">Add Steel Profile</button>
-                </div>
-
-                <div class="content" data-tab="wind">
-                    <h2>Wind Parameters</h2>
-                    <div class="form-section">
-                        <input type="text" name="wind.location" placeholder="Location">
-                        <select name="wind.enclosure_type">
-                            <option value="Enclosed">Enclosed</option>
-                            <option value="Partially Enclosed">Partially Enclosed</option>
-                            <option value="Open">Open</option>
-                        </select>
-                        <select name="wind.roof_type">
-                            <option value="Flat">Flat Roof</option>
-                            <option value="Monoslope">Monoslope Roof</option>
-                            <option value="Gable">Gable Roof</option>
-                            <option value="Hip">Hip Roof</option>
-                        </select>
-                        <input type="number" step="0.1" name="wind.wind_speed" placeholder="Wind Speed (m/s)">
-                        <input type="number" step="0.1" name="wind.b_height" placeholder="Building Height (m)">
-                        <input type="number" step="0.1" name="wind.b_length" placeholder="Building Length (m)">
-                        <input type="number" step="0.1" name="wind.b_width" placeholder="Building Width (m)">
-                        <select name="wind.exposure_cat">
-                            <option value="A">Exposure A</option>
-                            <option value="B">Exposure B</option>
-                            <option value="C">Exposure C</option>
-                        </select>
-                        <select name="wind.occupancy_cat">
-                            <option value="I">Occupancy I</option>
-                            <option value="II">Occupancy II</option>
-                            <option value="III">Occupancy III</option>
-                            <option value="IV">Occupancy IV</option>
-                        </select>
-                        <select name="wind.Imp_factor">
-                            <option value="0.77">I = 0.77</option>
-                            <option value="0.87">I = 0.87</option>
-                            <option value="1.0">I = 1.0</option>
-                            <option value="1.15">I = 1.15</option>
-                        </select>
-                        <input type="number" step="0.1" name="wind.K_d" placeholder="Directionality Factor, Kd">
-                        <select name="wind.GC_pi">
-                            <option value="0.18">GCpi 0.18 (Enclosed)</option>
-                            <option value="0.55">GCpi 0.55 (Partially Enclosed)</option>
-                            <option value="0">GCpi 0.0 (Open)</option>
-                        </select>
-                        <input type="number" step="0.1" name="wind.C_pl" placeholder="External Pressure Coefficient (Leeward), Cpl">
-                        <input type="number" step="0.1" name="wind.K_h" placeholder="Velocity Pressure Coefficient at H, Kh">
-                        <input type="number" step="0.1" name="wind.q_zk" placeholder="Velocity Pressure (in terms of Kz.Kzt), qz">
-                        <input type="number" step="0.1" name="wind.K_ht" placeholder="Topographic Factor at H, Kht">
-                        <input type="number" step="0.1" name="wind.q_h" placeholder="Velocity pressure at H, qh">
-                        <input type="number" step="0.1" name="wind.int_pressure" placeholder="Internal Pressure, Phi (kPa)">
-                        <input type="number" step="0.1" name="wind.leeward_pressure" placeholder="Leeward Pressure, Phl (kPa)">
-                        <input type="number" step="0.1" name="wind.sidewall_pressure" placeholder="Sidewall Pressure, Phs (kPa)">
-                        <select name="wind.b_rigidity">
-                            <option value="Rigid">Rigid</option>
-                            <option value="Flexible">Flexible</option>
-                        </select>
-                        <input type="number" step="0.1" name="wind.b_freq" placeholder="Building Natural Frequency, fn1 (Hz)">
-                        <input type="number" step="0.1" name="wind.damping" placeholder="Damping Ratio">
-                        <input type="number" step="0.1" name="wind.gust_factor" placeholder="Gust Effect Factor, G">
-                        <select name="wind.topography_type">
-                            <option value="Homogeneous">Homogeneous Topo.</option>
-                            <option value="Hill">Hill Topo.</option>
-                            <option value="Ridge">Ridge Topo.</option>
-                            <option value="Escarpment">Escarpment Topo.</option>
-                        </select>
-                        <input type="text" name="wind.topo_crest_side" placeholder="Topo Crest Side">
-                        <input type="number" name="wind.topo_height" placeholder="Topo Height">
-                        <input type="number" name="wind.topo_length" placeholder="Topo Length">
-                        <input type="number" name="wind.topo_distance" placeholder="Topo Distance">
-                        <textarea name="wind.exposure_note" placeholder="Exposure Note"></textarea>
-                        <textarea name="wind.occupancy_note" placeholder="Occupancy Note"></textarea>
-                    </div>
-                </div>
-
-                <div class="content" data-tab="categories">
-                    <h2>Categories</h2>
-                    <div class="dynamic-list" id="categories-list"></div>
-                    <button type="button" class="add-btn" data-list="categories-list" data-template="category-template">Add Category</button>
+                <div class="output-container">
+                    <h3>Generated YAML Output</h3>
+                    <button class="action_btn" id="download-yaml-btn" disabled>💾 Download YAML</button>
+                    <pre id="yaml-output-display">Click 'Generate YAML' to see the output.</pre>
                 </div>
             </div>
-        </form>
 
-        <div class="output-container">
-            <h3>Generated YAML Output</h3>
-            <button class="action_btn" id="download-yaml-btn" disabled>💾 Download YAML</button>
-            <pre id="yaml-output-display">Click 'Generate YAML' to see the output.</pre>
+            <template id="alum-profile-template">
+                <div class="dynamic-item profile-item alum-profile-item" data-type="alum_profile">
+                    <button type="button" class="remove-btn sub-remove-btn">Remove</button>
+                    <div class="item-header">
+                        <input type="text" name="profile_name" placeholder="Profile Name (e.g., M 145x67x2.5)">
+                    </div>
+                    <details class="profile-details" open>
+                        <summary class="profile-summary">Properties</summary>
+                        <div class="item-fields">
+                            <input type="number" step="0.1" name="web_length" placeholder="Web Length (mm)">
+                            <input type="number" step="0.1" name="flange_length" placeholder="Flange Length (mm)">
+                            <input type="number" step="0.1" name="web_thk" placeholder="Web Thickness (mm)">
+                            <input type="number" step="0.1" name="flange_thk" placeholder="Flange Thickness (mm)">
+                            <input type="number" step="0.1" name="tor_constant" placeholder="Torsional Constant (mm⁴)">
+                            <input type="number" step="0.1" name="area" placeholder="Area (mm²)">
+                            <input type="number" step="0.1" name="I_xx" placeholder="Moment of Inertia about Major Axis, Ixx (mm⁴)">
+                            <input type="number" step="0.1" name="I_yy" placeholder="Moment of Inertia about Minor Axis, Iyy (mm⁴)">
+                            <input type="number" step="0.1" name="Y" placeholder="Extreme Fibre Distance, Y (mm)">
+                            <input type="number" step="0.1" name="X" placeholder="Extreme Fibre Distance, X (mm)">
+                            <input type="number" step="0.1" name="S_x" placeholder="Elastic Section Modulus about Major Axis, Sx (mm³)">
+                            <input type="number" step="0.1" name="S_y" placeholder="Elastic Section Modulus about Major Axis, Sy (mm³)">
+                            <input type="number" step="0.1" name="plastic_x" placeholder="Upper Region Centroid Distance, Plastic X">
+                            <input type="number" step="0.1" name="plastic_y" placeholder="Lower Region Centroid Distance, Plastic Y">
+                            <input type="number" step="0.1" name="Z_x" placeholder="Plastic Section Modulus about Major Axis, Zx (mm³)">
+                            <input type="number" step="0.1" name="F_y" placeholder="Yield Strength (MPa)">
+                            <input type="number" step="0.1" name="Mn_yield" placeholder="Moment Capacity by Yielding, Mn (kNm)">
+                            <input type="number" step="0.1" name="Mn_lb" placeholder="Moment Capacity by Local Buckling, Mn (kNm)">
+                            <input type="number" step="0.1" name="phi_Mn" placeholder="Design Moment Capacity, φMn (kNm)">
+                        </div>
+                    </details>
+                    <!-- <button type="button" class="add-btn" data-list="alum-profiles-list" data-template="alum-profile-template">Add Aluminum Profile</button> -->
+                </div>
+            </template>
+
+            <template id="steel-profile-template">
+                <div class="dynamic-item profile-item steel-profile-item" data-type="steel_profile">
+                    <button type="button" class="remove-btn sub-remove-btn">Remove</button>
+                    <div class="item-header">
+                        <input type="text" name="profile_name" placeholder="Profile Name (e.g., RHS 110x54x2.5)">
+                    </div>
+                    <details class="profile-details" open>
+                        <summary class="profile-summary">Properties</summary>
+                        <div class="item-fields">
+                            <input type="number" step="0.1" name="web_length" placeholder="Web Length (mm)">
+                            <input type="number" step="0.1" name="flange_length" placeholder="Flange Length (mm)">
+                            <input type="number" step="0.1" name="web_thk" placeholder="Web Thickness (mm)">
+                            <input type="number" step="0.1" name="flange_thk" placeholder="Flange Thickness (mm)">
+                            <input type="number" step="0.1" name="tor_constant" placeholder="Torsional Constant (mm⁴)">
+                            <input type="number" step="0.1" name="area" placeholder="Area (mm²)">
+                            <input type="number" step="0.1" name="I_xx" placeholder="Moment of Inertia about Major Axis, Ixx (mm⁴)">
+                            <input type="number" step="0.1" name="I_yy" placeholder="Moment of Inertia about Minor Axis, Iyy (mm⁴)">
+                            <input type="number" step="0.1" name="Y" placeholder="Extreme Fibre Distance, Y (mm)">
+                            <input type="number" step="0.1" name="X" placeholder="Extreme Fibre Distance, X (mm)">
+                            <input type="number" step="0.1" name="S_x" placeholder="Elastic Section Modulus about Major Axis, Sx (mm³)">
+                            <input type="number" step="0.1" name="S_y" placeholder="Elastic Section Modulus about Major Axis, Sy (mm³)">
+                            <input type="number" step="0.1" name="Z_x" placeholder="Plastic Section Modulus about Major Axis, Zx (mm³)">
+                            <input type="number" step="0.1" name="F_y" placeholder="Yield Strength (MPa)">
+                            <input type="number" step="0.1" name="Mn" placeholder="Moment Capacity by Yielding, Mn (kNm)">
+                            <input type="number" step="0.1" name="phi_Mn" placeholder="Design Moment Capacity, φMn (kNm)">
+                        </div>
+                    </details>
+                    <!-- <button type="button" class="add-btn" data-list="steel-profiles-list" data-template="steel-profile-template">Add Steel Profile</button> -->
+                </div>
+            </template>
+
+            <template id="category-template">
+                <div class="dynamic-item category-item" data-type="category">
+                    <button type="button" class="remove-btn">Remove Category</button>
+                    <div class="item-header">
+                        <input type="text" name="category_name" placeholder="Category Name (e.g., Typ. Cont. Facade)">
+                    </div>
+
+                    <details open>
+                        <summary>Glass Units</summary>
+                        <div class="dynamic-list sub-list" data-list-name="glass_units"></div>
+                        <button type="button" class="add-btn sub-add-btn" data-template="glass-unit-template" data-sub-list-name="glass_units">Add Glass Unit</button>
+                    </details>
+
+                    <details open>
+                        <summary>Frame</summary>
+                        <div class="dynamic-list sub-list" data-list-name="frames"></div>
+                        <!-- <button type="button" class="add-btn sub-add-btn" data-template="frame-template" data-sub-list-name="frames">Add Frame</button> -->
+                    </details>
+
+                    <details open>
+                        <summary>Connection</summary>
+                        <div class="dynamic-list sub-list" data-list-name="connections"></div>
+                        <!-- <button type="button" class="add-btn sub-add-btn" data-template="connection-template" data-sub-list-name="connections">Add Connection</button> -->
+                    </details>
+
+                    <details open>
+                        <summary>Anchorage</summary>
+                        <div class="dynamic-list sub-list" data-list-name="anchorage"></div>
+                        <button type="button" class="add-btn sub-add-btn" data-template="anchorage-template" data-sub-list-name="anchorage">Add Anchorage</button>
+                    </details>
+                </div>
+            </template>
+
+            <template id="glass-unit-template">
+                <div class="dynamic-item sub-item glass-unit-item" data-type="glass_unit">
+                    <button type="button" class="remove-btn sub-remove-btn">Remove</button>
+                    <div class="item-header">
+                        <select name="glass_type">
+                            <option value="sgu">SGU (Single Glazed)</option>
+                            <option value="dgu">DGU (Double Glazed)</option>
+                            <option value="lgu">LGU (Laminated Glazed)</option>
+                            <option value="ldgu">LDGU (Laminated DGU)</option>
+                        </select>
+                    </div>
+                    <div class="item-fields"></div>
+                </div>
+            </template>
+
+            <template id="frame-template">
+                <div class="dynamic-item sub-item frame-item" data-type="frame">
+                    <!-- <button type="button" class="remove-btn sub-remove-btn">Remove</button> -->
+                    <div class="item-header">
+                        <select name="mullion_type">
+                            <option value="Aluminum Only">Aluminum Only</option>
+                            <option value="Aluminum + Steel">Aluminum + Steel</option>
+                        </select>
+                    </div>
+                    <div class="item-header">
+                        <select name="frame_type">
+                            <option value="Continuous">Continuous</option>
+                            <option value="Floor-to-floor">Floor-to-floor</option>
+                        </select>
+                        <select name="zone">
+                            <option value="Zone 4 (Mid Zone)">Zone 4 (Mid Zone)</option>
+                            <option value="Zone 5 (Edge/Corner Zone)">Zone 5 (Edge/Corner Zone)</option>
+                            <option value="Zone 1 (Roof Mid Zone)">Zone 1 (Roof Mid Zone)</option>
+                            <option value="Zone 2 (Roof Edge Zone)">Zone 2 (Roof Edge Zone)</option>
+                            <option value="Zone 3 (Roof Corner Zone)">Zone 3 (Roof Corner Zone)</option>
+                        </select>
+                        <select name="system_type">
+                            <option value="Semi-unitized">Semi-unitized System</option>
+                            <option value="Unitized">Unitized System</option>
+                            <option value="Stick">Stick System</option>
+                        </select>
+                    </div>
+                    <div class="item-fields"></div>
+                </div>
+            </template>
+
+            <template id="connection-template">
+                <div class="dynamic-item sub-item connection-item" data-type="connection">
+                    <!-- <button type="button" class="remove-btn sub-remove-btn">Remove</button> -->
+                    <div class="item-header">
+                        <input type="number" step="2" name="screw_nos" placeholder="No. of Screw (e.g. 4, 6, 8, 12)">
+                    </div>
+                    <div class="item-fields">
+                        <input type="text" name="cleat_size" placeholder="Cleat Size (e.g., 25 x 32 x 3.5 (L = 85))">
+                        <input type="number" step="0.1" name="screw_dia" placeholder="Diameter of Screw, d (mm)">
+                        <input type="number" step="0.1" name="head_dia" placeholder="Diameter of Screw Head, dh (mm)">
+                        <input type="number" step="0.1" name="joint_fy" placeholder="Joint Horizontal Force, Fy (kN)">
+                        <input type="number" step="0.1" name="joint_fz" placeholder="Joint Vertical Force, Fz (kN)">
+                        <input type="number" step="0.1" name="design_fy" placeholder="Design Horizontal Force, Fy (kN)">
+                        <input type="number" step="0.1" name="design_fz" placeholder="Design Vertical Force, Fz (kN)">
+                        <input type="number" step="0.1" name="t1" placeholder="Screw Head Contacted Member Thickness, t1 (mm)">
+                        <input type="number" step="0.1" name="t2" placeholder="Screw Head Non-contacted Member Thickness, t2 (mm)">
+                        <input type="number" step="0.1" name="tc" placeholder="Lesser of Depth of penetration and thickness t2, (tc, mm)">
+                    </div>
+                </div>
+            </template>
+
+            <template id="anchorage-template">
+                <div class="dynamic-item sub-item anchorage-item" data-type="anchorage">
+                    <button type="button" class="remove-btn sub-remove-btn">Remove</button>
+                    <div class="item-header">
+                        <select name="clump_type">
+                            <option value="Box Clump">Box Clump</option>
+                            <option value="U Clump">U Clump</option>
+                            <option value="L Clump Top">L Clump Top</option>
+                            <option value="L Clump Front">L Clump Front</option>
+                        </select>
+                    </div>
+                    <div class="item-fields"></div>
+                </div>
+            </template>
         </div>
     </div>
-
-
-
-    <template id="alum-profile-template">
-        <div class="dynamic-item profile-item alum-profile-item" data-type="alum_profile">
-            <button type="button" class="remove-btn sub-remove-btn">Remove</button>
-            <div class="item-header">
-                <input type="text" name="profile_name" placeholder="Profile Name (e.g., M 145x67x2.5)">
-            </div>
-            <details class="profile-details" open>
-                <summary class="profile-summary">Properties</summary>
-                <div class="item-fields">
-                    <input type="number" step="0.1" name="web_length" placeholder="Web Length (mm)">
-                    <input type="number" step="0.1" name="flange_length" placeholder="Flange Length (mm)">
-                    <input type="number" step="0.1" name="web_thk" placeholder="Web Thickness (mm)">
-                    <input type="number" step="0.1" name="flange_thk" placeholder="Flange Thickness (mm)">
-                    <input type="number" step="0.1" name="tor_constant" placeholder="Torsional Constant (mm⁴)">
-                    <input type="number" step="0.1" name="area" placeholder="Area (mm²)">
-                    <input type="number" step="0.1" name="I_xx" placeholder="Moment of Inertia about Major Axis, Ixx (mm⁴)">
-                    <input type="number" step="0.1" name="I_yy" placeholder="Moment of Inertia about Minor Axis, Iyy (mm⁴)">
-                    <input type="number" step="0.1" name="Y" placeholder="Extreme Fibre Distance, Y (mm)">
-                    <input type="number" step="0.1" name="X" placeholder="Extreme Fibre Distance, X (mm)">
-                    <input type="number" step="0.1" name="S_x" placeholder="Elastic Section Modulus about Major Axis, Sx (mm³)">
-                    <input type="number" step="0.1" name="S_y" placeholder="Elastic Section Modulus about Major Axis, Sy (mm³)">
-                    <input type="number" step="0.1" name="plastic_x" placeholder="Upper Region Centroid Distance, Plastic X">
-                    <input type="number" step="0.1" name="plastic_y" placeholder="Lower Region Centroid Distance, Plastic Y">
-                    <input type="number" step="0.1" name="Z_x" placeholder="Plastic Section Modulus about Major Axis, Zx (mm³)">
-                    <input type="number" step="0.1" name="F_y" placeholder="Yield Strength (MPa)">
-                    <input type="number" step="0.1" name="Mn_yield" placeholder="Moment Capacity by Yielding, Mn (kNm)">
-                    <input type="number" step="0.1" name="Mn_lb" placeholder="Moment Capacity by Local Buckling, Mn (kNm)">
-                    <input type="number" step="0.1" name="phi_Mn" placeholder="Design Moment Capacity, φMn (kNm)">
-                </div>
-            </details>
-            <!-- <button type="button" class="add-btn" data-list="alum-profiles-list" data-template="alum-profile-template">Add Aluminum Profile</button> -->
-        </div>
-    </template>
-
-    <template id="steel-profile-template">
-        <div class="dynamic-item profile-item steel-profile-item" data-type="steel_profile">
-            <button type="button" class="remove-btn sub-remove-btn">Remove</button>
-            <div class="item-header">
-                <input type="text" name="profile_name" placeholder="Profile Name (e.g., RHS 110x54x2.5)">
-            </div>
-            <details class="profile-details" open>
-                <summary class="profile-summary">Properties</summary>
-                <div class="item-fields">
-                    <input type="number" step="0.1" name="web_length" placeholder="Web Length (mm)">
-                    <input type="number" step="0.1" name="flange_length" placeholder="Flange Length (mm)">
-                    <input type="number" step="0.1" name="web_thk" placeholder="Web Thickness (mm)">
-                    <input type="number" step="0.1" name="flange_thk" placeholder="Flange Thickness (mm)">
-                    <input type="number" step="0.1" name="tor_constant" placeholder="Torsional Constant (mm⁴)">
-                    <input type="number" step="0.1" name="area" placeholder="Area (mm²)">
-                    <input type="number" step="0.1" name="I_xx" placeholder="Moment of Inertia about Major Axis, Ixx (mm⁴)">
-                    <input type="number" step="0.1" name="I_yy" placeholder="Moment of Inertia about Minor Axis, Iyy (mm⁴)">
-                    <input type="number" step="0.1" name="Y" placeholder="Extreme Fibre Distance, Y (mm)">
-                    <input type="number" step="0.1" name="X" placeholder="Extreme Fibre Distance, X (mm)">
-                    <input type="number" step="0.1" name="S_x" placeholder="Elastic Section Modulus about Major Axis, Sx (mm³)">
-                    <input type="number" step="0.1" name="S_y" placeholder="Elastic Section Modulus about Major Axis, Sy (mm³)">
-                    <input type="number" step="0.1" name="Z_x" placeholder="Plastic Section Modulus about Major Axis, Zx (mm³)">
-                    <input type="number" step="0.1" name="F_y" placeholder="Yield Strength (MPa)">
-                    <input type="number" step="0.1" name="Mn" placeholder="Moment Capacity by Yielding, Mn (kNm)">
-                    <input type="number" step="0.1" name="phi_Mn" placeholder="Design Moment Capacity, φMn (kNm)">
-                </div>
-            </details>
-            <!-- <button type="button" class="add-btn" data-list="steel-profiles-list" data-template="steel-profile-template">Add Steel Profile</button> -->
-        </div>
-    </template>
-
-    <template id="category-template">
-        <div class="dynamic-item category-item" data-type="category">
-            <button type="button" class="remove-btn">Remove Category</button>
-            <div class="item-header">
-                <input type="text" name="category_name" placeholder="Category Name (e.g., Typ. Cont. Facade)">
-            </div>
-
-            <details open>
-                <summary>Glass Units</summary>
-                <div class="dynamic-list sub-list" data-list-name="glass_units"></div>
-                <button type="button" class="add-btn sub-add-btn" data-template="glass-unit-template" data-sub-list-name="glass_units">Add Glass Unit</button>
-            </details>
-
-            <details open>
-                <summary>Frames</summary>
-                <div class="dynamic-list sub-list" data-list-name="frames"></div>
-                <button type="button" class="add-btn sub-add-btn" data-template="frame-template" data-sub-list-name="frames">Add Frame</button>
-            </details>
-
-            <details open>
-                <summary>Connections</summary>
-                <div class="dynamic-list sub-list" data-list-name="connections"></div>
-                <button type="button" class="add-btn sub-add-btn" data-template="connection-template" data-sub-list-name="connections">Add Connection</button>
-            </details>
-
-            <details open>
-                <summary>Anchorage</summary>
-                <div class="dynamic-list sub-list" data-list-name="anchorage"></div>
-                <button type="button" class="add-btn sub-add-btn" data-template="anchorage-template" data-sub-list-name="anchorage">Add Anchorage</button>
-            </details>
-        </div>
-    </template>
-
-    <template id="glass-unit-template">
-        <div class="dynamic-item sub-item glass-unit-item" data-type="glass_unit">
-            <button type="button" class="remove-btn sub-remove-btn">Remove</button>
-            <div class="item-header">
-                <select name="glass_type">
-                    <option value="sgu">SGU (Single Glazed)</option>
-                    <option value="dgu">DGU (Double Glazed)</option>
-                    <option value="lgu">LGU (Laminated Glazed)</option>
-                    <option value="ldgu">LDGU (Laminated DGU)</option>
-                </select>
-            </div>
-            <div class="item-fields"></div>
-        </div>
-    </template>
-
-    <template id="frame-template">
-        <div class="dynamic-item sub-item frame-item" data-type="frame">
-            <button type="button" class="remove-btn sub-remove-btn">Remove</button>
-            <div class="item-header">
-                <select name="mullion_type">
-                    <option value="Aluminum Only">Aluminum Only</option>
-                    <option value="Aluminum + Steel">Aluminum + Steel</option>
-                </select>
-            </div>
-            <div class="item-header">
-                <select name="frame_type">
-                    <option value="Continuous">Continuous</option>
-                    <option value="Floor-to-floor">Floor-to-floor</option>
-                </select>
-                <select name="zone">
-                    <option value="Zone 4 (Mid Zone)">Zone 4 (Mid Zone)</option>
-                    <option value="Zone 5 (Edge/Corner Zone)">Zone 5 (Edge/Corner Zone)</option>
-                    <option value="Zone 1 (Roof Mid Zone)">Zone 1 (Roof Mid Zone)</option>
-                    <option value="Zone 2 (Roof Edge Zone)">Zone 2 (Roof Edge Zone)</option>
-                    <option value="Zone 3 (Roof Corner Zone)">Zone 3 (Roof Corner Zone)</option>
-                </select>
-                <select name="system_type">
-                    <option value="Semi-unitized">Semi-unitized System</option>
-                    <option value="Unitized">Unitized System</option>
-                    <option value="Stick">Stick System</option>
-                </select>
-            </div>
-            <div class="item-fields"></div>
-        </div>
-    </template>
-
-    <template id="connection-template">
-        <div class="dynamic-item sub-item connection-item" data-type="connection">
-            <button type="button" class="remove-btn sub-remove-btn">Remove</button>
-            <div class="item-header">
-                <input type="number" step="2" name="screw_nos" placeholder="No. of Screw (e.g. 4, 6, 8, 12)">
-            </div>
-            <div class="item-fields">
-                <input type="text" name="cleat_size" placeholder="Cleat Size (e.g., 25 x 32 x 3.5 (L = 85))">
-                <input type="number" step="0.1" name="screw_dia" placeholder="Diameter of Screw, d (mm)">
-                <input type="number" step="0.1" name="head_dia" placeholder="Diameter of Screw Head, dh (mm)">
-                <input type="number" step="0.1" name="joint_fy" placeholder="Joint Horizontal Force, Fy (kN)">
-                <input type="number" step="0.1" name="joint_fz" placeholder="Joint Vertical Force, Fz (kN)">
-                <input type="number" step="0.1" name="design_fy" placeholder="Design Horizontal Force, Fy (kN)">
-                <input type="number" step="0.1" name="design_fz" placeholder="Design Vertical Force, Fz (kN)">
-                <input type="number" step="0.1" name="t1" placeholder="Screw Head Contacted Member Thickness, t1 (mm)">
-                <input type="number" step="0.1" name="t2" placeholder="Screw Head Non-contacted Member Thickness, t2 (mm)">
-                <input type="number" step="0.1" name="tc" placeholder="Lesser of Depth of penetration and thickness t2, (tc, mm)">
-            </div>
-        </div>
-    </template>
-
-    <template id="anchorage-template">
-        <div class="dynamic-item sub-item anchorage-item" data-type="anchorage">
-            <button type="button" class="remove-btn sub-remove-btn">Remove</button>
-            <div class="item-header">
-                <select name="clump_type">
-                    <option value="Box Clump">Box Clump</option>
-                    <option value="U Clump">U Clump</option>
-                    <option value="L Clump Top">L Clump Top</option>
-                    <option value="L Clump Front">L Clump Front</option>
-                </select>
-            </div>
-            <div class="item-fields"></div>
-        </div>
-    </template>
-
+    
+    
     <script src="/static/app.js"></script>
     <script src="{{ url_for('static', filename='app.js') }}"></script>
+
 </body>
 
 </html>
