@@ -109,7 +109,7 @@
         </tbody>
     </table>
 
-    {% if "RHS" in frame.mullion %}
+    {% if frame.mullion_type == "Aluminum + Steel" %}
         <p class="page__break">For aluminum-steel combined mullion profile,</p>
 
         <table class="width__80">
@@ -448,7 +448,7 @@
 <div class="page__break">
     <h3>Design of Mullion</h3>
 
-    {% if "RHS" in frame.mullion %}
+    {% if frame.mullion_type == "Aluminum + Steel" %}
         <h4>Design of Aluminum Part</h4>
         <table class="borderless">
             <tbody>

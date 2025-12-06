@@ -242,9 +242,9 @@ document.addEventListener('DOMContentLoaded', () => {
         fieldsContainer.innerHTML = '';
 
         requiredFields.forEach(fieldName => {
-            let type = 'text'; 
-            if (fieldName.match(/(length|width|spacing|thk|wind|mu|vu|def|Mn)/i)) {
-                type = 'number';
+            let type = 'number'; 
+            if (fieldName.match(/(_type|zone|mullion|transom)/i)) {
+                type = 'text';
             }
             
             const label = document.createElement('label');
@@ -272,10 +272,10 @@ document.addEventListener('DOMContentLoaded', () => {
         fieldsContainer.innerHTML = ''; 
 
         requiredFields.forEach(fieldName => {
-            let type = 'text'; 
+            let type = 'number'; 
             // Broad matching for number types in structural/clump fields
-            if (fieldName.match(/(reaction|design|V_u|N_u|anchor|embed|A_|C_a|h_a|bp|fin|thr|thk|dia|nos|length)/i)) {
-                type = 'number';
+            if (fieldName.match(/(clump_type)/i)) {
+                type = 'text';
             }
 
             const label = document.createElement('label');

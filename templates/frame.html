@@ -13,7 +13,7 @@
         {% endif %}
         {% set tran_allow_def = frame.width / 175 %}
 
-        {% if "RHS" in frame.mullion %}
+        {% if frame.mullion_type == "Aluminum + Steel" %}
             {% set ls_a = frame.I_xa / (frame.I_xa + 3 * frame.I_xs) %}
             {% set ls_s = 1 - ls_a  %}
             {% set mul_mu_a = frame.mul_mu * ls_a %}
