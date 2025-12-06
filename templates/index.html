@@ -19,9 +19,12 @@
                 <button class="tab_btn">Categories</button>
                 <div class="line"></div>
             </div>
-            <div class="action_btn-box">
-                <button class="action_btn" id="generate-yaml-btn">Generate YAML</button>
-                <button class="action_btn" id="generate-report-btn">Generate Report</button>
+            <div class="form-header">
+                <div id="status-notification" class="status">Idle</div>
+                <div class="action_btn-box">
+                    <button class="action_btn" id="generate-yaml-btn">YAML</button>
+                    <button class="action_btn" id="generate-report-btn">Report</button>
+                </div>
             </div>
         </div>
     </nav>
@@ -32,7 +35,10 @@
                 <form id="yaml-form" onsubmit="event.preventDefault();">
                     <div class="content_box">
                         <div class="content active" data-tab="project_info">
-                            <h2>Project Info</h2>
+                            <div class="form-header">
+                                <h2>Project Info</h2>
+                                <div id="status-notification" class="status">Idle</div>
+                            </div>
                             <div class="form-section">
                                 <input type="text" name="project_info.ref_no" placeholder="Ref. No. (RFA-001/REV-02/AEL/CW/2025)">
                                 <input type="text" name="project_info.project_name" placeholder="Project Name">
@@ -136,7 +142,7 @@
                 <div class="output-container">
                     <h3>Generated YAML Output</h3>
                     <button class="action_btn" id="download-yaml-btn" disabled>💾 Download YAML</button>
-                    <div id="status-notification" class="status">Idle</div>
+                    <!-- <div id="status-notification" class="status">Idle</div> -->
                     <pre id="yaml-output-display">Click 'Generate YAML' to see the output.</pre>
                 </div>
             </div>
