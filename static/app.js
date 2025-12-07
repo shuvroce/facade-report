@@ -35,9 +35,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const alumProfileOptions = [
         'M 125x60x2.5',
+        'M 125x60x3',
+        'M 140x60x2.5',
+        'M 135x67x4',
         'M 145x67x2.5',
+        'M 145x67x3',
+        'M 145x67x3.5',
+        'M 145x80x3',
+        'M 150x80x3',
+        'M 160x80x8',
+        'M 240x80x12',
+        'M 145x90x3',
+        'M 185x90x3',
+        'M 200x72x3',
         'T 125x60x2.5',
-        'T 145x67x2'
+        'T 135x67x2.5',
+        'T 145x67x2',
+        'T 125x80x2.5',
+        'T 125x90x2.5',
+        'T 65x72x3'
     ];
 
     const alumFieldPlaceholders = {
