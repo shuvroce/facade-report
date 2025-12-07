@@ -4,7 +4,7 @@ import tempfile
 import threading
 import shutil
 from flask import Flask, request, send_file, render_template
-from report import generate_report_from_data, TEMPLATE_DIR
+from report import generate_report_from_data, TEMPLATE_DIR, load_profile_data
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
@@ -25,14 +25,12 @@ def generate_report():
     yaml_content = request.json["yaml_content"]
     report_data = yaml.safe_load(yaml_content) or {}
 
-    PROFILE_YAML = os.path.join(os.path.realpath(TEMPLATE_DIR), "assets", "profile.yaml")
-    
-    profile_data = {}
-    if os.path.exists(PROFILE_YAML):
-        with open(PROFILE_YAML, "r", encoding="utf-8") as f:
-            profile_data = yaml.safe_load(f) or {}
-        
-        report_data.update(profile_data)
+    profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
+    if profile_data:
+        merged = {}
+        merged.update(profile_data)
+        merged.update(report_data)
+        report_data = merged
 
     # per-request temp dir and output filename
     temp_dir = tempfile.mkdtemp()

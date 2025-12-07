@@ -12,6 +12,19 @@ TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 PROFILE_YAML = os.path.join(TEMPLATE_DIR, "assets", "profile.yaml")
 CSS_PATH = os.path.join(TEMPLATE_DIR, "assets", "css", "report.css")
 
+
+def load_profile_data(profile_yaml_path=None, template_dir=None):
+    """Load the shared profile.yaml data once so callers stay consistent."""
+    if profile_yaml_path is None:
+        base_template_dir = template_dir or TEMPLATE_DIR
+        profile_yaml_path = os.path.join(base_template_dir, "assets", "profile.yaml")
+
+    if not os.path.exists(profile_yaml_path):
+        return {}
+
+    with open(profile_yaml_path, "r", encoding="utf-8") as f:
+        return yaml.safe_load(f) or {}
+
 def collapse_outlines(item):
     while item:
         if "/First" in item:
@@ -35,6 +48,15 @@ def generate_report_from_data(
         template_dir = os.path.join(BASE_DIR, "templates")
     if css_path is None:
         css_path = os.path.join(template_dir, "assets", "css", "report.css")
+
+    # If caller forgot to merge the shared profile data, pull it in here.
+    if "alum_profiles_data" not in data:
+        profile_data = load_profile_data(template_dir=template_dir)
+        if profile_data:
+            merged = {}
+            merged.update(profile_data)
+            merged.update(data)
+            data = merged
 
     tmp_created = False
     if out_pdf is None:
@@ -78,14 +100,12 @@ def main():
             report_data = yaml.safe_load(f) or {}
     else:
         print(f"Warning: Missing main input file: {INPUT_YAML}")
-
-    profile_data = {}
-    if os.path.exists(PROFILE_YAML):
-        with open(PROFILE_YAML, "r", encoding="utf-8") as f:
-            profile_data = yaml.safe_load(f) or {}
-        
-        report_data.update(profile_data)
-        
+    profile_data = load_profile_data()
+    if profile_data:
+        merged = {}
+        merged.update(profile_data)
+        merged.update(report_data)
+        report_data = merged
     else:
         print(f"Info: Profile file not found: {PROFILE_YAML}. Skipping profile data.")
 
