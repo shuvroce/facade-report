@@ -91,13 +91,6 @@ def main():
     else:
         print(f"Info: Profile file not found: {PROFILE_YAML}. Skipping profile data.")
 
-    import json
-    print("--- DEBUGGING REPORT DATA ---")
-    # Check the final list length
-    print(f"Alum Profiles Count: {len(report_data.get('alum_profiles', []))}")
-    # Print the list content
-    print(json.dumps(report_data.get('alum_profiles'), indent=2))
-    
     # Pass the now-merged data to the report generator
     out = generate_report_from_data(report_data, out_pdf=OUT_PDF)
     print(f"Report written to {out}")

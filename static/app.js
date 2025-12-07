@@ -24,6 +24,41 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // --- 2. Dynamic Input Field Logic ---
+    // Define the required fields for each Aluminum profiles
+    const alumFields = {
+        'Manual': [
+            'profile_name', 'web_length', 'flange_length', 'web_thk', 'flange_thk', 'tor_constant',
+            'area', 'I_xx', 'I_yy', 'I_yy', 'Y', 'X', 'plastic_x', 'plastic_y', 'F_y', 'Mn_yield', 'Mn_lb'
+        ],
+        'Pre-defined': ['profile_name']
+    };
+
+    const alumProfileOptions = [
+        'M 125x60x2.5',
+        'M 145x67x2.5',
+        'T 125x60x2.5',
+        'T 145x67x2'
+    ];
+
+    const alumFieldPlaceholders = {
+        'profile_name': 'Profile Name (e.g. M 125x60x2.5)',
+        'web_length': 'Web Length (mm)',
+        'flange_length': 'Flange Length (mm)',
+        'web_thk': 'Web Thickness (mm)',
+        'flange_thk': 'Flange Thickness (mm)',
+        'tor_constant': 'Torsional Constant (mm⁴)',
+        'area': 'Area (mm²)',
+        'I_xx': 'Moment of Inertia about Major Axis, Ixx (mm⁴)',
+        'I_yy': 'Moment of Inertia about Minor Axis, Iyy (mm⁴)',
+        'Y': 'Extreme Fibre Distance, Y (mm)',
+        'X': 'Extreme Fibre Distance, X (mm)',
+        'plastic_x': 'Upper Region Centroid Distance, Plastic X',
+        'plastic_y': 'Lower Region Centroid Distance, Plastic Y',
+        'F_y': 'Yield Strength, Fy (MPa)',
+        'Mn_yield': 'Moment Capacity by Yielding, Mn (kNm)',
+        'Mn_lb': 'Moment Capacity by Local Buckling, Mn (kNm)',
+    };
+
 
     // Define the required fields for each Glass Type
     const glassFields = {
@@ -55,11 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'thickness1_2': '2nd Lite Thickness of Outer panel (mm)',
         'thickness_inner': 'Interlayer Thickness (mm)',
         'chart_thickness': 'Chart Thickness (mm)',
-        // 'grade': 'Glass Grade (e.g. FT, HS, AN)',
-        // 'grade1': 'Outer Panel Grade (e.g. FT, HS, AN)',
-        // 'grade2': 'Inner Panel Grade (e.g. FT, HS, AN)',
         'wind_load': 'Wind Load (kPa)',
-        // 'support_type': 'Support Type (e.g. Four Edges)',
         'gap': 'Gap Between Panels (mm)',
         'nfl': 'Non-factored Load, NFL (kPa)',
         'nfl1': 'Non-factored Load of Outer Panel, NFL1 (kPa)',
@@ -174,6 +205,47 @@ document.addEventListener('DOMContentLoaded', () => {
         'bp_Beff': 'Effective plate width, Beff (mm)'
     };
     
+    // Function to update manual aluminum profile fields
+    function updateAlumFields(alumItem) {
+        const typeSelect = alumItem.querySelector('select[name="profile_type"]');
+        const fieldsContainer = alumItem.querySelector('.item-fields');
+        const selectedType = typeSelect.value;
+        
+        let requiredFields = alumFields[selectedType] || [];
+        
+        fieldsContainer.innerHTML = '';
+
+        requiredFields.forEach(fieldName => {
+            let type = 'number';
+            if (fieldName.match(/(profile_name)/i)) {
+                type = 'text';
+            }
+            
+            let input;
+            
+            // Create dropdown for pre-defined profiles
+            if (selectedType === 'Pre-defined' && fieldName === 'profile_name') {
+                input = document.createElement('select');
+                input.name = fieldName;
+                alumProfileOptions.forEach(option => {
+                    const opt = document.createElement('option');
+                    opt.value = option;
+                    opt.textContent = option;
+                    input.appendChild(opt);
+                });
+            }
+            // Create text or number input for other fields
+            else {
+                input = document.createElement('input');
+                input.type = type;
+                input.step = '0.1';
+                input.name = fieldName;
+                input.placeholder = alumFieldPlaceholders[fieldName] || fieldName;
+            }
+            
+            fieldsContainer.appendChild(input);
+        });
+    }
     
     // Function to update glass fields
     function updateGlassFields(glassItem) {
@@ -317,6 +389,15 @@ document.addEventListener('DOMContentLoaded', () => {
             removeBtn.addEventListener('click', (e) => {
                 e.target.closest('.dynamic-item').remove();
             });
+        }
+        
+        // 3.2. Handle Alum Profile Type Change 
+        if (templateId === 'alum-profile-template') {
+            const alumItem = newElement;
+            const typeSelect = alumItem.querySelector('select[name="profile_type"]');
+            
+            updateAlumFields(alumItem);
+            typeSelect.addEventListener('change', () => updateAlumFields(alumItem));
         }
         
         // 3.2. Handle Glass Type Change 

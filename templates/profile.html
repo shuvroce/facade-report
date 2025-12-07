@@ -4,7 +4,7 @@
 </section>
 <section>
     {% if alum_profiles %}
-        {% for item in alum_profiles | unique(attribute='profile_name') %}
+        {% for profile in alum_profiles | unique(attribute='profile_name') %}
             {% include "partials/alum-cap.html" %}
         {% endfor %}
     {% endif %}

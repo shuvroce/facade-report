@@ -10,15 +10,11 @@ alum_profiles_data:
     I_yy: 889366.9
     Y: 80
     X: 33.5
-    S_x: 44481.0
-    S_y: 26548.3
     plastic_x: 35.9
     plastic_y: 58.4
-    Z_x: 60554.7
     F_y: 172.4
     Mn_yield: 10.44
     Mn_lb: 9.68
-    phi_Mn: 8.71
   
   - profile_name: T 125x60x2.5
     web_length: 125
@@ -31,12 +27,8 @@ alum_profiles_data:
     I_yy: 400621.3
     Y: 70.4
     X: 36.3
-    S_x: 33000.6
-    S_y: 11036.4
     plastic_x: 27.6
     plastic_y: 48.8
-    Z_x: 47005.1
     F_y: 110
     Mn_yield: 5.81
     Mn_lb: 5.24
-    phi_Mn: 4.71
