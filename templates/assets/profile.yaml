@@ -1,4 +1,72 @@
 alum_profiles_data:
+  - profile_name: M 125x60x2.5
+    web_length: 125
+    flange_length: 60
+    web_thk: 2.5
+    flange_thk: 4.66
+    tor_constant: 1583468.5
+    area: 1143.6
+    I_xx: 2304351.5
+    I_yy: 617307.5
+    Y: 69.3
+    X: 30
+    plastic_x: 27.9
+    plastic_y: 52
+    F_y: 172.4
+    Mn_yield: 7.87
+    Mn_lb: 7.48
+  
+  - profile_name: M 125x60x3
+    web_length: 125
+    flange_length: 60
+    web_thk: 3
+    flange_thk: 4.66 
+    tor_constant: 1797727.0
+    area: 1267.6
+    I_xx: 2462171.3
+    I_yy: 707902.2
+    Y: 68.8
+    X: 30
+    plastic_x: 29.5
+    plastic_y: 49
+    F_y: 172.4
+    Mn_yield: 8.58
+    Mn_lb: 8.19
+  
+  - profile_name: M 140x60x2.5
+    web_length: 140
+    flange_length: 60
+    web_thk: 2.5
+    flange_thk: 4.67
+    tor_constant: 1822610.8
+    area: 1218.6
+    I_xx: 3065620.3
+    I_yy: 679338.9
+    Y: 77.6
+    X: 30
+    plastic_x: 33.5
+    plastic_y: 56.1
+    F_y: 172.4
+    Mn_yield: 9.41
+    Mn_lb: 8.71
+  
+  - profile_name: M 135x67x4
+    web_length: 135
+    flange_length: 67
+    web_thk: 4
+    flange_thk: 6 
+    tor_constant: 3089970.9
+    area: 1792
+    I_xx: 4248985.4
+    I_yy: 1236954.6
+    Y: 69.1
+    X: 33.5
+    plastic_x: 42.4
+    plastic_y: 46.1
+    F_y: 172.4
+    Mn_yield: 13.67
+    Mn_lb: 13.31
+  
   - profile_name: M 145x67x2.5
     web_length: 145
     flange_length: 67
@@ -16,6 +84,159 @@ alum_profiles_data:
     Mn_yield: 10.44
     Mn_lb: 9.68
   
+  - profile_name: M 145x67x3
+    web_length: 145
+    flange_length: 67
+    web_thk: 3
+    flange_thk: 4.49 
+    tor_constant: 2647465.3
+    area: 1420.7
+    I_xx: 3779820.3
+    I_yy: 1018434.5
+    Y: 79.1
+    X: 33.5
+    plastic_x: 37.4
+    plastic_y: 54.9
+    F_y: 172.4
+    Mn_yield: 11.30
+    Mn_lb: 10.57
+  
+  - profile_name: M 145x67x3.5
+    web_length: 145
+    flange_length: 67
+    web_thk: 3.5
+    flange_thk: 4.74
+    tor_constant: 2967068.3
+    area: 1587.3
+    I_xx: 4165937.5
+    I_yy: 1152338.9
+    Y: 77
+    X: 33.5
+    plastic_x: 39.6
+    plastic_y: 52.3
+    F_y: 172.4
+    Mn_yield: 12.57
+    Mn_lb: 11.91
+  
+  - profile_name: M 145x80x3
+    web_length: 145
+    flange_length: 80
+    web_thk: 3.5
+    flange_thk: 5.3
+    tor_constant: 3781852.7
+    area: 1642.1
+    I_xx: 4895650.5
+    I_yy: 1588961.6
+    Y: 74.9
+    X: 40
+    plastic_x: 43.4
+    plastic_y: 56.3
+    F_y: 172.4
+    Mn_yield: 14.11
+    Mn_lb: 13.34
+  
+  - profile_name: M 150x80x3
+    web_length: 150
+    flange_length: 80
+    web_thk: 3
+    flange_thk: 5.3
+    tor_constant: 3949810.6
+    area: 1672.1
+    I_xx: 5316279.5
+    I_yy: 1633451.6
+    Y: 77.5
+    X: 40
+    plastic_x: 45.1
+    plastic_y: 57.7
+    F_y: 172.4
+    Mn_yield: 14.81
+    Mn_lb: 13.96
+  
+  - profile_name: M 160x80x8
+    web_length: 160
+    flange_length: 80
+    web_thk: 8
+    flange_thk: 9.1
+    tor_constant: 8817605.7
+    area: 3761.4
+    I_xx: 11621446.9
+    I_yy: 3666724.2
+    Y: 82.1
+    X: 40
+    plastic_x: 46.4
+    plastic_y: 53.3
+    F_y: 172.4
+    Mn_yield: 32.32
+    Mn_lb: 31.23
+  
+  - profile_name: M 240x80x12
+    web_length: 240
+    flange_length: 80
+    web_thk: 12
+    flange_thk: 12.5 
+    tor_constant: 19617807.23
+    area: 7245.4
+    I_xx: 45475752.2
+    I_yy: 7057463.3
+    Y: 121.3
+    X: 40
+    plastic_x: 68.4
+    plastic_y: 71.8
+    F_y: 172.4
+    Mn_yield: 87.55
+    Mn_lb: 86.53
+  
+  - profile_name: M 145x90x3
+    web_length: 145
+    flange_length: 90
+    web_thk: 3
+    flange_thk: 5.1 
+    tor_constant: 4649742.2
+    area: 1717.1
+    I_xx: 5273615.7
+    I_yy: 2071663.7
+    Y: 74.2
+    X: 45
+    plastic_x: 44.9
+    plastic_y: 56.7
+    F_y: 172.4
+    Mn_yield: 15.04
+    Mn_lb: 14.24
+  
+  - profile_name: M 185x90x3
+    web_length: 185
+    flange_length: 90
+    web_thk: 3
+    flange_thk: 5.1 
+    tor_constant: 6358240.2
+    area: 1957.1
+    I_xx: 9489004.3
+    I_yy: 2525983.9
+    Y: 94.9
+    X: 45
+    plastic_x: 58.2
+    plastic_y: 68.5
+    F_y: 172.4
+    Mn_yield: 21.37
+    Mn_lb: 19.59
+  
+  - profile_name: M 200x72x3
+    web_length: 200
+    flange_length: 72
+    web_thk: 3
+    flange_thk: 4.65
+    tor_constant: 4544722.1
+    area: 1989.3
+    I_xx: 10486070.6
+    I_yy: 1680299.9
+    Y: 110.3
+    X: 36
+    plastic_x: 53.7
+    plastic_y: 76.4
+    F_y: 172.4
+    Mn_yield: 22.31
+    Mn_lb: 18.66
+
   - profile_name: T 125x60x2.5
     web_length: 125
     flange_length: 60
@@ -32,3 +253,89 @@ alum_profiles_data:
     F_y: 110
     Mn_yield: 5.81
     Mn_lb: 5.24
+  
+  - profile_name: T 135x67x2.5
+    web_length: 135
+    flange_length: 67
+    web_thk: 2.5
+    flange_thk: 5.2
+    tor_constant: 2179349.1
+    area: 1362.9
+    I_xx: 3092183.6
+    I_yy: 587849.0
+    Y: 75.7
+    X: 39.4
+    plastic_x: 30.9
+    plastic_y: 53.4
+    F_y: 110
+    Mn_yield: 6.32
+    Mn_lb: 5.96
+  
+  - profile_name: T 145x67x2
+    web_length: 145
+    flange_length: 67
+    web_thk: 2
+    flange_thk: 4.1 
+    tor_constant: 1942368.4
+    area: 1153.7
+    I_xx: 3062951.0
+    I_yy: 515834.0
+    Y: 80.6
+    X: 39.4
+    plastic_x: 34.4
+    plastic_y: 57.1
+    F_y: 110
+    Mn_yield: 5.81
+    Mn_lb: 5.24
+  
+  - profile_name: T 125x80x2.5
+    web_length: 125
+    flange_length: 80
+    web_thk: 2.5
+    flange_thk: 4.94
+    tor_constant: 2717734.8
+    area: 1397.8
+    I_xx: 2829989.6
+    I_yy: 833830.2
+    Y: 71.8
+    X: 46.5
+    plastic_x: 23.9
+    plastic_y: 55
+    F_y: 110
+    Mn_yield: 6.07
+    Mn_lb: 5.36
+  
+  - profile_name: T 125x90x2.5
+    web_length: 125
+    flange_length: 90
+    web_thk: 2.5
+    flange_thk: 4.77
+    tor_constant: 3331727.90
+    area: 1465.3
+    I_xx: 3045461.6
+    I_yy: 1137399.5
+    Y: 72
+    X: 49.6
+    plastic_x: 22.7
+    plastic_y: 57.2
+    F_y: 110
+    Mn_yield: 6.44
+    Mn_lb: 5.75
+  
+  - profile_name: T 65x72x3
+    web_length: 65
+    flange_length: 72 
+    web_thk: 3
+    flange_thk: 4.1
+    tor_constant: 947821.1
+    area: 914.1
+    I_xx: 569517.1
+    I_yy: 362347.5
+    Y: 34.2
+    X: 44.1
+    plastic_x: 16.9
+    plastic_y: 28.7
+    F_y: 110
+    Mn_yield: 2.29
+    Mn_lb: 2.17
+
