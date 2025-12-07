@@ -1,0 +1,37 @@
+Input figure naming guide (place files under templates/inputs or the resolved inputs folder used by the report)
+
+Category-level figures
+- Reference elevation per category: <category_index>-ref-elev.png  (example: 1-ref-elev.png)
+- SAP/structural figures tied to category index (all currently in typ-frame.html):
+  - <category_index>-sap-model.png
+  - <category_index>-sap-relese.png
+  - <category_index>-sap-support1.png
+  - <category_index>-sap-support2.png
+  - <category_index>-sap-dead-load.png
+  - <category_index>-sap-wind-load.png
+  - <category_index>-sap-load-combo.png
+  - <category_index>-sap-bmd.png
+  - <category_index>-sap-sfd.png
+  - <category_index>-sap-mul-max-moment.png
+  - <category_index>-sap-tran-max-moment.png
+  - <category_index>-sap-deformed-shape.png
+  - <category_index>-sap-mul-def.png
+  - <category_index>-sap-tran-def-wind.png
+  - <category_index>-sap-tran-def-dead.png
+  - <category_index>-sap-joint-force-dead.png
+
+Glass RFEM figures (category + glass indices)
+- Format: <category_index>.<glass_index>-rfem-<suffix>.png
+- Suffixes used:
+  - rfem-model-3d
+  - rfem-model-data
+  - rfem-stress
+  - rfem-stress-ratio
+  - rfem-def
+  - rfem-def-ratio
+- Example: 2.3-rfem-model-3d.png (category 2, glass 3)
+
+Notes
+- category_index comes from the order of categories in the input YAML (1-based).
+- glass_index is the order of glass units inside each category (1-based).
+- Keep file extensions lowercase .png to match template references.
