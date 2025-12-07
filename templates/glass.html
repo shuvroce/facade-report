@@ -1,6 +1,6 @@
 {% if cat.glass_units %}
 {% for gu in cat.glass_units %}
-    {% set loop_index = loop.index %}
+    {% set glass_index = loop.index %}
 
     {% set bite_req = ((gu.wind_load * gu.width) / (2 * 140)) %}
     {% set bite_pro = (((bite_req * 2) | round(0, 'ceil')) / 2) %}

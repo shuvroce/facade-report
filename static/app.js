@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const glassGradeOptions = ['FT', 'HS', 'AN'];
-    const supportTypeOptions = ['Four Edges', 'Three Edges', 'Two Edges', 'One Edge'];
+    const supportTypeOptions = ['Four Edges', 'Three Edges', 'Two Edges', 'One Edge', 'Point Fixed'];
 
     const glassFieldPlaceholders = {
         'length': 'Glass Length (mm)',
