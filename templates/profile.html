@@ -1,14 +1,40 @@
+{% if alum_profiles or steel_profiles %}
 <section class="chapter__front">
     <h1>Design Moment Capacity of Profiles</h1>
 </section>
 <section>
-    {% for profile in alum_profiles %}
-        {% include "partials/alum-cap.html" %}
-    {% endfor %}
+    {% if alum_profiles %}
+        {% for item in alum_profiles | unique(attribute='profile_name') %}
+            {% include "partials/alum-cap.html" %}
+        {% endfor %}
+    {% endif %}
 
     {% if steel_profiles %}
         {% for profile in steel_profiles %}
+            {% set area = (profile.web_length * profile.flange_length - ((profile.web_length - 2 * profile.thk) * (profile.flange_length - 2 * profile.thk))) | round(1) %}
+            {% set I_xx = ((profile.flange_length * profile.web_length**3 / 12) - ((profile.flange_length - 2 * profile.thk) * (profile.web_length - 2 * profile.thk)**3 ) / 12) | round(1) %}
+            {% set I_yy = ((profile.web_length * profile.flange_length**3 / 12) - ((profile.web_length - 2 * profile.thk) * (profile.flange_length - 2 * profile.thk)**3 ) / 12) | round(1) %}
+            {% set Y = profile.web_length / 2 %}
+            {% set X = profile.flange_length / 2 %}
+            {% set S_x = (I_xx / Y) | round(1) %}
+            {% set S_y = (I_yy / X) | round(1) %}
+            {% set Z_x = (((profile.flange_length * profile.web_length**2) - ((profile.flange_length - 2 * profile.thk) * (profile.web_length - 2 * profile.thk)**2)) / 4) | round(1) %}
+            {% set tor_constant = (2 * profile.thk**2 * ((profile.flange_length - profile.thk)**2) * ((profile.web_length - profile.thk)**2)) / (profile.flange_length * profile.thk + profile.web_length * profile.thk - 2 * (profile.thk**2)) %}
+
+            {% set b = profile.flange_length - 2 * profile.thk %}
+            {% set lambda_f = (b / profile.thk) | round(2) %}
+            {% set lambda_p_f = (1.12 * (210000 / 318)**0.5) | round(2) %}
+            {% set lambda_r_f = (1.4* (210000 / 318)**0.5) | round(2) %}
+            {% set h = profile.web_length - 2 * profile.thk %}
+            {% set lambda_w = (h / profile.thk) | round(2) %}
+            {% set lambda_p_w = (2.42 * (210000 / 318)**0.5) | round(2) %}
+            {% set lambda_r_w = (5.7 * (210000 / 318)**0.5) | round(2) %}
+
+            {% set Mn = (Z_x * 318 / 1000000) | round(2) %}
+            {% set phi_Mn = (0.9 * Mn) | round(2) %}
+            
             {% include "partials/steel-cap.html" %}
         {% endfor %}
     {% endif %}
 </section>
+{% endif %}

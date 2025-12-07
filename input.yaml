@@ -7,46 +7,7 @@ project_info:
 
 alum_profiles:
   - profile_name: M 145x67x2.5
-    web_length: 145
-    flange_length: 67
-    web_thk: 2.5
-    flange_thk: 4.49
-    tor_constant: 2327814.4
-    area: 1284.3
-    I_xx: 3558480.9
-    I_yy: 889366.9
-    Y: 80
-    X: 33.5
-    S_x: 44481.0
-    S_y: 26548.3
-    plastic_x: 35.9
-    plastic_y: 58.4
-    Z_x: 60554.7
-    F_y: 172.4
-    Mn_yield: 10.44
-    Mn_lb: 9.68
-    phi_Mn: 8.71
-  
   - profile_name: T 125x60x2.5
-    web_length: 125
-    flange_length: 60
-    web_thk: 2.5
-    flange_thk: 5.2
-    tor_constant: 1609131.5
-    area: 1230.5
-    I_xx: 2323239.2
-    I_yy: 400621.3
-    Y: 70.4
-    X: 36.3
-    S_x: 33000.6
-    S_y: 11036.4
-    plastic_x: 27.6
-    plastic_y: 48.8
-    Z_x: 47005.1
-    F_y: 110
-    Mn_yield: 5.81
-    Mn_lb: 5.24
-    phi_Mn: 4.71
 
 steel_profiles:
   - profile_name: RHS 110x54x2.5
@@ -122,50 +83,6 @@ categories:
         load_x_area2: 62.4
         def1: 18.5
         def2: 18.5
-      
-      - glass_type: lgu
-        length: 2600
-        width: 1530
-        thickness1: 8.0
-        thickness_inner: 1.52
-        thickness2: 8.0
-        chart_thickness: 16.0
-        grade: FT
-        wind_load: 7.9
-        support_type: Four Edges
-        nfl: 4.0
-        gtf: 4.0
-        load_x_area2: 125.0
-        def: 22.0
-      
-      - glass_type: ldgu
-        length: 2700
-        width: 1200
-        thickness1_1: 6.0
-        thickness_inner: 1.52
-        thickness1_2: 6.0
-        chart_thickness: 12.0
-        gap: 12
-        thickness2: 8.0
-        grade1: FT
-        grade2: FT
-        wind_load: 3.2
-        support_type: Four Edges
-        nfl1: 3.2
-        nfl2: 1.8
-        gtf1: 3.6
-        gtf2: 3.6
-        load_x_area2: 33.6
-        def1: 14.37
-        def2: 3.7
-      
-      - glass_type: sgu
-        length: 2450
-        width: 1169
-        thickness: 10.0
-        grade: FT
-        wind_load: 2.55
-        support_type: Point Fixed
 
     frames:
       - frame_type: Continuous
@@ -188,30 +105,6 @@ categories:
         tran_def_wind: 0.67 
         tran_def_dead: 0.71
         tran_phi_Mn: 4.71
-      
-      - frame_type: Floor-to-floor
-        length: 3400
-        width: 1530
-        tran_spacing: 2900
-        zone: Zone 4 (Mid Zone)
-        system_type: Semi-unitized
-        glass_thk: 16
-        wind_pos: 3.08
-        wind_neg: 3.17
-        mullion: M 145x67x2.5 + RHS 110x54x2.5
-        I_xa: 3558480.9
-        I_xs: 1262531.3
-        mul_mu: 10.45
-        mul_vu: 11.57
-        mul_def: 10.8
-        mul_phi_Mn_a: 8.71
-        mul_phi_Mn_s: 8.1
-        transom: T 145x67x2
-        tran_mu: 1.11
-        tran_vu: 2.29
-        tran_def_wind: 0.57
-        tran_def_dead: 0.65
-        tran_phi_Mn: 4.71
 
     connections:
       - screw_nos: 4
@@ -227,26 +120,6 @@ categories:
         tc: 2.5
 
     anchorage:
-      - clump_type: Box Clump
-        reaction_Ry: 8.25
-        reaction_Rz: 2.46
-        design_Ry: 30
-        design_Rz: 8.0
-        V_ua: 7.5
-        V_ug: 15.0
-        anchor_nos: 4
-        anchor_dia: 12
-        embed_depth: 70
-        A_NC: 70500
-        A_VC: 70500
-        C_a1: 100
-        h_a: 300
-        bp_length_N: 250
-        bp_width_B: 120
-        bp_thk: 6
-        bp_d: 80
-        bp_b: 110
-
       - clump_type: U Clump
         reaction_Ry: 12.1
         reaction_Rz: 2.4
@@ -282,59 +155,3 @@ categories:
         bp_b: 150
         bp_x: 44
         bp_Beff: 88
-
-      - clump_type: L Clump Top
-        reaction_Ry: 29.9
-        reaction_Rz: 2.65
-        design_Ry: 40.1
-        design_Rz: 3.0
-        
-        V_ua: 6.02
-        V_ug: 12.1
-        anchor_nos: 4
-        anchor_dia: 12
-        embed_depth: 70
-        A_NC: 115200
-        A_VC: 115200
-        C_a1: 142
-        h_a: 200
-        bp_length_N: 350
-        bp_width_B: 220
-        bp_thk: 8
-
-      - clump_type: L Clump Front
-        reaction_Ry: 29.9
-        reaction_Rz: 2.65
-        design_Ry: 40.1
-        design_Rz: 3.0
-        
-        N_ua: 8.02
-        N_ug: 16.04
-        V_ua: 2.06
-        V_ug: 4.12
-        anchor_nos: 2
-        anchor_dia: 12
-        embed_depth: 70
-        A_NC: 72000
-        A_VC: 67500
-        C_a1: 100
-
-        thr_bolt_nos: 2
-        thr_bolt_dia: 10
-        thr_bolt_length: 100
-        thr_bearing_lc: 56
-        
-        fin_length: 145
-        fin_width: 160
-        fin_thk: 5
-        fin_e: 92
-        fin_bgv: 120
-        fin_bnt: 63
-        
-        bp_length_N: 220
-        bp_width_B: 190
-        bp_thk: 8
-        bp_d: 82
-        bp_b: 160
-        bp_x: 34
-        bp_Beff: 68

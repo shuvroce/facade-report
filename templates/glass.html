@@ -1,3 +1,4 @@
+{% if cat.glass_units %}
 {% for gu in cat.glass_units %}
     {% set loop_index = loop.index %}
 
@@ -51,4 +52,5 @@
     {% endif %}
 
 {% endfor %}
+{% endif %}
 

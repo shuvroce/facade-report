@@ -1,3 +1,4 @@
+{% if cat.connections %}
 {% for conn in cat.connections %}
 {% set R_yA = conn.design_fy / (conn.screw_nos / 2) %}
 {% set R_zA = conn.design_fz / (conn.screw_nos / 2) %}
@@ -392,3 +393,4 @@
 </div>
 
 {% endfor %}
+{% endif %}

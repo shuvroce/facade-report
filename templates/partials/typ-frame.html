@@ -369,6 +369,7 @@
         </tbody>
     </table>
 
+    {% if cat.connections %}
     <table class="width__80 align__center">
         <caption>Joint forces</caption>
         <thead>
@@ -398,7 +399,9 @@
             </tr>
         </tbody>
     </table>
+    {% endif %}
 
+    {% if cat.anchorage %}
     <table class="width__80 align__center">
         <caption>Support reaction forces</caption>
         <thead>
@@ -443,6 +446,7 @@
             {% endif %}
         </tbody>
     </table>
+    {% endif %}
 </div>
 
 <div class="page__break">

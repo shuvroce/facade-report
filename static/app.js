@@ -55,11 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'thickness1_2': '2nd Lite Thickness of Outer panel (mm)',
         'thickness_inner': 'Interlayer Thickness (mm)',
         'chart_thickness': 'Chart Thickness (mm)',
-        'grade': 'Glass Grade (e.g. FT, HS, AN)',
-        'grade1': 'Outer Panel Grade (e.g. FT, HS, AN)',
-        'grade2': 'Inner Panel Grade (e.g. FT, HS, AN)',
+        // 'grade': 'Glass Grade (e.g. FT, HS, AN)',
+        // 'grade1': 'Outer Panel Grade (e.g. FT, HS, AN)',
+        // 'grade2': 'Inner Panel Grade (e.g. FT, HS, AN)',
         'wind_load': 'Wind Load (kPa)',
-        'support_type': 'Support Type (e.g. Four Edges)',
+        // 'support_type': 'Support Type (e.g. Four Edges)',
         'gap': 'Gap Between Panels (mm)',
         'nfl': 'Non-factored Load, NFL (kPa)',
         'nfl1': 'Non-factored Load of Outer Panel, NFL1 (kPa)',
@@ -141,9 +141,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const anchorageFieldPlaceholders = {
         'reaction_Ry': 'Horizontal Reaction, Ry (kN)',
-        'reaction_Rz': 'Vertical Reaction, Ry (kN)',
+        'reaction_Rz': 'Vertical Reaction, Rz (kN)',
         'design_Ry': 'Design Horizontal Reaction, Ry (kN)',
-        'design_Rz': 'Design Vertical Reaction, Ry (kN)',
+        'design_Rz': 'Design Vertical Reaction, Rz (kN)',
         'N_ua': 'Tensile force in single anchor, Nua (kN)',
         'N_ug': 'Tensile force in group of anchors, Nug (kN)',
         'V_ua': 'Shear force in single anchor, Vua (kN)',
@@ -433,8 +433,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function getFormData(form) {
         const data = {};
-        
-        // Helper function to process simple inputs (e.g., project_info, wind)
+    
+        // Helper function to process simple inputs (e.g., project_info, wind, glass, connection, anchorage)
         const processSimpleInputs = (selector, rootKey) => {
             const inputs = form.querySelectorAll(selector);
             inputs.forEach(input => {
@@ -447,27 +447,15 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     current = current[key];
                 }
-                
-                const value = input.value;
-                let parsedValue = value;
-
-                // NEW LOGIC: Only apply numerical parsing to 'wind' values
-                // Keep 'project_info' values as strings to preserve date format (YYYY-MM-DD)
-                if (rootKey === 'wind') {
-                    // Use parseFloat for all numerical inputs, but handle non-numerical or empty input gracefully
-                    parsedValue = isNaN(parseFloat(value)) || value === '' ? value : parseFloat(value);
-                } else if (value === '') {
-                    // Treat empty project info fields as empty strings
-                    parsedValue = '';
-                }
-                
-                current[path[path.length - 1]] = parsedValue;
+    
+                // Directly assign the input value without formatting
+                current[path[path.length - 1]] = input.value;
             });
         };
-
+    
         // 1. Get Project Info (Will remain as strings)
         processSimpleInputs('[name^="project_info."]', 'project_info');
-
+    
         // 2. Get Profiles
         function getProfileData(listId, keyName) {
             const list = document.getElementById(listId);
@@ -475,52 +463,50 @@ document.addEventListener('DOMContentLoaded', () => {
             data[keyName] = Array.from(items).map(item => {
                 const profile = {};
                 item.querySelectorAll('input, select, textarea').forEach(input => {
-                    const value = input.value;
-                    const parsedValue = isNaN(parseFloat(value)) || value === '' ? value : parseFloat(value);
-                    profile[input.name] = parsedValue;
+                    // Directly assign the input value without formatting
+                    profile[input.name] = input.value;
                 });
                 return profile;
             });
         }
         getProfileData('alum-profiles-list', 'alum_profiles');
         getProfileData('steel-profiles-list', 'steel_profiles');
-        
-        // 3. Get Wind Parameters (Will be parsed as numbers where possible)
+    
+        // 3. Get Wind Parameters
         processSimpleInputs('[name^="wind."]', 'wind');
-
+    
         // 4. Get Categories
         const categoriesList = document.getElementById('categories-list');
         const categoryItems = categoriesList.querySelectorAll('.category-item');
         data.categories = Array.from(categoryItems).map(categoryItem => {
             const category = {};
-            
+    
             const nameInput = categoryItem.querySelector('input[name="category_name"]');
             category.category_name = nameInput ? nameInput.value : 'Unnamed Category';
-            
+    
             function getNestedListData(parentElement, listName) {
                 const nestedList = parentElement.querySelector(`.dynamic-list[data-list-name="${listName}"]`);
                 if (!nestedList) return [];
-                
+    
                 const nestedItems = nestedList.querySelectorAll('.dynamic-item');
                 return Array.from(nestedItems).map(item => {
                     const itemData = {};
                     item.querySelectorAll('input, select, textarea').forEach(input => {
-                        const value = input.value;
-                        const parsedValue = isNaN(parseFloat(value)) || value === '' ? value : parseFloat(value);
-                        itemData[input.name] = parsedValue;
+                        // Directly assign the input value without formatting
+                        itemData[input.name] = input.value;
                     });
                     return itemData;
                 });
             }
-
+    
             category.glass_units = getNestedListData(categoryItem, 'glass_units');
             category.frames = getNestedListData(categoryItem, 'frames');
             category.connections = getNestedListData(categoryItem, 'connections');
             category.anchorage = getNestedListData(categoryItem, 'anchorage');
-
+    
             return category;
         });
-
+    
         return data;
     }
 
@@ -618,7 +604,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Execute report generation and handle status updates in the async function
         callPythonToGenerateReport(yamlContent)
             .then(() => {
-                setStatus('Generation complete!', 'success');
+                setStatus('Report generated successfully!', 'success');
             })
             .catch((err) => {
                 setStatus('Generation failed: ' + (err && err.message ? err.message : err), 'error');
