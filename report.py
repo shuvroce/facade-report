@@ -7,9 +7,9 @@ import pikepdf
 
 BASE_DIR = os.path.dirname(__file__)
 INPUT_YAML = os.path.join(BASE_DIR, "input.yaml")
-PROFILE_YAML = os.path.join(BASE_DIR, "profile.yaml")
 OUT_PDF = os.path.join(BASE_DIR, "report.pdf")
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
+PROFILE_YAML = os.path.join(TEMPLATE_DIR, "assets", "profile.yaml")
 CSS_PATH = os.path.join(TEMPLATE_DIR, "assets", "css", "report.css")
 
 def collapse_outlines(item):
@@ -72,7 +72,6 @@ def generate_report_from_data(
         raise
 
 def main():
-    # 1. Load data from input.yaml (main report data)
     report_data = {}
     if os.path.exists(INPUT_YAML):
         with open(INPUT_YAML, "r", encoding="utf-8") as f:
@@ -80,7 +79,6 @@ def main():
     else:
         print(f"Warning: Missing main input file: {INPUT_YAML}")
 
-    # 2. Load data from profile.yaml (structural profiles)
     profile_data = {}
     if os.path.exists(PROFILE_YAML):
         with open(PROFILE_YAML, "r", encoding="utf-8") as f:
@@ -91,7 +89,6 @@ def main():
     else:
         print(f"Info: Profile file not found: {PROFILE_YAML}. Skipping profile data.")
 
-    # Pass the now-merged data to the report generator
     out = generate_report_from_data(report_data, out_pdf=OUT_PDF)
     print(f"Report written to {out}")
 

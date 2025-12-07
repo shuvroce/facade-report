@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const alumFields = {
         'Manual': [
             'profile_name', 'web_length', 'flange_length', 'web_thk', 'flange_thk', 'tor_constant',
-            'area', 'I_xx', 'I_yy', 'I_yy', 'Y', 'X', 'plastic_x', 'plastic_y', 'F_y', 'Mn_yield', 'Mn_lb'
+            'area', 'I_xx', 'I_yy', 'Y', 'X', 'plastic_x', 'plastic_y', 'F_y', 'Mn_yield', 'Mn_lb'
         ],
         'Pre-defined': ['profile_name']
     };
@@ -550,7 +550,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 return profile;
             });
         }
-        getProfileData('alum-profiles-list', 'alum_profiles');
+        getProfileData('alum-profiles-list', 'alum_profiles')
         getProfileData('steel-profiles-list', 'steel_profiles');
     
         // 3. Get Wind Parameters

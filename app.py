@@ -4,7 +4,7 @@ import tempfile
 import threading
 import shutil
 from flask import Flask, request, send_file, render_template
-from report import generate_report_from_data
+from report import generate_report_from_data, TEMPLATE_DIR
 
 app = Flask(__name__, static_folder="static", template_folder="templates")
 
@@ -23,16 +23,25 @@ def generate_report():
         return {"success": False, "error": "Missing yaml_content"}, 400
 
     yaml_content = request.json["yaml_content"]
-    data = yaml.safe_load(yaml_content) or {}
+    report_data = yaml.safe_load(yaml_content) or {}
+
+    PROFILE_YAML = os.path.join(os.path.realpath(TEMPLATE_DIR), "assets", "profile.yaml")
+    
+    profile_data = {}
+    if os.path.exists(PROFILE_YAML):
+        with open(PROFILE_YAML, "r", encoding="utf-8") as f:
+            profile_data = yaml.safe_load(f) or {}
+        
+        report_data.update(profile_data)
 
     # per-request temp dir and output filename
     temp_dir = tempfile.mkdtemp()
-    project_name = data.get("project_info", {}).get("project_name", "project")
+    project_name = report_data.get("project_info", {}).get("project_name", "project")
     safe_name = "".join(c for c in project_name if c.isalnum() or c in (" ", "_")).strip().replace(" ", "_")
     out_pdf = os.path.join(temp_dir, f"{safe_name}_report.pdf")
 
     # generate and return
-    pdf_path = generate_report_from_data(data=data, out_pdf=out_pdf, template_dir=os.path.join(app.root_path, "templates"))
+    pdf_path = generate_report_from_data(data=report_data, out_pdf=out_pdf, template_dir=TEMPLATE_DIR)
 
     _del_later(temp_dir, delay=30)  # cleanup later
     return send_file(pdf_path, mimetype="application/pdf", as_attachment=True, download_name=os.path.basename(pdf_path), max_age=0)
