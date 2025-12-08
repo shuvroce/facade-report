@@ -141,7 +141,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'glass_thk': 'Glass Thickness (mm)',
         'wind_pos': 'Wind Load (+ve) (kPa)',
         'wind_neg': 'Wind Load (-ve) (kPa)',
-        'mullion': 'Mullion Profile Name (e.g. M 125x60x2.5 or [+RHS 85x50x3])',
+        'mullion': 'Mullion Name (e.g. M 125x60x2.5 or [+RHS 85x50x3])',
         'I_xa': 'Moment of Inertia of Aluminum, Ixa (mm⁴)',
         'I_xs': 'Moment of Inertia of Steel, Ixs (mm⁴)',
         'mul_mu': 'Mullion Max. Moment, Mu (kNm)',
@@ -150,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'mul_phi_Mn': 'Mullion Moment Capacity, φMn (kNm)',
         'mul_phi_Mn_a': 'Mullion (Aluminum) Moment Capacity, φMna (kNm)',
         'mul_phi_Mn_s': 'Mullion (Steel) Moment Capacity, φMns (kNm)',
-        'transom': 'Transom Profile Name (e.g. T 125x60x2.5)',
+        'transom': 'Transom Name (e.g. T 125x60x2.5)',
         'tran_mu': 'Transom Max. Moment, Mu (kNm)',
         'tran_vu': 'Transom Max. Shear, Vu (kN)',
         'tran_def_wind': 'Transom Max. Deflection (wind), δw (mm)',
@@ -198,8 +198,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'anchor_nos': 'No. of Anchor bolt, n',
         'anchor_dia': 'Diameter of Anchor bolt, da (mm)',
         'embed_depth': 'Effective Embedment Depth of Anchor, hef (mm)',
-        'A_NC': 'Concrete failure area for anchor group in tension, ANC (mm²)',
-        'A_VC': 'Concrete failure area for anchor group in shear, AVC (mm²)',
+        'A_NC': 'Concrete failure area in tension, ANC (mm²)',
+        'A_VC': 'Concrete failure area in shear, AVC (mm²)',
         'C_a1': 'Edge Distance, Ca1 (mm)',
         'h_a': 'Depth of Concrete Member, ha (mm)',
         'thr_bolt_nos': 'No. of Fin Through bolt, nb',
@@ -704,7 +704,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 setStatus('Report generated successfully!', 'success');
             })
             .catch((err) => {
-                setStatus('Generation failed: ' + (err && err.message ? err.message : err), 'error');
+                setStatus('Failed: ' + (err && err.message ? err.message : err), 'error');
             })
             .finally(() => {
                 // Re-enable after a short delay so user sees the result

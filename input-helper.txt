@@ -22,6 +22,7 @@ Category-level figures
 
 Glass RFEM figures (category + glass indices)
 - Format: <category_index>.<glass_index>-rfem-<suffix>.png
+- Example: 2.3-rfem-model-3d.png (category 2, glass 3)
 - Suffixes used:
   - rfem-model-3d
   - rfem-model-data
@@ -29,7 +30,7 @@ Glass RFEM figures (category + glass indices)
   - rfem-stress-ratio
   - rfem-def
   - rfem-def-ratio
-- Example: 2.3-rfem-model-3d.png (category 2, glass 3)
+
 
 Notes
 - category_index comes from the order of categories in the input YAML (1-based).
