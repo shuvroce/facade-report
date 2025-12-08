@@ -1,5 +1,15 @@
 Input figure naming guide (place files under templates/inputs or the resolved inputs folder used by the report)
 
+Manual Profile Input
+- <profile_name>.png
+- <profile_name>-wp.png
+- <profile_name>p.png
+- <profile_name>-lb-web.png
+- <profile_name>-lb-flange.png
+- <profile_name>-lb-table.png
+- <profile_name>-lb-web-cap.png
+- <profile_name>-lb-flange-cap.png
+
 Category-level figures
 - Reference elevation per category: <category_index>-ref-elev.png  (example: 1-ref-elev.png)
 - SAP/structural figures tied to category index (all currently in typ-frame.html):
@@ -23,13 +33,12 @@ Category-level figures
 Glass RFEM figures (category + glass indices)
 - Format: <category_index>.<glass_index>-rfem-<suffix>.png
 - Example: 2.3-rfem-model-3d.png (category 2, glass 3)
-- Suffixes used:
-  - rfem-model-3d
-  - rfem-model-data
-  - rfem-stress
-  - rfem-stress-ratio
-  - rfem-def
-  - rfem-def-ratio
+  - 2.3-rfem-model-3d.png
+  - 2.3-rfem-model-data.png
+  - 2.3-rfem-stress.png
+  - 2.3-rfem-stress-ratio.png
+  - 2.3-rfem-def.png
+  - 2.3-rfem-def-ratio.png
 
 
 Notes

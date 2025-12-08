@@ -7,12 +7,46 @@
         {% endif %}
     {% endfor %}
 
+    {% set web_b = ns.found_data.web_length - 2 * (ns.found_data.flange_thk - 0.5) %}
+    {% set flange_b = ns.found_data.flange_length - 2 * (ns.found_data.web_thk - 0.5) %}
+    {% set c_c = ns.found_data.Y - ns.found_data.flange_thk - 0.5 %}
+    {% set c_o = web_b - c_c %}
+    {% set m = 1.15 + (-c_o / (2 * c_c)) %}
+
+    {% set B_p = ns.found_data.F_y * (1 + (ns.found_data.F_y / (1500 * 6.895))**0.3333) %}
+    {% set D_p = (B_p / 10) * ((B_p / 70000)**0.5) %}
+    {% set B_br = 1.3 * ns.found_data.F_y * (1 + (ns.found_data.F_y / (340 * 6.895))**0.3333) %}
+    {% set D_br = (B_br / 20) * ((6 * B_br / 70000)**0.5) %}
+
+    {% set flange_lambda1 = (B_p - ns.found_data.F_y) / (1.6 * D_p) %}
+    {% set flange_lambda2 = (0.35 * B_p) / (1.6 * D_p) %}
+    {% set web_lambda1 = (B_br - 1.5 * ns.found_data.F_y) / (m * D_br) %}
+    {% set web_lambda2 = (0.5 * B_br) / (m * D_br) %}
+
+    {% set web_d = ns.found_data.Y - web_b / 2 %}
+    {% set I_w = 2 * (((ns.found_data.web_thk * web_b**3) / 12) + (ns.found_data.web_thk * web_b * web_d**2)) %}
+
+    {% if (web_b / ns.found_data.web_thk) <= web_lambda1 %}
+        {% set F_b = 1.5 * ns.found_data.F_y %}
+    {% else %}
+        {% set F_b = B_br - (m * D_br) * (web_b / ns.found_data.web_thk) %}
+    {% endif %}
+
+    {% if (flange_b / ns.found_data.flange_thk) <= flange_lambda1 %}
+        {% set F_c = ns.found_data.F_y %}
+    {% else %}
+        {% set F_c = B_p - (5 * D_p) * (flange_b / ns.found_data.flange_thk) %}
+    {% endif %}
+
+    {% set Z_x = 0.5 * ns.found_data.area * (ns.found_data.plastic_x + ns.found_data.plastic_y) %}
+    {% set Mn_yield = [(Z_x * ns.found_data.F_y), (1.5 * ns.found_data.F_y * ns.found_data.I_xx / ns.found_data.Y)] | min %}
+
     {% if ns.found_data is not none %}
         <div class="page__break"></div>
         <h2>{{ ns.found_data.profile_name }}</h2>
         <div>
             <div>
-                <img src="assets/images/profiles/{{ ns.found_data.profile_name }}-wp.png" class="fig__130">
+                <img src="assets/images/profiles/{{ ns.found_data.profile_name }}-wp.png" class="fig__120">
             </div>
             
             <table class="width__90">
@@ -97,7 +131,7 @@
             <table class="borderless width__100">
                 <tbody>
                     <tr>
-                        <td><img src="assets/images/profiles/{{ ns.found_data.profile_name }}p.png" class="fig__140"></td>
+                        <td><img src="assets/images/profiles/{{ ns.found_data.profile_name }}p.png" class="fig__130"></td>
                     </tr>
                 </tbody>
             </table>
@@ -119,7 +153,7 @@
                     <tr>
                         <td>Plastic section modulus about major axis</td>
                         <td><i>Z<sub>x</sub> = 0.5 A(x + y)</i></td>
-                        <td>{{ (0.5 * ns.found_data.area * (ns.found_data.plastic_x + ns.found_data.plastic_y)) | round(1) }}</td>
+                        <td>{{ Z_x | round(1) }}</td>
                         <td><i>mm<sup>3</sup></i></td>
                     </tr>
 
@@ -138,7 +172,7 @@
                 </tbody>
             </table>
 
-
+            {% if "M" in ns.found_data.profile_name %}
             <h3>Moment Capacity by Yielding</h3>
             <div>
                 <table class="borderless ml-2">
@@ -151,7 +185,7 @@
                         <tr>
                             <td></td>
                             <td>=</td>
-                            <td>{{ ns.found_data.Mn_yield }} <i>kN-m</i></td>
+                            <td>{{ (Mn_yield / 1000000) | round(1) }} <i>kN-m</i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -162,35 +196,119 @@
                 <table class="borderless width__100 fig__table align__center">
                     <tbody>
                         <tr>
-                            <td><img style="width: 50mm;" src="assets/images/profiles/{{ ns.found_data.profile_name }}-lb-web.png"></td>
-                            <td><img style="width: 50mm;" src="assets/images/profiles/{{ ns.found_data.profile_name }}-lb-flange.png"></td>
+                            <td><img style="width: 40mm;" src="assets/images/profiles/{{ ns.found_data.profile_name }}-lb-web.png"></td>
+                            <td><img style="width: 40mm;" src="assets/images/profiles/{{ ns.found_data.profile_name }}-lb-flange.png"></td>
                         </tr>
                     </tbody>
                 </table>
-
-                <table class="borderless width__100 fig__table">
+                
+                <table class="width__100 align__center">
+                    <thead>
+                        <tr>
+                            <th>No.</th>
+                            <th>Type</th>
+                            <th>Supports</th>
+                            <th><i>c<sub>c</sub></i></th>
+                            <th><i>c<sub>o</sub></i></th>
+                            <th><i>(c<sub>o</sub> / c<sub>c</sub>)</i></th>
+                            <th>m</th>
+                            <th>b</th>
+                            <th>t</th>
+                            <th>λ <br>= b/t</th>
+                            <th>λ<sub>1</sub></th>
+                            <th>λ<sub>2</sub></th>
+                            <th>F<sub>c</sub> <br>(or F<sub>b</sub>)</th>
+                        </tr>
+                    </thead>
                     <tbody>
                         <tr>
-                            <td><img src="assets/images/{{ ns.found_data.profile_name }}-lb-table.png"></td>
+                            <td>1</td>
+                            <td>FC</td>
+                            <td>Both Edges</td>
+                            <td>- {{ c_c | round(1) }}</td>
+                            <td>{{ c_o | round(1) }}</td>
+                            <td>- {{ (c_o / c_c) | round(2) }}</td>
+                            <td>{{ m | round(2) }}</td>
+                            <td>{{ web_b | round(1) }}</td>
+                            <td>{{ ns.found_data.web_thk }}</td>
+                            <td>{{ (web_b / ns.found_data.web_thk) | round(1) }}</td>
+                            <td>{{ web_lambda1 | round(1) }}</td>
+                            <td>{{ web_lambda2 | round(1) }}</td>
+                            <td>{{ F_b | round(1) }}</td>
+                        </tr>
+                        <tr>
+                            <td>2</td>
+                            <td>UC</td>
+                            <td>Both Edges</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>–</td>
+                            <td>{{ flange_b }}</td>
+                            <td>{{ ns.found_data.flange_thk }}</td>
+                            <td>{{ (flange_b / ns.found_data.flange_thk) | round(1) }}</td>
+                            <td>{{ flange_lambda1 | round(1) }}</td>
+                            <td>{{ flange_lambda2 | round(1) }}</td>
+                            <td>{{ F_c | round(1) }}</td>
                         </tr>
                     </tbody>
                 </table>
 
                 <p>The weighted average method is utilized to compute the nominal flexure strength due to the limit state of local buckling –</p>
                 <p>For web elements under flexural compression –</p>
-                <table class="borderless width__70 fig__table">
+                <table class="borderless ml-2">
                     <tbody>
                         <tr>
-                            <td><img src="assets/images/{{ ns.found_data.profile_name }}-lb-web-cap.png"></td>
+                            <td colspan="3"><u>Element identifier: (1)</u></td>
+                        </tr>
+                        <tr>
+                            <td>No. of element</td>
+                            <td>=</td>
+                            <td>2 <i>Nos.</i></td>
+                        </tr>
+                        <tr>
+                            <td>Centroidal distance of element, d</td>
+                            <td>=</td>
+                            <td>{{ web_d | round(1) }} <i>mm</i></td>
+                        </tr>
+                        <tr>
+                            <td>Moment of Inertia about NA, I<sub>w</sub></td>
+                            <td>=</td>
+                            <td>{{ I_w | round(1) }} <i>mm<sup>4</sup></i></td>
+                        </tr>
+                        <tr>
+                            <td>Extreme fiber distance of element, C<sub>w</sub></td>
+                            <td>=</td>
+                            <td>{{ c_c }} <i>mm</i></td>
+                        </tr>
+                        <tr>
+                            <td>Moment capacity, M<sub>nlb,w</sub></td>
+                            <td>=</td>
+                            <td>{{ (F_b * (I_w / c_c) / 1000000) | round(1) }} <i>kNm</i></td>
                         </tr>
                     </tbody>
                 </table>
 
                 <p>For flange elements under uniform compression –</p>
-                <table class="borderless width__100 fig__table">
+                <table class="borderless mt-1 ml-2">
                     <tbody>
                         <tr>
-                            <td><img src="assets/images/{{ ns.found_data.profile_name }}-lb-flange-cap.png" class="fig__100"></td>
+                            <td>Moment of Inertia about NA, I<sub>f</sub></td>
+                            <td>=</td>
+                            <td>{{ (ns.found_data.I_xx - I_w) | round(1) }} <i>mm<sup>4</sup></i></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>NA's distance to element's thickness center, C<sub>f</sub></td>
+                            <td>=</td>
+                            <td>{{ (web_b / 2) | round(1) }} <i>mm</i></td>
+                            <td><i>; avg.</i></td>
+                        </tr>
+                        <tr>
+                            <td>Moment capacity, M<sub>nlb,f</sub></td>
+                            <td>=</td>
+                            <td>{{ (F_c * ((ns.found_data.I_xx - I_w) / (web_b / 2)) / 1000000) | round(1) }} <i>kNm</i></td>
+                            <td></td>
                         </tr>
                     </tbody>
                 </table>
@@ -205,7 +323,7 @@
                         <tr>
                             <td></td>
                             <td>=</td>
-                            <td>{{ ns.found_data.Mn_lb }} <i>kN-m</i></td>
+                            <td>{{ ((F_b * (I_w / c_c) / 1000000) + (F_c * ((ns.found_data.I_xx - I_w) / (web_b / 2)) / 1000000)) | round(1) }} <i>kN-m</i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -216,6 +334,53 @@
                 <p>The member is considered to be continuously braced by the glass panel. Therefore, lateral torsional buckling (LTB) not governs.</p>
             </div>
 
+            <div>
+                <p>The nominal bending strength is the minimum value obtained considering the limit states of yielding, local buckling and lateral-torsional buckling. Therefore –</p>
+
+                <table class="borderless ml-2">
+                    <tbody>
+                        <tr>
+                            <td>Nominal Moment Capacity, <i>M<sub>n</sub> = min( M<sub>np</sub> , M<sub>nlb</sub> , M<sub>nmb</sub> )</i></td>
+                            <td>=</td>
+                            <td>{{ ([(Mn_yield / 1000000), ((F_b * (I_w / c_c) / 1000000) + (F_c * ((ns.found_data.I_xx - I_w) / (web_b / 2)) / 1000000))] | min) | round(1) }} <i>kN-m</i></td>
+                            <td></td>
+                        </tr>
+                        <tr>
+                            <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
+                            <td>=</td>
+                            <td>{{ (([(Mn_yield / 1000000), ((F_b * (I_w / c_c) / 1000000) + (F_c * ((ns.found_data.I_xx - I_w) / (web_b / 2)) / 1000000))] | min) * 0.9) | round(1) }} <i>kN-m</i></td>
+                            <td></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            
+            {% elif "T" in ns.found_data.profile_name %}
+            <h3>Moment Capacity</h3>
+            <p>Moment capacity of the profile is calculated following the same procedure of mullion
+                design above as per AA ADM 2015. Results are summarized below –</p>
+            <table class="width__80">
+                <tbody>
+                    <tr>
+                        <td>Moment capacity by yielding</td>
+                        <td><i>M<sub>np</sub></i></td>
+                        <td>{{ ns.found_data.Mn_yield }}</td>
+                        <td><i>kNm</i></td>
+                    </tr>
+                    <tr>
+                        <td>Moment capacity by local buckling</td>
+                        <td><i>M<sub>nlb</sub></i></td>
+                        <td>{{ ns.found_data.Mn_lb }}</td>
+                        <td><i>kNm</i></td>
+                    </tr>
+                    <tr>
+                        <td>Moment capacity by Lateral torsional buckling</td>
+                        <td><i>M<sub>nmb</sub></i></td>
+                        <td>–</td>
+                        <td><i>kNm</i></td>
+                    </tr>
+                </tbody>
+            </table>
             <div>
                 <p>The nominal bending strength is the minimum value obtained considering the limit states of yielding, local buckling and lateral-torsional buckling. Therefore –</p>
 
@@ -236,6 +401,7 @@
                     </tbody>
                 </table>
             </div>
+            {% endif %}
         </div>
     {% endif %}
 
@@ -244,7 +410,7 @@
     <h2>{{ profile.profile_name }}</h2>
     <div>
         <div>
-            <img src="inputs/{{ profile.profile_name }}.png" class="fig__130">
+            <img src="inputs/{{ profile.profile_name }}.png" class="fig__120">
         </div>
         
         <table class="width__90">
@@ -329,7 +495,7 @@
         <table class="borderless width__100">
             <tbody>
                 <tr>
-                    <td><img src="inputs/{{ profile.profile_name }}p.png" class="fig__140"></td>
+                    <td><img src="inputs/{{ profile.profile_name }}p.png" class="fig__130"></td>
                 </tr>
             </tbody>
         </table>
@@ -394,8 +560,8 @@
             <table class="borderless width__100 fig__table align__center">
                 <tbody>
                     <tr>
-                        <td><img style="width: 50mm;" src="inputs/{{ profile.profile_name }}-lb-web.png"></td>
-                        <td><img style="width: 50mm;" src="inputs/{{ profile.profile_name }}-lb-flange.png"></td>
+                        <td><img style="width: 40mm;" src="inputs/{{ profile.profile_name }}-lb-web.png"></td>
+                        <td><img style="width: 40mm;" src="inputs/{{ profile.profile_name }}-lb-flange.png"></td>
                     </tr>
                 </tbody>
             </table>
@@ -403,7 +569,7 @@
             <table class="borderless width__100 fig__table">
                 <tbody>
                     <tr>
-                        <td><img src=inputs/{{ profile.profile_name }}-lb-table.png"></td>
+                        <td><img src="inputs/{{ profile.profile_name }}-lb-table.png"></td>
                     </tr>
                 </tbody>
             </table>
@@ -413,7 +579,7 @@
             <table class="borderless width__70 fig__table">
                 <tbody>
                     <tr>
-                        <td><img src=inputs/{{ profile.profile_name }}-lb-web-cap.png"></td>
+                        <td><img src="inputs/{{ profile.profile_name }}-lb-web-cap.png"></td>
                     </tr>
                 </tbody>
             </table>
@@ -422,7 +588,7 @@
             <table class="borderless width__100 fig__table">
                 <tbody>
                     <tr>
-                        <td><img src=inputs/{{ profile.profile_name }}-lb-flange-cap.png" class="fig__100"></td>
+                        <td><img src="inputs/{{ profile.profile_name }}-lb-flange-cap.png" class="fig__100"></td>
                     </tr>
                 </tbody>
             </table>
