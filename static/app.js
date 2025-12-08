@@ -30,7 +30,8 @@ document.addEventListener('DOMContentLoaded', () => {
             'profile_name', 'web_length', 'flange_length', 'web_thk', 'flange_thk', 'tor_constant',
             'area', 'I_xx', 'I_yy', 'Y', 'X', 'plastic_x', 'plastic_y', 'F_y', 'Mn_yield', 'Mn_lb'
         ],
-        'Pre-defined': ['profile_name']
+        'Pre-defined': ['profile_name'],
+        'Stick': ['profile_name', 'web_length', 'flange_length', 'web_thk', 'flange_thk', 'F_y']
     };
 
     const alumProfileOptions = [
@@ -57,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const alumFieldPlaceholders = {
-        'profile_name': 'Profile Name (e.g. M 125x60x2.5)',
+        'profile_name': 'Profile Name (e.g. M or St. M 125x60x2.5)',
         'web_length': 'Web Length (mm)',
         'flange_length': 'Flange Length (mm)',
         'web_thk': 'Web Thickness (mm)',
