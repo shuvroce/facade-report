@@ -10,6 +10,11 @@ Manual Profile Input
 - <profile_name>-lb-web-cap.png
 - <profile_name>-lb-flange-cap.png
 
+Wind Input
+- mwfrs.png (mwfrs load table)
+- cnc-wall.png
+- cnc-roof.png
+
 Category-level figures
 - Reference elevation per category: <category_index>-ref-elev.png  (example: 1-ref-elev.png)
 - SAP/structural figures tied to category index (all currently in typ-frame.html):

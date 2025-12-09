@@ -39,8 +39,7 @@
                     </svg>
                 </button>
                 <div class="action_btn-box">
-                    <button class="action_btn" id="generate-yaml-btn">YAML</button>
-                    <button class="action_btn" id="generate-report-btn">Report</button>
+                    <button class="action_btn" id="generate-report-btn">Create Report</button>
                 </div>
             </div>
         </div>
@@ -117,19 +116,19 @@
                                     <option value="0.55">GCpi 0.55 (Partially Enclosed)</option>
                                     <option value="0">GCpi 0.0 (Open)</option>
                                 </select>
-                                <input type="number" step="0.1" name="wind.C_pl" placeholder="External Pressure Coefficient (Leeward), Cpl" value="0.5">
-                                <input type="number" step="0.1" name="wind.K_h" placeholder="Velocity Pressure Coefficient at H, Kh">
+                                <input type="number" step="0.1" name="wind.C_pl" placeholder="External Leeward Pressure Coefficient, Cpl" value="0.5">
+                                <!-- <input type="number" step="0.1" name="wind.K_h" placeholder="Velocity Pressure Coefficient at H, Kh"> -->
                                 <input type="number" step="0.1" name="wind.q_zk" placeholder="Velocity Pressure (in terms of Kz.Kzt), qz">
                                 <input type="number" step="0.1" name="wind.K_ht" placeholder="Topographic Factor at H, Kht" value="1.0">
-                                <input type="number" step="0.1" name="wind.q_h" placeholder="Velocity pressure at H, qh">
-                                <input type="number" step="0.1" name="wind.int_pressure" placeholder="Internal Pressure, Phi (kPa)">
-                                <input type="number" step="0.1" name="wind.leeward_pressure" placeholder="Leeward Pressure, Phl (kPa)">
-                                <input type="number" step="0.1" name="wind.sidewall_pressure" placeholder="Sidewall Pressure, Phs (kPa)">
+                                <!-- <input type="number" step="0.1" name="wind.q_h" placeholder="Velocity pressure at H, qh"> -->
+                                <!-- <input type="number" step="0.1" name="wind.int_pressure" placeholder="Internal Pressure, Phi (kPa)"> -->
+                                <!-- <input type="number" step="0.1" name="wind.leeward_pressure" placeholder="Leeward Pressure, Phl (kPa)"> -->
+                                <!-- <input type="number" step="0.1" name="wind.sidewall_pressure" placeholder="Sidewall Pressure, Phs (kPa)"> -->
                                 <select name="wind.b_rigidity">
                                     <option value="Rigid">Rigid</option>
                                     <option value="Flexible">Flexible</option>
                                 </select>
-                                <input type="number" step="0.1" name="wind.b_freq" placeholder="Building Natural Frequency, fn1 (Hz)">
+                                <input type="number" step="0.1" name="wind.b_freq" placeholder="Building Natural Frequency, fn (Hz)">
                                 <input type="number" step="0.1" name="wind.damping" placeholder="Damping Ratio" value="0.02">
                                 <input type="number" step="0.1" name="wind.gust_factor" placeholder="Gust Effect Factor, G" value="0.85">
                                 <select name="wind.topography_type">
@@ -143,7 +142,7 @@
                                 <input type="number" name="wind.topo_length" placeholder="Topo Length">
                                 <input type="number" name="wind.topo_distance" placeholder="Topo Distance">
                                 <textarea name="wind.exposure_note" placeholder="Exposure Note"></textarea>
-                                <textarea name="wind.occupancy_note" placeholder="Occupancy Note"></textarea>
+                                <textarea name="wind.occupancy_note" placeholder="Occupancy Note">Likely to gather more than 300 people at the same time.</textarea>
                             </div>
                         </div>
 
@@ -156,8 +155,13 @@
                 </form>
 
                 <div class="output-container">
-                    <h3>Generated YAML Output</h3>
-                    <button class="action_btn" id="download-yaml-btn" disabled>💾 Download YAML</button>
+                    <h3>YAML Section</h3>
+                    <div class="btn_yaml">
+                        <button class="action_btn" id="load-yaml-btn">Load</button>
+                        <button class="action_btn" id="generate-yaml-btn">Generate</button>
+                        <button class="action_btn" id="download-yaml-btn">Download</button>
+                        <input type="file" id="yaml-file-input" accept=".yaml,.yml,.json,text/yaml" hidden>
+                    </div>
                     <pre id="yaml-output-display">Click 'Generate YAML' to see the output.</pre>
                 </div>
             </div>
@@ -314,6 +318,7 @@
     </div>
     
     
+    <script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js"></script>
     <!-- <script src="/static/app.js"></script> -->
     <script src="{{ url_for('static', filename='app.js') }}"></script>
 

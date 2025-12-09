@@ -542,6 +542,8 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 4. YAML Generation & Download Logic (Updated) ---
+    const loadBtn = document.getElementById('load-yaml-btn');
+    const yamlFileInput = document.getElementById('yaml-file-input');
     const generateBtn = document.getElementById('generate-yaml-btn');
     const downloadBtn = document.getElementById('download-yaml-btn');
     const reportBtn = document.getElementById('generate-report-btn'); // NEW: Get the report button
@@ -555,6 +557,175 @@ document.addEventListener('DOMContentLoaded', () => {
         statusEl.textContent = text;
         // reset classes and add base + state class
         statusEl.className = 'status' + (cls ? ' ' + cls : '');
+    }
+
+
+    // --- 4A. YAML Import & Form Population ---
+    function parseYamlOrJson(rawText) {
+        // Prefer YAML parsing; fallback to JSON if the library is missing
+        if (window.jsyaml && typeof window.jsyaml.load === 'function') {
+            return window.jsyaml.load(rawText);
+        }
+        return JSON.parse(rawText);
+    }
+
+    function setSimpleGroupValues(groupData, prefix) {
+        if (!groupData) return;
+        Object.entries(groupData).forEach(([key, value]) => {
+            const field = form.querySelector(`[name="${prefix}.${key}"]`);
+            if (field) {
+                field.value = value ?? '';
+            }
+        });
+    }
+
+    function fillFields(container, values = {}, skipKeys = new Set()) {
+        Object.entries(values).forEach(([name, value]) => {
+            if (skipKeys.has(name)) return;
+            const input = container.querySelector(`[name="${name}"]`);
+            if (input) {
+                input.value = value ?? '';
+            }
+        });
+    }
+
+    function populateProfileList(listId, templateId, items = [], typeFieldName = null) {
+        const list = document.getElementById(listId);
+        if (!list) return;
+        list.innerHTML = '';
+
+        const payload = items.length ? items : [{}];
+        payload.forEach(itemData => {
+            addItem(list, templateId);
+            const newItem = list.lastElementChild;
+            if (!newItem) return;
+
+            // Set type first so dependent fields render before filling values
+            if (typeFieldName && itemData[typeFieldName]) {
+                const typeSelect = newItem.querySelector(`[name="${typeFieldName}"]`);
+                if (typeSelect) {
+                    typeSelect.value = itemData[typeFieldName];
+                    typeSelect.dispatchEvent(new Event('change'));
+                }
+            }
+
+            const skipKeys = new Set(typeFieldName ? [typeFieldName] : []);
+            fillFields(newItem, itemData, skipKeys);
+        });
+    }
+
+    function hydrateGlassItem(glassItem, data = {}) {
+        const typeSelect = glassItem.querySelector('select[name="glass_type"]');
+        if (typeSelect) {
+            if (data.glass_type) {
+                typeSelect.value = data.glass_type;
+            }
+            typeSelect.dispatchEvent(new Event('change'));
+        }
+        fillFields(glassItem, data, new Set(['glass_type']));
+    }
+
+    function hydrateFrameItem(frameItem, data = {}) {
+        const typeSelect = frameItem.querySelector('select[name="mullion_type"]');
+        if (typeSelect) {
+            if (data.mullion_type) {
+                typeSelect.value = data.mullion_type;
+            }
+            typeSelect.dispatchEvent(new Event('change'));
+        }
+        fillFields(frameItem, data, new Set(['mullion_type']));
+    }
+
+    function hydrateAnchorageItem(anchorageItem, data = {}) {
+        const typeSelect = anchorageItem.querySelector('select[name="clump_type"]');
+        if (typeSelect) {
+            if (data.clump_type) {
+                typeSelect.value = data.clump_type;
+            }
+            typeSelect.dispatchEvent(new Event('change'));
+        }
+        fillFields(anchorageItem, data, new Set(['clump_type']));
+    }
+
+    function populateCategorySublist(categoryElement, listName, templateId, items, hydrateFn = null) {
+        const subList = categoryElement.querySelector(`.dynamic-list[data-list-name="${listName}"]`);
+        if (!subList) return;
+
+        subList.innerHTML = '';
+        const payload = items && items.length ? items : [{}];
+
+        payload.forEach(itemData => {
+            addItem(subList, templateId);
+            const newItem = subList.lastElementChild;
+            if (!newItem) return;
+
+            if (hydrateFn) {
+                hydrateFn(newItem, itemData || {});
+            } else {
+                fillFields(newItem, itemData || {});
+            }
+        });
+    }
+
+    function populateCategories(categories = []) {
+        const list = document.getElementById('categories-list');
+        if (!list) return;
+
+        list.innerHTML = '';
+        const payload = categories.length ? categories : [{}];
+
+        payload.forEach(catData => {
+            addItem(list, 'category-template');
+            const categoryElement = list.lastElementChild;
+            if (!categoryElement) return;
+
+            const nameInput = categoryElement.querySelector('input[name="category_name"]');
+            if (nameInput) {
+                nameInput.value = (catData && catData.category_name) || nameInput.value || '';
+            }
+
+            populateCategorySublist(categoryElement, 'glass_units', 'glass-unit-template', catData.glass_units, hydrateGlassItem);
+            populateCategorySublist(categoryElement, 'frames', 'frame-template', catData.frames, hydrateFrameItem);
+            populateCategorySublist(categoryElement, 'connections', 'connection-template', catData.connections);
+            populateCategorySublist(categoryElement, 'anchorage', 'anchorage-template', catData.anchorage, hydrateAnchorageItem);
+        });
+    }
+
+    function populateFormFromData(data = {}) {
+        setSimpleGroupValues(data.project_info || {}, 'project_info');
+        setSimpleGroupValues(data.wind || {}, 'wind');
+
+        populateProfileList('alum-profiles-list', 'alum-profile-template', data.alum_profiles || [], 'profile_type');
+        populateProfileList('steel-profiles-list', 'steel-profile-template', data.steel_profiles || []);
+
+        populateCategories(data.categories || []);
+    }
+
+    if (loadBtn && yamlFileInput) {
+        loadBtn.addEventListener('click', () => yamlFileInput.click());
+
+        yamlFileInput.addEventListener('change', (event) => {
+            const file = event.target.files && event.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = () => {
+                try {
+                    const parsed = parseYamlOrJson(reader.result) || {};
+                    populateFormFromData(parsed);
+                    setStatus('YAML loaded into form', 'success');
+                } catch (err) {
+                    console.error('Failed to parse YAML:', err);
+                    setStatus('Failed to load file: ' + err.message, 'error');
+                } finally {
+                    yamlFileInput.value = '';
+                }
+            };
+            reader.onerror = () => {
+                setStatus('Could not read the file.', 'error');
+            };
+            reader.readAsText(file);
+        });
     }
 
 

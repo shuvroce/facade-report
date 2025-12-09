@@ -26,8 +26,8 @@
     --text-heading: #173909;
     --text-link: #0056b3;
     --text-code: #222;
-    --text-active: #10587e;
-    --line-active: #10587e;
+    --text-active: #0869d1;
+    --line-active: #0869d1;
     --border-primary: #e6e6e6;
     --border-secondary: #ddd;
     --border-tertiary: #eee;
@@ -40,6 +40,7 @@
     --btn-primary: #28a745;
     --btn-primary-hover: #218838;
     --btn-accent: #0869d1;
+    --btn-accent2: #805700;
     --btn-accent-hover: #075cb8;
     --btn-danger: #dc3545;
     --btn-danger-hover: #c72d3c;
@@ -48,7 +49,7 @@
 /* Dark Theme Colors */
 body.dark-theme {
     --bg-body: #1a1a1a;
-    --bg-primary: #2d2d2d;
+    --bg-primary: #272727;
     --bg-secondary: #242424;
     --bg-input: #3a3a3a;
     --bg-select: #3a3a3a;
@@ -71,7 +72,8 @@ body.dark-theme {
     /* Accent Colors */
     --btn-primary: #2fa759;
     --btn-primary-hover: #26914c;
-    --btn-accent: #4da3ff;
+    --btn-accent: #1d7ee6;
+    --btn-accent2: #9b6b04;
     --btn-accent-hover: #3a8de2;
     --btn-danger: #e05a68;
     --btn-danger-hover: #c04c58;
@@ -195,6 +197,31 @@ nav {
     margin-left: 10px;
     background-color: var(--btn-primary);
     color: #fff;
+}
+
+.btn_yaml {
+    display: flex;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+}
+
+.btn_yaml .action_btn {
+    padding: 10px 15px;
+    /* margin-left: 10px; */
+    /* background-color: var(--btn-primary); */
+    color: #fff;
+}
+
+#load-yaml-btn {
+    background-color: var(--btn-accent);
+}
+
+#generate-yaml-btn {
+    background-color: var(--btn-accent2);
+}
+
+#download-yaml-btn {
+    background-color: var(--btn-primary);
 }
 
 .action_btn:hover {
@@ -393,12 +420,6 @@ summary {
     border-top: 1px solid var(--border-primary);
 }
 
-#download-yaml-btn {
-    margin-bottom: 10px;
-    padding: 10px;
-    border-radius: 4px;
-}
-
 #yaml-output-display {
     font-family: monospace;
     color: var(--text-code);
@@ -443,6 +464,7 @@ summary {
     min-width: 100px;
     text-align: center;
     font-size: 0.75rem;
+    margin-right: 0.5rem;
 }
 
 /* State colors */
@@ -482,7 +504,8 @@ summary {
 
 .theme-toggle:hover {
     background-color: var(--bg-secondary);
-    transform: rotate(180deg);
+    /* transform: rotate(180deg); */
+    transform: rotate(20deg);
 }
 
 .theme-icon {
