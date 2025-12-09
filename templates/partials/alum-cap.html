@@ -434,7 +434,7 @@
     {% set I_w = 2 * ((profile.web_thk * web_b**3) / 12) %}
     {% set c_w = web_b / 2 %}
     {% set I_f = I_xx - I_w %}
-    {% set c_f = profile.web_length - profile.flange_thk / 2 %}
+    {% set c_f = (profile.web_length - profile.flange_thk) / 2 %}
 
     {% if (web_b / profile.web_thk) <= web_lambda1 %}
         {% set F_b = 1.5 * profile.F_y %}
@@ -539,7 +539,7 @@
                     <td><i>mm<sup>3</sup></i></td>
                 </tr>
                 <tr>
-                    <td>Yield strength of Steel</td>
+                    <td>Yield strength</td>
                     <td>F<sub>y</sub></td>
                     <td>{{ profile.F_y }}</td>
                     <td><i>MPa</i></td>
@@ -574,70 +574,88 @@
         <h3>Moment Capacity by Local Buckling</h3>
         <div>
             <p>The weighted average method is utilized to compute the nominal flexure strength due to the limit state of local buckling –</p>
-            <p>For web elements under flexural compression –</p>
-            <table class="borderless">
+            <p>For box section (symmetric about both axis, m = 0.65),</p>
+            <table class="width__100 align__center">
+                <thead>
+                    <tr>
+                        <th>Type</th>
+                        <th>Supports</th>
+                        <th>b</th>
+                        <th>t</th>
+                        <th>λ <br>= b/t</th>
+                        <th>λ<sub>1</sub></th>
+                        <th>λ<sub>2</sub></th>
+                        <th>F<sub>c</sub> <br>(or F<sub>b</sub>)</th>
+                        <th>I<sub>w</sub> <br>(or I<sub>f</sub>)</th>
+                        <th>c<sub>w</sub> <br>(or c<sub>f</sub>)</th>
+                        <th>M<sub>nlb</sub></th>
+                    </tr>
+                </thead>
                 <tbody>
                     <tr>
-                        <td>Moment of inertia, I<sub>w</sub></td>
-                        <td>=</td>
-                        <td>{{ I_w | round(1) }} <i>mm<sup>4</sup></i></td>
-                    </tr>
-                    <tr>
-                        <td>Extreme fibre distance, c<sub>w</sub></td>
-                        <td>=</td>
-                        <td>{{ c_w | round(1) }}</td>
-                    </tr>
-                    <tr>
-                        <td>Stress capacity of the element, F<sub>b</sub></td>
-                        <td>=</td>
+                        <td>FC (Web)</td>
+                        <td>Both Edges</td>
+                        <td>{{ web_b | round(1) }}</td>
+                        <td>{{ profile.web_thk }}</td>
+                        <td>{{ (web_b / profile.web_thk) | round(1) }}</td>
+                        <td>{{ web_lambda1 | round(1) }}</td>
+                        <td>{{ web_lambda2 | round(1) }}</td>
                         <td>{{ F_b | round(1) }}</td>
-                    </tr>
-                    <tr>
-                        <td>Moment capacity, M<sub>nlb,w</sub></td>
-                        <td>=</td>
+                        <td>{{ I_w | round(1) }}</td>
+                        <td>{{ c_w | round(1) }}</td>
                         <td>{{ ((F_b * I_w / c_w) / 1000000) | round(1) }}</td>
                     </tr>
-                </tbody>
-            </table>
-
-            <p class="mt-1">For flange elements under uniform compression –</p>
-            <table class="borderless">
-                <tbody>
                     <tr>
-                        <td>Moment of Inertia, I<sub>f</sub></td>
-                        <td>=</td>
-                        <td>{{ I_f | round(1) }}</td>
-                    </tr>
-                    <tr>
-                        <td>NA's distance to element's thickness center, c<sub>f</sub></td>
-                        <td>=</td>
-                        <td>{{ c_f | round(1) }}</td>
-                    </tr>
-                    <tr>
-                        <td>Stress capacity of the element, F<sub>c</sub></td>
-                        <td>=</td>
+                        <td>UC (Flange)</td>
+                        <td>Both Edges</td>
+                        <td>{{ flange_b }}</td>
+                        <td>{{ profile.flange_thk }}</td>
+                        <td>{{ (flange_b / profile.flange_thk) | round(1) }}</td>
+                        <td>{{ flange_lambda1 | round(1) }}</td>
+                        <td>{{ flange_lambda2 | round(1) }}</td>
                         <td>{{ F_c | round(1) }}</td>
-                    </tr>
-                    <tr>
-                        <td>Moment capacity, M<sub>nlb,f</sub></td>
-                        <td>=</td>
+                        <td>{{ I_f | round(1) }}</td>
+                        <td>{{ c_f | round(1) }}</td>
                         <td>{{ ((F_c * I_f / c_f) / 1000000) | round(1) }}</td>
                     </tr>
                 </tbody>
             </table>
-
-            <table class="borderless ml-2">
+            <table class="borderless ml-3">
                 <tbody>
                     <tr>
-                        <td>Total moment capacity, <i>M<sub>nlb</sub></i></td>
+                        <td>Therefore, Total Moment Capacity, M<sub>nlb</sub></td>
                         <td>=</td>
-                        <td><i>M<sub>nlb,w</sub> + M<sub>nlb,f</sub></i></td>
+                        {% set Mn_lb = ((F_b * I_w / c_w) / 1000000) + ((F_c * I_f / c_f) / 1000000) %}
+                        <td>({{ ((F_b * I_w / c_w) / 1000000) | round(1) }} + {{ ((F_c * I_f / c_f) / 1000000) | round(1) }})</td>
+                        <td>=</td>
+                        <td>{{ Mn_lb | round(1) }} <i>kNm</i></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="page__break"></div>
+            <p><u>Where,</u></p>
+            <table class="borderless ml-1">
+                <tbody>
+                    <tr>
+                        <td><i>I</i></td>
+                        <td>–</td>
+                        <td>Moment of inertia (mm<sup>4</sup>)</td>
                     </tr>
                     <tr>
-                        <td></td>
-                        <td>=</td>
-                        {% set Mn_lb = (F_b * (I_w / c_w) / 1000000) + (F_c * I_f / c_f) / 1000000 %}
-                        <td>{{ Mn_lb | round(1) }} <i>kN-m</i></td>
+                        <td>c<sub>w</sub></td>
+                        <td>–</td>
+                        <td>Extreme fibre distance (mm)</td>
+                    </tr>
+                    <tr>
+                        <td>c<sub>f</sub></td>
+                        <td>–</td>
+                        <td>NA's distance to element's thickness center (mm)</td>
+                    </tr>
+                    <tr>
+                        <td>M<sub>nlb</sub></td>
+                        <td>–</td>
+                        <td>Moment capacity (kNm)</td>
                     </tr>
                 </tbody>
             </table>
@@ -656,13 +674,13 @@
                     <tr>
                         <td>Nominal Moment Capacity, <i>M<sub>n</sub> = min( M<sub>np</sub> , M<sub>nlb</sub> , M<sub>nmb</sub> )</i></td>
                         <td>=</td>
-                        <td>{{ ([(Mn_yield / 1000000), Mn_lb] | min) | round(1) }} <i>kN-m</i></td>
+                        <td>{{ ([Mn_yield, Mn_lb] | min) | round(1) }} <i>kN-m</i></td>
                         <td></td>
                     </tr>
                     <tr>
                         <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
                         <td>=</td>
-                        <td>{{ (([(Mn_yield / 1000000), Mn_lb] | min) * 0.9) | round(1) }} <i>kN-m</i></td>
+                        <td>{{ (([Mn_yield, Mn_lb] | min) * 0.9) | round(1) }} <i>kN-m</i></td>
                         <td></td>
                     </tr>
                 </tbody>
