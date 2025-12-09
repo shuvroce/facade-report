@@ -35,6 +35,14 @@
     --border-code: #d0d0d0;
     --shadow-nav: rgba(0, 0, 0, 0.1);
     --shadow-container: rgba(0, 0, 0, 0.08);
+
+    /* Accent Colors */
+    --btn-primary: #28a745;
+    --btn-primary-hover: #218838;
+    --btn-accent: #0869d1;
+    --btn-accent-hover: #075cb8;
+    --btn-danger: #dc3545;
+    --btn-danger-hover: #c72d3c;
 }
 
 /* Dark Theme Colors */
@@ -59,6 +67,14 @@ body.dark-theme {
     --border-code: #555;
     --shadow-nav: rgba(0, 0, 0, 0.3);
     --shadow-container: rgba(0, 0, 0, 0.2);
+
+    /* Accent Colors */
+    --btn-primary: #2fa759;
+    --btn-primary-hover: #26914c;
+    --btn-accent: #4da3ff;
+    --btn-accent-hover: #3a8de2;
+    --btn-danger: #e05a68;
+    --btn-danger-hover: #c04c58;
 }
 
 @font-face {
@@ -83,7 +99,6 @@ body.dark-theme {
 
 body {
     background-color: var(--bg-body);
-    /* padding: 2rem; */
     color: var(--text-primary);
     transition: background-color 0.3s ease, color 0.3s ease;
 }
@@ -162,20 +177,28 @@ nav {
     left: 0;
 }
 
-.action_btn-box .action_btn {
-    padding: 10px 15px;
-    margin-left: 10px;
+.action_btn,
+.add-btn,
+.remove-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-weight: bold;
-    background-color: #28a745;
-    color: white;
-    transition: background-color 0.2s;
+    font-weight: 700;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+}
+
+.action_btn-box .action_btn {
+    padding: 10px 15px;
+    margin-left: 10px;
+    background-color: var(--btn-primary);
+    color: #fff;
 }
 
 .action_btn:hover {
-    background-color: #218838;
+    background-color: var(--btn-primary-hover);
 }
 
 .content_box {
@@ -199,14 +222,12 @@ nav {
 
 h2 {
     color: var(--text-heading);
-    margin-bottom: 20px;
-    border-bottom: 1px dashed var(--border-tertiary);
-    /* padding-bottom: 10px; */
+    /* margin-bottom: 20px; */
     margin-top: 0;
 }
 
 h3 {
-    margin: 15px 0;
+    margin: 1.5rem 0 15px;
     color: var(--text-primary);
 }
 
@@ -215,6 +236,7 @@ h3 {
     flex-wrap: wrap;
     row-gap: 10px;
     column-gap: 15px;
+    margin-top: 1.5rem;
 }
 
 input[type="text"], input[type="number"], textarea, select {
@@ -223,7 +245,7 @@ input[type="text"], input[type="number"], textarea, select {
     background-color: var(--bg-input);
     color: var(--text-primary);
     border-radius: 4px;
-    flex: 1 1 calc(50% - 15px); /* Tow inputs per row */
+    flex: 1 1 calc(50% - 15px);
     min-width: 200px;
     box-sizing: border-box;
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
@@ -237,6 +259,7 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 
 input[type="number"] {
+    appearance: textfield;
     -moz-appearance: textfield; /* Firefox */
 }
 
@@ -272,7 +295,6 @@ textarea {
 }
 
 .item-header {
-    /* margin-bottom: 10px; */
     border-bottom: 1px dotted var(--border-tertiary);
     padding-bottom: 5px;
     display: flex;
@@ -298,26 +320,28 @@ textarea {
     position: absolute;
     top: 5px;
     right: 5px;
-    background: #dc3545;
-    color: white;
-    border: none;
+    background: var(--btn-danger);
+    color: #fff;
     padding: 5px 10px;
-    border-radius: 4px;
-    cursor: pointer;
     font-size: 12px;
 }
 
 .add-btn {
-    background: #0869d1;
-    color: white;
-    border: none;
+    background: var(--btn-accent);
+    color: #fff;
     padding: 8px 10px;
     border-radius: 5px;
-    cursor: pointer;
     margin-top: 10px;
     font-weight: bold;
     display: block;
-    /* margin-left: 1.5rem; */
+}
+
+.add-btn:hover {
+    background: var(--btn-accent-hover);
+}
+
+.remove-btn:hover {
+    background: var(--btn-danger-hover);
 }
 
 /* Nested (Sub-list) Styling */
@@ -326,7 +350,6 @@ details {
     border: 1px solid var(--border-tertiary);
     border-radius: 4px;
     padding: 10px;
-    /* background-color: #f2f4f6; */
     transition: border-color 0.3s ease;
 }
 
@@ -356,7 +379,7 @@ summary {
 }
 
 .sub-add-btn {
-    background: #0895d1;
+    background: var(--btn-accent);
     /* margin-left: 0rem; */
     display: inline-block;
     margin-top: -10px;
@@ -364,7 +387,7 @@ summary {
 
 /* Output Section */
 .output-container {
-    margin-top: 1.5rem;
+    /* margin-top: 1.5rem; */
     padding: 2rem;
     padding-top: 5px;
     border-top: 1px solid var(--border-primary);
