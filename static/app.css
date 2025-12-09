@@ -20,17 +20,19 @@
     --bg-secondary: #fafafa;
     --bg-input: #f4f4f4;
     --bg-select: #fffafa;
-    --bg-code: #222;
+    --bg-code: #f7f7f7;
     --text-primary: #333;
     --text-secondary: #555;
     --text-heading: #173909;
     --text-link: #0056b3;
-    --text-code: #fff;
+    --text-code: #222;
+    --text-active: #10587e;
+    --line-active: #10587e;
     --border-primary: #e6e6e6;
     --border-secondary: #ddd;
     --border-tertiary: #eee;
     --border-input: #e9e8e8;
-    --border-code: #444;
+    --border-code: #d0d0d0;
     --shadow-nav: rgba(0, 0, 0, 0.1);
     --shadow-container: rgba(0, 0, 0, 0.08);
 }
@@ -44,10 +46,12 @@ body.dark-theme {
     --bg-select: #3a3a3a;
     --bg-code: #1a1a1a;
     --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
+    --text-secondary: #c5c5c5;
     --text-heading: #a8d895;
     --text-link: #5ca3e6;
     --text-code: #e0e0e0;
+    --text-active: #4db8ff;
+    --line-active: #4db8ff;
     --border-primary: #404040;
     --border-secondary: #4a4a4a;
     --border-tertiary: #3a3a3a;
@@ -145,14 +149,14 @@ nav {
 }
 
 .tab_btn.active {
-    color: #10587e;
+    color: var(--text-active);
 }
 
 .line {
     position: absolute;
     bottom: -2px;
     height: 3px;
-    background: #10587e;
+    background: var(--line-active);
     transition: all 0.2s ease;
     width: 0;
     left: 0;
@@ -223,6 +227,17 @@ input[type="text"], input[type="number"], textarea, select {
     min-width: 200px;
     box-sizing: border-box;
     transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+/* Hide number input arrows (spinners) */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield; /* Firefox */
 }
 
 select {
@@ -395,7 +410,7 @@ summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    gap: 12px;
+    /* gap: 12px; */
 }
 
 /* Status notification */
@@ -431,18 +446,38 @@ summary {
     background: transparent;
     border: 2px solid var(--border-primary);
     border-radius: 50%;
-    width: 36px;
-    height: 36px;
+    width: 30px;
+    height: 30px;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
     font-size: 18px;
-    margin-right: 15px;
+    /* margin-right: 15px; */
 }
 
 .theme-toggle:hover {
     background-color: var(--bg-secondary);
     transform: rotate(180deg);
+}
+
+.theme-icon {
+    width: 20px;
+    height: 20px;
+    stroke: var(--text-primary);
+    fill: none;
+    stroke-width: 1.8;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: stroke 0.3s ease, fill 0.3s ease;
+}
+
+.theme-icon.moon {
+    fill: var(--text-primary);
+    stroke: none;
+}
+
+.theme-icon.hidden {
+    display: none;
 }

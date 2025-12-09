@@ -1,28 +1,32 @@
 document.addEventListener('DOMContentLoaded', () => {
     // --- 0. Theme Toggle Logic ---
     const themeToggle = document.getElementById('theme-toggle');
-    const themeIcon = document.getElementById('theme-icon');
+    const sunIcon = document.getElementById('theme-icon-sun');
+    const moonIcon = document.getElementById('theme-icon-moon');
     const body = document.body;
 
     // Check for saved theme preference or default to 'light'
     const currentTheme = localStorage.getItem('theme') || 'light';
-    if (currentTheme === 'dark') {
-        body.classList.add('dark-theme');
-        themeIcon.textContent = '☀️';
+
+    function setTheme(theme) {
+        const isDark = theme === 'dark';
+        body.classList.toggle('dark-theme', isDark);
+        if (sunIcon && moonIcon) {
+            sunIcon.classList.toggle('hidden', !isDark);
+            moonIcon.classList.toggle('hidden', isDark);
+        }
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
 
-    themeToggle.addEventListener('click', () => {
-        body.classList.toggle('dark-theme');
-        
-        // Update icon and save preference
-        if (body.classList.contains('dark-theme')) {
-            themeIcon.textContent = '☀️';
-            localStorage.setItem('theme', 'dark');
-        } else {
-            themeIcon.textContent = '🌙';
-            localStorage.setItem('theme', 'light');
-        }
-    });
+    // Initialize theme from saved preference
+    setTheme(currentTheme);
+
+    if (themeToggle) {
+        themeToggle.addEventListener('click', () => {
+            const nextTheme = body.classList.contains('dark-theme') ? 'light' : 'dark';
+            setTheme(nextTheme);
+        });
+    }
 
     // --- 1. Tab Switching Logic ---
     const tabs = document.querySelectorAll('.tab_btn');
