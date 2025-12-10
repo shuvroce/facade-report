@@ -20,6 +20,7 @@
     /* Transitions */
     --transition: all 200ms ease;
     --transition-bg: background-color 0.3s ease, color 0.3s ease;
+    --transition-border: border-color 0.4s ease 0.1s; /* Delayed border transition */
 
     /* Layout Widths */
     --container-width-nav: 80%;
@@ -160,7 +161,7 @@ nav {
     transform: translateX(-50%);
     box-shadow: 0 -6px 12px var(--shadow-nav);
     z-index: 9999;
-    transition: var(--transition-bg);
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 .nav_bar {
@@ -373,7 +374,7 @@ select {
     flex: 1 1 calc(50% - 15px);
     min-width: 200px;
     box-sizing: border-box;
-    transition: var(--transition-bg);
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 /* Hide number input spinners */
@@ -406,7 +407,7 @@ textarea {
     padding: 15px;
     margin-top: 15px;
     background-color: var(--bg-secondary);
-    transition: var(--transition-bg);
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 .dynamic-item {
@@ -416,7 +417,7 @@ textarea {
     border-radius: 4px;
     background-color: var(--bg-primary);
     position: relative;
-    transition: var(--transition-bg);
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 .item-header {
@@ -444,7 +445,7 @@ details {
     border: 1px solid var(--border-tertiary);
     border-radius: 4px;
     padding: 10px;
-    transition: var(--transition-bg);
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 .profile-details {
@@ -499,7 +500,7 @@ summary {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease;
+    transition: all 0.3s ease, var(--transition-border);
     font-size: 18px;
 }
 
@@ -559,6 +560,7 @@ summary {
     flex-direction: column;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     animation: modalSlideDown 0.3s ease;
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 .modal-header {
@@ -569,6 +571,7 @@ summary {
     border-bottom: 1px solid var(--border-primary);
     background-color: var(--bg-secondary);
     border-radius: var(--radius-3) var(--radius-3) 0 0;
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 .modal-header h3 {
@@ -625,7 +628,7 @@ summary {
     max-height: 100%;
     overflow-y: auto;
     flex-shrink: 0;
-    transition: var(--transition-bg);
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 .status_heading {
@@ -752,6 +755,7 @@ summary {
     padding: 1rem;
     padding-top: 5px;
     border-top: 1px solid var(--border-primary);
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 #yaml-output-display {
@@ -762,7 +766,7 @@ summary {
     padding: 15px;
     border-radius: 6px;
     border: 1px solid var(--border-code);
-    transition: var(--transition-bg);
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 

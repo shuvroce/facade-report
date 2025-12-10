@@ -1,37 +1,13 @@
-/**
- * ============================================================================
- * FACADE REPORT GENERATOR - MAIN APPLICATION SCRIPT
- * Last Updated: December 10, 2025
- * ============================================================================
- * 
- * TABLE OF CONTENTS:
- * 1. Theme Management
- * 2. Tab Navigation System
- * 3. Configuration & Constants (Profile Fields, Placeholders)
- * 4. Dynamic Form Field Management
- * 5. Dynamic List Management
- * 6. YAML Operations (Import, Generate, Download)
- * 7. Report Generation
- * 8. Figure Status Checker
- * 9. Input Helper Modal
- * 10. Initialization
- */
-
 document.addEventListener('DOMContentLoaded', () => {
-    
-    // ========================================================================
-    // 1. THEME MANAGEMENT
-    // ========================================================================
-    
+    // --- 0. Theme Toggle Logic ---
     const themeToggle = document.getElementById('theme-toggle');
     const sunIcon = document.getElementById('theme-icon-sun');
     const moonIcon = document.getElementById('theme-icon-moon');
     const body = document.body;
 
-    /**
-     * Set theme and persist to localStorage
-     * @param {string} theme - 'light' or 'dark'
-     */
+    // Check for saved theme preference or default to 'light'
+    const currentTheme = localStorage.getItem('theme') || 'light';
+
     function setTheme(theme) {
         const isDark = theme === 'dark';
         body.classList.toggle('dark-theme', isDark);
@@ -42,8 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('theme', isDark ? 'dark' : 'light');
     }
 
-    // Initialize theme from localStorage or default to 'light'
-    const currentTheme = localStorage.getItem('theme') || 'light';
+    // Initialize theme from saved preference
     setTheme(currentTheme);
 
     if (themeToggle) {
@@ -53,53 +28,32 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    
-    // ========================================================================
-    // 2. TAB NAVIGATION SYSTEM
-    // ========================================================================
-    
+    // --- 1. Tab Switching Logic ---
     const tabs = document.querySelectorAll('.tab_btn');
     const all_content = document.querySelectorAll('.content');
     const line = document.querySelector('.line');
 
-    // Initialize active tab indicator
     const activeTab = document.querySelector('.tab_btn.active');
-    if (activeTab && line) {
-        line.style.width = `${activeTab.offsetWidth}px`;
-        line.style.left = `${activeTab.offsetLeft}px`;
+    if (activeTab) {
+        line.style.width = activeTab.offsetWidth + "px";
+        line.style.left = activeTab.offsetLeft + "px";
     }
 
-    // Tab click handlers
     tabs.forEach((tab, index) => {
         tab.addEventListener('click', (e) => {
-            // Update active tab
-            tabs.forEach(t => t.classList.remove('active'));
+            tabs.forEach(t => { t.classList.remove('active') });
             tab.classList.add('active');
 
-            // Update indicator line
-            if (line) {
-                line.style.width = `${e.target.offsetWidth}px`;
-                line.style.left = `${e.target.offsetLeft}px`;
-            }
+            line.style.width = e.target.offsetWidth + "px";
+            line.style.left = e.target.offsetLeft + "px";
 
-            // Show corresponding content
-            all_content.forEach(content => content.classList.remove('active'));
-            if (all_content[index]) {
-                all_content[index].classList.add('active');
-            }
+            all_content.forEach(content => { content.classList.remove('active') });
+            all_content[index].classList.add('active');
         });
     });
 
-    
-    // ========================================================================
-    // 3. CONFIGURATION & CONSTANTS
-    // ========================================================================
-    
-    // ========================================================================
-    // 3. CONFIGURATION & CONSTANTS
-    // ========================================================================
-    
-    // --- Aluminum Profile Configuration ---
+    // --- 2. Dynamic Input Field Logic ---
+    // Define the required fields for each Aluminum profiles
     const alumFields = {
         'Manual': [
             'profile_name', 'web_length', 'flange_length', 'web_thk', 'flange_thk', 'tor_constant',
@@ -152,7 +106,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
 
-    // --- Glass Unit Configuration ---
+    // Define the required fields for each Glass Type
     const glassFields = {
         'sgu': ['length', 'width', 'thickness', 'grade', 'wind_load', 'support_type', 'nfl', 'gtf', 'load_x_area2', 'def'],
         'dgu': [
@@ -196,7 +150,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'def2': 'Inner Panel Deflection (mm)'
     };
     
-    // --- Frame Configuration ---
+    // Define the required fields for each Mullion Type
     const frameFields = {
         'Aluminum Only': [
             'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
@@ -234,7 +188,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'tran_phi_Mn': 'Transom Moment Capacity, φMn (kNm)'
     };
 
-    // --- Anchorage Configuration ---
+    // Define the fields unique to Anchorage Types based on user's YAML
     const anchorageFields = {
         'Box Clump': [
             'reaction_Ry', 'reaction_Rz', 'design_Ry', 'design_Rz', 'V_ua', 'V_ug', 
@@ -297,15 +251,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'bp_Beff': 'Effective plate width, Beff (mm)'
     };
     
-    
-    // ========================================================================
-    // 4. DYNAMIC FORM FIELD MANAGEMENT
-    // ========================================================================
-    
-    /**
-     * Update aluminum profile fields based on selected type
-     * @param {HTMLElement} alumItem - The aluminum profile item container
-     */
+    // Function to update manual aluminum profile fields
     function updateAlumFields(alumItem) {
         const typeSelect = alumItem.querySelector('select[name="profile_type"]');
         const fieldsContainer = alumItem.querySelector('.item-fields');
@@ -347,10 +293,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    /**
-     * Update glass unit fields based on selected glass type
-     * @param {HTMLElement} glassItem - The glass unit item container
-     */
+    // Function to update glass fields
     function updateGlassFields(glassItem) {
         const typeSelect = glassItem.querySelector('select[name="glass_type"]');
         const fieldsContainer = glassItem.querySelector('.item-fields');
@@ -403,10 +346,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    /**
-     * Update frame fields based on selected mullion type
-     * @param {HTMLElement} frameItem - The frame item container
-     */
+    // Function to update frame fields
     function updateFrameFields(frameItem) {
         const typeSelect = frameItem.querySelector('select[name="mullion_type"]');
         const fieldsContainer = frameItem.querySelector('.item-fields');
@@ -432,10 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Update anchorage fields based on selected clump type
-     * @param {HTMLElement} anchorageItem - The anchorage item container
-     */
+    // Function to update anchorage fields
     function updateAnchorageFields(anchorageItem) {
         // Target the SELECT element
         const typeSelect = anchorageItem.querySelector('select[name="clump_type"]');
@@ -464,14 +401,9 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // ========================================================================
-    // 5. DYNAMIC LIST MANAGEMENT
-    // ========================================================================
+    // --- 3. Dynamic List Management Logic ---
 
-    /**
-     * Setup event handlers for nested add buttons within a category
-     * @param {HTMLElement} newElement - The newly created category element
-     */
+    // Function to attach handlers for nested buttons within a new category item
     function setupNestedHandlers(newElement) {
         const nestedAddBtns = newElement.querySelectorAll('.add-btn.sub-add-btn');
         nestedAddBtns.forEach(btn => {
@@ -490,18 +422,14 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Add a new item to a dynamic list from a template
-     * @param {HTMLElement} listElement - The list container element
-     * @param {string} templateId - ID of the template to clone
-     */
+    // Core function to add a new item
     function addItem(listElement, templateId) {
         const template = document.getElementById(templateId);
         if (!template) return;
 
         const newElement = template.content.cloneNode(true).firstElementChild;
         
-        // Attach remove button listener
+        // 3.1. Attach Remove Listener
         const removeBtn = newElement.querySelector('.remove-btn');
         if (removeBtn) {
             removeBtn.addEventListener('click', (e) => {
@@ -509,7 +437,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         }
         
-        // Handle type-specific field updates
+        // 3.2. Handle Alum Profile Type Change 
         if (templateId === 'alum-profile-template') {
             const alumItem = newElement;
             const typeSelect = alumItem.querySelector('select[name="profile_type"]');
@@ -518,7 +446,7 @@ document.addEventListener('DOMContentLoaded', () => {
             typeSelect.addEventListener('change', () => updateAlumFields(alumItem));
         }
         
-        // Handle glass type changes
+        // 3.2. Handle Glass Type Change 
         if (templateId === 'glass-unit-template') {
             const glassItem = newElement;
             const typeSelect = glassItem.querySelector('select[name="glass_type"]');
@@ -527,7 +455,7 @@ document.addEventListener('DOMContentLoaded', () => {
             typeSelect.addEventListener('change', () => updateGlassFields(glassItem));
         }
         
-        // Handle frame/mullion type changes
+        // 3.3. Handle Mullion (frame) Type Change 
         if (templateId === 'frame-template') {
             const frameItem = newElement;
             const typeSelect = frameItem.querySelector('select[name="mullion_type"]');
@@ -536,16 +464,19 @@ document.addEventListener('DOMContentLoaded', () => {
             typeSelect.addEventListener('change', () => updateFrameFields(frameItem));
         }
 
-        // Handle anchorage/clump type changes
+        // 3.4. Handle Anchorage Type Change
         if (templateId === 'anchorage-template') {
-        const anchorageItem = newElement;
+            const anchorageItem = newElement;
+            // Target the SELECT element
             const typeSelect = anchorageItem.querySelector('select[name="clump_type"]');
             
+            // Initial call to set fields based on default value
             updateAnchorageFields(anchorageItem);
+            // Set listener to update fields on CHANGE event
             typeSelect.addEventListener('change', () => updateAnchorageFields(anchorageItem));
         }
 
-        // Initialize nested handlers for category templates
+        // 3.5. If it's a Category, initialize its nested buttons.
         if (templateId === 'category-template') {
             setupNestedHandlers(newElement);
         }
@@ -565,11 +496,11 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Append the new item to the list
+        // 3.6. Append the new item
         listElement.appendChild(newElement);
     }
     
-    // Attach event listeners to all top-level 'Add' buttons
+    // Attach event listeners to all top-level 'Add' buttons (Aluminum, Steel, Categories)
     document.querySelectorAll('.add-btn[data-list]').forEach(button => {
         button.addEventListener('click', () => {
             const listId = button.getAttribute('data-list');
@@ -582,20 +513,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    
-    // ========================================================================
-    // 6. YAML OPERATIONS (IMPORT, GENERATE, DOWNLOAD)
-    // ========================================================================
-    
-    // --- Initialization & DOM References ---
+    // --- Initialization ---
     const form = document.getElementById('yaml-form');
     
-    // Initialize with default items
+    // Add one of each top-level item on load
     addItem(document.getElementById('alum-profiles-list'), 'alum-profile-template');
     addItem(document.getElementById('steel-profiles-list'), 'steel-profile-template');
+    
+    // Add the starting Category item
     addItem(document.getElementById('categories-list'), 'category-template');
     
-    // Initialize the nested items of the first category
+    // Initialize the nested items of the first category item (Category)
     const initialCategory = document.querySelector('.category-item');
     if (initialCategory) {
         const categorySubLists = [
@@ -613,28 +541,26 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // Button references
+    // --- 4. YAML Generation & Download Logic (Updated) ---
     const loadBtn = document.getElementById('load-yaml-btn');
     const yamlFileInput = document.getElementById('yaml-file-input');
     const generateBtn = document.getElementById('generate-yaml-btn');
     const downloadBtn = document.getElementById('download-yaml-btn');
-    const reportBtn = document.getElementById('generate-report-btn');
+    const reportBtn = document.getElementById('generate-report-btn'); // NEW: Get the report button
     const yamlOutputDisplay = document.getElementById('yaml-output-display');
+
+    // for notifications
     const statusEl = document.getElementById('status-notification');
 
-    /**
-     * Set status notification with appropriate styling
-     * @param {string} text - Status message to display
-     * @param {string} cls - CSS class for styling ('processing', 'success', 'error')
-     */
     function setStatus(text, cls = '') {
         if (!statusEl) return;
         statusEl.textContent = text;
+        // reset classes and add base + state class
         statusEl.className = 'status' + (cls ? ' ' + cls : '');
     }
 
 
-    // --- YAML Import & Form Population ---
+    // --- 4A. YAML Import & Form Population ---
     function parseYamlOrJson(rawText) {
         // Prefer YAML parsing; fallback to JSON if the library is missing
         if (window.jsyaml && typeof window.jsyaml.load === 'function') {
@@ -803,13 +729,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // --- YAML Generation & Export ---
-    
-    /**
-     * Extract all form data into a structured object
-     * @param {HTMLFormElement} form - The form element
-     * @returns {Object} Structured form data
-     */
     function getFormData(form) {
         const data = {};
     
@@ -889,12 +808,6 @@ document.addEventListener('DOMContentLoaded', () => {
         return data;
     }
 
-    /**
-     * Convert JavaScript object to YAML string format
-     * @param {Object} obj - Object to convert
-     * @param {number} indent - Current indentation level
-     * @returns {string} YAML formatted string
-     */
     function toYamlString(obj, indent = 0) {
         let yaml = '';
         const spaces = '  '.repeat(indent);
@@ -955,7 +868,7 @@ document.addEventListener('DOMContentLoaded', () => {
         URL.revokeObjectURL(url);
     }
     
-    // Event: Generate YAML button
+    // Listener for Generate YAML button (updated)
     generateBtn.addEventListener('click', () => {
         const formData = getFormData(form);
         const yamlOutput = toYamlString(formData);
@@ -973,12 +886,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    
-    // ========================================================================
-    // 7. REPORT GENERATION
-    // ========================================================================
-    
-    // Event: Generate Report button
+    // NEW: Listener for Generate Report button
     reportBtn.addEventListener('click', () => {
         const formData = getFormData(form);
         const yamlContent = toYamlString(formData);
@@ -1008,11 +916,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
     });
 
-    /**
-     * Call backend API to generate PDF report from YAML content
-     * @param {string} yamlContent - YAML formatted string
-     * @returns {Promise} Promise that resolves when report is downloaded
-     */
+    // Helper to call the Python environment to create input.yaml and run report.py
     function callPythonToGenerateReport(yamlContent) {
         // Return the fetch promise so the caller can await/chain
         return fetch('/generate_report', {
@@ -1059,7 +963,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Event: Download YAML button
+    // Listener for Download YAML button (new)
     downloadBtn.addEventListener('click', () => {
         const yamlContent = downloadBtn.getAttribute('data-yaml-content');
         if (yamlContent) {
@@ -1069,10 +973,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ============================================================================
-// 8. FIGURE STATUS CHECKER
-// ============================================================================
 
+
+// figure status
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('yaml-form');
     const checkFiguresBtn = document.getElementById('check-figures-btn');
@@ -1080,11 +983,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const figureStatusList = document.getElementById('figure-status-list');
     const figureStatusSummary = document.getElementById('figure-status-summary');
 
-    /**
-     * Extract form data (duplicate of main function for isolated scope)
-     * @param {HTMLFormElement} form - The form element
-     * @returns {Object} Structured form data
-     */
+    // Use the same comprehensive getFormData function from the main code
     function getFormData(form) {
         const data = {};
     
@@ -1163,11 +1062,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return data;
     }
 
-    /**
-     * Convert data to YAML string using js-yaml library
-     * @param {Object} data - Data object to convert
-     * @returns {string} YAML formatted string
-     */
+    // Function to convert data to YAML string using js-yaml library
     function toYamlString(data) {
         try {
             if (window.jsyaml && typeof window.jsyaml.dump === 'function') {
@@ -1187,9 +1082,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Check figures against form data via backend API
-     */
     function checkFigures() {
         const formData = getFormData(form);
         const yamlContent = toYamlString(formData);
@@ -1228,10 +1120,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    /**
-     * Display figure status results in the UI
-     * @param {Array} figures - Array of figure objects with status
-     */
     function displayFigureStatus(figures) {
         figureStatusList.innerHTML = '';
         
@@ -1293,7 +1181,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Event listeners for figure checking buttons
     if (checkFiguresBtn) {
         checkFiguresBtn.addEventListener('click', checkFigures);
     }
@@ -1302,26 +1189,20 @@ document.addEventListener('DOMContentLoaded', () => {
         refreshFiguresBtn.addEventListener('click', checkFigures);
     }
 
-    // Auto-check figures on page load
+    // Auto-check on page load after a short delay
     setTimeout(() => {
         if (figureStatusList && form) {
             checkFigures();
         }
     }, 1000);
 
-
-    // ========================================================================
-    // 9. INPUT HELPER MODAL
-    // ========================================================================
-    
+    // --- Input Helper Modal Logic ---
     const addFiguresBtn = document.getElementById('add-figures-btn');
     const inputHelperModal = document.getElementById('input-helper-modal');
     const closeInputHelper = document.getElementById('close-input-helper');
     const inputHelperContent = document.getElementById('input-helper-content');
 
-    /**
-     * Load input-helper.txt content from server
-     */
+    // Load input-helper.txt content
     async function loadInputHelperContent() {
         try {
             const response = await fetch('/input-helper.txt');
@@ -1337,9 +1218,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Show input helper modal
-     */
+    // Show modal
     function showInputHelperModal() {
         if (inputHelperModal) {
             inputHelperModal.classList.add('show');
@@ -1347,9 +1226,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    /**
-     * Hide input helper modal
-     */
+    // Hide modal
     function hideInputHelperModal() {
         if (inputHelperModal) {
             inputHelperModal.classList.remove('show');
