@@ -156,5 +156,14 @@ def check_figures():
 
     return jsonify({"success": True, "figures": required_figures})
 
+@app.route("/input-helper.txt")
+def input_helper():
+    """Serve the input-helper.txt file"""
+    helper_path = os.path.join(BASE_DIR, "input-helper.txt")
+    if os.path.isfile(helper_path):
+        return send_file(helper_path, mimetype="text/plain")
+    else:
+        return "Input helper file not found", 404
+
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

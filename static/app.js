@@ -1195,4 +1195,66 @@ document.addEventListener('DOMContentLoaded', () => {
             checkFigures();
         }
     }, 1000);
+
+    // --- Input Helper Modal Logic ---
+    const addFiguresBtn = document.getElementById('add-figures-btn');
+    const inputHelperModal = document.getElementById('input-helper-modal');
+    const closeInputHelper = document.getElementById('close-input-helper');
+    const inputHelperContent = document.getElementById('input-helper-content');
+
+    // Load input-helper.txt content
+    async function loadInputHelperContent() {
+        try {
+            const response = await fetch('/input-helper.txt');
+            if (response.ok) {
+                const text = await response.text();
+                inputHelperContent.textContent = text;
+            } else {
+                inputHelperContent.textContent = 'Error loading input helper guide.';
+            }
+        } catch (error) {
+            inputHelperContent.textContent = 'Error: Unable to fetch input helper guide.';
+            console.error('Error loading input-helper.txt:', error);
+        }
+    }
+
+    // Show modal
+    function showInputHelperModal() {
+        if (inputHelperModal) {
+            inputHelperModal.classList.add('show');
+            loadInputHelperContent();
+        }
+    }
+
+    // Hide modal
+    function hideInputHelperModal() {
+        if (inputHelperModal) {
+            inputHelperModal.classList.remove('show');
+        }
+    }
+
+    // Event listeners for modal
+    if (addFiguresBtn) {
+        addFiguresBtn.addEventListener('click', showInputHelperModal);
+    }
+
+    if (closeInputHelper) {
+        closeInputHelper.addEventListener('click', hideInputHelperModal);
+    }
+
+    // Close modal when clicking outside
+    if (inputHelperModal) {
+        inputHelperModal.addEventListener('click', (e) => {
+            if (e.target === inputHelperModal) {
+                hideInputHelperModal();
+            }
+        });
+    }
+
+    // Close modal with Escape key
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && inputHelperModal && inputHelperModal.classList.contains('show')) {
+            hideInputHelperModal();
+        }
+    });
 });
