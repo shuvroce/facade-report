@@ -54,3 +54,9 @@ Notes
 - category_index comes from the order of categories in the input YAML (1-based).
 - glass_index is the order of glass units inside each category (1-based).
 - Keep file extensions lowercase .png to match template references.
+
+
+## Moment Capacity of Predefined Profiles
+ - M 125x60x2.5: 6.74
+ - M 140x60x2.5: 7.84
+ - T 125x60x2.5: 4.41
