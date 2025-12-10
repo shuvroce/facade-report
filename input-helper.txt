@@ -11,6 +11,7 @@ Manual Profile Input
 - <profile_name>-lb-flange-cap.png
 
 Wind Input
+- location-map.png
 - mwfrs.png (mwfrs load table)
 - cnc-wall.png
 - cnc-roof.png
@@ -34,6 +35,9 @@ Category-level figures
   - <category_index>-sap-tran-def-wind.png
   - <category_index>-sap-tran-def-dead.png
   - <category_index>-sap-joint-force-dead.png
+  - <category_index>-sap-joint-force-wind.png
+  - <category_index>-sap-reaction-force-dead.png
+  - <category_index>-sap-reaction-force-wind.png
 
 Glass RFEM figures (category + glass indices)
 - Format: <category_index>.<glass_index>-rfem-<suffix>.png

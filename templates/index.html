@@ -44,7 +44,7 @@
             </div>
         </div>
     </nav>
-    
+
     <div class="container">
         <div class="content__box">
             <div>
@@ -307,13 +307,25 @@
                         <select name="clump_type">
                             <option value="Box Clump">Box Clump</option>
                             <option value="U Clump">U Clump</option>
-                            <option value="L Clump Top">L Clump Top</option>
-                            <option value="L Clump Front">L Clump Front</option>
+                            <option value="L Clump Top">L Clump Top (Part 1)</option>
+                            <option value="L Clump Front">L Clump Front (Part 2)</option>
                         </select>
                     </div>
                     <div class="item-fields"></div>
                 </div>
             </template>
+        </div>
+
+        <div class="status-box">
+            <div class="status_heading">
+                <h3>Figure Status</h3>
+                <button class="small-btn" id="add-figures-btn">+</button>
+                <button class="small-btn" id="refresh-figures-btn">↻</button>
+            </div>
+            <div id="figure-status-summary" class="status-summary"></div>
+            <ul id="figure-status-list">
+                <!-- Status items will be dynamically added here -->
+            </ul>
         </div>
     </div>
     

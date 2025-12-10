@@ -971,3 +971,228 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+
+
+
+
+// figure status
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('yaml-form');
+    const checkFiguresBtn = document.getElementById('check-figures-btn');
+    const refreshFiguresBtn = document.getElementById('refresh-figures-btn');
+    const figureStatusList = document.getElementById('figure-status-list');
+    const figureStatusSummary = document.getElementById('figure-status-summary');
+
+    // Use the same comprehensive getFormData function from the main code
+    function getFormData(form) {
+        const data = {};
+    
+        // Helper function to process simple inputs (e.g., project_info, wind, glass, connection, anchorage)
+        const processSimpleInputs = (selector, rootKey) => {
+            const inputs = form.querySelectorAll(selector);
+            inputs.forEach(input => {
+                const path = input.name.split('.'); 
+                let current = data;
+                for (let i = 0; i < path.length - 1; i++) {
+                    const key = path[i];
+                    if (!current[key]) {
+                        current[key] = {};
+                    }
+                    current = current[key];
+                }
+                current[path[path.length - 1]] = input.value;
+            });
+        };
+    
+        // 1. Get Project Info
+        processSimpleInputs('[name^="project_info."]', 'project_info');
+    
+        // 2. Get Profiles
+        function getProfileData(listId, keyName) {
+            const list = document.getElementById(listId);
+            if (!list) return;
+            const items = list.querySelectorAll('.dynamic-item');
+            data[keyName] = Array.from(items).map(item => {
+                const profile = {};
+                item.querySelectorAll('input, select, textarea').forEach(input => {
+                    profile[input.name] = input.value;
+                });
+                return profile;
+            });
+        }
+        getProfileData('alum-profiles-list', 'alum_profiles');
+        getProfileData('steel-profiles-list', 'steel_profiles');
+    
+        // 3. Get Wind Parameters
+        processSimpleInputs('[name^="wind."]', 'wind');
+    
+        // 4. Get Categories
+        const categoriesList = document.getElementById('categories-list');
+        if (!categoriesList) return data;
+        
+        const categoryItems = categoriesList.querySelectorAll('.category-item');
+        data.categories = Array.from(categoryItems).map(categoryItem => {
+            const category = {};
+    
+            const nameInput = categoryItem.querySelector('input[name="category_name"]');
+            category.category_name = nameInput ? nameInput.value : 'Unnamed Category';
+    
+            function getNestedListData(parentElement, listName) {
+                const nestedList = parentElement.querySelector(`.dynamic-list[data-list-name="${listName}"]`);
+                if (!nestedList) return [];
+    
+                const nestedItems = nestedList.querySelectorAll('.dynamic-item');
+                return Array.from(nestedItems).map(item => {
+                    const itemData = {};
+                    item.querySelectorAll('input, select, textarea').forEach(input => {
+                        itemData[input.name] = input.value;
+                    });
+                    return itemData;
+                });
+            }
+    
+            category.glass_units = getNestedListData(categoryItem, 'glass_units');
+            category.frames = getNestedListData(categoryItem, 'frames');
+            category.connections = getNestedListData(categoryItem, 'connections');
+            category.anchorage = getNestedListData(categoryItem, 'anchorage');
+    
+            return category;
+        });
+    
+        return data;
+    }
+
+    // Function to convert data to YAML string using js-yaml library
+    function toYamlString(data) {
+        try {
+            if (window.jsyaml && typeof window.jsyaml.dump === 'function') {
+                return jsyaml.dump(data, {
+                    indent: 2,
+                    lineWidth: -1,
+                    noRefs: true,
+                    sortKeys: false
+                });
+            } else {
+                console.error('js-yaml library not loaded');
+                return '';
+            }
+        } catch (error) {
+            console.error('Error converting to YAML:', error);
+            return '';
+        }
+    }
+
+    function checkFigures() {
+        const formData = getFormData(form);
+        const yamlContent = toYamlString(formData);
+
+        if (!yamlContent) {
+            figureStatusList.innerHTML = '<li style="padding: 1rem; color: #ef4444;">Error: Could not generate YAML from form data</li>';
+            figureStatusSummary.innerHTML = '';
+            return;
+        }
+
+        figureStatusList.innerHTML = '<li style="padding: 1rem; text-align: center; color: var(--text-secondary);">Checking figures...</li>';
+        figureStatusSummary.innerHTML = '';
+
+        fetch('/check_figures', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ yaml_content: yamlContent })
+        })
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Failed to check figures');
+            }
+            return response.json();
+        })
+        .then(result => {
+            if (result.success && result.figures) {
+                displayFigureStatus(result.figures);
+            } else {
+                throw new Error(result.error || 'Unknown error');
+            }
+        })
+        .catch(error => {
+            console.error('Error checking figures:', error);
+            figureStatusList.innerHTML = `<li style="padding: 1rem; color: #ef4444;">Error checking figures: ${error.message}</li>`;
+            figureStatusSummary.innerHTML = '';
+        });
+    }
+
+    function displayFigureStatus(figures) {
+        figureStatusList.innerHTML = '';
+        
+        const existingCount = figures.filter(f => f.exists).length;
+        const missingCount = figures.filter(f => !f.exists).length;
+        const totalCount = figures.length;
+
+        // Display summary
+        figureStatusSummary.innerHTML = `
+            <div class="status-summary-item">
+                <span class="label">Total:</span>
+                <span class="value">${totalCount}</span>
+            </div>
+            <div class="status-summary-item">
+                <span class="label">Found:</span>
+                <span class="value success">${existingCount}</span>
+            </div>
+            <div class="status-summary-item">
+                <span class="label">Missing:</span>
+                <span class="value error">${missingCount}</span>
+            </div>
+        `;
+
+        // Group by category
+        const grouped = {};
+        figures.forEach(fig => {
+            if (!grouped[fig.category]) {
+                grouped[fig.category] = [];
+            }
+            grouped[fig.category].push(fig);
+        });
+
+        // Display figures grouped by category
+        Object.keys(grouped).sort().forEach(category => {
+            const categoryHeader = document.createElement('li');
+            categoryHeader.style.cssText = 'font-weight: bold; margin-top: 0.75rem; margin-bottom: 0.25rem; color: var(--text-primary); font-size: 0.85rem;';
+            categoryHeader.textContent = category;
+            figureStatusList.appendChild(categoryHeader);
+
+            grouped[category].forEach(fig => {
+                const li = document.createElement('li');
+                li.className = 'figure-status-item';
+                
+                const icon = fig.exists ? 
+                    '<svg class="figure-status-icon exists" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"></polyline></svg>' :
+                    '<svg class="figure-status-icon missing" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>';
+                
+                li.innerHTML = `
+                    ${icon}
+                    <span class="figure-status-name">${fig.name}</span>
+                `;
+                
+                figureStatusList.appendChild(li);
+            });
+        });
+
+        if (figures.length === 0) {
+            figureStatusList.innerHTML = '<li style="padding: 1rem; text-align: center; color: var(--text-secondary);">No figures required</li>';
+        }
+    }
+
+    if (checkFiguresBtn) {
+        checkFiguresBtn.addEventListener('click', checkFigures);
+    }
+
+    if (refreshFiguresBtn) {
+        refreshFiguresBtn.addEventListener('click', checkFigures);
+    }
+
+    // Auto-check on page load after a short delay
+    setTimeout(() => {
+        if (figureStatusList && form) {
+            checkFigures();
+        }
+    }, 1000);
+});
