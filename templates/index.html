@@ -56,9 +56,9 @@
                             </div>
                             <div class="form-section">
                                 <input type="text" name="project_info.ref_no" placeholder="Ref. No. (RFA-001/REV-02/AEL/CW/2025)" value="RFA-001/REV-02/AEL/CW/2025">
-                                <input type="text" name="project_info.project_name" placeholder="Project Name" value="Taj & Vivanta Hotel">
-                                <input type="text" name="project_info.project_client" placeholder="Project Client" value="Borak Real Estate (Pvt.) Ltd.">
-                                <input type="text" name="project_info.rev_no" placeholder="Revision No." value="02">
+                                <input type="text" name="project_info.project_name" placeholder="Project Name">
+                                <input type="text" name="project_info.project_client" placeholder="Project Client">
+                                <input type="text" name="project_info.rev_no" placeholder="Revision No." value="01">
                                 <input type="text" name="project_info.date" placeholder="Date (June 28, 2025)" value="June 28, 2025">
                             </div>
                         </div>
@@ -90,9 +90,9 @@
                                     <option value="Hip">Hip Roof</option>
                                 </select>
                                 <input type="number" step="0.1" name="wind.wind_speed" placeholder="Wind Speed (m/s)" value="65.7">
-                                <input type="number" step="0.1" name="wind.b_height" placeholder="Building Height (m)" value="72.5">
-                                <input type="number" step="0.1" name="wind.b_length" placeholder="Building Length (m)" value="43.6">
-                                <input type="number" step="0.1" name="wind.b_width" placeholder="Building Width (m)" value="24.3">
+                                <input type="number" step="0.1" name="wind.b_height" placeholder="Building Height (m)">
+                                <input type="number" step="0.1" name="wind.b_length" placeholder="Building Length (m)">
+                                <input type="number" step="0.1" name="wind.b_width" placeholder="Building Width (m)">
                                 <select name="wind.exposure_cat">
                                     <option value="A">Exposure A</option>
                                     <option value="B">Exposure B</option>
@@ -187,13 +187,13 @@
                 <div class="dynamic-item profile-item steel-profile-item" data-type="steel_profile">
                     <button type="button" class="remove-btn sub-remove-btn">Remove</button>
                     <div class="item-header">
-                        <input type="text" name="profile_name" placeholder="Profile Name (e.g., RHS 110x54x2.5)" value="RHS 110x54x2.5">
+                        <input type="text" name="profile_name" placeholder="Profile Name (e.g., RHS 110x54x2.5)" value="RHS 85x50x2.5">
                     </div>
                     <details class="profile-details" open>
                         <summary class="profile-summary">Properties</summary>
                         <div class="item-fields">
-                            <input type="number" step="0.1" name="web_length" placeholder="Web Length (mm)" value="110">
-                            <input type="number" step="0.1" name="flange_length" placeholder="Flange Length (mm)" value="54">
+                            <input type="number" step="0.1" name="web_length" placeholder="Web Length (mm)" value="85">
+                            <input type="number" step="0.1" name="flange_length" placeholder="Flange Length (mm)" value="50">
                             <input type="number" step="0.1" name="thk" placeholder="Thickness (mm)" value="2.5">
                         </div>
                     </details>
@@ -204,7 +204,7 @@
                 <div class="dynamic-item category-item" data-type="category">
                     <button type="button" class="remove-btn">Remove Category</button>
                     <div class="item-header">
-                        <input type="text" name="category_name" placeholder="Category Name (e.g., Typ. Cont. Facade)" value="Typ. Cont. Facade">
+                        <input type="text" name="category_name" placeholder="Category Name (e.g., Typ. Cont. Façade)" value="Typ. Cont. Facade">
                     </div>
 
                     <details open>
