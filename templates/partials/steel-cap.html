@@ -95,94 +95,92 @@
         </tbody>
     </table>
 
-    <div class="page__break">
-        <p>Slenderness check for box section,</p>
-        <table class="width__100 align__center">
-            <thead>
-                <tr>
-                    <th>Element</th>
-                    <th>b</th>
-                    <th>t</th>
-                    <th>λ = b/t</th>
-                    <th>λ<sub>p</sub> = 1.12 √(E/Fy)</th>
-                    <th>λ<sub>r</sub> = 1.4 √(E/Fy)</th>
-                    <th>Slenderness</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Flange</td>
-                    <td>{{ b }}</td>
-                    <td>{{ profile.thk }}</td>
-                    <td>{{ lambda_f }}</td>
-                    <td>{{ lambda_p_f }}</td>
-                    <td>{{ lambda_r_f }}</td>
-                    <td>
-                        {% if lambda_f < lambda_p_f %}
-                            Compact
-                        {% elif lambda_f > lambda_r_f %}
-                            Slender
-                        {% else %}
-                            Non-compact
-                        {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <p>Slenderness check for box section,</p>
+    <table class="width__100 align__center">
+        <thead>
+            <tr>
+                <th>Element</th>
+                <th>b</th>
+                <th>t</th>
+                <th>λ = b/t</th>
+                <th>λ<sub>p</sub> = 1.12 √(E/Fy)</th>
+                <th>λ<sub>r</sub> = 1.4 √(E/Fy)</th>
+                <th>Slenderness</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Flange</td>
+                <td>{{ b }}</td>
+                <td>{{ profile.thk }}</td>
+                <td>{{ lambda_f }}</td>
+                <td>{{ lambda_p_f }}</td>
+                <td>{{ lambda_r_f }}</td>
+                <td>
+                    {% if lambda_f < lambda_p_f %}
+                        Compact
+                    {% elif lambda_f > lambda_r_f %}
+                        Slender
+                    {% else %}
+                        Non-compact
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-        <table class="width__100 align__center mt-1">
-            <thead>
-                <tr>
-                    <th>Element</th>
-                    <th>h</th>
-                    <th>t</th>
-                    <th>λ = h/t</th>
-                    <th>λ<sub>p</sub> = 2.42 √(E/Fy)</th>
-                    <th>λ<sub>r</sub> = 5.7 √(E/Fy)</th>
-                    <th>Slenderness</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Web</td>
-                    <td>{{ h }}</td>
-                    <td>{{ profile.thk }}</td>
-                    <td>{{ lambda_w }}</td>
-                    <td>{{ lambda_p_w }}</td>
-                    <td>{{ lambda_r_w }}</td>
-                    <td>
-                        {% if lambda_w < lambda_p_w %}
-                            Compact
-                        {% elif lambda_w > lambda_r_w %}
-                            Slender
-                        {% else %}
-                            Non-compact
-                        {% endif %}
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+    <table class="width__100 align__center mt-1">
+        <thead>
+            <tr>
+                <th>Element</th>
+                <th>h</th>
+                <th>t</th>
+                <th>λ = h/t</th>
+                <th>λ<sub>p</sub> = 2.42 √(E/Fy)</th>
+                <th>λ<sub>r</sub> = 5.7 √(E/Fy)</th>
+                <th>Slenderness</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Web</td>
+                <td>{{ h }}</td>
+                <td>{{ profile.thk }}</td>
+                <td>{{ lambda_w }}</td>
+                <td>{{ lambda_p_w }}</td>
+                <td>{{ lambda_r_w }}</td>
+                <td>
+                    {% if lambda_w < lambda_p_w %}
+                        Compact
+                    {% elif lambda_w > lambda_r_w %}
+                        Slender
+                    {% else %}
+                        Non-compact
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+    </table>
 
-        <p>As the flange and web both are compact, the whole section is compact. Hence, only failure by yielding governs.</p>
-        <p><u>Therefore,</u></p>
+    <p>As the flange and web both are compact, the whole section is compact. Hence, only failure by yielding governs.</p>
+    <p><u>Therefore,</u></p>
 
-        <table class="borderless ml-2">
-            <tbody>
-                <tr>
-                    <td>Nominal Moment Capacity, <i>M<sub>n</sub> = M<sub>p</sub> = Z F<sub>y</sub></i></td>
-                    <td>=</td>
-                    <td>{{ Mn }} <i>kN-m</i></td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
-                    <td>=</td>
-                    <td>{{ phi_Mn }} <i>kN-m</i></td>
-                    <td></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+    <table class="borderless ml-2">
+        <tbody>
+            <tr>
+                <td>Nominal Moment Capacity, <i>M<sub>n</sub> = M<sub>p</sub> = Z F<sub>y</sub></i></td>
+                <td>=</td>
+                <td>{{ Mn }} <i>kN-m</i></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
+                <td>=</td>
+                <td>{{ phi_Mn }} <i>kN-m</i></td>
+                <td></td>
+            </tr>
+        </tbody>
+    </table>
 </div>
 
 

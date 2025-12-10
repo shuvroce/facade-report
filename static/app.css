@@ -644,7 +644,7 @@ summary {
 
 /* ================ 6. FIGURE STATUS PANEL ================ */
 .status-box {
-    width: 255px;
+    width: 260px;
     background: var(--bg-code);
     border: 1px solid var(--border-primary);
     border-radius: 8px;
@@ -772,8 +772,8 @@ summary {
 .status.processing::before {
     content: "";
     display: inline-block;
-    width: 5px;
-    height: 5px;
+    width: 12px;
+    height: 12px;
     margin-right: 8px;
     border-radius: 50%;
     border: 2px solid rgba(255, 255, 255, 0.5);

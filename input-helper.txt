@@ -56,7 +56,10 @@ Notes
 - Keep file extensions lowercase .png to match template references.
 
 
-## Moment Capacity of Predefined Profiles
- - M 125x60x2.5: 6.74
+## Moment of Inertia & Capacity of Pre-defined Profiles
+ - M 125x60x2.5: | 6.74
  - M 140x60x2.5: 7.84
  - T 125x60x2.5: 4.41
+
+
+for RHS profile
