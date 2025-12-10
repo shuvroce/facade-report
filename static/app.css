@@ -19,8 +19,8 @@
 :root {
     /* Transitions */
     --transition: all 200ms ease;
-    --transition-bg: background-color 0.3s ease, color 0.3s ease;
-    --transition-border: border-color 0.4s ease 0.1s; /* Delayed border transition */
+    --transition-bg: background-color 0.2s ease, color 0.2s ease;
+    --transition-border: border-color 0.2s ease 0.2s;
 
     /* Layout Widths */
     --container-width-nav: 80%;
@@ -328,13 +328,33 @@ nav {
 }
 
 .small-btn {
-    font-size: 0.9rem;
-    font-weight: bold;
-    background-color: var(--btn-accent);
-    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 600;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-primary);
     height: 22px;
-    width: 40px;
-    border-radius: 4px;
+    width: 22px;
+    min-width: 22px;
+    border-radius: 6px;
+    /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
+    transition: all 0.2s ease, var(--transition-border);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.small-btn:hover {
+    background: var(--btn-accent);
+    color: #fff;
+    border-color: var(--btn-accent);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 6px rgba(0, 142, 208, 0.3);
+}
+
+.small-btn:active {
+    transform: translateY(0);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
 }
 
 .sub-add-btn {
@@ -631,11 +651,18 @@ summary {
     transition: var(--transition-bg), var(--transition-border);
 }
 
-.status_heading {
+.status_heading_box {
     display: flex;
     gap: 1rem;
     margin-bottom: 0.5rem;
     justify-content: space-between;
+    align-items: center;
+}
+
+.status_heading {
+    display: flex;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .status-box h3 {
@@ -650,6 +677,7 @@ summary {
     background: var(--bg-primary);
     border-radius: 4px;
     font-size: 0.9rem;
+    transition: var(--transition-bg);
 }
 
 .status-summary-item {
