@@ -294,7 +294,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'bp_width_B': 'Width of Base Plate, B (mm)',
         'bp_thk': 'Thickness of Base Plate, t (mm)',
         'bp_d': 'Depth of Profile / Fin-to-fin distance, d (mm)',
-        'bp_b': 'Width of flange / Fin plate, b',
+        'bp_b': 'Width of flange / Windth of Fin plate, b',
         'bp_x': 'Anchor center to flange distance, x (mm)',
         'bp_Beff': 'Effective plate width, Beff (mm)'
     };
