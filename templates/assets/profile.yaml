@@ -13,8 +13,6 @@ alum_profiles_data:
     plastic_x: 27.9
     plastic_y: 52
     F_y: 172.4
-    Mn_yield: 7.87
-    Mn_lb: 7.48
   
   - profile_name: M 125x60x3
     web_length: 125
@@ -30,8 +28,6 @@ alum_profiles_data:
     plastic_x: 29.5
     plastic_y: 49
     F_y: 172.4
-    Mn_yield: 8.58
-    Mn_lb: 8.19
   
   - profile_name: M 140x60x2.5
     web_length: 140
@@ -47,8 +43,6 @@ alum_profiles_data:
     plastic_x: 33.5
     plastic_y: 56.1
     F_y: 172.4
-    Mn_yield: 9.41
-    Mn_lb: 8.71
   
   - profile_name: M 135x67x4
     web_length: 135
@@ -64,8 +58,6 @@ alum_profiles_data:
     plastic_x: 42.4
     plastic_y: 46.1
     F_y: 172.4
-    Mn_yield: 13.67
-    Mn_lb: 13.31
   
   - profile_name: M 145x67x2.5
     web_length: 145
@@ -81,8 +73,6 @@ alum_profiles_data:
     plastic_x: 35.9
     plastic_y: 58.4
     F_y: 172.4
-    Mn_yield: 10.44
-    Mn_lb: 9.68
   
   - profile_name: M 145x67x3
     web_length: 145
@@ -98,8 +88,6 @@ alum_profiles_data:
     plastic_x: 37.4
     plastic_y: 54.9
     F_y: 172.4
-    Mn_yield: 11.30
-    Mn_lb: 10.57
   
   - profile_name: M 145x67x3.5
     web_length: 145
@@ -115,8 +103,6 @@ alum_profiles_data:
     plastic_x: 39.6
     plastic_y: 52.3
     F_y: 172.4
-    Mn_yield: 12.57
-    Mn_lb: 11.91
   
   - profile_name: M 145x80x3
     web_length: 145
@@ -132,8 +118,6 @@ alum_profiles_data:
     plastic_x: 43.4
     plastic_y: 56.3
     F_y: 172.4
-    Mn_yield: 14.11
-    Mn_lb: 13.34
   
   - profile_name: M 150x80x3
     web_length: 150
@@ -149,8 +133,6 @@ alum_profiles_data:
     plastic_x: 45.1
     plastic_y: 57.7
     F_y: 172.4
-    Mn_yield: 14.81
-    Mn_lb: 13.96
   
   - profile_name: M 160x80x8
     web_length: 160
@@ -166,8 +148,6 @@ alum_profiles_data:
     plastic_x: 46.4
     plastic_y: 53.3
     F_y: 172.4
-    Mn_yield: 32.32
-    Mn_lb: 31.23
   
   - profile_name: M 240x80x12
     web_length: 240
@@ -183,8 +163,6 @@ alum_profiles_data:
     plastic_x: 68.4
     plastic_y: 71.8
     F_y: 172.4
-    Mn_yield: 87.55
-    Mn_lb: 86.53
   
   - profile_name: M 145x90x3
     web_length: 145
@@ -200,8 +178,6 @@ alum_profiles_data:
     plastic_x: 44.9
     plastic_y: 56.7
     F_y: 172.4
-    Mn_yield: 15.04
-    Mn_lb: 14.24
   
   - profile_name: M 185x90x3
     web_length: 185
@@ -217,8 +193,6 @@ alum_profiles_data:
     plastic_x: 58.2
     plastic_y: 68.5
     F_y: 172.4
-    Mn_yield: 21.37
-    Mn_lb: 19.59
   
   - profile_name: M 200x72x3
     web_length: 200
@@ -234,8 +208,6 @@ alum_profiles_data:
     plastic_x: 53.7
     plastic_y: 76.4
     F_y: 172.4
-    Mn_yield: 22.31
-    Mn_lb: 18.66
 
   - profile_name: T 125x60x2.5
     web_length: 125

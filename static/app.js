@@ -157,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'sgu': ['length', 'width', 'thickness', 'grade', 'wind_load', 'support_type', 'nfl', 'gtf', 'load_x_area2', 'def'],
         'dgu': [
             'length', 'width', 'thickness1', 'gap', 'thickness2', 'grade1', 'grade2', 'wind_load', 'support_type', 
-            'nfl1', 'nfl2', 'gtf1', 'gtf2', 'load_x_area2', 'def1', 'def2'
+            'nfl1', 'nfl2', 'gtf1', 'gtf2', 'load1_x_area2', 'load2_x_area2', 'def1', 'def2'
         ],
         'lgu': [
             'length', 'width', 'thickness1', 'thickness_inner', 'thickness2', 'chart_thickness', 'grade', 'wind_load',
@@ -165,7 +165,7 @@ document.addEventListener('DOMContentLoaded', () => {
         ],
         'ldgu': [
             'length', 'width', 'thickness1_1', 'thickness_inner', 'thickness1_2', 'chart_thickness', 'gap', 'thickness2',
-            'grade1', 'grade2', 'wind_load', 'support_type', 'nfl1', 'nfl2', 'gtf1', 'gtf2', 'load_x_area2', 'def1', 'def2'
+            'grade1', 'grade2', 'wind_load', 'support_type', 'nfl1', 'nfl2', 'gtf1', 'gtf2', 'load1_x_area2', 'load2_x_area2', 'def1', 'def2'
         ]
     };
 
@@ -190,7 +190,9 @@ document.addEventListener('DOMContentLoaded', () => {
         'gtf': 'Glass Type Factor, GTF',
         'gtf1': 'Glass Type Factor of Outer Panel, GTF1',
         'gtf2': 'Glass Type Factor of Inner Panel, GTF2',
-        'load_x_area2': 'Load × Area² (kNm²)',
+        'load_x_area2': 'Load × Area², 0.7Pz x A² (kNm²)',
+        'load1_x_area2': 'Load × Area², 0.7q1 x A² (kNm²)',
+        'load2_x_area2': 'Load × Area², 0.7q2 x A² (kNm²)',
         'def': 'Deflection (mm)',
         'def1': 'Outer Panel Deflection (mm)',
         'def2': 'Inner Panel Deflection (mm)'

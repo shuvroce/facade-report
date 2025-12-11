@@ -53,7 +53,11 @@
             </td>
             <td>
                 <figure>
-                    <img style="width: 60mm;" src="assets/images/l-clump-3d.png">
+                    {% if top.anchor_nos == 2 %}
+                    <img style="width: 60mm;" src="assets/images/l-clump-3d-2.png">
+                    {% else %}
+                    <img style="width: 60mm;" src="assets/images/l-clump-3d-4.png">
+                    {% endif %}
                     <figcaption>Typical L-clump</figcaption>
                 </figure>
             </td>

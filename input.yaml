@@ -53,7 +53,7 @@ wind:
   exposure_note: 'The building is located at Gulshan, Dhaka, which is an urban area surrounded by tall building structure. There is no significant water body around this building. Therefore, Exposure Category A is considered.'
   occupancy_note: 'Likely to gather more than 300 people at the same time.'
 categories:
-- category_name: 'Typ. Cont. Façade (Zone 4)'
+- category_name: 'Typical Cont. Façade (Zone 4)'
   glass_units:
   - glass_type: dgu
     length: 3048
@@ -69,7 +69,8 @@ categories:
     nfl2: 1.15
     gtf1: 3.6
     gtf2: 3.6
-    load_x_area2: 11.34
+    load1_x_area2: 11.34
+    load2_x_area2: 11.34
     def1: 14.8
     def2: 14.8
 
@@ -87,7 +88,8 @@ categories:
     nfl2: 1.15
     gtf1: 3.6
     gtf2: 3.6
-    load_x_area2: 11.34
+    load1_x_area2: 11.34
+    load2_x_area2: 11.34
     def1: 10.7
     def2: 10.1
 
@@ -180,7 +182,7 @@ categories:
     bp_Beff: 100
 
 
-- category_name: 'Typ. Cont. Façade (Zone 5)'
+- category_name: 'Typical Cont. Façade (Zone 5)'
   glass_units:
   - glass_type: dgu
     length: 3048
@@ -196,7 +198,8 @@ categories:
     nfl2: 1.55
     gtf1: 3.6
     gtf2: 3.6
-    load_x_area2: 19.4
+    load1_x_area2: 19.4
+    load2_x_area2: 19.4
     def1: 12.5
     def2: 12.5
 
@@ -308,7 +311,8 @@ categories:
     nfl2: 1.7
     gtf1: 3.6
     gtf2: 3.6
-    load_x_area2: 5.4
+    load1_x_area2: 5.4
+    load2_x_area2: 5.4
     def1: 10.6
     def2: 10.6
 
@@ -389,7 +393,8 @@ categories:
     nfl2: 2.8
     gtf1: 3.6
     gtf2: 3.6
-    load_x_area2: 3.33
+    load1_x_area2: 3.33
+    load2_x_area2: 3.33
     def1: 8.41
     def2: 8.41
 
