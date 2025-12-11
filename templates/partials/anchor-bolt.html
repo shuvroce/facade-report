@@ -179,7 +179,6 @@
     </tbody>
 </table>
 
-<div class="page__break"></div>
 <table class="width__100 align__center">
     <thead>
         <tr>
@@ -234,6 +233,7 @@
     </tbody>
 </table>
 
+<div class="page__break"></div>
 <h4>Pullout Strength in Tension</h4>
 <table class="borderless width__100">
     <tbody>
@@ -557,7 +557,7 @@
     <tbody>
         <tr>
             <td>
-                {% if ([beta_N1, beta_N2, beta_N3] | min) < 0.2 or ([beta_V1, beta_V2, beta_V3] | min) < 0.2 %}
+                {% if ([beta_N1, beta_N2, beta_N3] | max) < 0.2 or ([beta_V1, beta_V2, beta_V3] | max) < 0.2 %}
                 <i>β<sub>NV</sub> = (β<sub>N</sub>)<sup>ζ</sup> + (β<sub>V</sub>)<sup>ζ</sup> ≤ 1.0 &nbsp;&nbsp;&nbsp; (kN)</i>
                 {% else %}
                 <i>β<sub>NV</sub> = (β<sub>N</sub>)<sup>ζ</sup> + (β<sub>V</sub>)<sup>ζ</sup> ≤ 1.2 &nbsp;&nbsp;&nbsp; (kN)</i>
@@ -601,7 +601,7 @@
             <td>1.67</td>
             <td>{{ beta_NV | round(2) }}</td>
             <td>
-                {% if ([beta_N1, beta_N2, beta_N3] | min) < 0.2 or ([beta_V1, beta_V2, beta_V3] | min) < 0.2 %}
+                {% if ([beta_N1, beta_N2, beta_N3] | max) < 0.2 or ([beta_V1, beta_V2, beta_V3] | max) < 0.2 %}
                     <p class="{% if beta_NV < 1 %}ok{% else %}not-ok{% endif %}">{% if beta_NV < 1 %} OK {% else %} NOT OK {% endif %}</p>
                 {% else %}
                     <p class="{% if beta_NV < 1.2 %}ok{% else %}not-ok{% endif %}">{% if beta_NV < 1.2 %} OK {% else %} NOT OK {% endif %}</p>

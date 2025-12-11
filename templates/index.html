@@ -316,18 +316,22 @@
             </template>
         </div>
 
-        <div class="status-box">
-            <div class="status_heading_box">
-                <div class="status_heading">
-                    <h3>Figure Status</h3>
-                    <button class="small-btn" id="refresh-figures-btn">↻</button>
+        <div class="status_area">
+            <div class="">
+                <div class="status_heading_box">
+                    <div class="status_heading">
+                        <h3>Figures</h3>
+                        <button class="small-btn" id="refresh-figures-btn">↻</button>
+                    </div>
+                    <button class="small-btn help-btn" id="add-figures-btn">?</button>
                 </div>
-                <button class="small-btn help-btn" id="add-figures-btn">?</button>
+                <div id="figure-status-summary" class="status-summary"></div>
             </div>
-            <div id="figure-status-summary" class="status-summary"></div>
-            <ul id="figure-status-list">
-                <!-- Status items will be dynamically added here -->
-            </ul>
+            <div class="status-box">
+                <ul id="figure-status-list">
+                    <!-- Status items will be dynamically added here -->
+                </ul>
+            </div>
         </div>
     </div>
 

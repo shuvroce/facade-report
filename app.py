@@ -28,10 +28,10 @@ def merge_profile_data(report_data):
 
 def get_required_wind_figures():
     return [
-        {"name": "location-map.png", "category": "Wind", "exists": False},
-        {"name": "mwfrs.png", "category": "Wind", "exists": False},
-        {"name": "cnc-wall.png", "category": "Wind", "exists": False},
-        {"name": "cnc-roof.png", "category": "Wind", "exists": False}
+        {"name": "wind-location-map.png", "category": "Wind", "exists": False},
+        {"name": "wind-mwfrs.png", "category": "Wind", "exists": False},
+        {"name": "wind-cnc-wall.png", "category": "Wind", "exists": False},
+        {"name": "wind-cnc-roof.png", "category": "Wind", "exists": False}
     ]
 
 def get_manual_profile_figures(profile_name):
@@ -48,8 +48,7 @@ def get_manual_profile_figures(profile_name):
 
 def get_sap_figures(category_index):
     sap_figure_names = [
-        "sap-model.png", "sap-relese.png", "sap-support1.png", "sap-support2.png",
-        "sap-dead-load.png", "sap-wind-load.png", "sap-load-combo.png",
+        "sap-model.png", "sap-release.png", "sap-dead-load.png", "sap-wind-load.png",
         "sap-bmd.png", "sap-sfd.png", "sap-mul-max-moment.png", "sap-tran-max-moment.png",
         "sap-deformed-shape.png", "sap-mul-def.png", "sap-tran-def-wind.png",
         "sap-tran-def-dead.png", "sap-joint-force-dead.png", "sap-joint-force-wind.png",
@@ -59,6 +58,13 @@ def get_sap_figures(category_index):
     return [
         {"name": f"{category_index}-{fig}", "category": f"Category {category_index}", "exists": False}
         for fig in sap_figure_names
+    ]
+
+def get_comp_profile_figures(category_index, mullion_name):
+    clean_name = mullion_name.strip()
+    
+    return [
+        {"name": f"{clean_name}.png", "category": f"Category {category_index}", "exists": False}
     ]
 
 def get_rfem_figures(category_index, glass_index):
@@ -74,14 +80,6 @@ def get_rfem_figures(category_index, glass_index):
             "exists": False
         }
         for fig in rfem_figure_names
-    ]
-
-def get_l_clump_figures(category_index):
-    l_clump_names = ["l-clump-plan.png", "l-clump-section.png", "l-clump-forces.png"]
-    
-    return [
-        {"name": f"{category_index}-{fig}", "category": f"Category {category_index}", "exists": False}
-        for fig in l_clump_names
     ]
 
 def check_figure_existence(figures):
@@ -181,15 +179,15 @@ def check_figures():
                     if support_type == "Point Fixed":
                         required_figures.extend(get_rfem_figures(cat_idx, glass_idx))
             
-            # Anchorage L clump figures
-            if "anchorage" in category:
-                l_clump_added = False
-                for anchor in category["anchorage"]:
-                    clump_type = anchor.get("clump_type", "")
+            # Add composite profile figures
+            if "frames" in category:
+                for frame in category["frames"]:
+                    mullion_type = frame.get("mullion_type", "")
                     
-                    if clump_type in ["L Clump Top", "L Clump Front"] and not l_clump_added:
-                        required_figures.extend(get_l_clump_figures(cat_idx))
-                        l_clump_added = True
+                    if mullion_type == "Aluminum + Steel":
+                        mullion_name = frame.get("mullion", "")
+                        if mullion_name:
+                            required_figures.extend(get_comp_profile_figures(cat_idx, mullion_name))
     
     # Check existence of all figures
     required_figures = check_figure_existence(required_figures)

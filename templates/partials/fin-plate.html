@@ -115,7 +115,7 @@
             <td>{{ anchor.fin_e }}</td>
             <td>{{ fin_Mu | round(2) }}</td>
             <td>345</td>
-            <td>{{ fin_thk_req | round(4) }}</td>
+            <td>{{ fin_thk_req | round(2) }}</td>
             <td>{{ anchor.fin_thk }}</td>
             <td class="{% if anchor.fin_thk > fin_thk_req %}ok{% else %}not-ok{% endif %}">
                 {% if anchor.fin_thk > fin_thk_req %} OK {% else %} NOT OK {% endif %}

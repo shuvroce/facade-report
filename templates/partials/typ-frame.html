@@ -95,7 +95,11 @@
             <tr>
                 <td>
                     <figure>
+                        {% if frame.mullion_type == "Aluminum Only" %}
                         <img style="width: 50mm;" src="assets/images/profiles/{{ frame.mullion }}.png" class="fig__50">
+                        {% else %}
+                        <img style="width: 50mm;" src="inputs/{{ frame.mullion }}.png" class="fig__50">
+                        {% endif %}
                         <figcaption>Mullion</figcaption>
                     </figure>
                 </td>
@@ -146,9 +150,9 @@
 
 <div>
     <h3>Software Input</h3>
-    <div class="calc__fig3">
+    <div class="">
         <figure>
-            <img src="inputs/{{ loop_index }}-sap-model.png">
+            <img src="inputs/{{ loop_index }}-sap-model.png" style="width: 120mm;">
             <figcaption>Model view</figcaption>
         </figure>
     </div>
@@ -158,20 +162,20 @@
             <tr>
                 <td rowspan="2">
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-relese.png">
+                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-release.png">
                         <figcaption>Frame releases and restraints</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img src="inputs/{{ loop_index }}-sap-support1.png">
+                        <img src="assets/images/sap-support1.png">
                     </figure>
                 </td>
             </tr>
             <tr>
                 <td>
                     <figure>
-                        <img src="inputs/{{ loop_index }}-sap-support2.png">
+                        <img src="assets/images/sap-support2.png">
                         <figcaption>Support restraint condition</figcaption>
                     </figure>
                 </td>
@@ -200,7 +204,7 @@
 
     <div class="calc__fig2">
         <figure>
-            <img src="inputs/{{ loop_index }}-sap-load-combo.png">
+            <img src="assets/images/sap-load-combo.png">
             <figcaption>Load combinations</figcaption>
         </figure>
     </div>
@@ -213,13 +217,13 @@
             <tr>
                 <td>
                     <figure>
-                        <img style="width: 50mm;" src="inputs/{{ loop_index }}-sap-bmd.png">
+                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-bmd.png">
                         <figcaption>BMD about major axis (0.9D – 1.6W)</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img style="width: 50mm;" src="inputs/{{ loop_index }}-sap-sfd.png">
+                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-sfd.png">
                         <figcaption>SFD about major axis (0.9D – 1.6W)</figcaption>
                     </figure>
                 </td>

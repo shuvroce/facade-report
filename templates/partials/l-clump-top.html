@@ -69,8 +69,13 @@
 <table class="borderless width__100 fig__table">
     <tbody>
         <tr>
-            <td><img src="inputs/{{ loop_index }}-l-clump-plan.png"></td>
-            <td><img src="inputs/{{ loop_index }}-l-clump-section.png"></td>
+            {% if top.anchor_nos == 2 %}
+            <td><img src="assets/images/l-clump-plan-2.png"></td>
+            <td><img src="assets/images/l-clump-section-2.png"></td>
+            {% else %}
+            <td><img src="assets/images/l-clump-plan-4.png"></td>
+            <td><img src="assets/images/l-clump-section-4.png"></td>
+            {% endif %}
         </tr>
     </tbody>
 </table>
@@ -83,6 +88,7 @@
         </tr>
     </tbody>
 </table>
+<!-- add automatic force calculation -->
 
 <div class="page__break"></div>
 <h3>Design of Top Anchors (A*)</h3>

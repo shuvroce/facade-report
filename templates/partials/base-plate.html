@@ -48,6 +48,9 @@
     </tbody>
 </table>
 
+{% if anchor.clump_type == "L Clump Front" %}
+<div class="page__break"></div>
+{% endif %}
 <h4>Plate Thickness for Bearing Interface</h4>
 <table class="borderless width__100">
     <tbody>
@@ -349,7 +352,7 @@
     </tbody>
 </table>
 
-{% if anchor.clump_type == "U Clump" or anchor.clump_type == "L Clump Front" %}
+{% if anchor.clump_type == "U Clump" %}
 <div class="page__break"></div>
 {% endif %}
 

@@ -1195,12 +1195,12 @@ document.addEventListener('DOMContentLoaded', () => {
         const yamlContent = toYamlString(formData);
 
         if (!yamlContent) {
-            figureStatusList.innerHTML = '<li style="padding: 1rem; color: #ef4444;">Error: Could not generate YAML from form data</li>';
+            figureStatusList.innerHTML = '<li style="font-size: 0.85rem; padding: 1rem; color: #ef4444;">Error: Could not generate YAML from form data</li>';
             figureStatusSummary.innerHTML = '';
             return;
         }
 
-        figureStatusList.innerHTML = '<li style="padding: 1rem; text-align: center; color: var(--text-secondary);">Checking figures...</li>';
+        figureStatusList.innerHTML = '<li style="font-size: 0.85rem; padding: 1rem; text-align: center; color: var(--text-secondary);">Checking figures...</li>';
         figureStatusSummary.innerHTML = '';
 
         fetch('/check_figures', {
@@ -1242,8 +1242,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Display summary
         figureStatusSummary.innerHTML = `
             <div class="status-summary-item">
-                <span class="label">Total:</span>
-                <span class="value">${totalCount}</span>
+                ${totalCount}
             </div>
             <div class="status-summary-item">
                 <span class="label">Found:</span>
