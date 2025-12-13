@@ -134,7 +134,8 @@ def generate_report():
     pdf_path = generate_report_from_data(
         data=report_data,
         out_pdf=out_pdf,
-        template_dir=TEMPLATE_DIR
+        template_dir=TEMPLATE_DIR,
+        inputs_dir=get_inputs_dir()
     )
     
     return send_file(

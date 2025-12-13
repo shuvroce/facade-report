@@ -98,7 +98,7 @@
                         {% if frame.mullion_type == "Aluminum Only" %}
                         <img style="width: 50mm;" src="assets/images/profiles/{{ frame.mullion }}.png" class="fig__50">
                         {% else %}
-                        <img style="width: 50mm;" src="inputs/{{ frame.mullion }}.png" class="fig__50">
+                        <img style="width: 50mm;" src="{{ inputs_dir }}/{{ frame.mullion }}.png" class="fig__50">
                         {% endif %}
                         <figcaption>Mullion</figcaption>
                     </figure>
@@ -152,7 +152,7 @@
     <h3>Software Input</h3>
     <div style="text-align: center;">
         <figure>
-            <img src="inputs/{{ loop_index }}-sap-model.png" style="width: 100mm;">
+            <img src="{{ inputs_dir }}/{{ loop_index }}-sap-model.png" style="width: 100mm;">
             <figcaption>Model view</figcaption>
         </figure>
     </div>
@@ -162,7 +162,7 @@
             <tr>
                 <td rowspan="2">
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-release.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-release.png">
                         <figcaption>Frame releases and restraints</figcaption>
                     </figure>
                 </td>
@@ -188,13 +188,13 @@
             <tr>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-dead-load.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-dead-load.png">
                         <figcaption>Dead load</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-wind-load.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-wind-load.png">
                         <figcaption>Wind load</figcaption>
                     </figure>
                 </td>
@@ -217,13 +217,13 @@
             <tr>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-bmd.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-bmd.png">
                         <figcaption>BMD about major axis (0.9D – 1.6W)</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-sfd.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-sfd.png">
                         <figcaption>SFD about major axis (0.9D – 1.6W)</figcaption>
                     </figure>
                 </td>
@@ -236,13 +236,13 @@
             <tr>
                 <td>
                     <figure>
-                        <img style="width: 80mm;" src="inputs/{{ loop_index }}-sap-mul-max-moment.png">
+                        <img style="width: 80mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-mul-max-moment.png">
                         <figcaption>Max. Moment on mullion (0.9D – 1.6W)</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img style="width: 80mm;" src="inputs/{{ loop_index }}-sap-tran-max-moment.png">
+                        <img style="width: 80mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-tran-max-moment.png">
                         <figcaption>Max. Moment on transom (0.9D – 1.6W)</figcaption>
                     </figure>
                 </td>
@@ -255,13 +255,13 @@
             <tr>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-deformed-shape.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-deformed-shape.png">
                         <figcaption>Deformed shape (D – 0.7W, contour)</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img style="width: 80mm;" src="inputs/{{ loop_index }}-sap-mul-def.png">
+                        <img style="width: 80mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-mul-def.png">
                         <figcaption>Mullion deflection (D – 0.7W)</figcaption>
                     </figure>
                 </td>
@@ -274,13 +274,13 @@
             <tr>
                 <td>
                     <figure>
-                        <img style="width: 80mm;" src="inputs/{{ loop_index }}-sap-tran-def-wind.png">
+                        <img style="width: 80mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-tran-def-wind.png">
                         <figcaption>Transom deflection (D – 0.7W)</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img style="width: 80mm;" src="inputs/{{ loop_index }}-sap-tran-def-dead.png">
+                        <img style="width: 80mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-tran-def-dead.png">
                         <figcaption>Transom deflection (under dead load)</figcaption>
                     </figure>
                 </td>
@@ -293,13 +293,13 @@
             <tr>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-joint-force-dead.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-joint-force-dead.png">
                         <figcaption>Max. joint force under dead load (about minor axis)</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-joint-force-wind.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-joint-force-wind.png">
                         <figcaption>Max. joint force under wind load (about major axis)</figcaption>
                     </figure>
                 </td>
@@ -312,13 +312,13 @@
             <tr>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-reaction-force-dead.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-reaction-force-dead.png">
                         <figcaption>Support reactions (Dead)</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        <img style="width: 75mm;" src="inputs/{{ loop_index }}-sap-reaction-force-wind.png">
+                        <img style="width: 75mm;" src="{{ inputs_dir }}/{{ loop_index }}-sap-reaction-force-wind.png">
                         <figcaption>Support reactions (Wind)</figcaption>
                     </figure>
                 </td>
