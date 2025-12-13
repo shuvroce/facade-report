@@ -34,8 +34,8 @@ wind:
   b_length: 24.5
   b_width: 18.5
   exposure_cat: A
-  occupancy_cat: I
-  Imp_factor: 
+  occupancy_cat: II
+  Imp_factor: 1.0
   K_d: 0.85
   GC_pi: 0.18
   C_pl: 0.5
@@ -123,8 +123,6 @@ categories:
     head_dia: 10.5
     joint_fy: 0.88
     joint_fz: 0.15
-    design_fy: 4.5
-    design_fz: 1
     t1: 3.5
     t2: 2.5
     tc: 2.5
@@ -133,15 +131,9 @@ categories:
   - clump_type: L Clump Top
     reaction_Ry: 10.8
     reaction_Rz: 2.88
-    design_Ry: 20
-    design_Rz: 5
-    V_ua: 6
-    V_ug: 12
     anchor_nos: 2
     anchor_dia: 12
     embed_depth: 70
-    A_NC: 79800
-    A_VC: 115500
     C_a1: 200
     h_a: 150
     bp_length_N: 250
@@ -149,37 +141,17 @@ categories:
     bp_thk: 6
 
   - clump_type: L Clump Front
-    reaction_Ry: 10.8
-    reaction_Rz: 2.88
-    design_Ry: 20
-    design_Rz: 5
-    N_ua: 4
-    N_ug: 8
-    V_ua: 4.17
-    V_ug: 7.5
     anchor_nos: 2
     anchor_dia: 12
     embed_depth: 70
-    A_NC: 57000
-    A_VC: 44438
     C_a1: 75
-    thr_bolt_nos: 2
     thr_bolt_dia: 10
-    thr_bolt_length: 100
-    thr_bearing_lc: 80
-    fin_length: 140
-    fin_width: 150
     fin_thk: 5
     fin_e: 80
-    fin_bgv: 120
-    fin_bnt: 65
     bp_length_N: 250
     bp_width_B: 150
     bp_thk: 6
     bp_d: 70
-    bp_b: 150
-    bp_x: 50
-    bp_Beff: 100
 
 
 - category_name: 'Typical Cont. Façade (Zone 5)'
@@ -236,8 +208,6 @@ categories:
     head_dia: 10.5
     joint_fy: 1.5
     joint_fz: 0.15
-    design_fy: 4.5
-    design_fz: 1
     t1: 3.5
     t2: 2.5
     tc: 2.5
@@ -246,15 +216,9 @@ categories:
   - clump_type: L Clump Top
     reaction_Ry: 18.4
     reaction_Rz: 3
-    design_Ry: 30 ///
-    design_Rz: 5 ///
-    V_ua: 8 ///
-    V_ug: 16 ///
     anchor_nos: 2
     anchor_dia: 12
     embed_depth: 70
-    A_NC: 79800 ///
-    A_VC: 115500 ///
     C_a1: 200
     h_a: 150
     bp_length_N: 250
@@ -262,37 +226,17 @@ categories:
     bp_thk: 8
 
   - clump_type: L Clump Front
-    reaction_Ry: 18.4 ///
-    reaction_Rz: 3 ///
-    design_Ry: 30  ////
-    design_Rz: 5 ///
-    N_ua: 6 ///
-    N_ug: 12 ///
-    V_ua: 4.17 ///
-    V_ug: 7.5 ///
     anchor_nos: 2
     anchor_dia: 12
     embed_depth: 70
-    A_NC: 57000 ///
-    A_VC: 44438 ///
     C_a1: 75
-    thr_bolt_nos: 2 ///
     thr_bolt_dia: 10
-    thr_bolt_length: 100 ////
-    thr_bearing_lc: 80 ///
-    fin_length: 140 ///
-    fin_width: 150 ///
     fin_thk: 5
     fin_e: 80
-    fin_bgv: 120 ///
-    fin_bnt: 65 ///
     bp_length_N: 250
     bp_width_B: 150
     bp_thk: 8
     bp_d: 70
-    bp_b: 150 ///
-    bp_x: 50 ///
-    bp_Beff: 100 ///
 
 
 - category_name: 'Floor-to-floor (4525mm)'
@@ -349,8 +293,6 @@ categories:
     head_dia: 10.5
     joint_fy: 0.32
     joint_fz: 0.12
-    design_fy: 4.5
-    design_fz: 1
     t1: 3.5
     t2: 2.5
     tc: 2.5
@@ -359,23 +301,15 @@ categories:
   - clump_type: Box Clump
     reaction_Ry: 6.25
     reaction_Rz: 1.93
-    design_Ry: 12
-    design_Rz: 3
-    V_ua: 3  ///
-    V_ug: 6  ///
     anchor_nos: 4
     anchor_dia: 12
     embed_depth: 70
-    A_NC: 93100 ////
-    A_VC: 70500 ////
     C_a1: 100
     h_a: 150
     bp_length_N: 250
     bp_width_B: 90
     bp_thk: 5
-    bp_d: 85 ///
     bp_b: 50
-
 
 - category_name: 'Balustrade (2 Point Supported)'
   glass_units:

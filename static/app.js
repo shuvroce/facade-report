@@ -90,11 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    
-    // ========================================================================
-    // 3. CONFIGURATION & CONSTANTS
-    // ========================================================================
-    
     // ========================================================================
     // 3. CONFIGURATION & CONSTANTS
     // ========================================================================
@@ -219,7 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'glass_thk': 'Glass Thickness (mm)',
         'wind_pos': 'Wind Load (+ve) (kPa)',
         'wind_neg': 'Wind Load (-ve) (kPa)',
-        'mullion': 'Mullion Name (e.g. M 125x60x2.5 or [+RHS 85x50x3])',
+        'mullion': 'Mullion Name (e.g. M 125x60x2.5 or [+RHS 3])',
         'I_xa': 'Moment of Inertia of Aluminum, Ixa (mm⁴)',
         'I_xs': 'Moment of Inertia of Steel, Ixs (mm⁴)',
         'mul_mu': 'Mullion Max. Moment, Mu (kNm)',
@@ -239,64 +234,39 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Anchorage Configuration ---
     const anchorageFields = {
         'Box Clump': [
-            'reaction_Ry', 'reaction_Rz', 'design_Ry', 'design_Rz', 'V_ua', 'V_ug', 
-            'anchor_nos', 'anchor_dia', 'embed_depth', 'A_NC', 'A_VC', 'C_a1', 'h_a', 
-            'bp_length_N', 'bp_width_B', 'bp_thk', 'bp_d', 'bp_b'
+            'reaction_Ry', 'reaction_Rz','anchor_nos', 'anchor_dia', 'embed_depth',
+            'C_a1', 'h_a', 'bp_length_N', 'bp_width_B', 'bp_thk', 'bp_b'
         ],
         'U Clump': [
-            'reaction_Ry', 'reaction_Rz', 'design_Ry', 'design_Rz', 'N_ua', 'N_ug', 'V_ua', 'V_ug', 
-            'anchor_nos', 'anchor_dia', 'embed_depth', 'A_NC', 'A_VC', 'C_a1', 
-            'thr_bolt_nos', 'thr_bolt_dia', 'thr_bolt_length', 'thr_bearing_lc', 
-            'fin_length', 'fin_width', 'fin_thk', 'fin_e', 'fin_bgv', 'fin_bnt', 
-            'bp_length_N', 'bp_width_B', 'bp_thk', 'bp_d', 'bp_b', 'bp_x', 'bp_Beff'
+            'reaction_Ry', 'reaction_Rz','anchor_nos', 'anchor_dia', 'embed_depth', 'C_a1', 
+            'thr_bolt_dia', 'fin_thk', 'fin_e', 'bp_length_N', 'bp_width_B', 'bp_thk', 'bp_d'
         ],
         'L Clump Top': [
-            'reaction_Ry', 'reaction_Rz', 'design_Ry', 'design_Rz', 'V_ua', 'V_ug', 
-            'anchor_nos', 'anchor_dia', 'embed_depth', 'A_NC', 'A_VC', 'C_a1', 'h_a', 
-            'bp_length_N', 'bp_width_B', 'bp_thk'
+            'reaction_Ry', 'reaction_Rz', 'anchor_nos', 'anchor_dia', 'embed_depth',
+            'C_a1', 'h_a', 'bp_length_N', 'bp_width_B', 'bp_thk'
         ],
         'L Clump Front': [
-            'reaction_Ry', 'reaction_Rz', 'design_Ry', 'design_Rz', 'N_ua', 'N_ug', 'V_ua', 'V_ug', 
-            'anchor_nos', 'anchor_dia', 'embed_depth', 'A_NC', 'A_VC', 'C_a1', 
-            'thr_bolt_nos', 'thr_bolt_dia', 'thr_bolt_length', 'thr_bearing_lc', 
-            'fin_length', 'fin_width', 'fin_thk', 'fin_e', 'fin_bgv', 'fin_bnt', 
-            'bp_length_N', 'bp_width_B', 'bp_thk', 'bp_d', 'bp_b', 'bp_x', 'bp_Beff'
+            'anchor_nos', 'anchor_dia', 'embed_depth', 'C_a1', 'thr_bolt_dia', 'fin_thk',
+            'fin_e', 'bp_length_N', 'bp_width_B', 'bp_thk', 'bp_d'
         ]
     };
 
     const anchorageFieldPlaceholders = {
         'reaction_Ry': 'Horizontal Reaction, Ry (kN)',
         'reaction_Rz': 'Vertical Reaction, Rz (kN)',
-        'design_Ry': 'Design Horizontal Reaction, Ry (kN)',
-        'design_Rz': 'Design Vertical Reaction, Rz (kN)',
-        'N_ua': 'Tensile force in single anchor, Nua (kN)',
-        'N_ug': 'Tensile force in group of anchors, Nug (kN)',
-        'V_ua': 'Shear force in single anchor, Vua (kN)',
-        'V_ug': 'Shear force in group of anchors, Vug (kN)',
         'anchor_nos': 'No. of Anchor bolt, n',
         'anchor_dia': 'Diameter of Anchor bolt, da (mm)',
-        'embed_depth': 'Effective Embedment Depth of Anchor, hef (mm)',
-        'A_NC': 'Concrete failure area in tension, ANC (mm²)',
-        'A_VC': 'Concrete failure area in shear, AVC (mm²)',
+        'embed_depth': 'Embed. Depth of Anchor, hef (mm)',
         'C_a1': 'Edge Distance, Ca1 (mm)',
         'h_a': 'Depth of Concrete Member, ha (mm)',
-        'thr_bolt_nos': 'No. of Fin Through bolt, nb',
         'thr_bolt_dia': 'Diameter of Through bolt, db (mm)',
-        'thr_bolt_length': 'Length of Through bolt (mm)',
-        'thr_bearing_lc': 'Clear distance, in the direction of the force, lc (mm)',
-        'fin_length': 'Length of Fin Plate (mm)',
-        'fin_width': 'Width of Fin Plate (mm)',
         'fin_thk': 'Thickness of Fin Plate (mm)',
         'fin_e': 'Eccentricity, e (mm)',
-        'fin_bgv': 'Block Shear length, bgv (mm)',
-        'fin_bnt': 'Block Shear width, bnt (mm)',
         'bp_length_N': 'Length of Base Plate, N (mm)',
         'bp_width_B': 'Width of Base Plate, B (mm)',
         'bp_thk': 'Thickness of Base Plate, t (mm)',
-        'bp_d': 'Depth of Profile / Fin-to-fin distance, d (mm)',
-        'bp_b': 'Width of flange / Windth of Fin plate, b',
-        'bp_x': 'Anchor center to flange distance, x (mm)',
-        'bp_Beff': 'Effective plate width, Beff (mm)'
+        'bp_d': 'Fin-to-fin distance, d (mm)',
+        'bp_b': 'Width of flange, b'
     };
     
     
@@ -650,7 +620,32 @@ document.addEventListener('DOMContentLoaded', () => {
         Object.entries(groupData).forEach(([key, value]) => {
             const field = form.querySelector(`[name="${prefix}.${key}"]`);
             if (field) {
-                field.value = value ?? '';
+                if (value === null || value === undefined) {
+                    field.value = '';
+                    return;
+                }
+                
+                // For select elements, try to match the value with available options
+                if (field.tagName === 'SELECT') {
+                    const stringValue = String(value);
+                    const options = Array.from(field.options).map(o => o.value);
+                    
+                    // Try exact match first
+                    if (options.includes(stringValue)) {
+                        field.value = stringValue;
+                    } else {
+                        // Try numeric comparison for numeric values
+                        const numValue = parseFloat(value);
+                        if (!isNaN(numValue)) {
+                            const matchingOption = options.find(opt => parseFloat(opt) === numValue);
+                            if (matchingOption) {
+                                field.value = matchingOption;
+                            }
+                        }
+                    }
+                } else {
+                    field.value = String(value);
+                }
             }
         });
     }
@@ -1081,6 +1076,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const refreshFiguresBtn = document.getElementById('refresh-figures-btn');
     const figureStatusList = document.getElementById('figure-status-list');
     const figureStatusSummary = document.getElementById('figure-status-summary');
+    const figureCheckingStatus = document.getElementById('figure-checking-status');
 
     /**
      * Extract form data (duplicate of main function for isolated scope)
@@ -1199,11 +1195,13 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!yamlContent) {
             figureStatusList.innerHTML = '<li style="font-size: 0.85rem; padding: 1rem; color: #ef4444;">Error: Could not generate YAML from form data</li>';
             figureStatusSummary.innerHTML = '';
+            if (figureCheckingStatus) figureCheckingStatus.style.display = 'none';
             return;
         }
 
-        figureStatusList.innerHTML = '<li style="font-size: 0.85rem; padding: 1rem; text-align: center; color: var(--text-secondary);">Checking figures...</li>';
-        figureStatusSummary.innerHTML = '';
+        const checkStartTime = Date.now();
+        if (figureCheckingStatus) figureCheckingStatus.style.display = 'inline';
+        // Don't clear the list - keep existing content visible during refresh
 
         fetch('/check_figures', {
             method: 'POST',
@@ -1217,16 +1215,30 @@ document.addEventListener('DOMContentLoaded', () => {
             return response.json();
         })
         .then(result => {
-            if (result.success && result.figures) {
-                displayFigureStatus(result.figures);
-            } else {
-                throw new Error(result.error || 'Unknown error');
-            }
+            const elapsed = Date.now() - checkStartTime;
+            const minDisplayTime = 600; // Keep visible for at least 0.6 second
+            const remainingTime = Math.max(0, minDisplayTime - elapsed);
+            
+            setTimeout(() => {
+                if (figureCheckingStatus) figureCheckingStatus.style.display = 'none';
+                if (result.success && result.figures) {
+                    displayFigureStatus(result.figures);
+                } else {
+                    throw new Error(result.error || 'Unknown error');
+                }
+            }, remainingTime);
         })
         .catch(error => {
-            console.error('Error checking figures:', error);
-            figureStatusList.innerHTML = `<li style="padding: 1rem; color: #ef4444;">Error checking figures: ${error.message}</li>`;
-            figureStatusSummary.innerHTML = '';
+            const elapsed = Date.now() - checkStartTime;
+            const minDisplayTime = 1000;
+            const remainingTime = Math.max(0, minDisplayTime - elapsed);
+            
+            setTimeout(() => {
+                if (figureCheckingStatus) figureCheckingStatus.style.display = 'none';
+                console.error('Error checking figures:', error);
+                figureStatusList.innerHTML = `<li style="padding: 1rem; color: #ef4444;">Error checking figures: ${error.message}</li>`;
+                figureStatusSummary.innerHTML = '';
+            }, remainingTime);
         });
     }
 
@@ -1265,8 +1277,19 @@ document.addEventListener('DOMContentLoaded', () => {
             grouped[fig.category].push(fig);
         });
 
-        // Display figures grouped by category
-        Object.keys(grouped).sort().forEach(category => {
+        // Define custom category order
+        const categoryOrder = ['Wind', 'Profiles', 'Categories'];
+        const sortedCategories = categoryOrder.filter(cat => grouped[cat]);
+        
+        // Add any categories not in the predefined order at the end
+        Object.keys(grouped).forEach(cat => {
+            if (!categoryOrder.includes(cat)) {
+                sortedCategories.push(cat);
+            }
+        });
+
+        // Display figures grouped by category in custom order
+        sortedCategories.forEach(category => {
             const categoryHeader = document.createElement('li');
             categoryHeader.style.cssText = 'font-weight: bold; margin-top: 0.75rem; margin-bottom: 0.25rem; color: var(--text-primary); font-size: 0.85rem;';
             categoryHeader.textContent = category;
@@ -1309,6 +1332,32 @@ document.addEventListener('DOMContentLoaded', () => {
             checkFigures();
         }
     }, 1000);
+
+    // Auto-refresh figures every 10 seconds
+    let autoRefreshInterval = null;
+    
+    function startAutoRefresh() {
+        if (autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
+        }
+        autoRefreshInterval = setInterval(() => {
+            if (form && figureStatusList) {
+                checkFigures();
+            }
+        }, 10000); // Refresh every 10 seconds
+    }
+    
+    function stopAutoRefresh() {
+        if (autoRefreshInterval) {
+            clearInterval(autoRefreshInterval);
+            autoRefreshInterval = null;
+        }
+    }
+    
+    // Start auto-refresh after initial load
+    setTimeout(() => {
+        startAutoRefresh();
+    }, 2000);
 
 
     // ========================================================================

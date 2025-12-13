@@ -10,7 +10,7 @@
         <tr>
             <td>Max. horizontal reaction force, R<sub>y</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Ry }} <i>kN</i></td>
+            <td>{{ design_Ry | round(1) }} <i>kN</i></td>
             <td><i>
                 {% if anchor.clump_type != "Box Clump" %}
                     ; P<sub>u</sub>
@@ -20,7 +20,7 @@
         <tr>
             <td>Max. vertical reaction force, R<sub>z</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Rz }} <i>kN</i></td>
+            <td>{{ design_Rz | round(1) }} <i>kN</i></td>
             <td><i>
                 {% if anchor.clump_type == "Box Clump" %}
                     ; P<sub>u</sub>
@@ -161,8 +161,8 @@
             <td>{{ anchor.bp_length_N }}</td>
             <td>{{ anchor.bp_width_B }}</td>
             <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
-            <td>{{ anchor.bp_d }}</td>
-            <td>{{ anchor.bp_b }}</td>
+            <td>{{ bp_d | round(1) }}</td>
+            <td>{{ bp_b | round(1) }}</td>
             <td>{{ bp_m | round(2) }}</td>
             <td>{{ bp_n | round(2) }}</td>
         </tr>
@@ -267,10 +267,10 @@
     <tbody>
         <tr>
             <td>0.9</td>
-            <td>{{ anchor.N_ua }}</td>
-            <td>{{ anchor.bp_x }}</td>
+            <td>{{ N_ua | round(1) }}</td>
+            <td>{{ bp_x | round(1) }}</td>
             <td>{{ bp_tension_Mu | round(2) }}</td>
-            <td>{{ anchor.bp_Beff }}</td>
+            <td>{{ bp_Beff }}</td>
             <td>{{ bp_thk_tension | round(2) }}</td>
             <td>{{ anchor.bp_thk }}</td>
             <td class="{% if anchor.bp_thk > bp_thk_tension %}ok{% else %}not-ok{% endif %}">

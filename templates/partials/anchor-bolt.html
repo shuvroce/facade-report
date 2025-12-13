@@ -95,7 +95,7 @@
             <td>{{ A_seN }}</td>
             <td>500</td>
             <td>{{ phi_Nsa | round(2) }}</td>
-            <td>{{ anchor.N_ua }}</td>
+            <td>{{ N_ua | round(1) }}</td>
             <td>{{ beta_N1 | round(2) }}</td>
             <td class="{% if beta_N1 < 1 %}ok{% else %}not-ok{% endif %}">
                 {% if beta_N1 < 1 %} OK {% else %} NOT OK {% endif %}
@@ -195,7 +195,7 @@
     <tbody>
         <tr>
             <td>0.65</td>
-            <td>{{ anchor.A_NC }}</td>
+            <td>{{ A_NC | round(2) }}</td>
             <td>{{ A_NCO | round(2) }}</td>
             <td>{{ anchor.C_a1 }}</td>
             <td>1.0</td>
@@ -224,7 +224,7 @@
             <td>1.0</td>
             <td>{{ N_b | round(2) }}</td>
             <td>{{ phi_Ncbg | round(2) }}</td>
-            <td>{{ anchor.N_ug }}</td>
+            <td>{{ N_ug | round(1) }}</td>
             <td>{{ beta_N2 | round(2) }}</td>
             <td class="{% if beta_N2 < 1 %}ok{% else %}not-ok{% endif %}">
                 {% if beta_N2 < 1 %} OK {% else %} NOT OK {% endif %}
@@ -278,7 +278,7 @@
             <td>1.0</td>
             <td>{{ N_p5 }}</td>
             <td>{{ phi_Npn | round(2) }}</td>
-            <td>{{ anchor.N_ua }}</td>
+            <td>{{ N_ua | round(1) }}</td>
             <td>{{ beta_N3 | round(2) }}</td>
             <td class="{% if beta_N3 < 1 %}ok{% else %}not-ok{% endif %}">
                 {% if beta_N3 < 1 %} OK {% else %} NOT OK {% endif %}
@@ -352,7 +352,7 @@
             <td>{{ A_seN }}</td>
             <td>500</td>
             <td>{{ phi_Vsa | round(2) }}</td>
-            <td>{{ anchor.V_ua }}</td>
+            <td>{{ V_ua | round(1) }}</td>
             <td>{{ beta_V1 | round(2) }}</td>
             <td class="{% if beta_V1 < 1 %}ok{% else %}not-ok{% endif %}">
                 {% if beta_V1 < 1 %} OK {% else %} NOT OK {% endif %}
@@ -454,14 +454,14 @@
     <tbody>
         <tr>
             <td>0.7</td>
-            <td>{{ anchor.A_VC }}</td>
-            <td>{{ A_VCO | round(2) }}</td>
+            <td>{{ A_VC | round(1) }}</td>
+            <td>{{ A_VCO | round(1) }}</td>
             <td>{{ anchor.C_a1 }}</td>
             <td>–</td>
             <td>
                 {% if anchor.clump_type == "U Clump" or anchor.clump_type == "L Clump Front" %}
                     –
-                {% elif anchor.clump_type == "Box Clump" %}
+                {% elif anchor.clump_type == "Box Clump" or anchor.clump_type == "L Clump Top" %}
                     {{ anchor.h_a }}
                 {% endif %}
             </td>
@@ -489,7 +489,7 @@
             <td>{{ l_e }}</td>
             <td>{{ V_b | round(2) }}</td>
             <td>{{ phi_Vcbg | round(2) }}</td>
-            <td>{{ anchor.V_ug }}</td>
+            <td>{{ V_ug | round(1) }}</td>
             <td>{{ beta_V2 | round(2) }}</td>
             <td class="{% if beta_V2 < 1 %}ok{% else %}not-ok{% endif %}">
                 {% if beta_V2 < 1 %} OK {% else %} NOT OK {% endif %}
@@ -542,7 +542,7 @@
             <td>2</td>
             <td>{{ (phi_Ncbg / 0.65) | round(2) }}</td>
             <td>{{ phi_Vcp | round(2) }}</td>
-            <td>{{ anchor.V_ug }}</td>
+            <td>{{ V_ug | round(1) }}</td>
             <td>{{ beta_V3 | round(2) }}</td>
             <td class="{% if beta_V3 < 1 %}ok{% else %}not-ok{% endif %}">
                 {% if beta_V3 < 1 %} OK {% else %} NOT OK {% endif %}
@@ -557,7 +557,7 @@
     <tbody>
         <tr>
             <td>
-                {% if ([beta_N1, beta_N2, beta_N3] | max) < 0.2 or ([beta_V1, beta_V2, beta_V3] | max) < 0.2 %}
+                {% if beta_N < 0.2 or beta_V < 0.2 %}
                 <i>β<sub>NV</sub> = (β<sub>N</sub>)<sup>ζ</sup> + (β<sub>V</sub>)<sup>ζ</sup> ≤ 1.0 &nbsp;&nbsp;&nbsp; (kN)</i>
                 {% else %}
                 <i>β<sub>NV</sub> = (β<sub>N</sub>)<sup>ζ</sup> + (β<sub>V</sub>)<sup>ζ</sup> ≤ 1.2 &nbsp;&nbsp;&nbsp; (kN)</i>
@@ -601,7 +601,7 @@
             <td>1.67</td>
             <td>{{ beta_NV | round(2) }}</td>
             <td>
-                {% if ([beta_N1, beta_N2, beta_N3] | max) < 0.2 or ([beta_V1, beta_V2, beta_V3] | max) < 0.2 %}
+                {% if beta_N < 0.2 or beta_V < 0.2 %}
                     <p class="{% if beta_NV < 1 %}ok{% else %}not-ok{% endif %}">{% if beta_NV < 1 %} OK {% else %} NOT OK {% endif %}</p>
                 {% else %}
                     <p class="{% if beta_NV < 1.2 %}ok{% else %}not-ok{% endif %}">{% if beta_NV < 1.2 %} OK {% else %} NOT OK {% endif %}</p>

@@ -4,13 +4,13 @@
         <tr>
             <td>Max. horizontal reaction force, F<sub>y</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Ry }} <i>kN</i></td>
+            <td>{{ design_Ry | round(1) }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
             <td>No. of bolt, n</td>
             <td>=</td>
-            <td>{{ anchor.thr_bolt_nos }} <i>Nos.</i></td>
+            <td>{{ thr_bolt_nos }} <i>Nos.</i></td>
             <td></td>
         </tr>
         <tr>
@@ -22,7 +22,7 @@
         <tr>
             <td>Max. vertical reaction force, F<sub>z</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Rz }} <i>kN</i></td>
+            <td>{{ design_Rz | round(1) }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
@@ -163,7 +163,7 @@
     <tbody>
         <tr>
             <td>0.75</td>
-            <td>{{ anchor.thr_bearing_lc }}</td>
+            <td>{{ thr_bearing_lc }}</td>
             <td>{{ anchor.fin_thk }}</td>
             <td>{{ anchor.thr_bolt_dia }}</td>
             <td>450</td>

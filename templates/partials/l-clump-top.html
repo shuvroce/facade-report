@@ -14,7 +14,7 @@
             </tr>
             <tr>
                 <td>Horizontal reaction, <i>R<sub>y</sub> (kN)</i></td>
-                <td>{{ anchor.reaction_Ry }}</td>
+                <td>{{ top.reaction_Ry }}</td>
                 <td>–</td>
                 <td>{{ (top.reaction_Ry * 1.6) | round(2) }}</td>
             </tr>
@@ -26,12 +26,6 @@
             </tr>
         </tbody>
     </table>
-
-    <!-- <p class="mt-1">Considered Design Load for clump (<i>Higher load for safety</i>) –</p>
-    <ul>
-        <li>Horizontal reaction, <i>R<sub>y</sub></i> = {{ anchor.design_Ry }} <i>kN</i></li>
-        <li>Vertical reaction, <i>R<sub>z</sub></i> = {{ anchor.design_Rz }} <i>kN</i></li>
-    </ul> -->
 </div>
 
 <p class="mt-2">Bracket Specification –</p>
@@ -43,9 +37,9 @@
                     <li>1 – {{ top.bp_length_N }} x {{ top.bp_width_B }} x {{ top.bp_thk }} mm – Base plate @ top (50 gr.)</li>
                     <li>{{ top.anchor_nos }} – M{{ top.anchor_dia }} x {{ top.embed_depth }}** Royal Bolt @ top (Grade 5.8 / or Equivalent)</li>
                     <li>1 – {{ front.bp_length_N }} x {{ front.bp_width_B }} x {{ front.bp_thk }} mm – Base plate @ front (50 gr.)</li>
-                    <li>2 – {{ front.fin_length }} x {{ front.fin_width }} x {{ front.fin_thk }} mm – Fin plate (50 gr.)</li>
+                    <li>2 – {{ fin_length }} x {{ fin_width }} x {{ front.fin_thk }} mm – Fin plate (50 gr.)</li>
                     <li>{{ front.anchor_nos }} – M{{ front.anchor_dia }} x {{ front.embed_depth }}** Royal Bolt @ front (Grade 5.8 / or Equivalent)</li>
-                    <li>{{ front.thr_bolt_nos }} – M{{ front.thr_bolt_dia }} x {{ front.thr_bolt_length }} Through Bolt (SS Grade A4-70 / or Equivalent)</li>
+                    <li>{{ thr_bolt_nos }} – M{{ front.thr_bolt_dia }} x {{ thr_bolt_length }} Through Bolt (SS Grade A4-70 / or Equivalent)</li>
                 </ul>
             </td>
             <td>
@@ -82,21 +76,84 @@
 </table>
 
 <p>From the equations of static equilibrium (wind; negative),</p>
-<table class="borderless fig__table width__100">
+<p><u>For horizontal force,</u></p>
+<table class="borderless ml-2">
     <tbody>
         <tr>
-            <td><img style="width: 160mm;" src="inputs/{{ loop_index }}-l-clump-forces.png"></td>
+            <td colspan="4">Σ M<sub>a</sub> ↶+ = 0 ⇒ B<sub>x</sub>(e<sub>f1</sub> + e<sub>f2</sub>) – R<sub>y</sub> × e<sub>f2</sub> = 0</td>
+        </tr>
+        <tr>
+            <td>Horizontal force in front anchors (B *), B<sub>x</sub> = ({{ design_Ry | round(1) }} × {{ e_f2 }}) / ({{ e_f1 + e_f2 }})</td>
+            <td>=</td>
+            <td>{{ Bx | round(1) }} <i>kN</i></td>
+            <td><i>; tension</i></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">Horizontal force in single bolt = ({{ Bx | round(1) }} / {{ front.anchor_nos }})</td>
+            <td>=</td>
+            <td>{{ (Bx / front.anchor_nos) | round(1) }} <i>kN</i></td>
+            <td><i>; {{ front.anchor_nos }} bolts</i></td>
+        </tr>
+        <tr>
+            <td colspan="4">Σ F<sub>x</sub> ←+ = 0 ⇒ A<sub>x</sub> + B<sub>x</sub> – R<sub>y</sub> = 0</td>
+        </tr>
+        <tr>
+            <td>Horizontal force in bottom anchors (A *), A<sub>x</sub> = ({{ design_Ry | round(1) }} – {{ Bx | round(1) }})</td>
+            <td>=</td>
+            <td>{{ Ax | round(1) }} <i>kN</i></td>
+            <td><i>; shear</i></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">Horizontal force in single bolt = ({{ Ax | round(1) }} / {{ top.anchor_nos }})</td>
+            <td>=</td>
+            <td>{{ (Ax / top.anchor_nos) | round(1) }} <i>kN</i></td>
+            <td><i>; {{ top.anchor_nos }} bolts</i></td>
         </tr>
     </tbody>
 </table>
-<!-- add automatic force calculation -->
-<table class="borderless">
+
+<p><u>For vertical force,</u></p>
+<table class="borderless ml-2">
     <tbody>
         <tr>
-            <td></td>
+            <td colspan="4">Σ M<sub>a</sub> ↶+ = 0 ⇒ B<sub>y</sub> × e<sub>t1</sub> – R<sub>z</sub>(e<sub>t1</sub> + e<sub>t2</sub>) = 0</td>
+        </tr>
+        <tr>
+            <td>Vertical force in front anchors (B *), B<sub>y</sub> = {{ design_Rz | round(1) }} × ({{ e_t1 + e_t2 }}) / {{ e_t1 }} </td>
+            <td>=</td>
+            <td>{{ By | round(1) }} <i>kN</i></td>
+            <td><i>; shear</i></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">Vertical force in single bolt = ({{ By | round(1) }} / {{ front.anchor_nos }})</td>
+            <td>=</td>
+            <td>{{ (By / front.anchor_nos) | round(1) }} <i>kN</i></td>
+            <td><i>; {{ front.anchor_nos }} bolts</i></td>
+        </tr>
+        <tr>
+            <td colspan="4">Σ F<sub>y</sub> ↑+ = 0 ⇒ A<sub>y</sub> + B<sub>y</sub> – R<sub>z</sub> = 0</td>
+        </tr>
+        <tr>
+            <td>Vertical force in bottom anchors (A *), A<sub>y</sub> = ({{ design_Rz | round(1) }} – {{ By | round(1) }})</td>
+            <td>=</td>
+            <td>{{ Ay | round(1) }} <i>kN</i></td>
+            <td><i>
+                {% if Ay < 1 %}
+                ; tension
+                {% else %}
+                ; compression
+                {% endif %}
+            </i></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">Vertical force in single bolt = ({{ Ay | round(1) }} / {{ top.anchor_nos }})</td>
+            <td>=</td>
+            <td>{{ (Ay / top.anchor_nos) | round(1) }} <i>kN</i></td>
+            <td><i>; {{ top.anchor_nos }} bolts</i></td>
         </tr>
     </tbody>
 </table>
+<p>For positive wind pressure, no tension force on front bolts and the plate is under axial compression.</p>
 
 <div class="page__break"></div>
 <h3>Design of Top Anchors (A*)</h3>

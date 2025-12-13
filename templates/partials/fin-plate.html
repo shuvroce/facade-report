@@ -4,7 +4,7 @@
         <tr>
             <td>Max. horizontal reaction force, R<sub>y</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Ry }} <i>kN</i></td>
+            <td>{{ design_Ry | round(1) }} <i>kN</i></td>
             <td rowspan="6">
                 {% if anchor.clump_type == "U Clump" %}
                     <img src="assets/images/u-fin-plate.png" class="fig__70">
@@ -21,22 +21,22 @@
         <tr>
             <td>Shear force on each plate, V<sub>h</sub></td>
             <td>=</td>
-            <td>{{ fin_Vh }} <i>kN</i></td>
+            <td>{{ fin_Vh | round(1) }} <i>kN</i></td>
         </tr>
         <tr>
             <td>Max. vertical reaction force, R<sub>z</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Rz }} <i>kN</i></td>
+            <td>{{ design_Rz | round(1) }} <i>kN</i></td>
         </tr>
         <tr>
             <td>Shear force on each plate, V<sub>v</sub></td>
             <td>=</td>
-            <td>{{ fin_Vv }} <i>kN</i></td>
+            <td>{{ fin_Vv | round(1) }} <i>kN</i></td>
         </tr>
         <tr>
             <td>Resultant shear force, <i>V<sub>u</sub> = √(V<sub>h</sub><sup>2</sup> + V<sub>v</sub><sup>2</sup>)</i></td>
             <td>=</td>
-            <td>{{ fin_Vu | round(2) }} <i>kN</i></td>
+            <td>{{ fin_Vu | round(1) }} <i>kN</i></td>
         </tr>
     </tbody>
 </table>
@@ -110,8 +110,8 @@
     <tbody>
         <tr>
             <td>0.9</td>
-            <td>{{ anchor.fin_width }}</td>
-            <td>{{ fin_Vv }}</td>
+            <td>{{ fin_width }}</td>
+            <td>{{ fin_Vv | round(2) }}</td>
             <td>{{ anchor.fin_e }}</td>
             <td>{{ fin_Mu | round(2) }}</td>
             <td>345</td>
@@ -153,9 +153,9 @@
         <tr>
             <td>1.0</td>
             <td>345</td>
-            <td>{{ anchor.fin_width }}</td>
+            <td>{{ fin_width }}</td>
             <td>{{ anchor.fin_thk }}</td>
-            <td>{{ anchor.fin_width * anchor.fin_thk }}</td>
+            <td>{{ fin_width * anchor.fin_thk }}</td>
             <td>{{ fin_shear_phi_Rn_yield | round(2) }}</td>
             <td>{{ fin_Vu | round(2) }}</td>
             <td class="{% if fin_shear_phi_Rn_yield > fin_Vu %}ok{% else %}not-ok{% endif %}">
@@ -194,9 +194,9 @@
         <tr>
             <td>0.75</td>
             <td>450</td>
-            <td>{{ anchor.fin_width }}</td>
+            <td>{{ fin_width }}</td>
             <td>{{ anchor.fin_thk }}</td>
-            <td>{{ anchor.thr_bolt_nos }}</td>
+            <td>{{ thr_bolt_nos }}</td>
             <td>{{ fin_dh }}</td>
             <td>{{ fin_rupture_Anv | round(1) }}</td>
             <td>{{ fin_shear_phi_Rn_rupture | round(1) }}</td>
@@ -347,12 +347,12 @@
             <td>0.75</td>
             <td>345</td>
             <td>450</td>
-            <td>{{ anchor.fin_bgv }}</td>
-            <td>{{ anchor.fin_bnt }}</td>
+            <td>{{ fin_bgv }}</td>
+            <td>{{ fin_bnt }}</td>
             <td>{{ anchor.fin_thk }}</td>
-            <td>{{ anchor.thr_bolt_nos }}</td>
+            <td>{{ thr_bolt_nos }}</td>
             <td>{{ fin_dh }}</td>
-            <td>{{ anchor.fin_bgv * anchor.fin_thk }}</td>
+            <td>{{ fin_bgv * anchor.fin_thk }}</td>
             <td>{{ fin_block_Anv | round(2) }}</td>
         </tr>
     </tbody>
@@ -392,7 +392,7 @@
         <tr>
             <td>Max. horizontal reaction force, F<sub>y</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Ry }} <i>kN</i></td>
+            <td>{{ design_Ry | round(1) }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
@@ -404,19 +404,19 @@
         <tr>
             <td class="pl-2">Tensile force on each plate weld, P</td>
             <td>=</td>
-            <td>{{ anchor.design_Ry / 2 }} <i>kN</i></td>
+            <td>{{ (design_Ry / 2) | round(1) }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
             <td class="pl-2">Length of single weld, d</td>
             <td>=</td>
-            <td>{{ anchor.fin_width }} <i>mm</i></td>
+            <td>{{ fin_width }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
             <td class="pl-2">Total Length of weld, <i>L = 2d</i></td>
             <td>=</td>
-            <td>{{ anchor.fin_width * 2 }} <i>mm</i></td>
+            <td>{{ fin_width * 2 }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
@@ -428,13 +428,13 @@
         <tr>
             <td>Max. vertical reaction force, F<sub>z</sub></td>
             <td>=</td>
-            <td>{{ anchor.design_Rz }} <i>kN</i></td>
+            <td>{{ design_Rz | round(1) }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
             <td class="pl-2">Shear force on each plate weld, V</td>
             <td>=</td>
-            <td>{{ anchor.design_Rz / 2 }} <i>kN</i></td>
+            <td>{{ (design_Rz / 2) | round(1) }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
@@ -452,13 +452,13 @@
         <tr>
             <td class="pl-2">Bending moment, M = V × e</td>
             <td>=</td>
-            <td>{{ ((anchor.design_Ry / 2) * (anchor.fin_e / 1000)) | round(2) }} <i>kN-m</i></td>
+            <td>{{ ((design_Rz / 2) * (anchor.fin_e / 1000)) | round(2) }} <i>kN-m</i></td>
             <td></td>
         </tr>
         <tr>
             <td class="pl-2">Section modulus of weld, <i>Z<sub>w</sub> = d<sup>2</sup> / 3</i></td>
             <td>=</td>
-            <td>{{ ((anchor.fin_width**2) / 3) | round(2) }} <i>mm<sup>2</sup></i></td>
+            <td>{{ ((fin_width**2) / 3) | round(2) }} <i>mm<sup>2</sup></i></td>
             <td><i>; For double line weld</i></td>
         </tr>
         <tr>
@@ -470,7 +470,7 @@
         <tr>
             <td>Resultant stress, <i>f<sub>R</sub> = √(f<sub>n</sub><sup>2</sup> + f<sub>v</sub><sup>2</sup> + f<sub>b</sub><sup>2</sup>)</i></td>
             <td>=</td>
-            <td>{{ weld_fR | round(2) }} <i>N/mm</i></td>
+            <td>{{ weld_fR | round(1) }} <i>N/mm</i></td>
             <td></td>
         </tr>
     </tbody>

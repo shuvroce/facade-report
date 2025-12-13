@@ -1,9 +1,12 @@
-{% if cat.connections %}
 {% for conn in cat.connections %}
-{% set R_yA = conn.design_fy / (conn.screw_nos / 2) %}
-{% set R_zA = conn.design_fz / (conn.screw_nos / 2) %}
-{% set R_yB = conn.design_fy / (conn.screw_nos / 2) %}
-{% set R_zB = conn.design_fz / (conn.screw_nos / 2) %}
+{% if conn.screw_dia %}
+{% set design_fy = conn.joint_fy * 1.6 %}
+{% set design_fz = conn.joint_fz * 1.4 %}
+
+{% set R_yA = design_fy / (conn.screw_nos / 2) %}
+{% set R_zA = design_fz / (conn.screw_nos / 2) %}
+{% set R_yB = design_fy / (conn.screw_nos / 2) %}
+{% set R_zB = design_fz / (conn.screw_nos / 2) %}
 {% set resultant_shear = (R_yB **2 + R_zB **2)** 0.5 %}
 
 {% set Pnv1 = 4.2 * (conn.t2**3 * conn.screw_dia)**0.5 * 207 %}
@@ -26,25 +29,19 @@
             <tr>
                 <th></th>
                 <th>SLS (D + W)</th>
-                <th>ULS (1.2D + 1.6 W)</th>
-                <th>
-                    <p>Design Load</p>
-                    <p><i>(Higher load for safety)</i></p>
-                </th>
+                <th>ULS (1.4D + 1.6 W)</th>
             </tr>
         </thead>
         <tbody>
             <tr>
                 <td>Wind load, <i>F<sub>y</sub> (kN)</i></td>
                 <td>{{ conn.joint_fy }}</td>
-                <td>{{ (conn.joint_fy * 1.6) | round(2) }}</td>
-                <td>{{ conn.design_fy }}</td>
+                <td>{{ design_fy | round(2) }}</td>
             </tr>
             <tr>
                 <td>Dead load, <i>F<sub>z</sub> (kN)</i></td>
                 <td>{{ conn.joint_fz }}</td>
-                <td>{{ (conn.joint_fz * 1.6) | round(2) }}</td>
-                <td>{{ conn.design_fz }}</td>
+                <td>{{ design_fz | round(2) }}</td>
             </tr>
         </tbody>
     </table>
@@ -392,5 +389,6 @@
     </table>
 </div>
 
-{% endfor %}
 {% endif %}
+{% endfor %}
+

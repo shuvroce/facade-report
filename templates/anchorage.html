@@ -1,5 +1,5 @@
-{% if cat.anchorage %}
 {% for anchor in cat.anchorage %}
+{% if anchor.anchor_dia %}
     {% set N_p5 = anchor.N_p5 | default(20, true) %}
     {% set h_a = anchor.h_a | default(1000, true) %}
 
@@ -19,6 +19,14 @@
         {% set N_ug = 0 %}
         {% set V_ua = design_Ry / anchor.anchor_nos %}
         {% set V_ug = V_ua * 2 %}
+        {% set bp_b = anchor.bp_b %}
+        {% set bp_n = (anchor.bp_width_B - 0.95 * bp_b) / 2 %}
+
+        {% set s1 = anchor.bp_length_N - 2 * 40 %}
+        {% set s2 = anchor.bp_width_B - 2 * 25 %}
+        {% set A_NC = (3 * anchor.embed_depth + s1) * (1.5 * anchor.embed_depth + s2 + ([1.5 * anchor.embed_depth, anchor.C_a1] | min)) %}
+        {% set A_VC = (3 * anchor.C_a1 + s1) * ([anchor.h_a, (1.5 * anchor.C_a1)] | min) %}
+        {% set bp_d = anchor.bp_width_B %}
 
     {% elif anchor.clump_type == "U Clump" %}
         {% set design_Ry = anchor.reaction_Ry * 1.6 %}
@@ -28,6 +36,11 @@
         {% set V_ua = design_Rz / anchor.anchor_nos %}
         {% set V_ug = V_ua * 2 %}
 
+        {% set s1 = anchor.bp_length_N - 2 * 40 %}
+        {% set s2 = anchor.bp_width_B - 2 * 40 %}
+        {% set A_NC = (3 * anchor.embed_depth + s1) * ([(3 * anchor.embed_depth + s2), (2 * anchor.C_a1 + s2)] | min) %}
+        {% set A_VC = (3 * anchor.C_a1 + s1) * (1.5 * anchor.C_a1) %}
+
     {% elif anchor.clump_type == "L Clump Top" %}
         {% set top = cat.anchorage[0] %}
         {% set front = cat.anchorage[1] %}
@@ -35,12 +48,41 @@
         {% set design_Ry = top.reaction_Ry * 1.6 %}
         {% set design_Rz = top.reaction_Rz * 1.4 %}
 
-
+        {% set e_f2 = (front.bp_width_B / 2) - 40 %}
+        {% set e_f1 = [((top.h_a / 2) - e_f2), ((front.bp_width_B / 2) - 40)] | min %}
+        {% set e_t2 = front.fin_e %}
+        {% if top.anchor_nos == 2 %}
+            {% set e_t1 = top.C_a1 %}
+        {% else %}
+            {% set s2 = top.bp_width_B - 2 * 40 %}
+            {% set e_t1 = top.C_a1 + s2 / 2 %}
+        {% endif %}
+        {% set Bx = (design_Ry * e_f2) / (e_f1 + e_f2) %}
+        {% set Ax = design_Ry - Bx %}
+        {% set By = (design_Rz * (e_t1 + e_t2)) / e_t1 %}
+        {% set Ay = design_Rz - By %}
         
         {% set N_ua = 0 %}
         {% set N_ug = 0 %}
-        {% set V_ua = design_Ry / top.anchor_nos %}
+        {% set V_ua = Ax / top.anchor_nos %}
         {% set V_ug = V_ua * 2 %}
+        
+        {% set bp_b = 0 %}
+        {% set bp_n = 0 %}
+        {% set fin_length = front.fin_e + 50 %}
+        {% set fin_width = front.bp_width_B %}
+        {% set thr_bolt_nos = 2 %}
+        {% set thr_bolt_length = 100 %}
+
+        {% set s1 = anchor.bp_length_N - 2 * 40 %}
+        {% if top.anchor_nos == 2 %}
+            {% set s2 = 0 %}
+        {% else %}
+            {% set s2 = anchor.bp_width_B - anchor.C_a1 - 40 %}
+        {% endif %}
+        {% set A_NC = (3 * anchor.embed_depth + s1) * (1.5 * anchor.embed_depth + s2 + ([1.5 * anchor.embed_depth, anchor.C_a1] | min)) %}
+        {% set A_VC = (3 * anchor.C_a1 + s1) * ([anchor.h_a, (1.5 * anchor.C_a1)] | min) %}
+        {% set bp_d = anchor.bp_width_B %}
 
     {% elif anchor.clump_type == "L Clump Front" %}
         {% set top = cat.anchorage[0] %}
@@ -49,30 +91,34 @@
         {% set design_Ry = top.reaction_Ry * 1.6 %}
         {% set design_Rz = top.reaction_Rz * 1.4 %}
 
+        {% set e_f2 = (front.bp_width_B / 2) - 40 %}
+        {% set e_f1 = [((top.h_a / 2) - e_f2), ((front.bp_width_B / 2) - 40)] | min %}
+        {% set e_t2 = front.fin_e %}
+        {% if top.anchor_nos == 2 %}
+            {% set e_t1 = top.C_a1 %}
+        {% else %}
+            {% set s2 = top.bp_width_B - 2 * 40 %}
+            {% set e_t1 = top.C_a1 + s2 / 2 %}
+        {% endif %}
+        {% set Bx = (design_Ry * e_f2) / (e_f1 + e_f2) %}
+        {% set Ax = design_Ry - Bx %}
+        {% set By = (design_Rz * (e_t1 + e_t2)) / e_t1 %}
+        {% set Ay = design_Rz - By %}
 
+        {% set N_ua = Bx / front.anchor_nos %}
+        {% set N_ug = N_ua * front.anchor_nos %}
+        {% set V_ua = By / front.anchor_nos %}
+        {% set V_ug = V_ua * front.anchor_nos %}
 
-        {% set N_ua = design_Ry / top.anchor_nos %}
-        {% set N_ug = N_ua * top.anchor_nos %}
-        {% set V_ua = design_Rz / top.anchor_nos %}
-        {% set V_ug = V_ua * 2 %}
+        {% set s1 = anchor.bp_length_N - 2 * 40 %}
+        {% set s2 = 0 %}
+        {% set A_NC = (3 * anchor.embed_depth + s1) * ([(3 * anchor.embed_depth + s2), (2 * anchor.C_a1 + s2)] | min) %}
+        {% set A_VC = (3 * anchor.C_a1 + s1) * (1.5 * anchor.C_a1) %}
     {% endif %}
 
 
     {# ======================= Basic Calculation ==================== #}
-    {% if anchor.clump_type == "Box Clump" or anchor.clump_type == "L Clump Top" %}
-        {% set s1 = anchor.bp_length_N - 2 * 40 %}
-        {% set s2 = anchor.bp_width_B - 2 * 25 %}
-        {% set A_NC = (3 * anchor.embed_depth + s1) * (1.5 * anchor.embed_depth + s2 + ([1.5 * anchor.embed_depth, anchor.C_a1] | min)) %}
-        {% set A_VC = (3 * anchor.C_a1 + s1) * ([anchor.h_a, 1.5 * anchor.C_a1] | min) %}
-        {% set bp_b = anchor.bp_b %}
-        {% set bp_d = bp_width_B %}
-    
-    {% elif anchor.clump_type == "U Clump" or anchor.clump_type == "L Clump Front" %}
-        {% set s1 = anchor.bp_length_N - 2 * 40 %}
-        {% set s2 = anchor.bp_width_B - 2 * 40 %}
-        {% set A_NC = (3 * anchor.embed_depth + s1) * ([(3 * anchor.embed_depth + s2), (2 * anchor.C_a1 + s2)] | min) %}
-        {% set A_VC = (3 * anchor.C_a1 + s1) * anchor.C_a1 %}
-
+    {% if anchor.clump_type == "U Clump" or anchor.clump_type == "L Clump Front" %}
         {% if anchor.thr_bolt_dia == 10 %}
             {% set thr_bolt_AseN = 58.0 %}
         {% elif anchor.thr_bolt_dia == 12 %}
@@ -117,7 +163,7 @@
         {# Fin weld #}
         {% set weld_fn = (design_Ry * 1000 / 2) / (fin_width * 2) %}
         {% set weld_fv = (design_Rz * 1000 / 2) / (fin_width * 2) %}
-        {% set weld_fb = ((design_Rz * 1000) * anchor.fin_e) / ((fin_width**2) / 3) %}
+        {% set weld_fb = ((design_Rz * 1000 / 2) * anchor.fin_e) / ((fin_width**2) / 3) %}
         {% set weld_fR = (weld_fn**2 + weld_fv**2 + weld_fb**2)**0.5 %}
 
         {# Base Plate tension #}
@@ -163,7 +209,6 @@
     
     {% if anchor.clump_type == "Box Clump" or anchor.clump_type == "L Clump Top" %}
         {% set bp_Pu = design_Rz %}
-        {% set bp_n = (anchor.bp_width_B - 0.95 * bp_b) / 2 %}
     {% elif anchor.clump_type == "U Clump" %}
         {% set bp_Pu = design_Ry %}
         {% set bp_n = (anchor.bp_width_B - 0.8 * bp_b) / 2 %}
@@ -193,5 +238,6 @@
         {% include "partials/l-clump-front.html" %}
     {% endif %}
 
-{% endfor %}
 {% endif %}
+{% endfor %}
+
