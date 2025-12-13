@@ -1,3 +1,4 @@
+{% if cat.connections %}
 {% for conn in cat.connections %}
 {% if conn.screw_dia %}
 {% set design_fy = conn.joint_fy * 1.6 %}
@@ -391,4 +392,5 @@
 
 {% endif %}
 {% endfor %}
+{% endif %}
 
