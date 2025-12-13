@@ -1457,9 +1457,15 @@ document.addEventListener('DOMContentLoaded', () => {
                 const data = await response.json();
 
                 if (data.success) {
-                    showNotification(`✓ Inputs directory set`, 'success');
-                    updateInputsDirDisplay(data.directory);
-                } else {
+                    // Always fetch the current directory from backend to ensure we have the latest
+                    const dirResponse = await fetch('/get_inputs_dir');
+                    const dirData = await dirResponse.json();
+                    
+                    if (dirData.success && dirData.directory) {
+                        updateInputsDirDisplay(dirData.directory);
+                        showNotification(`✓ Inputs directory set`, 'success');
+                    }
+                } else if (data.error) {
                     showNotification(`✗ Error: ${data.error}`, 'error');
                 }
             } catch (error) {
