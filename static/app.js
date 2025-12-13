@@ -149,18 +149,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Glass Unit Configuration ---
     const glassFields = {
-        'sgu': ['length', 'width', 'thickness', 'grade', 'wind_load', 'support_type', 'nfl', 'gtf', 'load_x_area2', 'def'],
+        'sgu': ['length', 'width', 'thickness', 'grade', 'wind_load', 'support_type', 'nfl', 'load_x_area2', 'def'],
         'dgu': [
             'length', 'width', 'thickness1', 'gap', 'thickness2', 'grade1', 'grade2', 'wind_load', 'support_type', 
-            'nfl1', 'nfl2', 'gtf1', 'gtf2', 'load1_x_area2', 'load2_x_area2', 'def1', 'def2'
+            'nfl1', 'nfl2', 'load1_x_area2', 'load2_x_area2', 'def1', 'def2'
         ],
         'lgu': [
             'length', 'width', 'thickness1', 'thickness_inner', 'thickness2', 'chart_thickness', 'grade', 'wind_load',
-            'support_type', 'nfl', 'gtf', 'load_x_area2', 'def'
+            'support_type', 'nfl', 'load_x_area2', 'def'
         ],
         'ldgu': [
             'length', 'width', 'thickness1_1', 'thickness_inner', 'thickness1_2', 'chart_thickness', 'gap', 'thickness2',
-            'grade1', 'grade2', 'wind_load', 'support_type', 'nfl1', 'nfl2', 'gtf1', 'gtf2', 'load1_x_area2', 'load2_x_area2', 'def1', 'def2'
+            'grade1', 'grade2', 'wind_load', 'support_type', 'nfl1', 'nfl2', 'load1_x_area2', 'load2_x_area2', 'def1', 'def2'
         ]
     };
 
