@@ -1236,7 +1236,7 @@ document.addEventListener('DOMContentLoaded', () => {
             setTimeout(() => {
                 if (figureCheckingStatus) figureCheckingStatus.style.display = 'none';
                 console.error('Error checking figures:', error);
-                figureStatusList.innerHTML = `<li style="padding: 1rem; color: #ef4444;">Error checking figures: ${error.message}</li>`;
+                figureStatusList.innerHTML = `<li style="padding: 1rem; color: #ef4444; font-size: 0.8rem;">Error checking figures: ${error.message}</li>`;
                 figureStatusSummary.innerHTML = '';
             }, remainingTime);
         });

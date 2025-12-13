@@ -208,8 +208,8 @@ def check_figures():
     # Check existence of all figures
     required_figures = check_figure_existence(required_figures)
     
-    inputs_dir = get_inputs_dir()
-    print(f"\nChecking {len(required_figures)} figures in: {inputs_dir}")
+    # inputs_dir = get_inputs_dir()
+    # print(f"\nChecking {len(required_figures)} figures in: {inputs_dir}")
     
     return jsonify({"success": True, "figures": required_figures})
 
@@ -255,7 +255,6 @@ def get_inputs_directory():
 
 @app.route("/open_folder_picker", methods=["GET"])
 def open_folder_picker():
-    """Open native folder picker dialog and return selected path"""
     if not TKINTER_AVAILABLE:
         return {
             "success": False,
