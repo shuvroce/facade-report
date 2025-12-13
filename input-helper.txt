@@ -1,4 +1,8 @@
-Input figure naming guide (place files under templates/inputs or the resolved inputs folder used by the report)
+* Keep screw diameter empty to remove connection calculation but keeping in summary
+* Keep anchor diameter empty to remove anchorage calculation but keeping in summary
+
+
+## Input figure naming guide (place files under templates/inputs or the resolved inputs folder used by the report)
 
 Manual Profile Input
 - <profile_name>.png
@@ -21,11 +25,8 @@ Category-level figures
 - SAP/structural figures tied to category index (all currently in typ-frame.html):
   - <category_index>-sap-model.png
   - <category_index>-sap-relese.png
-  - <category_index>-sap-support1.png
-  - <category_index>-sap-support2.png
   - <category_index>-sap-dead-load.png
   - <category_index>-sap-wind-load.png
-  - <category_index>-sap-load-combo.png
   - <category_index>-sap-bmd.png
   - <category_index>-sap-sfd.png
   - <category_index>-sap-mul-max-moment.png

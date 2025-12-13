@@ -223,8 +223,8 @@ alum_profiles_data:
     plastic_x: 27.6
     plastic_y: 48.8
     F_y: 110
-    Mn_yield: 5.81
-    Mn_lb: 5.24
+    Mn_yield: 5.17
+    Mn_lb: 4.9
   
   - profile_name: T 135x67x2.5
     web_length: 135

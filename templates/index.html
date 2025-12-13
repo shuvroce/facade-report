@@ -39,6 +39,7 @@
                     </svg>
                 </button>
                 <div class="action_btn-box">
+                    <!-- <button type="button" class="action_btn" id="select-inputs-dir-btn">Select Inputs Directory</button> -->
                     <button class="action_btn" id="generate-report-btn">Create Report</button>
                 </div>
             </div>
@@ -320,9 +321,13 @@
                     <div class="status_heading">
                         <h3>Figures</h3>
                         <button class="small-btn" id="refresh-figures-btn">↻</button>
+                        <button class="small-btn" id="select-inputs-dir-btn">+</button>
                         <span id="figure-checking-status" style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 0.5rem; display: none;">Checking...</span>
                     </div>
                     <button class="small-btn help-btn" id="add-figures-btn">?</button>
+                </div>
+                <div id="inputs-dir-display" class="status-summary">
+                    <strong>Inputs Dir:</strong> <span id="inputs-dir-path-display">Default</span>
                 </div>
                 <div id="figure-status-summary" class="status-summary"></div>
             </div>

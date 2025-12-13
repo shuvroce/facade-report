@@ -1,15 +1,29 @@
 import os
 import yaml
 import tempfile
-from flask import Flask, render_template, request, send_file, jsonify
+from flask import Flask, render_template, request, send_file, jsonify, session
 from report import generate_report_from_data, load_profile_data
+try:
+    from tkinter import Tk
+    from tkinter.filedialog import askdirectory
+    TKINTER_AVAILABLE = True
+except ImportError:
+    TKINTER_AVAILABLE = False
 
 app = Flask(__name__)
+app.secret_key = 'facade_report_secret_key'
 
 # Directory paths
 BASE_DIR = os.path.dirname(__file__)
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
-INPUTS_DIR = os.path.join(TEMPLATE_DIR, "inputs")
+DEFAULT_INPUTS_DIR = os.path.join(TEMPLATE_DIR, "inputs")
+
+# Get INPUTS_DIR from session or use default
+def get_inputs_dir():
+    return session.get('inputs_dir', DEFAULT_INPUTS_DIR)
+
+def set_inputs_dir(directory):
+    session['inputs_dir'] = directory
 
 
 # UTILITY FUNCTIONS
@@ -83,8 +97,9 @@ def get_rfem_figures(category_index, glass_index):
     ]
 
 def check_figure_existence(figures):
+    inputs_dir = get_inputs_dir()
     for fig in figures:
-        fig_path = os.path.join(INPUTS_DIR, fig["name"])
+        fig_path = os.path.join(inputs_dir, fig["name"])
         fig["exists"] = os.path.isfile(fig_path)
     
     return figures
@@ -192,7 +207,8 @@ def check_figures():
     # Check existence of all figures
     required_figures = check_figure_existence(required_figures)
     
-    print(f"\nChecking {len(required_figures)} figures in: {INPUTS_DIR}")
+    inputs_dir = get_inputs_dir()
+    print(f"\nChecking {len(required_figures)} figures in: {inputs_dir}")
     
     return jsonify({"success": True, "figures": required_figures})
 
@@ -205,6 +221,87 @@ def input_helper():
         return send_file(helper_path, mimetype="text/plain")
     else:
         return "Input helper file not found", 404
+
+
+@app.route("/set_inputs_dir", methods=["POST"])
+def set_inputs_directory():
+    """Set the inputs directory from user selection"""
+    if not request.json or "directory" not in request.json:
+        return {"success": False, "error": "Missing directory path"}, 400
+    
+    directory = request.json["directory"]
+    
+    # Validate that the directory exists
+    if not os.path.isdir(directory):
+        return {"success": False, "error": f"Directory does not exist: {directory}"}, 400
+    
+    # Set the directory in session
+    set_inputs_dir(directory)
+    
+    return {"success": True, "directory": directory, "message": "Inputs directory set successfully"}
+
+
+@app.route("/get_inputs_dir", methods=["GET"])
+def get_inputs_directory():
+    """Get the current inputs directory"""
+    current_dir = get_inputs_dir()
+    return {
+        "success": True,
+        "directory": current_dir,
+        "is_default": current_dir == DEFAULT_INPUTS_DIR
+    }
+
+
+@app.route("/open_folder_picker", methods=["GET"])
+def open_folder_picker():
+    """Open native folder picker dialog and return selected path"""
+    if not TKINTER_AVAILABLE:
+        return {
+            "success": False,
+            "error": "Folder picker not available on this system"
+        }, 400
+    
+    try:
+        # Hide the tkinter root window
+        root = Tk()
+        root.withdraw()
+        root.attributes('-topmost', True)
+        
+        # Open folder picker dialog
+        selected_dir = askdirectory(
+            title="Select Inputs Directory",
+            mustexist=True
+        )
+        
+        root.destroy()
+        
+        if not selected_dir:
+            return {
+                "success": False,
+                "error": "No folder selected"
+            }, 400
+        
+        # Validate directory exists
+        if not os.path.isdir(selected_dir):
+            return {
+                "success": False,
+                "error": f"Selected folder does not exist: {selected_dir}"
+            }, 400
+        
+        # Set the directory in session
+        set_inputs_dir(selected_dir)
+        
+        return {
+            "success": True,
+            "directory": selected_dir,
+            "message": "Inputs directory set successfully"
+        }
+    
+    except Exception as e:
+        return {
+            "success": False,
+            "error": f"Error opening folder picker: {str(e)}"
+        }, 500
 
 
 # APPLICATION ENTRY POINT

@@ -1430,4 +1430,60 @@ document.addEventListener('DOMContentLoaded', () => {
             hideInputHelperModal();
         }
     });
+
+    // ========================================================================
+    // 11. INPUTS DIRECTORY SELECTION
+    // ========================================================================
+
+    const selectInputsDirBtn = document.getElementById('select-inputs-dir-btn');
+    const inputsDirPathDisplay = document.getElementById('inputs-dir-path-display');
+
+    /**
+     * Update the displayed inputs directory path
+     */
+    function updateInputsDirDisplay(dirPath) {
+        if (inputsDirPathDisplay) {
+            inputsDirPathDisplay.textContent = dirPath;
+            inputsDirPathDisplay.title = dirPath;  // Show full path on hover
+        }
+    }
+
+    if (selectInputsDirBtn) {
+        selectInputsDirBtn.addEventListener('click', async (e) => {
+            e.preventDefault();
+            
+            try {
+                const response = await fetch('/open_folder_picker');
+                const data = await response.json();
+
+                if (data.success) {
+                    showNotification(`✓ Inputs directory set`, 'success');
+                    updateInputsDirDisplay(data.directory);
+                } else {
+                    showNotification(`✗ Error: ${data.error}`, 'error');
+                }
+            } catch (error) {
+                showNotification(`✗ Failed to open folder picker: ${error.message}`, 'error');
+            }
+        });
+    }
+
+    // Load current inputs directory on page load
+    async function loadCurrentInputsDir() {
+        try {
+            const response = await fetch('/get_inputs_dir');
+            const data = await response.json();
+            
+            if (data.success) {
+                updateInputsDirDisplay(data.directory);
+                if (!data.is_default) {
+                    showNotification(`Using inputs directory: ${data.directory}`, 'info');
+                }
+            }
+        } catch (error) {
+            console.log('Could not load inputs directory:', error);
+        }
+    }
+
+    loadCurrentInputsDir();
 });
