@@ -48,6 +48,11 @@
     --shadow-nav: rgba(0, 0, 0, 0.1);
     --shadow-container: rgba(0, 0, 0, 0.08);
 
+    /* Scrollbar Colors */
+    --scrollbar-track: #e6e6e6;
+    --scrollbar-thumb: #c1c1c1;
+    --scrollbar-thumb-hover: #a0a0a0;
+
     /* Accent Colors */
     --btn-primary: #28a745;
     --btn-primary-hover: #218838;
@@ -61,7 +66,7 @@
 /* Dark Theme Colors */
 body.dark-theme {
     /* Dark Theme - Background Colors */
-    --bg-body: #1a1a1a;
+    --bg-body: #0a0a0a;
     --bg-primary: #202020;
     --bg-secondary: #242424;
     --bg-input: #303030;
@@ -87,6 +92,11 @@ body.dark-theme {
     /* Dark Theme - Shadow Colors */
     --shadow-nav: rgba(0, 0, 0, 0.3);
     --shadow-container: rgba(0, 0, 0, 0.2);
+
+    /* Dark Theme - Scrollbar Colors */
+    --scrollbar-track: #131313;
+    --scrollbar-thumb: #3f3f3f;
+    --scrollbar-thumb-hover: #565656;
 
     /* Dark Theme - Accent Colors */
     --btn-primary: #2fa759;
@@ -126,6 +136,31 @@ body {
     background-color: var(--bg-body);
     color: var(--text-primary);
     transition: var(--transition-bg);
+}
+
+/* Custom scrollbars that follow light/dark theme */
+* {
+    scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    scrollbar-width: thin;
+}
+
+*::-webkit-scrollbar {
+    width: 12px;
+    height: 12px;
+}
+
+*::-webkit-scrollbar-track {
+    background: var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb {
+    background-color: var(--scrollbar-thumb);
+    border-radius: 8px;
+    border: 2px solid var(--scrollbar-track);
+}
+
+*::-webkit-scrollbar-thumb:hover {
+    background-color: var(--scrollbar-thumb-hover);
 }
 
 
@@ -216,7 +251,7 @@ nav {
     font-size: 14px;
     font-weight: bold;
     color: var(--text-secondary);
-    transition: color 0.3s;
+    transition: color 0.2s;
     outline: none;
 }
 
@@ -521,7 +556,7 @@ summary {
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.3s ease, var(--transition-border);
+    transition: all 0.2s ease, var(--transition-border);
     font-size: 18px;
 }
 
@@ -538,7 +573,7 @@ summary {
     stroke-width: 1.8;
     stroke-linecap: round;
     stroke-linejoin: round;
-    transition: stroke 0.3s ease, fill 0.3s ease;
+    transition: stroke 0.2s ease, fill 0.2s ease;
 }
 
 .theme-icon.moon {
@@ -580,7 +615,7 @@ summary {
     display: flex;
     flex-direction: column;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
-    animation: modalSlideDown 0.3s ease;
+    animation: modalSlideDown 0.2s ease;
     transition: var(--transition-bg), var(--transition-border);
 }
 
@@ -640,7 +675,7 @@ summary {
 
 /* ================ 6. FIGURE STATUS PANEL ================ */
 .status_area {
-    width: 260px;
+    width: 265px;
     background: var(--bg-code);
     border: 1px solid var(--border-primary);
     border-radius: 8px;
