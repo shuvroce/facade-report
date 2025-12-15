@@ -208,9 +208,6 @@ def check_figures():
     # Check existence of all figures
     required_figures = check_figure_existence(required_figures)
     
-    # inputs_dir = get_inputs_dir()
-    # print(f"\nChecking {len(required_figures)} figures in: {inputs_dir}")
-    
     return jsonify({"success": True, "figures": required_figures})
 
 

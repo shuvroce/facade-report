@@ -15,7 +15,6 @@ CSS_PATH = os.path.join(TEMPLATE_DIR, "assets", "css", "report.css")
 
 
 def load_profile_data(profile_yaml_path=None, template_dir=None):
-    """Load the shared profile.yaml data once so callers stay consistent."""
     if profile_yaml_path is None:
         base_template_dir = template_dir or TEMPLATE_DIR
         profile_yaml_path = os.path.join(base_template_dir, "assets", "profile.yaml")

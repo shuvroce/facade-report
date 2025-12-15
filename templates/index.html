@@ -39,7 +39,6 @@
                     </svg>
                 </button>
                 <div class="action_btn-box">
-                    <!-- <button type="button" class="action_btn" id="select-inputs-dir-btn">Select Inputs Directory</button> -->
                     <button class="action_btn" id="generate-report-btn">Create Report</button>
                 </div>
             </div>
@@ -118,13 +117,8 @@
                                     <option value="0">GCpi 0.0 (Open)</option>
                                 </select>
                                 <input type="number" step="0.1" name="wind.C_pl" placeholder="External Leeward Pressure Coefficient, Cpl" value="0.5">
-                                <!-- <input type="number" step="0.1" name="wind.K_h" placeholder="Velocity Pressure Coefficient at H, Kh"> -->
                                 <input type="number" step="0.1" name="wind.q_zk" placeholder="Velocity Pressure (in terms of Kz.Kzt), qz">
                                 <input type="number" step="0.1" name="wind.K_ht" placeholder="Topographic Factor at H, Kht" value="1.0">
-                                <!-- <input type="number" step="0.1" name="wind.q_h" placeholder="Velocity pressure at H, qh"> -->
-                                <!-- <input type="number" step="0.1" name="wind.int_pressure" placeholder="Internal Pressure, Phi (kPa)"> -->
-                                <!-- <input type="number" step="0.1" name="wind.leeward_pressure" placeholder="Leeward Pressure, Phl (kPa)"> -->
-                                <!-- <input type="number" step="0.1" name="wind.sidewall_pressure" placeholder="Sidewall Pressure, Phs (kPa)"> -->
                                 <select name="wind.b_rigidity">
                                     <option value="Rigid">Rigid</option>
                                     <option value="Flexible">Flexible</option>
@@ -346,7 +340,7 @@
     <div id="input-helper-modal" class="modal">
         <div class="modal-content">
             <div class="modal-header">
-                <h3>Input Figure Naming Guide</h3>
+                <h3>Input Guide</h3>
                 <span class="close-modal" id="close-input-helper">&times;</span>
             </div>
             <div class="modal-body">

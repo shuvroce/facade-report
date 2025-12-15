@@ -1,28 +1,6 @@
-/**
- * ============================================================================
- * FACADE REPORT GENERATOR - MAIN APPLICATION SCRIPT
- * Last Updated: December 10, 2025
- * ============================================================================
- * 
- * TABLE OF CONTENTS:
- * 1. Theme Management
- * 2. Tab Navigation System
- * 3. Configuration & Constants (Profile Fields, Placeholders)
- * 4. Dynamic Form Field Management
- * 5. Dynamic List Management
- * 6. YAML Operations (Import, Generate, Download)
- * 7. Report Generation
- * 8. Figure Status Checker
- * 9. Input Helper Modal
- * 10. Initialization
- */
-
 document.addEventListener('DOMContentLoaded', () => {
     
-    // ========================================================================
     // 1. THEME MANAGEMENT
-    // ========================================================================
-    
     const themeToggle = document.getElementById('theme-toggle');
     const sunIcon = document.getElementById('theme-icon-sun');
     const moonIcon = document.getElementById('theme-icon-moon');
@@ -54,10 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     
-    // ========================================================================
     // 2. TAB NAVIGATION SYSTEM
-    // ========================================================================
-    
     const tabs = document.querySelectorAll('.tab_btn');
     const all_content = document.querySelectorAll('.content');
     const line = document.querySelector('.line');
@@ -90,10 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ========================================================================
     // 3. CONFIGURATION & CONSTANTS
-    // ========================================================================
-    
     // --- Aluminum Profile Configuration ---
     const alumFields = {
         'Manual': [
@@ -270,10 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     
     
-    // ========================================================================
     // 4. DYNAMIC FORM FIELD MANAGEMENT
-    // ========================================================================
-    
     /**
      * Update aluminum profile fields based on selected type
      * @param {HTMLElement} alumItem - The aluminum profile item container
@@ -436,10 +405,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
-    // ========================================================================
     // 5. DYNAMIC LIST MANAGEMENT
-    // ========================================================================
-
     /**
      * Setup event handlers for nested add buttons within a category
      * @param {HTMLElement} newElement - The newly created category element
@@ -555,10 +521,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     
-    // ========================================================================
     // 6. YAML OPERATIONS (IMPORT, GENERATE, DOWNLOAD)
-    // ========================================================================
-    
     // --- Initialization & DOM References ---
     const form = document.getElementById('yaml-form');
     
@@ -801,7 +764,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // --- YAML Generation & Export ---
-    
     /**
      * Extract all form data into a structured object
      * @param {HTMLFormElement} form - The form element
@@ -971,10 +933,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     
-    // ========================================================================
-    // 7. REPORT GENERATION
-    // ========================================================================
-    
+    // 7. REPORT GENERATION    
     // Event: Generate Report button
     reportBtn.addEventListener('click', () => {
         const formData = getFormData(form);
@@ -1066,10 +1025,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// ============================================================================
 // 8. FIGURE STATUS CHECKER
-// ============================================================================
-
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('yaml-form');
     const checkFiguresBtn = document.getElementById('check-figures-btn');
@@ -1360,10 +1316,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }, 2000);
 
 
-    // ========================================================================
-    // 9. INPUT HELPER MODAL
-    // ========================================================================
-    
+    // 9. INPUT HELPER MODAL    
     const addFiguresBtn = document.getElementById('add-figures-btn');
     const inputHelperModal = document.getElementById('input-helper-modal');
     const closeInputHelper = document.getElementById('close-input-helper');
@@ -1431,10 +1384,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // ========================================================================
     // 11. INPUTS DIRECTORY SELECTION
-    // ========================================================================
-
     const selectInputsDirBtn = document.getElementById('select-inputs-dir-btn');
     const inputsDirPathDisplay = document.getElementById('inputs-dir-path-display');
 
