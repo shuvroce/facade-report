@@ -187,7 +187,7 @@ nav {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 2rem;
+    padding: 1rem 1.5rem;
 }
 
 .form-header {
@@ -251,8 +251,29 @@ nav {
     font-size: 14px;
     font-weight: bold;
     color: var(--text-secondary);
-    transition: color 0.2s;
+    transition: color 0.3s;
     outline: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
+}
+
+.tab_btn .tab-icon {
+    width: 16px;
+    height: 16px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.tab_btn .tab-icon.filled {
+    fill: currentColor;
+}
+
+.tab_btn .tab-label {
+    line-height: 1;
 }
 
 .tab_btn.active {

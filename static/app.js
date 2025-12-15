@@ -39,10 +39,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initialize active tab indicator
     const activeTab = document.querySelector('.tab_btn.active');
-    if (activeTab && line) {
-        line.style.width = `${activeTab.offsetWidth}px`;
-        line.style.left = `${activeTab.offsetLeft}px`;
-    }
+    const positionLine = (targetTab) => {
+        if (!line || !targetTab) return;
+        line.style.width = `${targetTab.offsetWidth}px`;
+        line.style.left = `${targetTab.offsetLeft}px`;
+    };
+
+    positionLine(activeTab);
 
     // Tab click handlers
     tabs.forEach((tab, index) => {
@@ -52,10 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
             tab.classList.add('active');
 
             // Update indicator line
-            if (line) {
-                line.style.width = `${e.target.offsetWidth}px`;
-                line.style.left = `${e.target.offsetLeft}px`;
-            }
+            positionLine(tab);
 
             // Show corresponding content
             all_content.forEach(content => content.classList.remove('active'));
@@ -64,6 +64,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Keep indicator aligned on resize
+    window.addEventListener('resize', () => positionLine(document.querySelector('.tab_btn.active')));
 
     // 3. CONFIGURATION & CONSTANTS
     // --- Aluminum Profile Configuration ---
