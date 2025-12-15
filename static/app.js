@@ -41,8 +41,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const activeTab = document.querySelector('.tab_btn.active');
     const positionLine = (targetTab) => {
         if (!line || !targetTab) return;
-        line.style.width = `${targetTab.offsetWidth}px`;
-        line.style.left = `${targetTab.offsetLeft}px`;
+        const shrink = 12; // tighten the underline a bit inside the tab
+        const width = Math.max(targetTab.offsetWidth - shrink, 24);
+        line.style.width = `${width}px`;
+        line.style.left = `${targetTab.offsetLeft + shrink / 2}px`;
     };
 
     positionLine(activeTab);
