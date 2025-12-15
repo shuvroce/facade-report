@@ -1323,20 +1323,20 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputHelperContent = document.getElementById('input-helper-content');
 
     /**
-     * Load input-helper.txt content from server
+     * Load input-helper.html content from server
      */
     async function loadInputHelperContent() {
         try {
-            const response = await fetch('/input-helper.txt');
+            const response = await fetch('/input-helper.html');
             if (response.ok) {
-                const text = await response.text();
-                inputHelperContent.textContent = text;
+                const html = await response.text();
+                inputHelperContent.innerHTML = html;
             } else {
                 inputHelperContent.textContent = 'Error loading input helper guide.';
             }
         } catch (error) {
             inputHelperContent.textContent = 'Error: Unable to fetch input helper guide.';
-            console.error('Error loading input-helper.txt:', error);
+            console.error('Error loading input-helper.html:', error);
         }
     }
 

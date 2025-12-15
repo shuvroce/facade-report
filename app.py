@@ -211,14 +211,21 @@ def check_figures():
     return jsonify({"success": True, "figures": required_figures})
 
 
-@app.route("/input-helper.txt")
-def input_helper():
-    helper_path = os.path.join(BASE_DIR, "input-helper.txt")
-    
+def _send_helper(filename, mimetype):
+    helper_path = os.path.join(BASE_DIR, filename)
     if os.path.isfile(helper_path):
-        return send_file(helper_path, mimetype="text/plain")
-    else:
-        return "Input helper file not found", 404
+        return send_file(helper_path, mimetype=mimetype)
+    return "Input helper file not found", 404
+
+
+@app.route("/input-helper.txt")
+def input_helper_txt():
+    return _send_helper("input-helper.txt", "text/plain")
+
+
+@app.route("/input-helper.html")
+def input_helper_html():
+    return _send_helper("input-helper.html", "text/html")
 
 
 @app.route("/set_inputs_dir", methods=["POST"])

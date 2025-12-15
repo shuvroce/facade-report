@@ -856,3 +856,99 @@ summary {
         transform: rotate(360deg);
     }
 }
+
+
+/* ================ 9. INPUT HELPER GUIDE ================ */
+
+/* Main helper card container */
+.helper-card {
+    /* max-width: 960px; */
+    margin: 0 auto;
+    background: var(--bg-primary);
+    /* border: 1px solid var(--border-primary); */
+    border-radius: 12px;
+    /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); */
+    /* padding: 16px; */
+    transition: var(--transition-bg), var(--transition-border);
+}
+
+.helper-card h2 {
+    margin: 24px 0 10px;
+    font-size: 1.1rem;
+    color: var(--text-heading);
+}
+
+.helper-card h3 {
+    margin: 16px 0 8px;
+    font-size: 1rem;
+    color: var(--text-secondary);
+}
+
+.helper-card p,
+.helper-card li {
+    list-style-type: disc;
+    line-height: 1.5;
+    font-size: 0.95rem;
+    color: var(--text-primary);
+}
+
+.helper-card ul {
+    padding-left: 24px;
+    margin: 8px 0 16px;
+}
+
+.helper-card table {
+    width: 100%;
+    border-collapse: collapse;
+    /* min-width: 480px; */
+    background: var(--bg-primary);
+    margin-bottom: 1rem;
+}
+
+.helper-card th,
+.helper-card td {
+    padding: 8px 10px;
+    /* border-bottom: 1px solid var(--border-primary); */
+    border: 1px solid var(--border-code);
+    text-align: left;
+    white-space: nowrap;
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    transition: var(--transition-bg), var(--transition-border);
+}
+
+.helper-card th {
+    background: var(--bg-secondary);
+    font-weight: 600;
+    font-size: 0.9rem;
+    /* color: var(--text-heading); */
+}
+
+/* Muted text styling */
+.helper-card .muted {
+    color: var(--text-secondary);
+}
+
+/* Inline code styling */
+.helper-card code {
+    background: var(--bg-code);
+    border: 1px solid var(--border-code);
+    border-radius: 6px;
+    padding: 2px 6px;
+    font-size: 0.9rem;
+    color: var(--text-code);
+    font-family: 'Courier New', monospace;
+    transition: var(--transition-bg), var(--transition-border);
+}
+
+/* Note styling */
+.helper-card .note {
+    margin-top: 8px;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+}
+
+.table__flex {
+    display: flex;
+    gap: 2rem;
+}

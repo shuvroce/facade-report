@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Input Helper</title>
+    <!-- Reuse main app styles when served standalone -->
+    <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+    <div class="helper-card">
+        <p class="muted">Quick reference for inputs, profiles, and required figure filenames.</p>
+
+        <ul>
+            <li>Leave screw diameter empty to skip connection calculation but keep it in the summary.</li>
+            <li>Leave anchor diameter empty to skip anchorage calculation but keep it in the summary.</li>
+        </ul>
+
+        <h2>Moment of Inertia (I<sub>x</sub>) &amp; Capacity of Pre-defined Profiles</h2>
+        <div class="">
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Profile</th>
+                            <th>Ix</th>
+                            <th>φMn</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>M 125x60x2.5</td><td>2304351.5</td><td>6.74</td><td>6.5</td></tr>
+                        <tr><td>M 125x60x3</td><td>2462171.3</td><td>7.37</td><td>7.2</td></tr>
+                        <tr><td>M 140x60x2.5</td><td>3065620.3</td><td>7.84</td><td>7.6</td></tr>
+                        <tr><td>M 135x67x4</td><td>4248985.4</td><td>11.98</td><td>12.2</td></tr>
+                        <tr><td>M 145x67x2.5</td><td>3558480.9</td><td>8.71</td><td>8.4</td></tr>
+                        <tr><td>M 145x67x3</td><td>3779820.3</td><td>9.51</td><td>9.3</td></tr>
+                        <tr><td>M 145x67x3.5</td><td>4165937.5</td><td>10.72</td><td>10.7</td></tr>
+                        <tr><td>M 145x80x3</td><td>4895650.5</td><td>12.0</td><td>12.7</td></tr>
+                        <tr><td>M 150x80x3</td><td>5316279.5</td><td>12.56</td><td>12.8</td></tr>
+                        <tr><td>M 160x80x8</td><td>11621446.9</td><td>28.11</td><td>29.1</td></tr>
+                        <tr><td>M 240x80x12</td><td>45475752.2</td><td>77.88</td><td>78.8</td></tr>
+                        <tr><td>M 145x90x3</td><td>5273615.7</td><td>12.81</td><td>13.2</td></tr>
+                        <tr><td>M 185x90x3</td><td>9489004.3</td><td>17.63</td><td>17.9</td></tr>
+                        <tr><td>M 200x72x3</td><td>10486070.6</td><td>16.8</td><td>17.1</td></tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Profile</th>
+                            <th>Ix</th>
+                            <th>φMn</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr><td>T 125x60x2.5</td><td>2323239.2</td><td>4.41</td><td>&mdash;</td></tr>
+                        <tr><td>T 135x67x2.5</td><td>3092183.6</td><td>5.36</td><td>&mdash;</td></tr>
+                        <tr><td>T 145x67x2</td><td>3062951.0</td><td>4.71</td><td>&mdash;</td></tr>
+                        <tr><td>T 125x80x2.5</td><td>2829989.6</td><td>4.82</td><td>&mdash;</td></tr>
+                        <tr><td>T 125x90x2.5</td><td>3045461.6</td><td>5.17</td><td>&mdash;</td></tr>
+                        <tr><td>T 65x72x3</td><td>569517.1</td><td>1.95</td><td>&mdash;</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <h2>Moment of Inertia (I<sub>x</sub>) &amp; Capacity of Steel Profiles</h2>
+        <div>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Profile</th>
+                        <th>Ix</th>
+                        <th>φMn</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>RHS 85x50x2.5</td><td>638854.2</td><td>5.24</td></tr>
+                    <tr><td>RHS 85x50x3</td><td>751044.5</td><td>6.2</td></tr>
+                    <tr><td>RHS 85x50x3.5</td><td>858376.2</td><td>7.13</td></tr>
+                    <tr><td>RHS 85x50x4</td><td>960988.7</td><td>8.03</td></tr>
+                    <tr><td>RHS 85x50x4.5</td><td>1059019.5</td><td>8.9</td></tr>
+                    <tr><td>RHS 85x50x5</td><td>1152604.2</td><td>9.75</td></tr>
+                    <tr><td>RHS 100x50x2.5</td><td>951510.4</td><td>6.75</td></tr>
+                    <tr><td>RHS 100x50x3</td><td>1121192.0</td><td>7.96</td></tr>
+                    <tr><td>RHS 100x50x3.5</td><td>1284387.4</td><td>9.17</td></tr>
+                    <tr><td>RHS 100x50x4</td><td>1441258.7</td><td>10.34</td></tr>
+                    <tr><td>RHS 100x50x4.5</td><td>1591965.8</td><td>11.48</td></tr>
+                    <tr><td>RHS 100x50x5</td><td>1736666.7</td><td>12.59</td></tr>
+                    <tr><td>RHS 110x54x2.5</td><td>1262531.3</td><td>8.1</td></tr>
+                    <tr><td>RHS 110x54x3</td><td>1490044.0</td><td>9.6</td></tr>
+                    <tr><td>RHS 110x54x3.5</td><td>1709652.6</td><td>11.1</td></tr>
+                    <tr><td>RHS 110x54x4</td><td>1921536.0</td><td>12.51</td></tr>
+                    <tr><td>RHS 110x54x4.5</td><td>2125871.3</td><td>13.91</td></tr>
+                    <tr><td>RHS 110x54x5</td><td>2322833.3</td><td>15.27</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="note">Values are provided as-is from the reference table.</p>
+
+        <h2>Input Figure Naming Guide</h2>
+        <p>Place files under <code>templates/inputs</code> or your selected inputs folder used by the report.</p>
+
+        <h3>Manual Profile Input</h3>
+        <ul>
+            <li><code>&lt;profile_name&gt;.png</code></li>
+            <li><code>&lt;profile_name&gt;-wp.png</code></li>
+            <li><code>&lt;profile_name&gt;p.png</code></li>
+            <li><code>&lt;profile_name&gt;-lb-web.png</code></li>
+            <li><code>&lt;profile_name&gt;-lb-flange.png</code></li>
+            <li><code>&lt;profile_name&gt;-lb-table.png</code></li>
+            <li><code>&lt;profile_name&gt;-lb-web-cap.png</code></li>
+            <li><code>&lt;profile_name&gt;-lb-flange-cap.png</code></li>
+        </ul>
+
+        <h3>Wind Input</h3>
+        <ul>
+            <li><code>location-map.png</code></li>
+            <li><code>mwfrs.png</code> (MWFRS load table)</li>
+            <li><code>cnc-wall.png</code></li>
+            <li><code>cnc-roof.png</code></li>
+        </ul>
+
+        <h3>Category-level Figures</h3>
+        <ul>
+            <li>Reference elevation: <code>&lt;category_index&gt;-ref-elev.png</code> (e.g., <code>1-ref-elev.png</code>)</li>
+            <li>SAP/structural (per category index):
+                <ul>
+                    <li><code>&lt;category_index&gt;-sap-model.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-relese.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-dead-load.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-wind-load.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-bmd.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-sfd.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-mul-max-moment.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-tran-max-moment.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-deformed-shape.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-mul-def.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-tran-def-wind.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-tran-def-dead.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-joint-force-dead.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-joint-force-wind.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-reaction-force-dead.png</code></li>
+                    <li><code>&lt;category_index&gt;-sap-reaction-force-wind.png</code></li>
+                </ul>
+            </li>
+        </ul>
+
+        <h3>Glass RFEM Figures (category + glass indices)</h3>
+        <p>Format: <code>&lt;category_index&gt;.&lt;glass_index&gt;-rfem-&lt;suffix&gt;.png</code> (e.g., <code>2.3-rfem-model-3d.png</code>)</p>
+        <ul>
+            <li><code>&lt;c&gt;.&lt;g&gt;-rfem-model-3d.png</code></li>
+            <li><code>&lt;c&gt;.&lt;g&gt;-rfem-model-data.png</code></li>
+            <li><code>&lt;c&gt;.&lt;g&gt;-rfem-stress.png</code></li>
+            <li><code>&lt;c&gt;.&lt;g&gt;-rfem-stress-ratio.png</code></li>
+            <li><code>&lt;c&gt;.&lt;g&gt;-rfem-def.png</code></li>
+            <li><code>&lt;c&gt;.&lt;g&gt;-rfem-def-ratio.png</code></li>
+        </ul>
+
+        <h3>Notes</h3>
+        <ul>
+            <li><code>category_index</code> is 1-based from the order of categories in the input YAML.</li>
+            <li><code>glass_index</code> is 1-based within each category.</li>
+            <li>Use lowercase <code>.png</code> extensions to match template references.</li>
+        </ul>
+    </div>
+</body>
+</html>
