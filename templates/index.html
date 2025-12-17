@@ -24,8 +24,9 @@
                 </button>
                 <button class="tab_btn">
                     <svg class="tab-icon" viewBox="0 0 24 24" aria-hidden="true">
-                        <path d="M12 12a4 4 0 1 0-4-4 4 4 0 0 0 4 4z"></path>
-                        <path d="M6 20.4a6 6 0 0 1 12 0"></path>
+                        <line x1="5" y1="6" x2="19" y2="6"></line>
+                        <line x1="5" y1="18" x2="19" y2="18"></line>
+                        <line x1="12" y1="6" x2="12" y2="18"></line>
                     </svg>
                     <span class="tab-label">Profiles</span>
                 </button>
@@ -80,7 +81,15 @@
                     <div class="content_box">
                         <div class="content active" data-tab="project_info">
                             <div class="form-header">
-                                <h2>Project Info</h2>
+                                <h2 class="section-title">
+                                    <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                        <rect x="6" y="5" width="12" height="16" rx="1.5"></rect>
+                                        <path d="M9 5V3h6v2"></path>
+                                        <line x1="9" y1="10" x2="15" y2="10"></line>
+                                        <line x1="9" y1="14" x2="15" y2="14"></line>
+                                    </svg>
+                                    <span>Project Info</span>
+                                </h2>
                             </div>
                             <div class="form-section">
                                 <input type="text" name="project_info.ref_no" placeholder="Ref. No. (RFA-001/REV-02/AEL/CW/2025)" value="RFA-001/REV-02/AEL/CW/2025">
@@ -92,7 +101,14 @@
                         </div>
 
                         <div class="content" data-tab="profiles">
-                            <h2>Profiles</h2>
+                            <h2 class="section-title">
+                                <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <line x1="5" y1="6" x2="19" y2="6"></line>
+                                    <line x1="5" y1="18" x2="19" y2="18"></line>
+                                    <line x1="12" y1="6" x2="12" y2="18"></line>
+                                </svg>
+                                <span>Profiles</span>
+                            </h2>
                             <h3>Aluminum Profiles</h3>
                             <div class="category-dynamic-list" id="alum-profiles-list"></div>
                             <button type="button" class="add-btn" data-list="alum-profiles-list" data-template="alum-profile-template">Add Aluminum Profile</button>
@@ -103,7 +119,14 @@
                         </div>
 
                         <div class="content" data-tab="wind">
-                            <h2>Wind Parameters</h2>
+                            <h2 class="section-title">
+                                <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <path d="M4 12c2.5-2 6.5-2 9 0s6.5 2 9 0"></path>
+                                    <path d="M4 6c1.5 1 4.5 1 6 0s4.5-1 6 0"></path>
+                                    <path d="M4 18c1.5-1 4.5-1 6 0s4.5 1 6 0"></path>
+                                </svg>
+                                <span>Wind Parameters</span>
+                            </h2>
                             <div class="form-section">
                                 <input type="text" name="wind.location" placeholder="Location" value="Dhaka">
                                 <select name="wind.enclosure_type">
@@ -170,7 +193,15 @@
                         </div>
 
                         <div class="content" data-tab="categories">
-                            <h2>Categories</h2>
+                            <h2 class="section-title">
+                                <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                    <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                                    <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                                    <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                                    <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                                </svg>
+                                <span>Categories</span>
+                            </h2>
                             <div class="category-dynamic-list" id="categories-list"></div>
                             <button type="button" class="add-btn add-category-btn" data-list="categories-list" data-template="category-template">Add Category</button>
                         </div>
@@ -185,7 +216,7 @@
                         <button class="action_btn" id="download-yaml-btn">Download</button>
                         <input type="file" id="yaml-file-input" accept=".yaml,.yml,.json,text/yaml" hidden>
                     </div>
-                    <pre id="yaml-output-display">Click 'Generate YAML' to see the output.</pre>
+                    <pre id="yaml-output-display">Click 'Generate' to see the YAML output.</pre>
                 </div>
             </div>
 

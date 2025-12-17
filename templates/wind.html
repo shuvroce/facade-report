@@ -1,3 +1,4 @@
+{% if wind.b_height %}
 <section class="chapter__front">
     <h1>Wind Pressure Calculation</h1>
 </section>
@@ -10,12 +11,12 @@
         </p>
         <p><u>Where,</u><br>
         <p class="ml-2">
-            q = q<sub>z</sub> for windward walls evaluated at height z above the ground</br>
-            q = q<sub>h</sub> for leeward walls, side walls, and roofs, evaluated at height h</br>
+            q = q<sub>z</sub> for windward walls evaluated at height z above the ground<br>
+            q = q<sub>h</sub> for leeward walls, side walls, and roofs, evaluated at height h<br>
             q<sub>i</sub> = q<sub>h</sub> for windward walls, side walls, leeward walls, and roofs of enclosed buildings 
-                            and for negative internal pressure evaluation in partially enclosed buildings.</br>
-            G = Gust effect factor from Sec 2.4.8, BNBC 2020</br>
-            C<sub>p</sub> = External pressure coefficient from Figure 6.2.6, BNBC 2020</br>
+                            and for negative internal pressure evaluation in partially enclosed buildings.<br>
+            G = Gust effect factor from Sec 2.4.8, BNBC 2020<br>
+            C<sub>p</sub> = External pressure coefficient from Figure 6.2.6, BNBC 2020<br>
             GC<sub>pi</sub> = Internal pressure coefficient from Figure 6.2.5, BNBC 2020
         </p>
 
@@ -469,3 +470,4 @@
     </div>
 
 </section>
+{% endif %}

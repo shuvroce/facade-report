@@ -418,6 +418,23 @@ h2 {
     margin-top: 0;
 }
 
+/* H2 with inline icon */
+.section-title {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.section-title .section-icon {
+    width: 18px;
+    height: 18px;
+    stroke: currentColor;
+    fill: none;
+    stroke-width: 1.7;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
 h3 {
     margin: 1.5rem 0 15px;
     color: var(--text-primary);
