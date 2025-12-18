@@ -905,11 +905,11 @@ summary {
 .status.processing::before {
     content: "";
     display: inline-block;
-    width: 12px;
-    height: 12px;
+    width: 10px;
+    height: 10px;
     margin-right: 8px;
     border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.5);
+    border: 2px solid rgba(105, 105, 105, 0.5);
     border-top-color: #0d6efd;
     animation: spinnerRotate 0.9s linear infinite;
 }
