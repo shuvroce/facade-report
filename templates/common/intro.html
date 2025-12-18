@@ -1,3 +1,4 @@
+{% if include.intro|default(false) %}
 <section class="chapter__front">
     <h1>Introduction</h1>
 </section>
@@ -65,6 +66,7 @@
         <p><u>Note:</u> This document should be read in conjunction with the provided tender/shop drawing.</p>
     </div>
 </section>
+{% endif%}
 
 
 <section class="chapter__front">
@@ -124,6 +126,7 @@
         </table>
     </div>
 
+    {% if include.material_specs|default(false) %}
     <h2>Materials Specification</h2>
     <div>
         <table class="width__100">
@@ -688,7 +691,9 @@
             </tbody>
         </table>
     </div>
+    {% endif%}
 
+    {% if include.design_consideration|default(false) %}
     <div class="page__break"></div>
     <h2>Design Consideration</h2>
     <div>
@@ -707,7 +712,9 @@
             <u><b>NOTE:</b></u> Other design considerations and assumptions (when applicable) will be addressed in the relevant section.
         </p>
     </div>
+    {% endif%}
     
+    {% if include.idealization|default(false) %}
     <div class="page__break"></div>
     <h2>Idealization of Cross-section</h2>
     <div>
@@ -764,6 +771,7 @@
             </tbody>
         </table>
     </div>
+    {% endif%}
     
     <h2>Load Combination</h2>
     <div>
@@ -890,6 +898,7 @@
 </section>
 
 
+{% if include.theory|default(false) %}
 <section class="chapter__front">
     <h1>Theoretical Background</h1>
 </section>
@@ -1014,3 +1023,4 @@
         </p>
     </div>
 </section>
+{% endif%}
