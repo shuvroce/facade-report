@@ -133,8 +133,3 @@ python report.py
 - Missing figures: use the checker panel or `/check_figures` to see exact filenames and place them in the configured inputs directory.
 - Folder picker not available: `/open_folder_picker` needs Tkinter; set the directory via the UI input or `/set_inputs_dir` instead.
 
-## License
-
-Not specified. If you intend to publish or share, consider adding a LICENSE file.
-
-readme
