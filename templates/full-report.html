@@ -28,10 +28,12 @@
         {% include "wind.html" %}
     {% endif%}
 
-    {% for cat in categories %}
-        {% set loop_index = loop.index %}
-        {% include "category.html" %}
-    {% endfor %}
+    {% if include.categories|default(false) and categories %}
+        {% for cat in categories %}
+            {% set loop_index = loop.index %}
+            {% include "category.html" %}
+        {% endfor %}
+    {% endif%}
 
     {% if include.reference|default(false) %}
         {% include "common/reference.html" %}
