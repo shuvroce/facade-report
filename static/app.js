@@ -592,6 +592,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     field.value = '';
                     return;
                 }
+                // Handle checkboxes (expecting 'yes'/'no' or booleans)
+                if (field.type === 'checkbox') {
+                    const v = typeof value === 'string' ? value.toLowerCase() : value;
+                    field.checked = v === 'yes' || v === true || v === 'true' || v === 1 || v === '1';
+                    return;
+                }
                 
                 // For select elements, try to match the value with available options
                 if (field.tagName === 'SELECT') {
@@ -732,6 +738,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function populateFormFromData(data = {}) {
         setSimpleGroupValues(data.project_info || {}, 'project_info');
+        setSimpleGroupValues(data.include || {}, 'include');
         setSimpleGroupValues(data.wind || {}, 'wind');
 
         populateProfileList('alum-profiles-list', 'alum-profile-template', data.alum_profiles || [], 'profile_type');
@@ -791,15 +798,19 @@ document.addEventListener('DOMContentLoaded', () => {
                     current = current[key];
                 }
     
-                // Directly assign the input value without formatting
-                current[path[path.length - 1]] = input.value;
+                const isCheckbox = input.type === 'checkbox';
+                const value = isCheckbox ? (input.checked ? 'yes' : 'no') : input.value;
+                current[path[path.length - 1]] = value;
             });
         };
-    
-        // 1. Get Project Info (Will remain as strings)
+        
+        // 1. Include flags (checkboxes → 'yes'/'no')
+        processSimpleInputs('[name^="include."]', 'include');
+        
+        // 2. Get Project Info (Will remain as strings)
         processSimpleInputs('[name^="project_info."]', 'project_info');
-    
-        // 2. Get Profiles
+        
+        // 3. Get Profiles
         function getProfileData(listId, keyName) {
             const list = document.getElementById(listId);
             const items = list.querySelectorAll('.dynamic-item');
@@ -815,10 +826,10 @@ document.addEventListener('DOMContentLoaded', () => {
         getProfileData('alum-profiles-list', 'alum_profiles')
         getProfileData('steel-profiles-list', 'steel_profiles');
     
-        // 3. Get Wind Parameters
+        // 4. Get Wind Parameters
         processSimpleInputs('[name^="wind."]', 'wind');
     
-        // 4. Get Categories
+        // 5. Get Categories
         const categoriesList = document.getElementById('categories-list');
         const categoryItems = categoriesList.querySelectorAll('.category-item');
         data.categories = Array.from(categoryItems).map(categoryItem => {
@@ -884,10 +895,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 } else {
                     yaml += `${spaces}${key}: {}\n`;
                 }
+                // Extra spacing between top-level blocks
+                if (indent === 0) yaml += `\n`;
             } else {
                 let formattedValue = value;
                 if (typeof value === 'string') {
-                    // Handle multi-line strings or strings with specific characters (like <br> in your wind note)
+                    // Handle multi-line strings or strings with specific characters (like <br> in wind note)
                     if (value.includes('\n') || value.includes(': ') || value.includes('<br>')) {
                         // Use the YAML literal block scalar | and clean up <br> to newlines for display
                         const cleanValue = value.replace(/<br>/g, '\n').split('\n').map(line => `${'  '.repeat(indent + 1)}${line}`).join('\n');
@@ -897,6 +910,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }
                 yaml += `${spaces}${key}: ${formattedValue}\n`;
+                // For top-level scalars, keep default spacing (no extra blank line)
             }
         }
         return yaml;
@@ -1060,12 +1074,16 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                     current = current[key];
                 }
-                current[path[path.length - 1]] = input.value;
+                const isCheckbox = input.type === 'checkbox';
+                const value = isCheckbox ? (input.checked ? 'yes' : 'no') : input.value;
+                current[path[path.length - 1]] = value;
             });
         };
     
         // 1. Get Project Info
         processSimpleInputs('[name^="project_info."]', 'project_info');
+        // 1.1 Include flags (checkboxes → 'yes'/'no')
+        processSimpleInputs('[name^="include."]', 'include');
     
         // 2. Get Profiles
         function getProfileData(listId, keyName) {

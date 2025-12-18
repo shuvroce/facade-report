@@ -448,6 +448,34 @@ h3 {
     margin-top: 1.5rem;
 }
 
+.include-area {
+    margin-top: 2rem;
+    border: 1px solid var(--border-primary);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.include-heading {
+    padding-bottom: 0.5rem;
+}
+
+.include-checkbox {
+    display: grid;
+    /* grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); */
+    /* gap: 0.75rem 1rem; */
+    margin: 0.5rem 0;
+    font-size: 0.85rem;
+}
+
+.checkbox-option {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.5rem;
+    border-radius: 6px;
+    /* background-color: var(--bg-input); */
+}
+
 input[type="text"],
 input[type="number"],
 textarea,
@@ -461,6 +489,13 @@ select {
     min-width: 200px;
     box-sizing: border-box;
     transition: var(--transition-bg), var(--transition-border);
+}
+
+input[type="checkbox"] {
+    appearance: auto;
+    width: auto;
+    height: auto;
+    cursor: pointer;
 }
 
 /* Hide number input spinners */
@@ -875,10 +910,10 @@ summary {
 
 /* ================ 7. OUTPUT SECTION ================ */
 .output-container {
-    margin-top: 1.5rem;
+    margin-top: 1rem;
     padding: 1rem;
     padding-top: 5px;
-    border-top: 1px solid var(--border-primary);
+    /* border-top: 1px solid var(--border-primary); */
     transition: var(--transition-bg), var(--transition-border);
 }
 
