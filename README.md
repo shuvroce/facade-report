@@ -22,8 +22,8 @@ A Flask-based application to generate structural calculation and design reports 
 ## Project Structure
 
 ```
-app.py                     # Flask app (routes, figure checks, inputs-dir management)
-report.py                  # Rendering pipeline (Jinja2 + WeasyPrint + pikepdf)
+app.py                      # Flask app (routes, figure checks, inputs-dir management)
+report.py                   # Rendering pipeline (Jinja2 + WeasyPrint + pikepdf)
 static/
 	app.css, app.js         # UI styles and logic
 templates/
@@ -33,7 +33,7 @@ templates/
 	partials/               # Template partials for sections
 	common/                 # Common sections (cover, header, intro, toc, reference)
 	inputs/                 # Default folder for user-provided figure files (configurable)
-input-helper.html         # Local guide describing expected inputs/figures
+    input-helper.html       # Local guide describing expected inputs/figures
 ```
 
 ## Prerequisites
