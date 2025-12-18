@@ -1,0 +1,5 @@
+Flask
+PyYAML
+Jinja2
+WeasyPrint
+pikepdf
