@@ -126,9 +126,7 @@ def generate_report():
 
     # Create temporary directory and determine output filename
     temp_dir = tempfile.mkdtemp()
-    project_name = report_data.get("project_info", {}).get("project_name", "project")
-    safe_name = sanitize_filename(project_name)
-    out_pdf = os.path.join(temp_dir, f"{safe_name}_report.pdf")
+    out_pdf = os.path.join(temp_dir, "report.pdf")
 
     # Generate PDF report
     pdf_path = generate_report_from_data(
@@ -141,7 +139,7 @@ def generate_report():
     return send_file(
         pdf_path,
         as_attachment=True,
-        download_name=f"{safe_name}_report.pdf",
+        download_name="report.pdf",
         mimetype="application/pdf"
     )
 
