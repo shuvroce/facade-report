@@ -221,9 +221,16 @@ def input_helper_txt():
     return _send_helper("input-helper.txt", "text/plain")
 
 
+@app.route("/input-helper")
+def input_helper():
+    # Render from templates directory
+    return render_template("input-helper.html")
+
+
 @app.route("/input-helper.html")
 def input_helper_html():
-    return _send_helper("input-helper.html", "text/html")
+    # Backwards-compatible path
+    return render_template("input-helper.html")
 
 
 @app.route("/set_inputs_dir", methods=["POST"])

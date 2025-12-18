@@ -1350,7 +1350,7 @@ document.addEventListener('DOMContentLoaded', () => {
      */
     async function loadInputHelperContent() {
         try {
-            const response = await fetch('/input-helper.html');
+            const response = await fetch('/input-helper');
             if (response.ok) {
                 const html = await response.text();
                 inputHelperContent.innerHTML = html;
