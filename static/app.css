@@ -188,6 +188,7 @@ nav {
     justify-content: space-between;
     align-items: center;
     padding: 1rem 1.5rem;
+    padding-right: 2rem;
 }
 
 .form-header {
@@ -241,6 +242,7 @@ nav {
 .tab_box {
     display: flex;
     position: relative;
+    align-items: center;
 }
 
 .tab_btn {
@@ -885,6 +887,7 @@ summary {
     text-align: center;
     font-size: 0.75rem;
     margin-right: 0.5rem;
+    margin-left: 1rem;
 }
 
 .status.processing {
