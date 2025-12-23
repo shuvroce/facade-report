@@ -6,18 +6,15 @@
     --transition-border: border-color 0.1s ease 0s;
 
     /* Layout Widths */
-    --container-width-nav: 80%;
-    --container-width-lg: 70%;
-    --container-width-md: 95%;
-    --form-width: 40%;
-    --container-width-slider: 100%;
+    --container-width: 1100px;
+    --modal-width-max: 900px;
+    --status-area-width: 265px;
 
     /* Border Radius */
-    --radius-1: 2rem;
-    --radius-2: 1.2rem;
-    --radius-3: 0.8rem;
-    --radius-4: 0.5rem;
-    --radius-5: 0.3rem;
+    --radius-1: 4px;
+    --radius-2: 6px;
+    --radius-3: 8px;
+    --radius-4: 10px;
 
     /* Light Theme - Background Colors */
     --bg-body: #f4f4f9;
@@ -61,6 +58,10 @@
     --btn-accent-hover: #075cb8;
     --btn-danger: #dc3545;
     --btn-danger-hover: #c72d3c;
+
+    --color-green: #22c55e;
+    --color-red: #ef4444;
+    --color-blue: #0d6efd;
 }
 
 /* Dark Theme Colors */
@@ -155,7 +156,7 @@ body {
 
 *::-webkit-scrollbar-thumb {
     background-color: var(--scrollbar-thumb);
-    border-radius: 8px;
+    border-radius: var(--radius-3);
     border: 2px solid var(--scrollbar-track);
 }
 
@@ -168,11 +169,11 @@ body {
 
 /* --- Navigation --- */
 nav {
-    width: 1100px;
+    width: var(--container-width);
     height: 4.5rem;
     margin: 0 auto;
     background: var(--bg-primary);
-    border-radius: 8px 8px 0 0;
+    border-radius: var(--radius-2) var(--radius-2) 0 0;
     border-bottom: 1px solid var(--border-primary);
     position: fixed;
     top: 20px;
@@ -199,11 +200,11 @@ nav {
 
 /* --- Container --- */
 .container {
-    width: 1100px;
+    width: var(--container-width);
     margin: 0 auto;
     padding: 0.5rem 2rem 2rem 1.5rem;
     background: var(--bg-primary);
-    border-radius: 0 0 8px 8px;
+    border-radius: 0 0 var(--radius-2) var(--radius-2);
     box-shadow: 0 6px 12px var(--shadow-container);
     position: fixed;
     top: 5.7em;
@@ -232,7 +233,7 @@ nav {
 
 .content.active {
     display: block;
-    animation: contentFadeIn 0.3s ease;
+    animation: contentFadeIn 0.2s ease;
 }
 
 
@@ -253,7 +254,7 @@ nav {
     font-size: 14px;
     font-weight: bold;
     color: var(--text-secondary);
-    transition: color 0.3s;
+    transition: color 0.2s;
     outline: none;
     display: inline-flex;
     align-items: center;
@@ -301,7 +302,7 @@ nav {
     align-items: center;
     justify-content: center;
     border: none;
-    border-radius: 4px;
+    border-radius: var(--radius-1);
     cursor: pointer;
     font-weight: 700;
     transition: var(--transition-bg);
@@ -345,7 +346,7 @@ nav {
     background: var(--btn-accent);
     color: #fff;
     padding: 8px 10px;
-    border-radius: 5px;
+    border-radius: var(--radius-1);
     margin-top: 10px;
     font-weight: bold;
     display: block;
@@ -382,7 +383,7 @@ nav {
     height: 22px;
     width: 22px;
     min-width: 22px;
-    border-radius: 6px;
+    border-radius: var(--radius-2);
     /* box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1); */
     transition: all 0.2s ease, var(--transition-border);
     display: inline-flex;
@@ -453,7 +454,7 @@ h3 {
 .include-area {
     margin-top: 2rem;
     border: 1px solid var(--border-primary);
-    border-radius: 8px;
+    border-radius: var(--radius-2);
     padding: 1rem;
 }
 
@@ -474,7 +475,7 @@ h3 {
     align-items: center;
     gap: 0.5rem;
     padding: 0.35rem 0.5rem;
-    border-radius: 6px;
+    border-radius: var(--radius-2);
     /* background-color: var(--bg-input); */
 }
 
@@ -490,7 +491,7 @@ select {
     border: 1px solid var(--border-input);
     background-color: var(--bg-input);
     color: var(--text-primary);
-    border-radius: 4px;
+    border-radius: var(--radius-1);
     flex: 1 1 calc(50% - 15px);
     min-width: 200px;
     box-sizing: border-box;
@@ -530,7 +531,7 @@ textarea {
 /* --- Dynamic Lists --- */
 .dynamic-list {
     border: 1px solid var(--border-secondary);
-    border-radius: 4px;
+    border-radius: var(--radius-1);
     padding: 15px;
     margin-top: 15px;
     background-color: var(--bg-secondary);
@@ -545,7 +546,7 @@ textarea {
     border: 1px solid var(--border-secondary);
     padding: 10px;
     margin-bottom: 15px;
-    border-radius: 4px;
+    border-radius: var(--radius-1);
     background-color: var(--bg-primary);
     position: relative;
     transition: var(--transition-bg), var(--transition-border);
@@ -689,7 +690,7 @@ summary {
     border: 1px solid var(--border-primary);
     border-radius: var(--radius-3);
     width: 80%;
-    max-width: 900px;
+    max-width: var(--modal-width-max);
     max-height: 85vh;
     display: flex;
     flex-direction: column;
@@ -740,7 +741,7 @@ summary {
 .modal-body pre {
     background-color: var(--bg-code);
     border: 1px solid var(--border-code);
-    border-radius: var(--radius-4);
+    border-radius: var(--radius-2);
     padding: 1.5rem;
     color: var(--text-code);
     font-size: 0.9rem;
@@ -754,10 +755,10 @@ summary {
 
 /* ================ 6. FIGURE STATUS PANEL ================ */
 .status_area {
-    width: 265px;
+    width: var(--status-area-width);
     background: var(--bg-code);
     border: 1px solid var(--border-primary);
-    border-radius: 8px;
+    border-radius: var(--radius-2);
     padding: 1rem;
     display: flex;
     flex-direction: column;
@@ -804,7 +805,7 @@ summary {
     margin-bottom: 0.3rem;
     padding: 0.5rem;
     background: var(--bg-primary);
-    border-radius: 4px;
+    border-radius: var(--radius-1);
     font-size: 0.85rem;
     transition: var(--transition-bg);
     display: flex;
@@ -828,11 +829,11 @@ summary {
 }
 
 .status-summary-item .value.success {
-    color: #22c55e;
+    color: var(--color-green);
 }
 
 .status-summary-item .value.error {
-    color: #ef4444;
+    color: var(--color-red);
 }
 
 #figure-status-list {
@@ -847,7 +848,7 @@ summary {
     gap: 0.5rem;
     padding: 0.1rem 0.3rem;
     margin: 0.1rem 0;
-    border-radius: 4px;
+    border-radius: var(--radius-1);
     font-size: 0.85rem;
     transition: var(--transition-bg);
 }
@@ -859,11 +860,11 @@ summary {
 }
 
 .figure-status-icon.exists {
-    color: #22c55e;
+    color: var(--color-green);
 }
 
 .figure-status-icon.missing {
-    color: #ef4444;
+    color: var(--color-red);
 }
 
 .figure-status-name {
@@ -891,15 +892,15 @@ summary {
 }
 
 .status.processing {
-    color: #0d6efd;
+    color: var(--color-blue);
 }
 
 .status.success {
-    color: #28a745;
+    color: var(--color-green);
 }
 
 .status.error {
-    color: #dc3545;
+    color: var(--color-red);
 }
 
 .status.processing::before {
@@ -930,7 +931,7 @@ summary {
     white-space: pre-wrap;
     background-color: var(--bg-code);
     padding: 15px;
-    border-radius: 6px;
+    border-radius: var(--radius-2);
     border: 1px solid var(--border-code);
     transition: var(--transition-bg), var(--transition-border);
 }
@@ -981,7 +982,7 @@ summary {
     margin: 0 auto;
     background: var(--bg-primary);
     /* border: 1px solid var(--border-primary); */
-    border-radius: 12px;
+    border-radius: var(--radius-2);
     /* box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08); */
     /* padding: 16px; */
     transition: var(--transition-bg), var(--transition-border);
@@ -1048,11 +1049,11 @@ summary {
 .helper-card code {
     background: var(--bg-code);
     border: 1px solid var(--border-code);
-    border-radius: 6px;
+    border-radius: var(--radius-2);
     padding: 2px 6px;
     font-size: 0.9rem;
     color: var(--text-code);
-    font-family: 'Courier New', monospace;
+    font-family: monospace;
     transition: var(--transition-bg), var(--transition-border);
 }
 
