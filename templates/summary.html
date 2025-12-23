@@ -3,15 +3,6 @@
 
   <div class="summary-grid" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem;margin-top:1rem;">
     <div class="card" style="background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px;padding:1rem;">
-      <h3 style="margin:0 0 0.5rem 0; font-size:1rem;">Project</h3>
-      <div style="font-size:0.9rem;line-height:1.6;">
-        <div><strong>Ref:</strong> {{ data.project_info.ref_no|default('—') }}</div>
-        <div><strong>Name:</strong> {{ data.project_info.project_name|default('—') }}</div>
-        <div><strong>Date:</strong> {{ data.project_info.date|default('—') }}</div>
-      </div>
-    </div>
-
-    <div class="card" style="background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px;padding:1rem;">
       <h3 style="margin:0 0 0.5rem 0; font-size:1rem;">Wind</h3>
       <div style="font-size:0.9rem;line-height:1.6;">
         <div><strong>Location:</strong> {{ data.wind.location|default('—') }}</div>
@@ -20,46 +11,5 @@
         <div><strong>Gust G:</strong> {{ data.wind.gust_factor|default('—') }}</div>
       </div>
     </div>
-
-    <div class="card" style="background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px;padding:1rem;">
-      <h3 style="margin:0 0 0.5rem 0; font-size:1rem;">Scope</h3>
-      <div style="font-size:0.9rem;line-height:1.6;display:grid;grid-template-columns:1fr 1fr;gap:0.25rem 0.75rem;">
-        <div>ToC</div><div>{{ data.include.toc|default(false) and '✓' or '✗' }}</div>
-        <div>Intro</div><div>{{ data.include.intro|default(false) and '✓' or '✗' }}</div>
-        <div>Moment Cap.</div><div>{{ data.include.moment_capacity|default(false) and '✓' or '✗' }}</div>
-        <div>Wind</div><div>{{ data.include.wind_pressure|default(false) and '✓' or '✗' }}</div>
-        <div>Categories</div><div>{{ data.include.categories|default(false) and '✓' or '✗' }}</div>
-        <div>Reference</div><div>{{ data.include.reference|default(false) and '✓' or '✗' }}</div>
-      </div>
-    </div>
-
-    <div class="card" style="background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px;padding:1rem;">
-      <h3 style="margin:0 0 0.5rem 0; font-size:1rem;">Counts</h3>
-      <div style="font-size:0.9rem;line-height:1.6;">
-        <div><strong>Categories:</strong> {{ totals.categories }}</div>
-        <div><strong>Glass Units:</strong> {{ totals.glass_units }}</div>
-        <div><strong>Frames:</strong> {{ totals.frames }}</div>
-        <div><strong>Connections:</strong> {{ totals.connections }}</div>
-        <div><strong>Anchorage:</strong> {{ totals.anchorage }}</div>
-      </div>
-    </div>
   </div>
-
-  {% if data.categories and data.categories|length > 0 %}
-  <div class="card" style="background:var(--bg-secondary);border:1px solid var(--border-color);border-radius:8px;padding:1rem;margin-top:1rem;">
-    <h3 style="margin:0 0 0.5rem 0; font-size:1rem;">First Category Snapshot</h3>
-    {% set cat = data.categories[0] %}
-    <div style="font-size:0.9rem;line-height:1.6;">
-      <div><strong>Name:</strong> {{ cat.category_name|default('—') }}</div>
-      {% if cat.glass_units and cat.glass_units|length > 0 %}
-        {% set g = cat.glass_units[0] %}
-        <div><strong>Glass:</strong> {{ g.glass_type|default('—') }}, {{ g.thickness|default(g.thickness1|default('—')) }} mm, {{ g.support_type|default('—') }}</div>
-      {% endif %}
-      {% if cat.frames and cat.frames|length > 0 %}
-        {% set f = cat.frames[0] %}
-        <div><strong>Frame:</strong> {{ f.mullion_type|default('—') }}, Mullion {{ f.mullion|default('—') }}, Transom {{ f.transom|default('—') }}</div>
-      {% endif %}
-    </div>
-  </div>
-  {% endif %}
 </section>

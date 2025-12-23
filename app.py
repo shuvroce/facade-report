@@ -209,23 +209,9 @@ def check_figures():
     return jsonify({"success": True, "figures": required_figures})
 
 
-def _send_helper(filename, mimetype):
-    helper_path = os.path.join(BASE_DIR, filename)
-    if os.path.isfile(helper_path):
-        return send_file(helper_path, mimetype=mimetype)
-    return "Input helper file not found", 404
-
-
-@app.route("/input-helper.txt")
-def input_helper_txt():
-    return _send_helper("input-helper.txt", "text/plain")
-
-
 @app.route("/input-helper")
 def input_helper():
-    # Render from templates directory
     return render_template("input-helper.html")
-
 
 @app.route("/input-helper.html")
 def input_helper_html():
@@ -233,7 +219,7 @@ def input_helper_html():
     return render_template("input-helper.html")
 
 
-# Preview summary (renders a compact HTML snippet)
+# Preview summary
 @app.route("/preview_summary", methods=["POST"])
 def preview_summary():
     if not request.json or "yaml_content" not in request.json:
@@ -243,22 +229,12 @@ def preview_summary():
     except Exception as e:
         return f"Invalid YAML: {str(e)}", 400
 
-    # Compute simple totals for display
-    categories = data.get('categories', []) or []
-    totals = {
-        'categories': len(categories),
-        'glass_units': sum(len((c or {}).get('glass_units', []) or []) for c in categories),
-        'frames': sum(len((c or {}).get('frames', []) or []) for c in categories),
-        'connections': sum(len((c or {}).get('connections', []) or []) for c in categories),
-        'anchorage': sum(len((c or {}).get('anchorage', []) or []) for c in categories),
-    }
-
     # Ensure nested dicts exist to avoid KeyErrors in template
     data.setdefault('project_info', {})
     data.setdefault('include', {})
     data.setdefault('wind', {})
 
-    return render_template("summary.html", data=data, totals=totals)
+    return render_template("summary.html", data=data)
 
 
 @app.route("/set_inputs_dir", methods=["POST"])
