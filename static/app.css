@@ -8,6 +8,7 @@
     /* Layout Widths */
     --container-width: 1100px;
     --modal-width-max: 900px;
+    --modal-width-calculator: 300px;
     --status-area-width: 265px;
 
     /* Border Radius */
@@ -1067,4 +1068,120 @@ summary {
 .table__flex {
     display: flex;
     gap: 2rem;
+}
+
+
+/* ================ 10. CALCULATOR ================ */
+.calculator {
+    width: 100%;
+    max-width: 350px;
+    margin: 0 auto;
+    background: var(--bg-primary);
+    /* border: 1px solid var(--border-primary); */
+    border-radius: var(--radius-2);
+    box-shadow: 0 4px 10px var(--shadow-container);
+}
+
+.calc-display {
+    background: var(--bg-secondary);
+    border-bottom: 1px solid var(--border-primary);
+    padding: 1.2rem 1rem;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    font-size: 1.2rem;
+    text-align: right;
+    min-height: 2.4rem;
+    border-radius: var(--radius-2) var(--radius-2) 0 0;
+}
+
+.calc-keys {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 10px;
+}
+
+.calc-key {
+    height: 30px;
+    border: 1px solid var(--border-primary);
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: var(--radius-2);
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition-bg), var(--transition-border);
+}
+
+.calc-key:hover {
+    background: var(--btn-accent);
+    color: #fff;
+    border-color: var(--btn-accent);
+}
+
+.calc-key.key-op {
+    background: var(--bg-secondary);
+}
+
+.calc-key.key-ac,
+.calc-key.key-del {
+    background: var(--bg-secondary);
+    color: var(--text-secondary);
+}
+
+.calc-key.key-eq {
+    background: var(--btn-primary);
+    color: #fff;
+}
+
+.calc-key.key-eq:hover {
+    background: var(--btn-primary-hover);
+}
+
+.calc-key.key-copy {
+    background: var(--btn-accent2);
+    color: #fff;
+    font-size: 1rem;
+}
+
+.calc-key.key-copy:hover {
+    background: var(--btn-accent);
+    color: #fff;
+    border-color: var(--btn-accent);
+}
+
+/* Calculator Modal Specific Styles */
+.modal-content-calculator {
+    background-color: var(--bg-primary);
+    margin: 3% auto;
+    border: 1px solid var(--border-primary);
+    border-radius: var(--radius-3);
+    width: var(--modal-width-calculator);
+    max-width: 400px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    animation: modalSlideDown 0.2s ease;
+    transition: var(--transition-bg), var(--transition-border);
+}
+
+.modal-header-calculator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.6rem 1.2rem;
+    border-bottom: 1px solid var(--border-primary);
+    background-color: var(--bg-secondary);
+    border-radius: var(--radius-3) var(--radius-3) 0 0;
+    transition: var(--transition-bg), var(--transition-border);
+}
+
+.modal-header-calculator h3 {
+    margin: 0;
+    color: var(--text-heading);
+    font-size: 1.1rem;
+}
+
+.modal-body-calculator {
+    padding: 0;
+    overflow-y: auto;
 }

@@ -1402,8 +1402,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Close modal with Escape key
     document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && inputHelperModal && inputHelperModal.classList.contains('show')) {
-            hideInputHelperModal();
+        if (e.key === 'Escape') {
+            if (inputHelperModal && inputHelperModal.classList.contains('show')) {
+                hideInputHelperModal();
+            }
         }
     });
 
