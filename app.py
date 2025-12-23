@@ -113,7 +113,6 @@ def index():
 
 @app.route("/generate_report", methods=["POST"])
 def generate_report():
-    # Validate request
     if not request.json or "yaml_content" not in request.json:
         return {"success": False, "error": "Missing yaml_content"}, 400
 
@@ -209,13 +208,9 @@ def check_figures():
     return jsonify({"success": True, "figures": required_figures})
 
 
+# Input helper guide
 @app.route("/input-helper")
 def input_helper():
-    return render_template("input-helper.html")
-
-@app.route("/input-helper.html")
-def input_helper_html():
-    # Backwards-compatible path
     return render_template("input-helper.html")
 
 
@@ -223,11 +218,14 @@ def input_helper_html():
 @app.route("/preview_summary", methods=["POST"])
 def preview_summary():
     if not request.json or "yaml_content" not in request.json:
-        return "Missing yaml_content", 400
-    try:
-        data = yaml.safe_load(request.json["yaml_content"]) or {}
-    except Exception as e:
-        return f"Invalid YAML: {str(e)}", 400
+        return {"success": False, "error": "Missing yaml_content"}, 400
+
+    # Parse YAML content
+    yaml_content = request.json["yaml_content"]
+    data = yaml.safe_load(yaml_content) or {}
+
+    # Merge with profile data
+    data = merge_profile_data(data)
 
     # Ensure nested dicts exist to avoid KeyErrors in template
     data.setdefault('project_info', {})
@@ -320,5 +318,4 @@ def open_folder_picker():
 # APPLICATION ENTRY POINT
 if __name__ == "__main__":
     # app.run(debug=True, port=5000)
-    # Bind to all interfaces so other LAN devices can reach the server
     app.run(debug=True, host="0.0.0.0", port=5000)
