@@ -1409,6 +1409,63 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // 10. PREVIEW MODAL
+    const previewBtn = document.getElementById('preview-btn');
+    const previewModal = document.getElementById('preview-modal');
+    const closePreview = document.getElementById('close-preview');
+    const previewContent = document.getElementById('preview-content');
+
+    async function showPreviewModal() {
+        if (!previewModal || !previewContent) return;
+        previewContent.innerHTML = 'Loading...';
+        previewModal.classList.add('show');
+        try {
+            // Reuse existing form and YAML generation
+            const form = document.getElementById('yaml-form');
+            const formData = getFormData(form);
+            const yamlContent = toYamlString(formData);
+            const response = await fetch('/preview_summary', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ yaml_content: yamlContent })
+            });
+            if (!response.ok) {
+                const err = await response.text();
+                throw new Error(err || 'Failed to load summary');
+            }
+            const html = await response.text();
+            previewContent.innerHTML = html;
+        } catch (err) {
+            previewContent.innerHTML = `<div style="padding:1rem;color:#ef4444;">Error loading summary: ${err.message}</div>`;
+        }
+    }
+
+    function hidePreviewModal() {
+        if (!previewModal) return;
+        previewModal.classList.remove('show');
+    }
+
+    if (previewBtn) {
+        previewBtn.addEventListener('click', showPreviewModal);
+    }
+    if (closePreview) {
+        closePreview.addEventListener('click', hidePreviewModal);
+    }
+    if (previewModal) {
+        previewModal.addEventListener('click', (e) => {
+            if (e.target === previewModal) {
+                hidePreviewModal();
+            }
+        });
+    }
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (previewModal && previewModal.classList.contains('show')) {
+                hidePreviewModal();
+            }
+        }
+    });
+
     // 11. INPUTS DIRECTORY SELECTION
     const selectInputsDirBtn = document.getElementById('select-inputs-dir-btn');
     const inputsDirPathDisplay = document.getElementById('inputs-dir-path-display');

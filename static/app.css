@@ -339,6 +339,10 @@ nav {
     background-color: var(--btn-accent2);
 }
 
+#preview-btn {
+    background-color: var(--btn-accent2);
+}
+
 #download-yaml-btn {
     background-color: var(--btn-primary);
 }
@@ -1168,7 +1172,7 @@ summary {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    padding: 0.6rem 1.2rem;
+    padding: 0.6rem 0.4rem 0.6rem 1rem;
     border-bottom: 1px solid var(--border-primary);
     background-color: var(--bg-secondary);
     border-radius: var(--radius-3) var(--radius-3) 0 0;

@@ -233,6 +233,34 @@ def input_helper_html():
     return render_template("input-helper.html")
 
 
+# Preview summary (renders a compact HTML snippet)
+@app.route("/preview_summary", methods=["POST"])
+def preview_summary():
+    if not request.json or "yaml_content" not in request.json:
+        return "Missing yaml_content", 400
+    try:
+        data = yaml.safe_load(request.json["yaml_content"]) or {}
+    except Exception as e:
+        return f"Invalid YAML: {str(e)}", 400
+
+    # Compute simple totals for display
+    categories = data.get('categories', []) or []
+    totals = {
+        'categories': len(categories),
+        'glass_units': sum(len((c or {}).get('glass_units', []) or []) for c in categories),
+        'frames': sum(len((c or {}).get('frames', []) or []) for c in categories),
+        'connections': sum(len((c or {}).get('connections', []) or []) for c in categories),
+        'anchorage': sum(len((c or {}).get('anchorage', []) or []) for c in categories),
+    }
+
+    # Ensure nested dicts exist to avoid KeyErrors in template
+    data.setdefault('project_info', {})
+    data.setdefault('include', {})
+    data.setdefault('wind', {})
+
+    return render_template("summary.html", data=data, totals=totals)
+
+
 @app.route("/set_inputs_dir", methods=["POST"])
 def set_inputs_directory():
     """Set the inputs directory from user selection"""

@@ -74,6 +74,7 @@
                     </svg>
                 </button>
                 <div class="action_btn-box">
+                    <button class="action_btn" id="preview-btn">Preview</button>
                     <button class="action_btn" id="generate-report-btn">Create Report</button>
                 </div>
             </div>
@@ -456,6 +457,19 @@
             </div>
             <div class="modal-body">
                 <div id="input-helper-content">Loading...</div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Preview Popup -->
+    <div id="preview-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Calculation Preview</h3>
+                <span class="close-modal" id="close-preview">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="preview-content">Loading...</div>
             </div>
         </div>
     </div>
