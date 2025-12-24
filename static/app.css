@@ -89,7 +89,7 @@ body.dark-theme {
     --border-secondary: #4a4a4a;
     --border-tertiary: #3a3a3a;
     --border-input: #4a4a4a;
-    --border-code: #555;
+    --border-code: #2d2d2d;
 
     /* Dark Theme - Shadow Colors */
     --shadow-nav: rgba(0, 0, 0, 0.3);
@@ -485,9 +485,11 @@ h3 {
 
 .include-area {
     margin-top: 2rem;
-    border: 1px solid var(--border-primary);
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-code);
     border-radius: var(--radius-2);
     padding: 1rem;
+    transition: var(--transition-bg), var(--transition-border);
 }
 
 .include-heading {
@@ -789,7 +791,7 @@ summary {
 .status_area {
     width: var(--status-area-width);
     background: var(--bg-code);
-    border: 1px solid var(--border-primary);
+    border: 1px solid var(--border-code);
     border-radius: var(--radius-2);
     padding: 1rem;
     display: flex;
