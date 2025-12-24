@@ -29,7 +29,7 @@
     /* Light Theme - Text Colors */
     --text-primary: #333;
     --text-secondary: #555;
-    --text-heading: #064a6f;
+    --text-heading: #333;
     --text-link: #0056b3;
     --text-code: #222;
     --text-active: #0869d1;
@@ -78,7 +78,7 @@ body.dark-theme {
     /* Dark Theme - Text Colors */
     --text-primary: #e0e0e0;
     --text-secondary: #c5c5c5;
-    --text-heading: #9bc1df;
+    --text-heading: #e0e0e0;
     --text-link: #5ca3e6;
     --text-code: #e0e0e0;
     --text-active: #4db8ff;
@@ -460,8 +460,8 @@ h2 {
 }
 
 .section-title .section-icon {
-    width: 18px;
-    height: 18px;
+    width: 22px;
+    height: 22px;
     stroke: currentColor;
     fill: none;
     stroke-width: 1.7;
