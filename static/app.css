@@ -420,6 +420,32 @@ nav {
     margin-top: -10px;
 }
 
+.calculator-btn {
+    padding: 0.2rem;
+    /* background: var(--btn-accent2); */
+    /* border: 1px solid var(--btn-accent); */
+    /* border: none; */
+    border-radius: var(--radius-1);
+    margin-left: 0.5rem;
+    width: auto;
+    height: auto;
+}
+
+.calculator-btn:hover {
+    background: var(--btn-accent2);
+    border-color: var(--btn-accent2);
+    box-shadow: none;
+}
+
+/* Size and color the calculator icon */
+.calculator-btn svg {
+    width: 14px;
+    height: 14px;
+    display: block;
+    fill: currentColor;
+}
+
+
 /* --- Forms & Inputs --- */
 h2 {
     color: var(--text-heading);
@@ -1141,7 +1167,7 @@ summary {
 }
 
 .calc-key.key-copy {
-    background: var(--btn-accent2);
+    background: var(--btn-accent);
     color: #fff;
     font-size: 1rem;
 }
