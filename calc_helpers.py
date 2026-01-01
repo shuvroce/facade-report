@@ -12,11 +12,23 @@ def _to_float(value: Any) -> Optional[float]:
         return None
 
 
-def calc_steel_profile(profile: Dict[str, Any]) -> Optional[Dict[str, float]]:
-    """Replicates the steel calculations from templates/profile.html."""
-    web_length = _to_float(profile.get("web_length"))
-    flange_length = _to_float(profile.get("flange_length"))
-    thk = _to_float(profile.get("thk"))
+def calc_steel_profile(profile_name: str) -> Optional[Dict[str, float]]:
+    if not profile_name:
+        return None
+    try:
+        parts = profile_name.strip().split()
+        dimension_part = parts[-1] if parts else ""
+        
+        dimensions = dimension_part.split('x')
+        if len(dimensions) != 3:
+            return None
+        
+        web_length = _to_float(dimensions[0])
+        flange_length = _to_float(dimensions[1])
+        thk = _to_float(dimensions[2])
+    except (IndexError, ValueError, AttributeError):
+        return None
+    
     if not all([web_length, flange_length, thk]) or web_length <= 0 or flange_length <= 0 or thk <= 0:
         return None
 
@@ -271,7 +283,6 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
 
     mullion_profile = find_profile(mullion, alum_profiles_data) if mullion else None
     transom_profile = find_profile(transom, alum_profiles_data) if transom else None
-    steel_profile = find_profile(steel_ref, steel_profiles) if steel_ref else None
 
     # Extract dimensions
     frame_width = _to_float(frame.get("width"))
@@ -280,8 +291,11 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     tran_spacing = _to_float(frame.get("tran_spacing"))
     mullion_type = frame.get("mullion_type", "Aluminum Only")
     frame_type = frame.get("frame_type", "Continuous")
-    glass_thk = _to_float(frame.get("glass_thickness")) or glass_thk or 0
+    glass_thk = _to_float(frame.get("glass_thk")) or glass_thk or 0
 
+    # Calculate steel profile properties from profile name
+    steel_calc = calc_steel_profile(steel_ref) if steel_ref else None
+    
     if not all([frame_width, frame_length, wind_neg]):
         return None
 
@@ -312,14 +326,10 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
         mul_Ix_a = mullion_profile.get("I_xx", 0) if mullion_profile else 0
         mul_phi_Mn_a = mullion_profile.get("phi_Mn", 0) if mullion_profile else 0
 
-        # Steel moment of inertia
-        if steel_profile:
-            sp_web = _to_float(steel_profile.get("web_length")) or 0
-            sp_flange = _to_float(steel_profile.get("flange_length")) or 0
-            sp_thk = _to_float(steel_profile.get("thk")) or 0
-            sp_I_xx = ((sp_flange * sp_web ** 3 / 12) - ((sp_flange - 2 * sp_thk) * (sp_web - 2 * sp_thk) ** 3) / 12)
-            sp_Z_x = (((sp_flange * sp_web ** 2) - ((sp_flange - 2 * sp_thk) * (sp_web - 2 * sp_thk) ** 2)) / 4)
-            mul_phi_Mn_s = round(0.9 * (sp_Z_x * STEEL_FY / 1_000_000), 2)
+        # Steel moment of inertia from calculated steel profile
+        if steel_calc:
+            sp_I_xx = steel_calc.get("I_xx", 0)
+            mul_phi_Mn_s = steel_calc.get("phi_Mn", 0)
         else:
             sp_I_xx = 0
             mul_phi_Mn_s = 0
@@ -360,6 +370,8 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     return {
         "frame_type": frame_type,
         "mullion_type": mullion_type,
+        "mullion": mullion,
+        "steel_ref": steel_ref,
         "glass_thk": round(glass_thk, 1),
         "glass_sw": round(frame_width, 1),
         "eff_area": round(frame_width * frame_length / 1_000_000, 2),

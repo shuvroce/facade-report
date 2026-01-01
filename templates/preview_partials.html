@@ -203,6 +203,14 @@
     
     {% if result.mullion_type == "Aluminum + Steel" %}
     <div class="property-item">
+        <span class="property-label">alum:</span>
+        <span class="property-value">{{ result.mullion or '—' }} kN-m</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">steel:</span>
+        <span class="property-value">{{ result.steel_ref or '—' }} kN-m</span>
+    </div>
+    <div class="property-item">
         <span class="property-label">Alum. φMn<sub>n</sub>:</span>
         <span class="property-value">{{ result.mul_phi_Mn_a or '—' }} kN-m</span>
     </div>
