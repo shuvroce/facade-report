@@ -196,10 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Frame Configuration ---
     const frameFields = {
         'Aluminum Only': [
-            'mullion', 'transom', 'length', 'width', 'tran_spacing', 'wind_pos', 'wind_neg'
+            'mullion', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg'
         ],
         'Aluminum + Steel': [
-            'mullion', 'steel', 'transom', 'length', 'width', 'tran_spacing', 'wind_pos', 'wind_neg'
+            'mullion', 'steel', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg'
         ]
     };
 
