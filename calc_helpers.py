@@ -292,6 +292,8 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     mullion_type = frame.get("mullion_type", "Aluminum Only")
     frame_type = frame.get("frame_type", "Continuous")
     glass_thk = _to_float(frame.get("glass_thk")) or glass_thk or 0
+    
+    glass_sw = glass_thk * 0.025
 
     # Calculate steel profile properties from profile name
     steel_calc = calc_steel_profile(steel_ref) if steel_ref else None
@@ -373,7 +375,7 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
         "mullion": mullion,
         "steel_ref": steel_ref,
         "glass_thk": round(glass_thk, 1),
-        "glass_sw": round(frame_width, 1),
+        "glass_sw": round(glass_sw, 1),
         "eff_area": round(frame_width * frame_length / 1_000_000, 2),
         "I_xa": round(I_xa, 1) if I_xa is not None else None,
         "I_xs": round(I_xs, 1) if I_xs is not None else None,
