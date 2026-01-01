@@ -312,7 +312,10 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     mul_mu = round(1.6 * mul_w_wind * (frame_length / 1000) ** 2 / 8, 2)
 
     # Transom loads
-    if tran_spacing != frame_length and frame_type != "Floor-to-floor":
+    if frame_type == "Continuous":
+        tran_w_dead = (glass_thk * 0.025) * (frame_width / 1000)
+        tran_w_wind = wind_neg * (frame_width / 1000)
+    elif tran_spacing < frame_length and frame_type != "Continuous":
         tran_w_dead = (glass_thk * 0.025) * (frame_width / 1000)
         tran_w_wind = wind_neg * (frame_width / 1000)
     else:
@@ -380,8 +383,8 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
         "mullion": mullion,
         "steel_ref": steel_ref,
         "glass_thk": round(glass_thk, 1),
-        "glass_sw": round(glass_sw, 1),
-        "eff_area": round(eff_area, 2),
+        "glass_sw": round(glass_sw, 2),
+        "eff_area": round(eff_area, 1),
         "I_xa": round(I_xa, 1) if I_xa is not None else None,
         "I_xs": round(I_xs, 1) if I_xs is not None else None,
         "ls_a": round(ls_a, 3) if ls_a is not None else None,
