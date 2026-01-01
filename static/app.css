@@ -1349,3 +1349,25 @@ summary {
     padding: 0;
     overflow-y: auto;
 }
+
+/* Status indicators for properties */
+.status-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.2em;
+    height: 1.2em;
+    font-size: 0.75rem;
+    margin-left: 0.3rem;
+    vertical-align: middle;
+}
+
+.status-icon.pass {
+    color: #4caf50;
+    font-weight: bold;
+}
+
+.status-icon.fail {
+    color: #f44336;
+    font-weight: bold;
+}
