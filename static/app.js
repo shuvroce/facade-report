@@ -751,8 +751,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Missing screw data');
             }
 
-            // Get frame and glass thickness from category
-            const categoryItem = item.closest('.dynamic-item');
+            // Get frame and glass thickness from parent category
+            const categoryItem = item.closest('.category-item');
+            if (!categoryItem) {
+                throw new Error('Category not found');
+            }
             const frameItem = categoryItem.querySelector('[data-type="frame"]');
             const frameData = {};
             if (frameItem) {
@@ -795,8 +798,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 throw new Error('Missing anchor data');
             }
 
-            // Get frame and glass thickness from category
-            const categoryItem = item.closest('.dynamic-item');
+            // Get frame and glass thickness from parent category
+            const categoryItem = item.closest('.category-item');
+            if (!categoryItem) {
+                throw new Error('Category not found');
+            }
             const frameItem = categoryItem.querySelector('[data-type="frame"]');
             const frameData = {};
             if (frameItem) {

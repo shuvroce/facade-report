@@ -417,17 +417,22 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: floa
     alum_profiles_data = alum_profiles_data or []
 
     # Get frame loads (from frame calculation or direct)
-    frame_width = _to_float(frame.get("width")) or 0
+    frame_width = _to_float(frame.get("width"))
+    frame_length = _to_float(frame.get("length"))
     frame_type = frame.get("frame_type", "Continuous")
     wind_neg = _to_float(frame.get("wind_neg")) or 0
-    glass_thk = _to_float(frame.get("glass_thickness")) or glass_thk or 0
+    glass_thk = _to_float(frame.get("glass_thk")) or glass_thk or 0
 
-    mul_w_dead = (glass_thk * 0.025 * frame_width / 1000)
-    mul_w_wind = (wind_neg * frame_width / 1000)
+    # Validate frame dimensions
+    if not frame_width or not frame_length:
+        return None
 
     # Transom loads
-    tran_spacing = _to_float(frame.get("tran_spacing")) or frame_width
-    if tran_spacing != frame_width and frame_type != "Floor-to-floor":
+    tran_spacing = _to_float(frame.get("tran_spacing")) or frame_length
+    if frame_type == "Continuous":
+        tran_w_dead = (glass_thk * 0.025) * (frame_width / 1000)
+        tran_w_wind = wind_neg * (frame_width / 1000)
+    elif tran_spacing < frame_length and frame_type != "Continuous":
         tran_w_dead = (glass_thk * 0.025) * (frame_width / 1000)
         tran_w_wind = wind_neg * (frame_width / 1000)
     else:
@@ -440,12 +445,12 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: floa
     design_fy = joint_fy * 1.6
     design_fz = joint_fz * 1.4
 
-    screw_nos = _to_float(conn.get("screw_nos")) or 0
-    screw_dia = _to_float(conn.get("screw_dia")) or 0
-    head_dia = _to_float(conn.get("head_dia")) or 0
-    t1 = _to_float(conn.get("t1")) or 0
-    t2 = _to_float(conn.get("t2")) or 0
-    tc = _to_float(conn.get("tc")) or 0
+    screw_nos = _to_float(conn.get("screw_nos"))
+    screw_dia = _to_float(conn.get("screw_dia"))
+    head_dia = _to_float(conn.get("head_dia"))
+    t1 = _to_float(conn.get("t1"))
+    t2 = _to_float(conn.get("t2"))
+    tc = _to_float(conn.get("tc"))
 
     if not all([screw_nos, screw_dia, head_dia, t1, t2, tc]):
         return None
@@ -475,14 +480,6 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: floa
 
     return {
         "screw_nos": int(screw_nos),
-        "screw_dia": screw_dia,
-        "resultant_shear": resultant_shear,
-        "phi_Pnv": phi_Pnv,
-        "shear_ratio": shear_ratio,
-        "phi_Pnot": phi_Pnot,
-        "pullout_ratio": pullout_ratio,
-        "phi_Pnov": phi_Pnov,
-        "pullover_ratio": pullover_ratio,
     }
 
 

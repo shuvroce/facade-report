@@ -32,13 +32,6 @@
 
 {# Glass Unit Preview #}
 {% macro glass_preview(result, glass_type) %}
-    {% set status_color = '#ff9800' %}
-    {% set status_text = 'NOT OK' %}
-    {% if result.stress_ratio and result.stress_ratio <= 1 and result.def_ratio and result.def_ratio <= 1 %}
-        {% set status_color = '#4caf50' %}
-        {% set status_text = 'OK' %}
-    {% endif %}
-
 {% if glass_type == "sgu" or glass_type == "lgu" %}
 <div class="profile-properties">
     <div class="property-item">
@@ -74,10 +67,6 @@
     <div class="property-item">
         <span class="property-label">Defl. Ratio:</span>
         <span class="property-value">{{ result.def_ratio or '—' }}</span>
-    </div>
-    <div class="property-item">
-        <span class="property-label">Status:</span>
-        <span class="property-value" data-status-color="{{ status_color }}">{{ status_text }}</span>
     </div>
 </div>
 
@@ -151,18 +140,12 @@
         <span class="property-label">Defl. Ratio:</span>
         <span class="property-value">{{ result.def_ratio or '—' }}</span>
     </div>
-    <div class="property-item">
-        <span class="property-label">Status:</span>
-        <span class="property-value" data-status-color="{{ status_color }}">{{ status_text }}</span>
-    </div>
 </div>
 {% endif %}
 {% endmacro %}
 
 {# Frame Preview #}
 {% macro frame_preview(result) %}
-{% if result.mul_dc and result.mul_dc <= 1 %}{% set mul_status = 'OK' %}{% elif result.mul_dc %}{% set mul_status = 'NOT OK' %}{% else %}{% set mul_status = '—' %}{% endif %}
-{% if result.tran_dc and result.tran_dc <= 1 %}{% set tran_status = 'OK' %}{% elif result.tran_dc %}{% set tran_status = 'NOT OK' %}{% else %}{% set tran_status = '—' %}{% endif %}
 <div class="profile-properties">
     <div class="property-item">
         <span class="property-label">Glass DL:</span>
@@ -263,32 +246,54 @@
 
 {# Connection Preview #}
 {% macro connection_preview(result) %}
-{% if result.shear_cap_ratio and result.shear_cap_ratio < 1 %}{% set shear_status = 'OK' %}{% elif result.shear_cap_ratio %}{% set shear_status = 'REVIEW' %}{% else %}{% set shear_status = '—' %}{% endif %}
-{% if result.pullout_cap_ratio and result.pullout_cap_ratio < 1 %}{% set pullout_status = 'OK' %}{% elif result.pullout_cap_ratio %}{% set pullout_status = 'REVIEW' %}{% else %}{% set pullout_status = '—' %}{% endif %}
 <div class="profile-properties">
     <div class="property-item">
-        <span class="property-label">Shear Capacity:</span>
-        <span class="property-value">{{ result.shear_cap or '—' }} kN</span>
+        <span class="property-label">Screw Nos:</span>
+        <span class="property-value">{{ result.screw_nos or '—' }}</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Shear Cap Ratio:</span>
-        <span class="property-value">{{ result.shear_cap_ratio or '—' }}</span>
+        <span class="property-label">Screw Dia:</span>
+        <span class="property-value">{{ result.screw_dia or '—' }} mm</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Resultant Shear:</span>
+        <span class="property-value">{{ result.resultant_shear or '—' }} kN</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">φPnv (Shear Cap):</span>
+        <span class="property-value">{{ result.phi_Pnv or '—' }} kN</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Shear Ratio:</span>
+        <span class="property-value">{{ result.shear_ratio or '—' }}</span>
     </div>
     <div class="property-item">
         <span class="property-label">Shear Status:</span>
         <span class="property-value">{{ shear_status }}</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Pullout Capacity:</span>
-        <span class="property-value">{{ result.pullout_cap or '—' }} kN</span>
+        <span class="property-label">φPnot (Pullout Cap):</span>
+        <span class="property-value">{{ result.phi_Pnot or '—' }} kN</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Pullout Cap Ratio:</span>
-        <span class="property-value">{{ result.pullout_cap_ratio or '—' }}</span>
+        <span class="property-label">Pullout Ratio:</span>
+        <span class="property-value">{{ result.pullout_ratio or '—' }}</span>
     </div>
     <div class="property-item">
         <span class="property-label">Pullout Status:</span>
         <span class="property-value">{{ pullout_status }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">φPnov (Pullover Cap):</span>
+        <span class="property-value">{{ result.phi_Pnov or '—' }} kN</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Pullover Ratio:</span>
+        <span class="property-value">{{ result.pullover_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Pullover Status:</span>
+        <span class="property-value">{{ pullover_status }}</span>
     </div>
 </div>
 {% endmacro %}
