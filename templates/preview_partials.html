@@ -248,60 +248,50 @@
 {% macro connection_preview(result) %}
 <div class="profile-properties">
     <div class="property-item">
-        <span class="property-label">Screw Nos:</span>
-        <span class="property-value">{{ result.screw_nos or '—' }}</span>
+        <span class="property-label">Joint f<sub>y</sub>:</span>
+        <span class="property-value">{{ result.joint_fy or '—' }} kN</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Screw Dia:</span>
-        <span class="property-value">{{ result.screw_dia or '—' }} mm</span>
+        <span class="property-label">Joint f<sub>z</sub>:</span>
+        <span class="property-value">{{ result.joint_fz or '—' }} kN</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Resultant Shear:</span>
-        <span class="property-value">{{ result.resultant_shear or '—' }} kN</span>
+        <span class="property-label">Shear, R<sub>yA</sub>:</span>
+        <span class="property-value">{{ result.R_yA or '—' }} kN</span>
     </div>
     <div class="property-item">
-        <span class="property-label">φPnv (Shear Cap):</span>
+        <span class="property-label">Tension, R<sub>zA</sub>:</span>
+        <span class="property-value">{{ result.R_zA or '—' }} kN</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Resultant, V<sub>u</sub>:</span>
+        <span class="property-value">{{ result.Vu or '—' }} kN</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Shear, φP<sub>nv</sub>:</span>
         <span class="property-value">{{ result.phi_Pnv or '—' }} kN</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Shear Ratio:</span>
-        <span class="property-value">{{ result.shear_ratio or '—' }}</span>
-    </div>
-    <div class="property-item">
-        <span class="property-label">Shear Status:</span>
-        <span class="property-value">{{ shear_status }}</span>
-    </div>
-    <div class="property-item">
-        <span class="property-label">φPnot (Pullout Cap):</span>
+        <span class="property-label">Pullout, φP<sub>not</sub>:</span>
         <span class="property-value">{{ result.phi_Pnot or '—' }} kN</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Pullout Ratio:</span>
-        <span class="property-value">{{ result.pullout_ratio or '—' }}</span>
-    </div>
-    <div class="property-item">
-        <span class="property-label">Pullout Status:</span>
-        <span class="property-value">{{ pullout_status }}</span>
-    </div>
-    <div class="property-item">
-        <span class="property-label">φPnov (Pullover Cap):</span>
+        <span class="property-label">Pullover, φP<sub>nov</sub>:</span>
         <span class="property-value">{{ result.phi_Pnov or '—' }} kN</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Pullover Ratio:</span>
-        <span class="property-value">{{ result.pullover_ratio or '—' }}</span>
+        <span class="property-label">β<sub>pullover</sub>:</span>
+        <span class="property-value">{{ result.beta_pullover or '—' }}</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Pullover Status:</span>
-        <span class="property-value">{{ pullover_status }}</span>
+        <span class="property-label">β<sub>pullout</sub>:</span>
+        <span class="property-value">{{ result.beta_pullout or '—' }}</span>
     </div>
 </div>
 {% endmacro %}
 
 {# Anchorage Preview #}
 {% macro anchorage_preview(result) %}
-{% if result.steel_cap_ratio and result.steel_cap_ratio < 1 %}{% set steel_status = 'OK' %}{% elif result.steel_cap_ratio %}{% set steel_status = 'REVIEW' %}{% else %}{% set steel_status = '—' %}{% endif %}
-{% if result.concrete_cap_ratio and result.concrete_cap_ratio < 1 %}{% set concrete_status = 'OK' %}{% elif result.concrete_cap_ratio %}{% set concrete_status = 'REVIEW' %}{% else %}{% set concrete_status = '—' %}{% endif %}
 <div class="profile-properties">
     <div class="property-item">
         <span class="property-label">Steel Capacity:</span>

@@ -439,8 +439,8 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: floa
         tran_w_dead = ((glass_thk * 0.025) / 2) * (frame_width / 1000)
         tran_w_wind = (wind_neg / 2) * (frame_width / 1000)
 
-    joint_fy = round(((tran_w_wind * frame_width / 1000) / 4), 2)
-    joint_fz = round(((tran_w_dead * frame_width / 1000) / 4), 2)
+    joint_fy = ((tran_w_wind * frame_width / 1000) / 4)
+    joint_fz = ((tran_w_dead * frame_width / 1000) / 4)
 
     design_fy = joint_fy * 1.6
     design_fz = joint_fz * 1.4
@@ -458,7 +458,7 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: floa
     # Screw shear capacity
     R_yB = design_fy / (screw_nos / 2)
     R_zB = design_fz / (screw_nos / 2)
-    resultant_shear = round((R_yB ** 2 + R_zB ** 2) ** 0.5, 2)
+    resultant_shear = (R_yB**2 + R_zB**2)**0.5
 
     # Pull-over (tilting)
     Pnv1 = 4.2 * (t2 ** 3 * screw_dia) ** 0.5 * 207
@@ -474,12 +474,21 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: floa
     phi_Pnov = round(0.5 * 1.5 * t1 * d_w * 207 / 1000, 2)
 
     # Ratios
-    shear_ratio = round(resultant_shear / phi_Pnv, 2) if phi_Pnv else None
-    pullout_ratio = round(design_fz / phi_Pnot, 2) if phi_Pnot else None
-    pullover_ratio = round(design_fz / phi_Pnov, 2) if phi_Pnov else None
+    beta_pullover = (resultant_shear / phi_Pnv / 0.5) + (0.71 * R_zB / phi_Pnov / 0.5)
+    beta_pullout = (resultant_shear / phi_Pnv / 0.5) + (R_zB / phi_Pnot / 0.5)
+
 
     return {
-        "screw_nos": int(screw_nos),
+        "joint_fy": round(joint_fy, 2),
+        "joint_fz": round(joint_fz, 2),
+        "R_zA": round(R_zB, 2),
+        "R_yA": round(R_yB, 2),
+        "Vu": round(resultant_shear, 2),
+        "phi_Pnv": round(phi_Pnv, 2),
+        "phi_Pnot": round(phi_Pnot, 2),
+        "phi_Pnov": round(phi_Pnov, 2),
+        "beta_pullover": round(beta_pullover, 2),
+        "beta_pullout": round(beta_pullout, 2),
     }
 
 

@@ -308,9 +308,9 @@ nav {
 }
 
 .property-label {
-    font-weight: 600;
+    /* font-weight: 600; */
     color: var(--text-primary);
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     /* min-width: 70px; */
 }
 
