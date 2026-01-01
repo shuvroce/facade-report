@@ -165,11 +165,11 @@
 {% if result.tran_dc and result.tran_dc <= 1 %}{% set tran_status = 'OK' %}{% elif result.tran_dc %}{% set tran_status = 'NOT OK' %}{% else %}{% set tran_status = '—' %}{% endif %}
 <div class="profile-properties">
     <div class="property-item">
-        <span class="property-label">Glass Thickness:</span>
+        <span class="property-label">Glass Thk:</span>
         <span class="property-value">{{ result.glass_thk or '—' }} mm</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Glass Width:</span>
+        <span class="property-label">Glass DL:</span>
         <span class="property-value">{{ result.glass_sw or '—' }} mm</span>
     </div>
     <div class="property-item">
@@ -203,19 +203,19 @@
     
     {% if result.mullion_type == "Aluminum + Steel" %}
     <div class="property-item">
-        <span class="property-label">Mullion φM<sub>n</sub><sub>a</sub>:</span>
+        <span class="property-label">Alum. φMn<sub>n</sub>:</span>
         <span class="property-value">{{ result.mul_phi_Mn_a or '—' }} kN-m</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Mullion D.C<sub>a</sub>:</span>
+        <span class="property-label">Alum. D/C:</span>
         <span class="property-value">{{ result.mul_dc_a or '—' }}</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Mullion φM<sub>n</sub><sub>s</sub>:</span>
+        <span class="property-label">Steel φM<sub>n</sub>:</span>
         <span class="property-value">{{ result.mul_phi_Mn_s or '—' }} kN-m</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Mullion D.C<sub>s</sub>:</span>
+        <span class="property-label">Steel D/C:</span>
         <span class="property-value">{{ result.mul_dc_s or '—' }}</span>
     </div>
     {% else %}
@@ -224,17 +224,17 @@
         <span class="property-value">{{ result.mul_phi_Mn or '—' }} kN-m</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Mullion D.C:</span>
+        <span class="property-label">Mullion D/C:</span>
         <span class="property-value">{{ result.mul_dc or '—' }}</span>
     </div>
     {% endif %}
     
     <div class="property-item">
-        <span class="property-label">Mullion Deflection:</span>
+        <span class="property-label">Mullion Defl:</span>
         <span class="property-value">{{ result.mul_def or '—' }} mm</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Mullion Allow. Defl.:</span>
+        <span class="property-label">Mul. Allow. Defl:</span>
         <span class="property-value">{{ result.mul_allow_def or '—' }} mm</span>
     </div>
     
@@ -247,19 +247,19 @@
         <span class="property-value">{{ result.tran_phi_Mn or '—' }} kN-m</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Transom D.C:</span>
+        <span class="property-label">Transom D/C:</span>
         <span class="property-value">{{ result.tran_dc or '—' }}</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Transom Deflection (Wind):</span>
+        <span class="property-label">Tran. Wind Defl:</span>
         <span class="property-value">{{ result.tran_def_wind or '—' }} mm</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Transom Deflection (Dead):</span>
+        <span class="property-label">Tran. Dead Defl:</span>
         <span class="property-value">{{ result.tran_def_dead or '—' }} mm</span>
     </div>
     <div class="property-item">
-        <span class="property-label">Transom Allow. Defl.:</span>
+        <span class="property-label">Tran. Allow. Defl.:</span>
         <span class="property-value">{{ result.tran_allow_def or '—' }} mm</span>
     </div>
 </div>
