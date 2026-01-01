@@ -13,6 +13,7 @@ alum_profiles_data:
     plastic_x: 27.9
     plastic_y: 52
     F_y: 172.4
+    phi_Mn: 6.5
   
   - profile_name: M 125x60x3
     web_length: 125
@@ -28,6 +29,7 @@ alum_profiles_data:
     plastic_x: 29.5
     plastic_y: 49
     F_y: 172.4
+    phi_Mn: 7.2
   
   - profile_name: M 140x60x2.5
     web_length: 140
@@ -43,6 +45,7 @@ alum_profiles_data:
     plastic_x: 33.5
     plastic_y: 56.1
     F_y: 172.4
+    phi_Mn: 7.6
   
   - profile_name: M 135x67x4
     web_length: 135
@@ -58,6 +61,7 @@ alum_profiles_data:
     plastic_x: 42.4
     plastic_y: 46.1
     F_y: 172.4
+    phi_Mn: 12.2
   
   - profile_name: M 145x67x2.5
     web_length: 145
@@ -73,6 +77,7 @@ alum_profiles_data:
     plastic_x: 35.9
     plastic_y: 58.4
     F_y: 172.4
+    phi_Mn: 8.4
   
   - profile_name: M 145x67x3
     web_length: 145
@@ -88,6 +93,7 @@ alum_profiles_data:
     plastic_x: 37.4
     plastic_y: 54.9
     F_y: 172.4
+    phi_Mn: 9.3
   
   - profile_name: M 145x67x3.5
     web_length: 145
@@ -103,6 +109,7 @@ alum_profiles_data:
     plastic_x: 39.6
     plastic_y: 52.3
     F_y: 172.4
+    phi_Mn: 10.7
   
   - profile_name: M 145x80x3
     web_length: 145
@@ -118,6 +125,7 @@ alum_profiles_data:
     plastic_x: 43.4
     plastic_y: 56.3
     F_y: 172.4
+    phi_Mn: 12.7
   
   - profile_name: M 150x80x3
     web_length: 150
@@ -133,6 +141,7 @@ alum_profiles_data:
     plastic_x: 45.1
     plastic_y: 57.7
     F_y: 172.4
+    phi_Mn: 12.8
   
   - profile_name: M 160x80x8
     web_length: 160
@@ -148,6 +157,7 @@ alum_profiles_data:
     plastic_x: 46.4
     plastic_y: 53.3
     F_y: 172.4
+    phi_Mn: 29.1
   
   - profile_name: M 240x80x12
     web_length: 240
@@ -163,6 +173,7 @@ alum_profiles_data:
     plastic_x: 68.4
     plastic_y: 71.8
     F_y: 172.4
+    phi_Mn: 78.8
   
   - profile_name: M 145x90x3
     web_length: 145
@@ -178,6 +189,7 @@ alum_profiles_data:
     plastic_x: 44.9
     plastic_y: 56.7
     F_y: 172.4
+    phi_Mn: 13.2
   
   - profile_name: M 185x90x3
     web_length: 185
@@ -193,6 +205,7 @@ alum_profiles_data:
     plastic_x: 58.2
     plastic_y: 68.5
     F_y: 172.4
+    phi_Mn: 17.9
   
   - profile_name: M 200x72x3
     web_length: 200
@@ -208,6 +221,7 @@ alum_profiles_data:
     plastic_x: 53.7
     plastic_y: 76.4
     F_y: 172.4
+    phi_Mn: 17.1
 
   - profile_name: T 125x60x2.5
     web_length: 125
@@ -225,6 +239,7 @@ alum_profiles_data:
     F_y: 110
     Mn_yield: 5.17
     Mn_lb: 4.9
+    phi_Mn: 4.41
   
   - profile_name: T 135x67x2.5
     web_length: 135
@@ -242,6 +257,7 @@ alum_profiles_data:
     F_y: 110
     Mn_yield: 6.32
     Mn_lb: 5.96
+    phi_Mn: 5.36
   
   - profile_name: T 145x67x2
     web_length: 145
@@ -259,6 +275,7 @@ alum_profiles_data:
     F_y: 110
     Mn_yield: 5.81
     Mn_lb: 5.24
+    phi_Mn: 4.71
   
   - profile_name: T 125x80x2.5
     web_length: 125
@@ -276,6 +293,7 @@ alum_profiles_data:
     F_y: 110
     Mn_yield: 6.07
     Mn_lb: 5.36
+    phi_Mn: 4.82
   
   - profile_name: T 125x90x2.5
     web_length: 125
@@ -293,6 +311,7 @@ alum_profiles_data:
     F_y: 110
     Mn_yield: 6.44
     Mn_lb: 5.75
+    phi_Mn: 5.17
   
   - profile_name: T 65x72x3
     web_length: 65
@@ -310,4 +329,5 @@ alum_profiles_data:
     F_y: 110
     Mn_yield: 2.29
     Mn_lb: 2.17
+    phi_Mn: 1.95
 

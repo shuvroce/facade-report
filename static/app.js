@@ -81,28 +81,51 @@ document.addEventListener('DOMContentLoaded', () => {
         'Stick': ['profile_name', 'web_length', 'flange_length', 'web_thk', 'flange_thk', 'F_y']
     };
 
-    const alumProfileOptions = [
-        'M 125x60x2.5',
-        'M 125x60x3',
-        'M 140x60x2.5',
-        'M 135x67x4',
-        'M 145x67x2.5',
-        'M 145x67x3',
-        'M 145x67x3.5',
-        'M 145x80x3',
-        'M 150x80x3',
-        'M 160x80x8',
-        'M 240x80x12',
-        'M 145x90x3',
-        'M 185x90x3',
-        'M 200x72x3',
-        'T 125x60x2.5',
-        'T 135x67x2.5',
-        'T 145x67x2',
-        'T 125x80x2.5',
-        'T 125x90x2.5',
-        'T 65x72x3'
-    ];
+    // Dynamic profile options - will be populated from server
+    let alumProfileOptions = [];
+    let steelProfileOptions = [];
+    let profileDataCache = {}; // Cache for profile data {profile_name: {I_xx, I_yy, phi_Mn, ...}}
+
+    /**
+     * Fetch profile names from backend and populate options
+     */
+    async function initializeProfileOptions() {
+        try {
+            const response = await fetch('/get_profile_names');
+            if (response.ok) {
+                const data = await response.json();
+                alumProfileOptions = data.alum_profiles || [];
+                steelProfileOptions = data.steel_profiles || [];
+            } else {
+                console.warn('Failed to fetch profile names, using empty arrays');
+            }
+            
+            // Fetch full profile data
+            const profileResponse = await fetch('/get_profile_data');
+            if (profileResponse.ok) {
+                const profileData = await profileResponse.json();
+                
+                // Cache aluminum profiles
+                if (profileData.alum_profiles_data) {
+                    profileData.alum_profiles_data.forEach(profile => {
+                        profileDataCache[profile.profile_name] = profile;
+                    });
+                }
+                
+                // Cache steel profiles
+                if (profileData.steel_profiles_data) {
+                    profileData.steel_profiles_data.forEach(profile => {
+                        profileDataCache[profile.profile_name] = profile;
+                    });
+                }
+            }
+        } catch (error) {
+            console.warn('Error fetching profile names:', error);
+        }
+    }
+
+    // Store the initialization promise so we can await it later
+    const profileOptionsPromise = initializeProfileOptions();
 
     const alumFieldPlaceholders = {
         'profile_name': 'Profile Name (e.g. M or St. M 125x60x2.5)',
@@ -173,14 +196,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Frame Configuration ---
     const frameFields = {
         'Aluminum Only': [
-            'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
-            'mullion', 'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn',
-            'transom', 'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
+            'mullion', 'transom', 'length', 'width', 'tran_spacing', 'wind_pos', 'wind_neg'
         ],
         'Aluminum + Steel': [
-            'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
-            'mullion', 'I_xa', 'I_xs', 'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn_a', 'mul_phi_Mn_s',
-            'transom', 'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
+            'mullion', 'steel', 'transom', 'length', 'width', 'tran_spacing', 'wind_pos', 'wind_neg'
         ]
     };
 
@@ -191,7 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'glass_thk': 'Glass Thickness (mm)',
         'wind_pos': 'Wind Load (+ve) (kPa)',
         'wind_neg': 'Wind Load (-ve) (kPa)',
-        'mullion': 'Mullion Name (e.g. M 125x60x2.5 or [+RHS 3])',
+        'mullion': 'Mullion Name (e.g. M 125x60x2.5)',
+        'steel': 'Embedded Steel Tube (e.g. RHS 85x50x4)',
         'I_xa': 'Moment of Inertia of Aluminum, Ixa (mm⁴)',
         'I_xs': 'Moment of Inertia of Steel, Ixs (mm⁴)',
         'mul_mu': 'Mullion Max. Moment, Mu (kNm)',
@@ -211,15 +231,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Anchorage Configuration ---
     const anchorageFields = {
         'Box Clump': [
-            'reaction_Ry', 'reaction_Rz','anchor_nos', 'anchor_dia', 'embed_depth',
-            'C_a1', 'h_a', 'bp_length_N', 'bp_width_B', 'bp_thk', 'bp_b'
+            'anchor_nos', 'anchor_dia', 'embed_depth',
+            'C_a1', 'h_a', 'bp_thk', 'bp_b'
         ],
         'U Clump': [
-            'reaction_Ry', 'reaction_Rz','anchor_nos', 'anchor_dia', 'embed_depth', 'C_a1', 
-            'thr_bolt_dia', 'fin_thk', 'fin_e', 'bp_length_N', 'bp_width_B', 'bp_thk', 'bp_d'
+            'anchor_nos', 'anchor_dia', 'embed_depth', 'C_a1', 
+            'thr_bolt_dia', 'fin_thk', 'fin_e', 'bp_thk', 'bp_d'
         ],
         'L Clump Top': [
-            'reaction_Ry', 'reaction_Rz', 'anchor_nos', 'anchor_dia', 'embed_depth',
+            'anchor_nos', 'anchor_dia', 'embed_depth',
             'C_a1', 'h_a', 'bp_length_N', 'bp_width_B', 'bp_thk'
         ],
         'L Clump Front': [
@@ -273,6 +293,8 @@ document.addEventListener('DOMContentLoaded', () => {
             if (selectedType === 'Pre-defined' && fieldName === 'profile_name') {
                 input = document.createElement('select');
                 input.name = fieldName;
+                
+                // Add profile options (first one will be default)
                 alumProfileOptions.forEach(option => {
                     const opt = document.createElement('option');
                     opt.value = option;
@@ -350,6 +372,561 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     /**
+     * Populate I_xx, I_yy, phi_Mn fields based on selected profile
+     * @param {HTMLElement} selectElement - The profile select element
+     * @param {string} profileType - Type of profile ('mullion', 'transom', or 'steel')
+     */
+    function populateProfileData(selectElement, profileType) {
+        const profileName = selectElement.value;
+        const frameItem = selectElement.closest('.frame-item');
+        if (!frameItem || !profileName) return;
+        
+        const profileData = profileDataCache[profileName];
+        if (!profileData) return;
+        
+        // Map profile type to field name prefixes
+        let prefix = '';
+        if (profileType === 'mullion') {
+            prefix = 'I_x'; // For mullion: I_xa or I_xx
+        } else if (profileType === 'transom') {
+            prefix = 'tran_I_x'; // For transom: tran_I_xx, tran_I_yy
+        } else if (profileType === 'steel') {
+            prefix = 'I_x'; // For steel: I_xs
+        }
+        
+        // Find and populate I_xx field
+        const ixxField = frameItem.querySelector(`input[name*="${prefix}"][name*="x"]`);
+        if (ixxField && profileData.I_xx) {
+            ixxField.value = profileData.I_xx;
+        }
+        
+        // Find and populate I_yy field
+        const iyyField = frameItem.querySelector(`input[name*="${prefix}"][name*="y"]`);
+        if (iyyField && profileData.I_yy) {
+            iyyField.value = profileData.I_yy;
+        }
+        
+        // Find and populate phi_Mn field
+        let phiMnFieldName = '';
+        if (profileType === 'mullion') {
+            phiMnFieldName = 'mul_phi_Mn';
+        } else if (profileType === 'transom') {
+            phiMnFieldName = 'tran_phi_Mn';
+        } else if (profileType === 'steel') {
+            phiMnFieldName = 'mul_phi_Mn_s';
+        }
+        
+        const phiMnField = frameItem.querySelector(`input[name="${phiMnFieldName}"]`);
+        if (phiMnField && profileData.phi_Mn) {
+            phiMnField.value = profileData.phi_Mn;
+        }
+    }
+
+    /**
+     * Populate I_xx, I_yy, phi_Mn fields based on selected profile
+     * @param {HTMLElement} selectElement - The profile select element
+     * @param {string} profileType - Type of profile ('mullion', 'transom', or 'steel')
+     */
+    function populateProfileData(selectElement, profileType) {
+        const profileName = selectElement.value;
+        const frameItem = selectElement.closest('.frame-item');
+        if (!frameItem || !profileName) return;
+        
+        const profileData = profileDataCache[profileName];
+        if (!profileData) {
+            console.warn(`Profile data not found for: ${profileName}`);
+            return;
+        }
+        
+        // Map profile type to field name patterns
+        if (profileType === 'mullion') {
+            // For mullion: I_xa, I_ya, mul_phi_Mn_a or mul_phi_Mn
+            const mullionType = frameItem.querySelector('select[name="mullion_type"]')?.value;
+            
+            if (mullionType === 'Aluminum + Steel') {
+                // Aluminum + Steel: I_xa, I_ya, mul_phi_Mn_a
+                const ixxField = frameItem.querySelector('input[name="I_xa"]');
+                if (ixxField && profileData.I_xx) {
+                    ixxField.value = profileData.I_xx;
+                }
+                
+                const iyyField = frameItem.querySelector('input[name="I_ya"]');
+                if (iyyField && profileData.I_yy) {
+                    iyyField.value = profileData.I_yy;
+                }
+                
+                const phiMnField = frameItem.querySelector('input[name="mul_phi_Mn_a"]');
+                if (phiMnField && profileData.phi_Mn) {
+                    phiMnField.value = profileData.phi_Mn;
+                }
+            } else {
+                // Aluminum Only: I_xx, I_yy, mul_phi_Mn
+                const ixxField = frameItem.querySelector('input[name="I_xx"]');
+                if (ixxField && profileData.I_xx) {
+                    ixxField.value = profileData.I_xx;
+                }
+                
+                const iyyField = frameItem.querySelector('input[name="I_yy"]');
+                if (iyyField && profileData.I_yy) {
+                    iyyField.value = profileData.I_yy;
+                }
+                
+                const phiMnField = frameItem.querySelector('input[name="mul_phi_Mn"]');
+                if (phiMnField && profileData.phi_Mn) {
+                    phiMnField.value = profileData.phi_Mn;
+                }
+            }
+        } else if (profileType === 'transom') {
+            // For transom: tran_I_xx, tran_I_yy, tran_phi_Mn
+            const ixxField = frameItem.querySelector('input[name="tran_I_xx"]');
+            if (ixxField && profileData.I_xx) {
+                ixxField.value = profileData.I_xx;
+            }
+            
+            const iyyField = frameItem.querySelector('input[name="tran_I_yy"]');
+            if (iyyField && profileData.I_yy) {
+                iyyField.value = profileData.I_yy;
+            }
+            
+            const phiMnField = frameItem.querySelector('input[name="tran_phi_Mn"]');
+            if (phiMnField && profileData.phi_Mn) {
+                phiMnField.value = profileData.phi_Mn;
+            }
+        } else if (profileType === 'steel') {
+            // For steel: I_xs, I_ys, mul_phi_Mn_s
+            const ixxField = frameItem.querySelector('input[name="I_xs"]');
+            if (ixxField && profileData.I_xx) {
+                ixxField.value = profileData.I_xx;
+            }
+            
+            const iyyField = frameItem.querySelector('input[name="I_ys"]');
+            if (iyyField && profileData.I_yy) {
+                iyyField.value = profileData.I_yy;
+            }
+            
+            const phiMnField = frameItem.querySelector('input[name="mul_phi_Mn_s"]');
+            if (phiMnField && profileData.phi_Mn) {
+                phiMnField.value = profileData.phi_Mn;
+            }
+        }
+    }
+
+    /**
+     * Update the aluminum profile preview panel with selected profile properties
+     * @param {HTMLElement} alumItem - The aluminum profile item container
+     */
+    function updateAlumProfilePreview(alumItem) {
+        const previewContainer = alumItem.querySelector('.profile-preview-content');
+        if (!previewContainer) return;
+
+        const profileTypeSelect = alumItem.querySelector('select[name="profile_type"]');
+        const profileNameField = alumItem.querySelector('input[name="profile_name"], select[name="profile_name"]');
+        
+        if (!profileTypeSelect || !profileNameField) {
+            previewContainer.innerHTML = '<p class="preview-placeholder">Select a profile</p>';
+            return;
+        }
+
+        const profileType = profileTypeSelect.value;
+        const profileName = profileNameField.value;
+
+        // If no profile name selected or empty, show placeholder
+        if (!profileName) {
+            previewContainer.innerHTML = '<p class="preview-placeholder">Enter or select a profile</p>';
+            return;
+        }
+
+        // For pre-defined profiles, get data from cache
+        if (profileType === 'Pre-defined') {
+            const profileData = profileDataCache[profileName];
+            if (profileData) {
+                const html = `
+                    <div class="profile-properties">
+                        ${profileData.area ? `<div class="property-item">
+                            <span class="property-label">Area:</span>
+                            <span class="property-value">${profileData.area}</span>
+                        </div>` : ''}
+                        ${profileData.I_xx ? `<div class="property-item">
+                            <span class="property-label">I<sub>xx</sub>:</span>
+                            <span class="property-value">${profileData.I_xx}</span>
+                        </div>` : ''}
+                        ${profileData.I_yy ? `<div class="property-item">
+                            <span class="property-label">I<sub>yy</sub>:</span>
+                            <span class="property-value">${profileData.I_yy}</span>
+                        </div>` : ''}
+                        ${profileData.tor_constant ? `<div class="property-item">
+                            <span class="property-label">J<sub>y</sub>:</span>
+                            <span class="property-value">${profileData.tor_constant}</span>
+                        </div>` : ''}
+                        ${profileData.F_y ? `<div class="property-item">
+                            <span class="property-label">F<sub>y</sub>:</span>
+                            <span class="property-value">${profileData.F_y}</span>
+                        </div>` : ''}
+                        ${profileData.phi_Mn ? `<div class="property-item">
+                            <span class="property-label">φM<sub>n</sub>:</span>
+                            <span class="property-value">${profileData.phi_Mn}</span>
+                        </div>` : ''}
+                    </div>
+                `;
+                previewContainer.innerHTML = html;
+            } else {
+                previewContainer.innerHTML = '<p class="preview-placeholder">Profile data not found</p>';
+            }
+        } 
+        // For manual or stick profiles, show entered values
+        else if (profileType === 'Manual' || profileType === 'Stick') {
+            const fieldsContainer = alumItem.querySelector('.item-fields');
+            if (!fieldsContainer) return;
+
+            const values = {};
+            const fieldMap = {
+                'area': 'Area',
+                'I_xx': 'I<sub>xx</sub>',
+                'I_yy': 'I<sub>yy</sub>',
+                'F_y': 'F<sub>y</sub>',
+                'Mn_yield': 'M<sub>n</sub> Yield',
+                'Mn_lb': 'M<sub>n</sub> LB'
+            };
+
+            // Collect entered values
+            Object.keys(fieldMap).forEach(fieldName => {
+                const input = fieldsContainer.querySelector(`input[name="${fieldName}"]`);
+                if (input && input.value) {
+                    values[fieldName] = input.value;
+                }
+            });
+
+            // Generate HTML
+            let html = `<div class="profile-properties">
+                <div class="property-item">
+                    <span class="property-label">Profile:</span>
+                    <span class="property-value">${profileName}</span>
+                </div>`;
+            
+            Object.keys(values).forEach(key => {
+                html += `<div class="property-item">
+                    <span class="property-label">${fieldMap[key]}:</span>
+                    <span class="property-value">${values[key]}</span>
+                </div>`;
+            });
+            
+            html += '</div>';
+            previewContainer.innerHTML = html || '<p class="preview-placeholder">No properties entered</p>';
+        }
+    }
+
+    /**
+     * Update the steel profile preview panel with Jinja-equivalent calculations
+     * Generic preview updater - handles all 5 item types with server-rendered HTML
+     * @param {HTMLElement} item - The item container
+     * @param {string} itemType - Type: steel_profile, glass_unit, frame, connection, or anchorage
+     * @param {Function} payloadBuilder - Function to build payload from item's inputs
+     * @param {string} validation - Message to show if validation fails (optional)
+     */
+    async function updatePreview(item, itemType, payloadBuilder, validation = 'Missing required data') {
+        const container = item.querySelector('.profile-preview-content, .sub-item-preview-content');
+        if (!container) return;
+
+        let payload;
+        try {
+            payload = payloadBuilder(item);
+        } catch (e) {
+            container.innerHTML = `<p class="preview-placeholder">${validation}</p>`;
+            return;
+        }
+
+        container.innerHTML = '<p class="preview-placeholder">Calculating…</p>';
+
+        try {
+            const response = await fetch('/calc_preview', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ item_type: itemType, payload })
+            });
+
+            const data = await response.json();
+            if (!response.ok || !data.success) {
+                const msg = data && data.error ? data.error : 'Calculation failed';
+                container.innerHTML = `<p class="preview-placeholder">${msg}</p>`;
+                return;
+            }
+
+            // Server returns fully rendered HTML
+            container.innerHTML = data.html || '<p class="preview-placeholder">No data</p>';
+        } catch (err) {
+            container.innerHTML = '<p class="preview-placeholder">Calculation error</p>';
+        }
+    }
+
+    /**
+     * Update steel profile preview
+     */
+    function updateSteelProfilePreview(steelItem) {
+        updatePreview(steelItem, 'steel_profile', (item) => {
+            const fieldsContainer = item.querySelector('.item-fields');
+            const webLength = fieldsContainer.querySelector('input[name="web_length"]')?.value;
+            const flangeLength = fieldsContainer.querySelector('input[name="flange_length"]')?.value;
+            const thickness = fieldsContainer.querySelector('input[name="thk"]')?.value;
+
+            if (!webLength || !flangeLength || !thickness) {
+                throw new Error('Missing dimensions');
+            }
+
+            return {
+                web_length: webLength,
+                flange_length: flangeLength,
+                thk: thickness
+            };
+        }, 'Enter all dimensions');
+    }
+
+    /**
+     * Update glass unit preview
+     */
+    function updateGlassPreview(glassItem) {
+        updatePreview(glassItem, 'glass_unit', (item) => {
+            const glassType = item.querySelector('select[name="glass_type"]')?.value;
+            const fieldsContainer = item.querySelector('.item-fields');
+            const payload = { glass_type: glassType };
+
+            fieldsContainer.querySelectorAll('input, select').forEach(input => {
+                if (input.name) payload[input.name] = input.value;
+            });
+
+            if (!payload.length || !payload.width || !payload.wind_load) {
+                throw new Error('Missing core data');
+            }
+
+            return payload;
+        }, 'Enter all glass parameters');
+    }
+
+    /**
+     * Update frame preview
+     */
+    function updateFramePreview(frameItem) {
+        updatePreview(frameItem, 'frame', (item) => {
+            const frameData = {};
+            item.querySelectorAll('input, select').forEach(input => {
+                if (input.name && !input.name.includes('zone')) {
+                    frameData[input.name] = input.value;
+                }
+            });
+
+            if (!frameData.width || !frameData.length) {
+                throw new Error('Missing frame dimensions');
+            }
+
+            // Get glass thickness from sibling glass units
+            const categoryItem = item.closest('.dynamic-item');
+            let glass_thickness = 0;
+            categoryItem.querySelectorAll('[data-type="glass_unit"]').forEach(gi => {
+                const type = gi.querySelector('select[name="glass_type"]')?.value;
+                let thk = 0;
+                if (type === 'sgu') {
+                    thk = gi.querySelector('input[name="thickness"]')?.value || 0;
+                } else if (type === 'dgu') {
+                    const t1 = gi.querySelector('input[name="thickness1"]')?.value || 0;
+                    const t2 = gi.querySelector('input[name="thickness2"]')?.value || 0;
+                    thk = parseFloat(t1) + parseFloat(t2);
+                }
+                glass_thickness = Math.max(glass_thickness, parseFloat(thk));
+            });
+
+            return { ...frameData, glass_thickness };
+        }, 'Enter all frame parameters');
+    }
+
+    /**
+     * Update connection preview
+     */
+    function updateConnectionPreview(connectionItem) {
+        updatePreview(connectionItem, 'connection', (item) => {
+            const connData = {};
+            item.querySelectorAll('input, select').forEach(input => {
+                if (input.name) connData[input.name] = input.value;
+            });
+
+            if (!connData.screw_nos || !connData.screw_dia) {
+                throw new Error('Missing screw data');
+            }
+
+            // Get frame and glass thickness from category
+            const categoryItem = item.closest('.dynamic-item');
+            const frameItem = categoryItem.querySelector('[data-type="frame"]');
+            const frameData = {};
+            if (frameItem) {
+                frameItem.querySelectorAll('input, select').forEach(input => {
+                    if (input.name && !input.name.includes('zone')) {
+                        frameData[input.name] = input.value;
+                    }
+                });
+            }
+
+            let glass_thickness = 0;
+            categoryItem.querySelectorAll('[data-type="glass_unit"]').forEach(gi => {
+                const type = gi.querySelector('select[name="glass_type"]')?.value;
+                let thk = 0;
+                if (type === 'sgu') {
+                    thk = gi.querySelector('input[name="thickness"]')?.value || 0;
+                } else if (type === 'dgu') {
+                    const t1 = gi.querySelector('input[name="thickness1"]')?.value || 0;
+                    const t2 = gi.querySelector('input[name="thickness2"]')?.value || 0;
+                    thk = parseFloat(t1) + parseFloat(t2);
+                }
+                glass_thickness = Math.max(glass_thickness, parseFloat(thk));
+            });
+
+            return { ...connData, frame: frameData, glass_thickness };
+        }, 'Enter all screw parameters');
+    }
+
+    /**
+     * Update anchorage preview
+     */
+    function updateAnchoragePreview(anchorageItem) {
+        updatePreview(anchorageItem, 'anchorage', (item) => {
+            const anchorData = {};
+            item.querySelectorAll('input, select').forEach(input => {
+                if (input.name) anchorData[input.name] = input.value;
+            });
+
+            if (!anchorData.anchor_dia || !anchorData.embed_depth) {
+                throw new Error('Missing anchor data');
+            }
+
+            // Get frame and glass thickness from category
+            const categoryItem = item.closest('.dynamic-item');
+            const frameItem = categoryItem.querySelector('[data-type="frame"]');
+            const frameData = {};
+            if (frameItem) {
+                frameItem.querySelectorAll('input, select').forEach(input => {
+                    if (input.name && !input.name.includes('zone')) {
+                        frameData[input.name] = input.value;
+                    }
+                });
+            }
+
+            let glass_thickness = 0;
+            categoryItem.querySelectorAll('[data-type="glass_unit"]').forEach(gi => {
+                const type = gi.querySelector('select[name="glass_type"]')?.value;
+                let thk = 0;
+                if (type === 'sgu') {
+                    thk = gi.querySelector('input[name="thickness"]')?.value || 0;
+                } else if (type === 'dgu') {
+                    const t1 = gi.querySelector('input[name="thickness1"]')?.value || 0;
+                    const t2 = gi.querySelector('input[name="thickness2"]')?.value || 0;
+                    thk = parseFloat(t1) + parseFloat(t2);
+                }
+                glass_thickness = Math.max(glass_thickness, parseFloat(thk));
+            });
+
+            return { ...anchorData, frame: frameData, glass_thickness };
+        }, 'Enter all anchor parameters');
+    }
+
+
+
+    /**
+     * Get defined aluminum profiles from the Profiles tab
+     * @returns {Array} Array of aluminum profile names
+     */
+    function getDefinedAlumProfiles() {
+        const profiles = [];
+        const alumList = document.getElementById('alum-profiles-list');
+        if (alumList) {
+            // Look for both input and select elements (Pre-defined uses select, others use input)
+            alumList.querySelectorAll('.dynamic-item input[name="profile_name"], .dynamic-item select[name="profile_name"]').forEach(element => {
+                const name = element.value.trim();
+                if (name) profiles.push(name);
+            });
+        }
+        return profiles;
+    }
+
+    /**
+     * Get defined steel profiles from the Profiles tab
+     * @returns {Array} Array of steel profile names
+     */
+    function getDefinedSteelProfiles() {
+        const profiles = [];
+        const steelList = document.getElementById('steel-profiles-list');
+        if (steelList) {
+            steelList.querySelectorAll('.dynamic-item input[name="profile_name"]').forEach(input => {
+                const name = input.value.trim();
+                if (name) profiles.push(name);
+            });
+        }
+        return profiles;
+    }
+
+    /**
+     * Refresh mullion, transom, and steel dropdowns in all frame items
+     * Called whenever profiles are added/modified/removed
+     */
+    function refreshFrameProfileDropdowns() {
+        // Get current profiles
+        const alumProfiles = getDefinedAlumProfiles();
+        const mullionProfiles = alumProfiles.filter(name => !name.startsWith('T'));
+        const transomProfiles = alumProfiles.filter(name => name.startsWith('T'));
+        const steelProfiles = getDefinedSteelProfiles();
+        
+        // Update all frame items
+        document.querySelectorAll('.frame-item').forEach(frameItem => {
+            // Update mullion dropdown
+            const mullionSelect = frameItem.querySelector('select[name="mullion"]');
+            if (mullionSelect) {
+                const currentValue = mullionSelect.value;
+                mullionSelect.innerHTML = '';
+                mullionProfiles.forEach(profileName => {
+                    const option = document.createElement('option');
+                    option.value = profileName;
+                    option.textContent = profileName;
+                    mullionSelect.appendChild(option);
+                });
+                // Restore previous selection if it still exists
+                if (currentValue && Array.from(mullionSelect.options).some(opt => opt.value === currentValue)) {
+                    mullionSelect.value = currentValue;
+                }
+            }
+            
+            // Update transom dropdown
+            const transomSelect = frameItem.querySelector('select[name="transom"]');
+            if (transomSelect) {
+                const currentValue = transomSelect.value;
+                transomSelect.innerHTML = '';
+                transomProfiles.forEach(profileName => {
+                    const option = document.createElement('option');
+                    option.value = profileName;
+                    option.textContent = profileName;
+                    transomSelect.appendChild(option);
+                });
+                // Restore previous selection if it still exists
+                if (currentValue && Array.from(transomSelect.options).some(opt => opt.value === currentValue)) {
+                    transomSelect.value = currentValue;
+                }
+            }
+            
+            // Update steel dropdown
+            const steelSelect = frameItem.querySelector('select[name="steel"]');
+            if (steelSelect) {
+                const currentValue = steelSelect.value;
+                steelSelect.innerHTML = '';
+                steelProfiles.forEach(profileName => {
+                    const option = document.createElement('option');
+                    option.value = profileName;
+                    option.textContent = profileName;
+                    steelSelect.appendChild(option);
+                });
+                // Restore previous selection if it still exists
+                if (currentValue && Array.from(steelSelect.options).some(opt => opt.value === currentValue)) {
+                    steelSelect.value = currentValue;
+                }
+            }
+        });
+    }
+
+    /**
      * Update frame fields based on selected mullion type
      * @param {HTMLElement} frameItem - The frame item container
      */
@@ -363,16 +940,72 @@ document.addEventListener('DOMContentLoaded', () => {
         fieldsContainer.innerHTML = '';
 
         requiredFields.forEach(fieldName => {
-            let type = 'number'; 
-            if (fieldName.match(/(_type|zone|mullion|transom)/i)) {
-                type = 'text';
-            }
+            let input;
             
-            const input = document.createElement('input');
-            input.type = type;
-            input.step = '0.1';
-            input.name = fieldName;
-            input.placeholder = frameFieldPlaceholders[fieldName] || fieldName;
+            // Create dropdown for mullion (aluminum profiles without 'T' prefix)
+            if (fieldName === 'mullion') {
+                input = document.createElement('select');
+                input.name = fieldName;
+                input.dataset.profileField = 'mullion'; // Mark as profile field
+                
+                const alumProfiles = getDefinedAlumProfiles().filter(name => !name.startsWith('T'));
+                alumProfiles.forEach(profileName => {
+                    const option = document.createElement('option');
+                    option.value = profileName;
+                    option.textContent = profileName;
+                    input.appendChild(option);
+                });
+                
+                // Add change listener to auto-populate I_xx, I_yy, phi_Mn
+                input.addEventListener('change', (e) => populateProfileData(e.target, 'mullion'));
+            }
+            // Create dropdown for transom (aluminum profiles with 'T' prefix)
+            else if (fieldName === 'transom') {
+                input = document.createElement('select');
+                input.name = fieldName;
+                input.dataset.profileField = 'transom'; // Mark as profile field
+                
+                const transomProfiles = getDefinedAlumProfiles().filter(name => name.startsWith('T'));
+                transomProfiles.forEach(profileName => {
+                    const option = document.createElement('option');
+                    option.value = profileName;
+                    option.textContent = profileName;
+                    input.appendChild(option);
+                });
+                
+                // Add change listener to auto-populate I_xx, I_yy, phi_Mn
+                input.addEventListener('change', (e) => populateProfileData(e.target, 'transom'));
+            }
+            // Create dropdown for steel (steel profiles from steel-profiles-list)
+            else if (fieldName === 'steel') {
+                input = document.createElement('select');
+                input.name = fieldName;
+                input.dataset.profileField = 'steel'; // Mark as profile field
+                
+                const steelProfiles = getDefinedSteelProfiles();
+                steelProfiles.forEach(profileName => {
+                    const option = document.createElement('option');
+                    option.value = profileName;
+                    option.textContent = profileName;
+                    input.appendChild(option);
+                });
+                
+                // Add change listener to auto-populate I_xx, I_yy, phi_Mn
+                input.addEventListener('change', (e) => populateProfileData(e.target, 'steel'));
+            }
+            // Create number or text input for other fields
+            else {
+                let type = 'number';
+                if (fieldName.match(/(_type|zone)/i)) {
+                    type = 'text';
+                }
+                
+                input = document.createElement('input');
+                input.type = type;
+                input.step = '0.1';
+                input.name = fieldName;
+                input.placeholder = frameFieldPlaceholders[fieldName] || fieldName;
+            }
             
             fieldsContainer.appendChild(input);
         });
@@ -449,6 +1082,11 @@ document.addEventListener('DOMContentLoaded', () => {
         if (removeBtn) {
             removeBtn.addEventListener('click', (e) => {
                 e.target.closest('.dynamic-item').remove();
+                
+                // Refresh frame dropdowns if a profile was removed
+                if (templateId === 'alum-profile-template' || templateId === 'steel-profile-template') {
+                    refreshFrameProfileDropdowns();
+                }
             });
         }
         
@@ -458,7 +1096,69 @@ document.addEventListener('DOMContentLoaded', () => {
             const typeSelect = alumItem.querySelector('select[name="profile_type"]');
             
             updateAlumFields(alumItem);
-            typeSelect.addEventListener('change', () => updateAlumFields(alumItem));
+            updateAlumProfilePreview(alumItem);  // Initial preview update
+            
+            typeSelect.addEventListener('change', () => {
+                updateAlumFields(alumItem);
+                updateAlumProfilePreview(alumItem);  // Update preview when type changes
+                // Also refresh frame dropdowns when type changes
+                setTimeout(() => refreshFrameProfileDropdowns(), 100);
+            });
+            
+            // Use event delegation to catch changes in both input and select for profile_name
+            const fieldsContainer = alumItem.querySelector('.item-fields');
+            if (fieldsContainer) {
+                fieldsContainer.addEventListener('change', (e) => {
+                    if (e.target.name === 'profile_name') {
+                        updateAlumProfilePreview(alumItem);  // Update preview when profile name changes
+                        refreshFrameProfileDropdowns();
+                    }
+                    // Also update preview when any field value changes (for manual/stick profiles)
+                    updateAlumProfilePreview(alumItem);
+                });
+                fieldsContainer.addEventListener('blur', (e) => {
+                    if (e.target.name === 'profile_name') {
+                        updateAlumProfilePreview(alumItem);  // Update preview on blur
+                        refreshFrameProfileDropdowns();
+                    }
+                    updateAlumProfilePreview(alumItem);
+                }, true);
+                fieldsContainer.addEventListener('input', (e) => {
+                    // Update preview in real-time as user types
+                    updateAlumProfilePreview(alumItem);
+                }, true);
+            }
+        }
+        
+        // Handle steel profiles - also refresh frame dropdowns when profile name changes
+        if (templateId === 'steel-profile-template') {
+            const steelItem = newElement;
+            
+            updateSteelProfilePreview(steelItem);  // Initial preview update
+            
+            // Add listener to profile name input to refresh frame dropdowns and update preview
+            const profileNameInput = steelItem.querySelector('input[name="profile_name"]');
+            if (profileNameInput) {
+                profileNameInput.addEventListener('change', () => {
+                    updateSteelProfilePreview(steelItem);
+                    refreshFrameProfileDropdowns();
+                });
+                profileNameInput.addEventListener('blur', () => {
+                    updateSteelProfilePreview(steelItem);
+                    refreshFrameProfileDropdowns();
+                });
+            }
+            
+            // Add listeners to property inputs to update preview in real-time
+            const fieldsContainer = steelItem.querySelector('.item-fields');
+            if (fieldsContainer) {
+                fieldsContainer.addEventListener('change', () => {
+                    updateSteelProfilePreview(steelItem);
+                });
+                fieldsContainer.addEventListener('input', () => {
+                    updateSteelProfilePreview(steelItem);
+                }, true);
+            }
         }
         
         // Handle glass type changes
@@ -467,7 +1167,23 @@ document.addEventListener('DOMContentLoaded', () => {
             const typeSelect = glassItem.querySelector('select[name="glass_type"]');
             
             updateGlassFields(glassItem);
-            typeSelect.addEventListener('change', () => updateGlassFields(glassItem));
+            updateGlassPreview(glassItem);  // Initial preview update
+            
+            typeSelect.addEventListener('change', () => {
+                updateGlassFields(glassItem);
+                updateGlassPreview(glassItem);  // Update preview on type change
+            });
+            
+            // Update preview on field changes
+            const fieldsContainer = glassItem.querySelector('.item-fields');
+            if (fieldsContainer) {
+                fieldsContainer.addEventListener('change', () => {
+                    updateGlassPreview(glassItem);
+                });
+                fieldsContainer.addEventListener('input', () => {
+                    updateGlassPreview(glassItem);
+                }, true);
+            }
         }
         
         // Handle frame/mullion type changes
@@ -476,16 +1192,73 @@ document.addEventListener('DOMContentLoaded', () => {
             const typeSelect = frameItem.querySelector('select[name="mullion_type"]');
             
             updateFrameFields(frameItem);
-            typeSelect.addEventListener('change', () => updateFrameFields(frameItem));
+            updateFramePreview(frameItem);  // Initial preview update
+            
+            typeSelect.addEventListener('change', () => {
+                updateFrameFields(frameItem);
+                updateFramePreview(frameItem);  // Update preview on type change
+            });
+            
+            // Update preview on field changes
+            const fieldsContainer = frameItem.querySelector('.item-fields');
+            if (fieldsContainer) {
+                fieldsContainer.addEventListener('change', () => {
+                    updateFramePreview(frameItem);
+                });
+                fieldsContainer.addEventListener('input', () => {
+                    updateFramePreview(frameItem);
+                }, true);
+            }
+            
+            // Also update on select changes
+            frameItem.querySelectorAll('select').forEach(select => {
+                select.addEventListener('change', () => {
+                    updateFramePreview(frameItem);
+                });
+            });
+        }
+
+        // Handle connection items
+        if (templateId === 'connection-template') {
+            const connectionItem = newElement;
+            
+            updateConnectionPreview(connectionItem);  // Initial preview update
+            
+            // Update preview on field changes
+            const allInputs = connectionItem.querySelectorAll('input');
+            allInputs.forEach(input => {
+                input.addEventListener('change', () => {
+                    updateConnectionPreview(connectionItem);
+                });
+                input.addEventListener('input', () => {
+                    updateConnectionPreview(connectionItem);
+                }, true);
+            });
         }
 
         // Handle anchorage/clump type changes
         if (templateId === 'anchorage-template') {
-        const anchorageItem = newElement;
+            const anchorageItem = newElement;
             const typeSelect = anchorageItem.querySelector('select[name="clump_type"]');
             
             updateAnchorageFields(anchorageItem);
-            typeSelect.addEventListener('change', () => updateAnchorageFields(anchorageItem));
+            updateAnchoragePreview(anchorageItem);  // Initial preview update
+            
+            typeSelect.addEventListener('change', () => {
+                updateAnchorageFields(anchorageItem);
+                updateAnchoragePreview(anchorageItem);  // Update preview on type change
+            });
+            
+            // Update preview on field changes
+            const fieldsContainer = anchorageItem.querySelector('.item-fields');
+            if (fieldsContainer) {
+                fieldsContainer.addEventListener('change', () => {
+                    updateAnchoragePreview(anchorageItem);
+                });
+                fieldsContainer.addEventListener('input', () => {
+                    updateAnchoragePreview(anchorageItem);
+                }, true);
+            }
         }
 
         // Initialize nested handlers for category templates
@@ -530,28 +1303,30 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Initialization & DOM References ---
     const form = document.getElementById('yaml-form');
     
-    // Initialize with default items
-    addItem(document.getElementById('alum-profiles-list'), 'alum-profile-template');
-    addItem(document.getElementById('steel-profiles-list'), 'steel-profile-template');
-    addItem(document.getElementById('categories-list'), 'category-template');
-    
-    // Initialize the nested items of the first category
-    const initialCategory = document.querySelector('.category-item');
-    if (initialCategory) {
-        const categorySubLists = [
-            { listName: 'glass_units', template: 'glass-unit-template' },
-            { listName: 'frames', template: 'frame-template' },
-            { listName: 'connections', template: 'connection-template' }, 
-            { listName: 'anchorage', template: 'anchorage-template' }
-        ];
+    // Initialize with default items - wait for profile options to load first
+    profileOptionsPromise.then(() => {
+        addItem(document.getElementById('alum-profiles-list'), 'alum-profile-template');
+        addItem(document.getElementById('steel-profiles-list'), 'steel-profile-template');
+        addItem(document.getElementById('categories-list'), 'category-template');
+        
+        // Initialize the nested items of the first category
+        const initialCategory = document.querySelector('.category-item');
+        if (initialCategory) {
+            const categorySubLists = [
+                { listName: 'glass_units', template: 'glass-unit-template' },
+                { listName: 'frames', template: 'frame-template' },
+                { listName: 'connections', template: 'connection-template' }, 
+                { listName: 'anchorage', template: 'anchorage-template' }
+            ];
 
-        categorySubLists.forEach(sub => {
-            const listElement = initialCategory.querySelector(`.dynamic-list[data-list-name="${sub.listName}"]`);
-            if (listElement) {
-                addItem(listElement, sub.template);
-            }
-        });
-    }
+            categorySubLists.forEach(sub => {
+                const listElement = initialCategory.querySelector(`.dynamic-list[data-list-name="${sub.listName}"]`);
+                if (listElement) {
+                    addItem(listElement, sub.template);
+                }
+            });
+        }
+    });
 
     // Button references
     const loadBtn = document.getElementById('load-yaml-btn');

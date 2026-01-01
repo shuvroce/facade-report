@@ -30,13 +30,13 @@
         <tr>
             <td>Plate length, N</td>
             <td>=</td>
-            <td>{{ anchor.bp_length_N }} <i>mm</i></td>
+            <td>{{ bp_length_N }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
             <td>Plate width, B</td>
             <td>=</td>
-            <td>{{ anchor.bp_width_B }} <i>mm</i></td>
+            <td>{{ bp_width_B }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
@@ -158,9 +158,9 @@
     <tbody>
         <tr>
             <td>0.9</td>
-            <td>{{ anchor.bp_length_N }}</td>
-            <td>{{ anchor.bp_width_B }}</td>
-            <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
+            <td>{{ bp_length_N }}</td>
+            <td>{{ bp_width_B }}</td>
+            <td>{{ (bp_length_N * bp_width_B) | round(1) }}</td>
             <td>{{ bp_d | round(1) }}</td>
             <td>{{ bp_b | round(1) }}</td>
             <td>{{ bp_m | round(2) }}</td>
@@ -342,11 +342,11 @@
             <td>{{ bp_Pu | round(2) }}</td>
             <td>27.5</td>
             <td>{{ bp_A1 | round(2) }}</td>
-            <td>{{ anchor.bp_width_B }}</td>
-            <td>{{ anchor.bp_length_N }}</td>
-            <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
-            <td class="{% if (anchor.bp_length_N * anchor.bp_width_B) > bp_A1 %}ok{% else %}not-ok{% endif %}">
-                {% if (anchor.bp_length_N * anchor.bp_width_B) > bp_A1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ bp_width_B }}</td>
+            <td>{{ bp_length_N }}</td>
+            <td>{{ (bp_length_N * bp_width_B) | round(1) }}</td>
+            <td class="{% if (bp_length_N * bp_width_B) > bp_A1 %}ok{% else %}not-ok{% endif %}">
+                {% if (bp_length_N * bp_width_B) > bp_A1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -407,13 +407,13 @@
     <tbody>
         <tr>
             <td>0.65</td>
-            <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
-            <td>{{ (anchor.bp_length_N * anchor.bp_width_B) | round(1) }}</td>
+            <td>{{ (bp_length_N * bp_width_B) | round(1) }}</td>
+            <td>{{ (bp_length_N * bp_width_B) | round(1) }}</td>
             <td>27.5</td>
             <td>{{ bp_fp_max | round(2) }}</td>
-            <td>{{ (bp_Pu * 1000 / (anchor.bp_length_N * anchor.bp_width_B)) | round(2) }}</td>
-            <td class="{% if bp_fp_max > (bp_Pu / (anchor.bp_length_N * anchor.bp_width_B)) %}ok{% else %}not-ok{% endif %}">
-                {% if bp_fp_max > (bp_Pu / (anchor.bp_length_N * anchor.bp_width_B)) %} OK {% else %} NOT OK {% endif %}
+            <td>{{ (bp_Pu * 1000 / (bp_length_N * bp_width_B)) | round(2) }}</td>
+            <td class="{% if bp_fp_max > (bp_Pu / (bp_length_N * bp_width_B)) %}ok{% else %}not-ok{% endif %}">
+                {% if bp_fp_max > (bp_Pu / (bp_length_N * bp_width_B)) %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>

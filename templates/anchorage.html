@@ -1,8 +1,58 @@
 {% if cat.anchorage %}
 {% for anchor in cat.anchorage %}
 {% if anchor.anchor_dia %}
+    {% if cat.frames %}
+        {% set _frame = cat.frames[0] %}
+    {% endif %}
+
+    {% if cat.glass_units %}
+        {% set thickness_list = [] %}
+        {% for unit in cat.glass_units %}
+            {% if unit.glass_type == 'sgu' %}
+                {% set _ = thickness_list.append(unit.thickness) %}
+            {% elif unit.glass_type in ['dgu', 'lgu'] %}
+                {% set _ = thickness_list.append(unit.thickness1 + unit.thickness2) %}
+            {% elif unit.glass_type in ['ldgu'] %}
+                {% set _ = thickness_list.append(unit.thickness1_1 + unit.thickness1_2 + unit.thickness2) %}
+            {% endif %}
+        {% endfor %}
+        {% set glass_thk = thickness_list | max %}
+    {% endif %}
+
+    {% set mul_w_dead = ((glass_thk | default(0)) * 0.025 * _frame.width / 1000) | round(2) %}
+    {% set mul_w_wind = (_frame.wind_neg * _frame.width / 1000) | round(2) %}
+
+    {% if _frame.frame_type == 'Floor-to-floor' %}
+        {% set mul_vu = (1.6 * mul_w_wind * (_frame.length / 1000) / 2) | round(2) %}
+        {% set reaction_Ry = mul_vu | round(2) %}
+        {% set reaction_Rz = (mul_w_dead / 2) | round(2) %}
+    {% elif _frame.frame_type == 'Continuous' %}
+        {% set mul_vu = (1.6 * mul_w_wind * (_frame.length / 1000) * (5 / 8)) | round(2) %}
+        {% set reaction_Ry = mul_w_wind * (_frame.length / 1000) * (10 / 8) | round(2) %}
+        {% set reaction_Rz = (mul_w_dead) | round(2) %}
+    {% endif %}
+
     {% set N_p5 = anchor.N_p5 | default(20, true) %}
     {% set h_a = anchor.h_a | default(1000, true) %}
+
+    {# ================= Profile Lookup =================== #}
+    {% set mullion_profile = namespace(data=none) %}
+    {% if _frame.mullion and alum_profiles_data %}
+        {% for profile in alum_profiles_data %}
+            {% if profile.profile_name == _frame.mullion %}
+                {% set mullion_profile.data = profile %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+
+    {% set transom_profile = namespace(data=none) %}
+    {% if _frame.transom and alum_profiles_data %}
+        {% for profile in alum_profiles_data %}
+            {% if profile.profile_name == _frame.transom %}
+                {% set transom_profile.data = profile %}
+            {% endif %}
+        {% endfor %}
+    {% endif %}
 
     {% if anchor.anchor_dia == 10 %}
         {% set A_seN = 58.0 %}
@@ -14,31 +64,37 @@
 
     {# ================= Load Calculation =================== #}
     {% if anchor.clump_type == "Box Clump" %}
-        {% set design_Ry = anchor.reaction_Ry * 1.6 %}
-        {% set design_Rz = anchor.reaction_Rz * 1.4 %}
+        {% set design_Ry = reaction_Ry * 1.6 %}
+        {% set design_Rz = reaction_Rz * 1.4 %}
+
+        {% set bp_length_N = 250 %}
+        {% set bp_width_B = mullion_profile.data.flange_length + 5 %}
+
         {% set N_ua = 0 %}
         {% set N_ug = 0 %}
         {% set V_ua = design_Ry / anchor.anchor_nos %}
         {% set V_ug = V_ua * 2 %}
         {% set bp_b = anchor.bp_b %}
-        {% set bp_n = (anchor.bp_width_B - 0.95 * bp_b) / 2 %}
+        {% set bp_n = (bp_width_B - 0.95 * bp_b) / 2 %}
 
-        {% set s1 = anchor.bp_length_N - 2 * 40 %}
-        {% set s2 = anchor.bp_width_B - 2 * 25 %}
+        {% set s1 = bp_length_N - 2 * 40 %}
+        {% set s2 = bp_width_B - 2 * 25 %}
         {% set A_NC = (3 * anchor.embed_depth + s1) * (1.5 * anchor.embed_depth + s2 + ([1.5 * anchor.embed_depth, anchor.C_a1] | min)) %}
         {% set A_VC = (3 * anchor.C_a1 + s1) * ([anchor.h_a, (1.5 * anchor.C_a1)] | min) %}
-        {% set bp_d = anchor.bp_width_B %}
+        {% set bp_d = bp_width_B %}
 
     {% elif anchor.clump_type == "U Clump" %}
-        {% set design_Ry = anchor.reaction_Ry * 1.6 %}
-        {% set design_Rz = anchor.reaction_Rz * 1.4 %}
+        {% set design_Ry = reaction_Ry * 1.6 %}
+        {% set design_Rz = reaction_Rz * 1.4 %}
         {% set N_ua = design_Ry / anchor.anchor_nos %}
         {% set N_ug = N_ua * anchor.anchor_nos %}
         {% set V_ua = design_Rz / anchor.anchor_nos %}
         {% set V_ug = V_ua * 2 %}
 
-        {% set s1 = anchor.bp_length_N - 2 * 40 %}
-        {% set s2 = anchor.bp_width_B - 2 * 40 %}
+        {% set bp_length_N = 250 %}
+        {% set bp_width_B = 150 %}
+        {% set s1 = bp_length_N - 2 * 40 %}
+        {% set s2 = bp_width_B - 2 * 40 %}
         {% set A_NC = (3 * anchor.embed_depth + s1) * ([(3 * anchor.embed_depth + s2), (2 * anchor.C_a1 + s2)] | min) %}
         {% set A_VC = (3 * anchor.C_a1 + s1) * (1.5 * anchor.C_a1) %}
 
@@ -46,8 +102,11 @@
         {% set top = cat.anchorage[0] %}
         {% set front = cat.anchorage[1] %}
 
-        {% set design_Ry = top.reaction_Ry * 1.6 %}
-        {% set design_Rz = top.reaction_Rz * 1.4 %}
+        {% set design_Ry = reaction_Ry * 1.6 %}
+        {% set design_Rz = reaction_Rz * 1.4 %}
+
+        {% set bp_length_N = anchor.bp_width_B %}
+        {% set bp_width_B = anchor.bp_width_B %}
 
         {% set e_f2 = (front.bp_width_B / 2) - 40 %}
         {% set e_f1 = [((top.h_a / 2) - e_f2), ((front.bp_width_B / 2) - 40)] | min %}
@@ -75,22 +134,25 @@
         {% set thr_bolt_nos = 2 %}
         {% set thr_bolt_length = 100 %}
 
-        {% set s1 = anchor.bp_length_N - 2 * 40 %}
+        {% set s1 = bp_length_N - 2 * 40 %}
         {% if top.anchor_nos == 2 %}
             {% set s2 = 0 %}
         {% else %}
-            {% set s2 = anchor.bp_width_B - anchor.C_a1 - 40 %}
+            {% set s2 = bp_width_B - anchor.C_a1 - 40 %}
         {% endif %}
         {% set A_NC = (3 * anchor.embed_depth + s1) * (1.5 * anchor.embed_depth + s2 + ([1.5 * anchor.embed_depth, anchor.C_a1] | min)) %}
         {% set A_VC = (3 * anchor.C_a1 + s1) * ([anchor.h_a, (1.5 * anchor.C_a1)] | min) %}
-        {% set bp_d = anchor.bp_width_B %}
+        {% set bp_d = bp_width_B %}
 
     {% elif anchor.clump_type == "L Clump Front" %}
         {% set top = cat.anchorage[0] %}
         {% set front = cat.anchorage[1] %}
 
-        {% set design_Ry = top.reaction_Ry * 1.6 %}
-        {% set design_Rz = top.reaction_Rz * 1.4 %}
+        {% set design_Ry = reaction_Ry * 1.6 %}
+        {% set design_Rz = reaction_Rz * 1.4 %}
+
+        {% set bp_length_N = anchor.bp_width_B %}
+        {% set bp_width_B = anchor.bp_width_B %}
 
         {% set e_f2 = (front.bp_width_B / 2) - 40 %}
         {% set e_f1 = [((top.h_a / 2) - e_f2), ((front.bp_width_B / 2) - 40)] | min %}
@@ -111,7 +173,7 @@
         {% set V_ua = By / front.anchor_nos %}
         {% set V_ug = V_ua * front.anchor_nos %}
 
-        {% set s1 = anchor.bp_length_N - 2 * 40 %}
+        {% set s1 = bp_length_N - 2 * 40 %}
         {% set s2 = 0 %}
         {% set A_NC = (3 * anchor.embed_depth + s1) * ([(3 * anchor.embed_depth + s2), (2 * anchor.C_a1 + s2)] | min) %}
         {% set A_VC = (3 * anchor.C_a1 + s1) * (1.5 * anchor.C_a1) %}
@@ -147,7 +209,7 @@
         {% set fin_Vu = (fin_Vh**2 + fin_Vv**2)**0.5 %}
         {% set fin_Mu = fin_Vv * anchor.fin_e / 1000 %}
         {% set fin_length = anchor.fin_e + 50 %}
-        {% set fin_width = anchor.bp_width_B %}
+        {% set fin_width = bp_width_B %}
         {% set fin_thk_req = (4 * fin_Mu) / (0.9 * 345 * fin_width**2) %}
         {% set fin_dh = anchor.thr_bolt_dia + 2 %}
         {% set fin_shear_phi_Rn_yield = 0.6 * 345 * fin_width * anchor.fin_thk / 1000 %}
@@ -168,9 +230,9 @@
         {% set weld_fR = (weld_fn**2 + weld_fv**2 + weld_fb**2)**0.5 %}
 
         {# Base Plate tension #}
-        {% set bp_b = anchor.bp_width_B %}
+        {% set bp_b = bp_width_B %}
         {% set bp_d = anchor.bp_d %}
-        {% set bp_x = ((anchor.bp_length_N - bp_d) / 2) - 40 %}
+        {% set bp_x = ((bp_length_N - bp_d) / 2) - 40 %}
         {% set bp_Beff = [(2 * bp_x), (bp_x + 40)] | min %}
         {% set bp_tension_Mu = N_ua * bp_x / 1000 %}
         {% set bp_thk_tension = ((4 * bp_tension_Mu * 1000**2) / (0.9 * 345 * bp_Beff))**0.5 %}
@@ -206,23 +268,23 @@
     {% set beta_NV = beta_N**1.67 + beta_V**1.6 %}
 
     {# ===================== Base Plate bearing ======================== #}
-    {% set bp_m = (anchor.bp_length_N - 0.95 * bp_d) / 2 %}
+    {% set bp_m = (bp_length_N - 0.95 * bp_d) / 2 %}
     
     {% if anchor.clump_type == "Box Clump" or anchor.clump_type == "L Clump Top" %}
         {% set bp_Pu = design_Rz %}
     {% elif anchor.clump_type == "U Clump" %}
         {% set bp_Pu = design_Ry %}
-        {% set bp_n = (anchor.bp_width_B - 0.8 * bp_b) / 2 %}
+        {% set bp_n = (bp_width_B - 0.8 * bp_b) / 2 %}
     {% elif anchor.clump_type == "U Clump" or anchor.clump_type == "L Clump Front" %}
         {% set bp_Pu = design_Ry %}
-        {% set bp_n = (anchor.bp_width_B - 0.8 * bp_b) / 2 %}
+        {% set bp_n = (bp_width_B - 0.8 * bp_b) / 2 %}
     {% endif %}
 
     {% set bp_lambda_n = (bp_d * bp_b)**0.5 / 4 %}
     {% set bp_l = [bp_m, bp_n, bp_lambda_n] | max %}
-    {% set bp_q = bp_Pu * 1000 / anchor.bp_length_N %}
+    {% set bp_q = bp_Pu * 1000 / bp_length_N %}
     {% set bp_bearing_Mu = ((bp_q * bp_l**2) / 2) / (1000**2) %}
-    {% set bp_thk_bearing = ((4 * bp_bearing_Mu) / (0.9 * 345 * anchor.bp_width_B))**0.5 * 1000 %}
+    {% set bp_thk_bearing = ((4 * bp_bearing_Mu) / (0.9 * 345 * bp_width_B))**0.5 * 1000 %}
 
     {% set bp_A1 = bp_Pu * 1000 / (0.65 * 0.85 * 27.5) %}
     {% set bp_fp_max = [(0.65 * 0.85 * 27.5), (0.65 * 1.7 * 27.5)] | min %}

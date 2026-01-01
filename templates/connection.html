@@ -1,8 +1,38 @@
 {% if cat.connections %}
 {% for conn in cat.connections %}
 {% if conn.screw_dia %}
-{% set design_fy = conn.joint_fy * 1.6 %}
-{% set design_fz = conn.joint_fz * 1.4 %}
+
+{% if cat.frames %}
+    {% set _frame = cat.frames[0] %}
+{% endif %}
+
+{% if cat.glass_units %}
+    {% set thickness_list = [] %}
+    {% for unit in cat.glass_units %}
+        {% if unit.glass_type == 'sgu' %}
+            {% set _ = thickness_list.append(unit.thickness) %}
+        {% elif unit.glass_type in ['dgu', 'lgu'] %}
+            {% set _ = thickness_list.append(unit.thickness1 + unit.thickness2) %}
+        {% elif unit.glass_type in ['ldgu'] %}
+            {% set _ = thickness_list.append(unit.thickness1_1 + unit.thickness1_2 + unit.thickness2) %}
+        {% endif %}
+    {% endfor %}
+    {% set glass_thk = thickness_list | max %}
+{% endif %}
+
+{% if _frame.tran_spacing != _frame.length and _frame.frame_type != 'Floor-to-floor' %}
+    {% set tran_w_dead = (glass_thk * 0.025) * (_frame.width / 1000) %}
+    {% set tran_w_wind = _frame.wind_neg * (_frame.width / 1000) %}
+{% else %}
+    {% set tran_w_dead = (glass_thk * 0.025 / 2) * (_frame.width / 1000) %}
+    {% set tran_w_wind = (_frame.wind_neg / 2) * (_frame.width / 1000) %}
+{% endif %}
+
+{% set joint_fy = ((tran_w_wind * _frame.width / 1000) / 4) | round(2) %}
+{% set joint_fz = ((tran_w_dead * _frame.width / 1000) / 4) | round(2) %}
+
+{% set design_fy = joint_fy * 1.6 %}
+{% set design_fz = joint_fz * 1.4 %}
 
 {% set R_yA = design_fy / (conn.screw_nos / 2) %}
 {% set R_zA = design_fz / (conn.screw_nos / 2) %}
@@ -36,12 +66,12 @@
         <tbody>
             <tr>
                 <td>Wind load, <i>F<sub>y</sub> (kN)</i></td>
-                <td>{{ conn.joint_fy }}</td>
+                <td>{{ joint_fy | round(2) }}</td>
                 <td>{{ design_fy | round(2) }}</td>
             </tr>
             <tr>
                 <td>Dead load, <i>F<sub>z</sub> (kN)</i></td>
-                <td>{{ conn.joint_fz }}</td>
+                <td>{{ joint_fz | round(2) }}</td>
                 <td>{{ design_fz | round(2) }}</td>
             </tr>
         </tbody>

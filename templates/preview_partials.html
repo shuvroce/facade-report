@@ -1,0 +1,252 @@
+{# ======= PREVIEW RENDERING PARTIALS ======= #}
+
+{# Steel Profile Preview #}
+{% macro steel_preview(result) %}
+<div class="profile-properties">
+    <div class="property-item">
+        <span class="property-label">Area:</span>
+        <span class="property-value">{{ result.area }} mm²</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">I<sub>xx</sub>:</span>
+        <span class="property-value">{{ result.I_xx }} mm⁴</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">I<sub>yy</sub>:</span>
+        <span class="property-value">{{ result.I_yy }} mm⁴</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Z<sub>x</sub>:</span>
+        <span class="property-value">{{ result.Z_x }} mm³</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">M<sub>n</sub>:</span>
+        <span class="property-value">{{ result.Mn }} kN-m</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">φM<sub>n</sub>:</span>
+        <span class="property-value">{{ result.phi_Mn }} kN-m</span>
+    </div>
+</div>
+{% endmacro %}
+
+{# Glass Unit Preview #}
+{% macro glass_preview(result, glass_type) %}
+    {% set status_color = '#ff9800' %}
+    {% set status_text = 'NOT OK' %}
+    {% if result.stress_ratio and result.stress_ratio <= 1 and result.def_ratio and result.def_ratio <= 1 %}
+        {% set status_color = '#4caf50' %}
+        {% set status_text = 'OK' %}
+    {% endif %}
+
+{% if glass_type == "sgu" or glass_type == "lgu" %}
+<div class="profile-properties">
+    <div class="property-item">
+        <span class="property-label">Eff. Area:</span>
+        <span class="property-value">{{ result.A_eff or '—' }} mm²</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Aspect Ratio:</span>
+        <span class="property-value">{{ result.aspect_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">GTF:</span>
+        <span class="property-value">{{ result.gtf or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">LR:</span>
+        <span class="property-value">
+            {% if glass_type == "SGU" %}
+                {{ result.sgu_lr or '—' }} kPa
+            {% elif glass_type == "LGU" %}
+                {{ result.lgu_lr or '—' }} kPa
+            {% endif %}
+        </span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Stress Ratio:</span>
+        <span class="property-value">{{ result.stress_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Allow. Def:</span>
+        <span class="property-value">{{ result.allow_def or '—' }} mm</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Defl. Ratio:</span>
+        <span class="property-value">{{ result.def_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Status:</span>
+        <span class="property-value" data-status-color="{{ status_color }}">{{ status_text }}</span>
+    </div>
+</div>
+
+{% elif glass_type == "dgu" or glass_type == "ldgu" %}
+<div class="profile-properties">
+    <div class="property-item">
+        <span class="property-label">Eff. Area:</span>
+        <span class="property-value">{{ result.A_eff or '—' }} mm²</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Aspect Ratio:</span>
+        <span class="property-value">{{ result.aspect_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">GTF<sub>1</sub>:</span>
+        <span class="property-value">{{ result.gtf1 or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">GTF<sub>2</sub>:</span>
+        <span class="property-value">{{ result.gtf2 or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">LS<sub>1</sub>:</span>
+        <span class="property-value">
+            {% if glass_type == "dgu" %}
+                {{ result.dgu_ls1 or '—' }}
+            {% elif glass_type == "ldgu" %}
+                {{ result.ldgu_ls1 or '—' }}
+            {% endif %}
+        </span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">LS<sub>2</sub>:</span>
+        <span class="property-value">
+            {% if glass_type == "dgu" %}
+                {{ result.dgu_ls2 or '—' }}
+            {% elif glass_type == "ldgu" %}
+                {{ result.ldgu_ls2 or '—' }}
+            {% endif %}
+        </span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">LR<sub>1</sub>:</span>
+        <span class="property-value">
+            {% if glass_type == "dgu" %}
+                {{ result.dgu_lr1 or '—' }} kPa
+            {% elif glass_type == "ldgu" %}
+                {{ result.ldgu_lr1 or '—' }} kPa
+            {% endif %}
+        </span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">LR<sub>2</sub>:</span>
+        <span class="property-value">
+            {% if glass_type == "dgu" %}
+                {{ result.dgu_lr2 or '—' }} kPa
+            {% elif glass_type == "ldgu" %}
+                {{ result.ldgu_lr2 or '—' }} kPa
+            {% endif %}
+        </span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Stress Ratio:</span>
+        <span class="property-value">{{ result.stress_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Allow. Def:</span>
+        <span class="property-value">{{ result.allow_def or '—' }} mm</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Defl. Ratio:</span>
+        <span class="property-value">{{ result.def_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Status:</span>
+        <span class="property-value" data-status-color="{{ status_color }}">{{ status_text }}</span>
+    </div>
+</div>
+{% endif %}
+{% endmacro %}
+
+{# Frame Preview #}
+{% macro frame_preview(result) %}
+{% if result.mul_dc and result.mul_dc <= 1 %}{% set mul_status = 'OK' %}{% elif result.mul_dc %}{% set mul_status = 'NOT OK' %}{% else %}{% set mul_status = '—' %}{% endif %}
+{% if result.tran_dc and result.tran_dc <= 1 %}{% set tran_status = 'OK' %}{% elif result.tran_dc %}{% set tran_status = 'NOT OK' %}{% else %}{% set tran_status = '—' %}{% endif %}
+<div class="profile-properties">
+    <div class="property-item">
+        <span class="property-label">Frame Type:</span>
+        <span class="property-value">{{ result.frame_type or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Mullion Type:</span>
+        <span class="property-value">{{ result.mullion_type or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Mullion M.u:</span>
+        <span class="property-value">{{ result.mul_mu or '—' }} kNm</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Mullion D.C:</span>
+        <span class="property-value">{{ result.mul_dc or result.mul_dc_a or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Transom D.C:</span>
+        <span class="property-value">{{ result.tran_dc or '—' }}</span>
+    </div>
+</div>
+{% endmacro %}
+
+{# Connection Preview #}
+{% macro connection_preview(result) %}
+{% if result.shear_cap_ratio and result.shear_cap_ratio < 1 %}{% set shear_status = 'OK' %}{% elif result.shear_cap_ratio %}{% set shear_status = 'REVIEW' %}{% else %}{% set shear_status = '—' %}{% endif %}
+{% if result.pullout_cap_ratio and result.pullout_cap_ratio < 1 %}{% set pullout_status = 'OK' %}{% elif result.pullout_cap_ratio %}{% set pullout_status = 'REVIEW' %}{% else %}{% set pullout_status = '—' %}{% endif %}
+<div class="profile-properties">
+    <div class="property-item">
+        <span class="property-label">Shear Capacity:</span>
+        <span class="property-value">{{ result.shear_cap or '—' }} kN</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Shear Cap Ratio:</span>
+        <span class="property-value">{{ result.shear_cap_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Shear Status:</span>
+        <span class="property-value">{{ shear_status }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Pullout Capacity:</span>
+        <span class="property-value">{{ result.pullout_cap or '—' }} kN</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Pullout Cap Ratio:</span>
+        <span class="property-value">{{ result.pullout_cap_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Pullout Status:</span>
+        <span class="property-value">{{ pullout_status }}</span>
+    </div>
+</div>
+{% endmacro %}
+
+{# Anchorage Preview #}
+{% macro anchorage_preview(result) %}
+{% if result.steel_cap_ratio and result.steel_cap_ratio < 1 %}{% set steel_status = 'OK' %}{% elif result.steel_cap_ratio %}{% set steel_status = 'REVIEW' %}{% else %}{% set steel_status = '—' %}{% endif %}
+{% if result.concrete_cap_ratio and result.concrete_cap_ratio < 1 %}{% set concrete_status = 'OK' %}{% elif result.concrete_cap_ratio %}{% set concrete_status = 'REVIEW' %}{% else %}{% set concrete_status = '—' %}{% endif %}
+<div class="profile-properties">
+    <div class="property-item">
+        <span class="property-label">Steel Capacity:</span>
+        <span class="property-value">{{ result.steel_cap or '—' }} kN</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Steel Cap Ratio:</span>
+        <span class="property-value">{{ result.steel_cap_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Steel Status:</span>
+        <span class="property-value">{{ steel_status }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Concrete Capacity:</span>
+        <span class="property-value">{{ result.concrete_cap or '—' }} kN</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Concrete Cap Ratio:</span>
+        <span class="property-value">{{ result.concrete_cap_ratio or '—' }}</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Concrete Status:</span>
+        <span class="property-value">{{ concrete_status }}</span>
+    </div>
+</div>
+{% endmacro %}

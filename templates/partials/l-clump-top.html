@@ -14,15 +14,15 @@
             </tr>
             <tr>
                 <td>Horizontal reaction, <i>R<sub>y</sub> (kN)</i></td>
-                <td>{{ top.reaction_Ry }}</td>
+                <td>{{ reaction_Ry | round(2) }}</td>
                 <td>–</td>
-                <td>{{ (top.reaction_Ry * 1.6) | round(2) }}</td>
+                <td>{{ (reaction_Ry * 1.6) | round(2) }}</td>
             </tr>
             <tr>
                 <td>Vertical reaction, <i>R<sub>z</sub> (kN)</i></td>
-                <td>{{ top.reaction_Rz }}</td>
-                <td>{{ (top.reaction_Rz * 1.4) | round(2)}}</td>
-                <td>{{ (top.reaction_Rz * 0.9) | round(2)}}</td>
+                <td>{{ reaction_Rz | round(2) }}</td>
+                <td>{{ (reaction_Rz * 1.4) | round(2)}}</td>
+                <td>{{ (reaction_Rz * 0.9) | round(2)}}</td>
             </tr>
         </tbody>
     </table>
