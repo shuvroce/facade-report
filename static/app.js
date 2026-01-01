@@ -1511,6 +1511,28 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    function triggerAllPreviews() {
+        // Trigger preview updates for all items after form population
+        document.querySelectorAll('[data-type="alum_profile"]').forEach(item => {
+            updateAlumProfilePreview(item);
+        });
+        document.querySelectorAll('[data-type="steel_profile"]').forEach(item => {
+            updateSteelProfilePreview(item);
+        });
+        document.querySelectorAll('[data-type="glass_unit"]').forEach(item => {
+            updateGlassPreview(item);
+        });
+        document.querySelectorAll('[data-type="frame"]').forEach(item => {
+            updateFramePreview(item);
+        });
+        document.querySelectorAll('[data-type="connection"]').forEach(item => {
+            updateConnectionPreview(item);
+        });
+        document.querySelectorAll('[data-type="anchorage"]').forEach(item => {
+            updateAnchoragePreview(item);
+        });
+    }
+
     function populateFormFromData(data = {}) {
         setSimpleGroupValues(data.project_info || {}, 'project_info');
         setSimpleGroupValues(data.include || {}, 'include');
@@ -1520,6 +1542,9 @@ document.addEventListener('DOMContentLoaded', () => {
         populateProfileList('steel-profiles-list', 'steel-profile-template', data.steel_profiles || []);
 
         populateCategories(data.categories || []);
+        
+        // Trigger preview calculations after form is populated
+        triggerAllPreviews();
     }
 
     if (loadBtn && yamlFileInput) {
