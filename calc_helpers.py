@@ -332,12 +332,18 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
         mul_mu_s = mul_mu * ls_s
         mul_dc_a = round(mul_mu_a / mul_phi_Mn_a, 2) if mul_phi_Mn_a else None
         mul_dc_s = round(mul_mu_s / mul_phi_Mn_s, 2) if mul_phi_Mn_s else None
+        I_xa = mul_Ix_a
+        I_xs = sp_I_xx
     else:
         mul_Ix = mullion_profile.get("I_xx", 0) if mullion_profile else 0
         mul_phi_Mn = mullion_profile.get("phi_Mn", 0) if mullion_profile else 0
         mul_dc = round(mul_mu / mul_phi_Mn, 2) if mul_phi_Mn else None
         mul_dc_a = None
         mul_dc_s = None
+        I_xa = None
+        I_xs = None
+        ls_a = None
+        ls_s = None
 
     if frame_type == "Floor-to-floor":
         mul_def = (5 * 0.7 * mul_w_wind * frame_length**4) / (384 * 70000 * mul_Ix)
@@ -354,6 +360,13 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     return {
         "frame_type": frame_type,
         "mullion_type": mullion_type,
+        "glass_thk": round(glass_thk, 1),
+        "glass_sw": round(frame_width, 1),
+        "eff_area": round(frame_width * frame_length / 1_000_000, 2),
+        "I_xa": round(I_xa, 1) if I_xa is not None else None,
+        "I_xs": round(I_xs, 1) if I_xs is not None else None,
+        "ls_a": round(ls_a, 3) if ls_a is not None else None,
+        "ls_s": round(ls_s, 3) if ls_s is not None else None,
         "mul_w_wind": round(mul_w_wind, 2),
         "mul_w_dead": round(mul_w_dead, 2),
         "mul_mu": mul_mu,
