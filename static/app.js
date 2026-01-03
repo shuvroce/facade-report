@@ -263,12 +263,26 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // --- Frame Configuration ---
     const frameFields = {
-        'Aluminum Only': [
-            'mullion', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg'
-        ],
-        'Aluminum + Steel': [
-            'mullion', 'steel', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg'
-        ]
+        'regular': {
+            'Aluminum Only': [
+                'mullion', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg'
+            ],
+            'Aluminum + Steel': [
+                'mullion', 'steel', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg'
+            ]
+        },
+        'irregular': {
+            'Aluminum Only': [
+                'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
+                'mullion', 'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn',
+                'transom', 'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
+            ],
+            'Aluminum + Steel': [
+                'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
+                'mullion', 'I_xa', 'I_xs', 'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn_a', 'mul_phi_Mn_s',
+                'transom', 'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
+            ]
+        }
     };
 
     const frameFieldPlaceholders = {
@@ -1065,15 +1079,17 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     /**
-     * Update frame fields based on selected mullion type
+     * Update frame fields based on selected geometry and mullion type
      * @param {HTMLElement} frameItem - The frame item container
      */
     function updateFrameFields(frameItem) {
+        const geometrySelect = frameItem.querySelector('select[name="geometry"]');
         const typeSelect = frameItem.querySelector('select[name="mullion_type"]');
         const fieldsContainer = frameItem.querySelector('.item-fields');
+        const selectedGeometry = geometrySelect.value;
         const selectedType = typeSelect.value;
         
-        let requiredFields = frameFields[selectedType] || [];
+        let requiredFields = (frameFields[selectedGeometry] && frameFields[selectedGeometry][selectedType]) || [];
         
         fieldsContainer.innerHTML = '';
 
@@ -1336,6 +1352,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (templateId === 'frame-template') {
             const frameItem = newElement;
             const typeSelect = frameItem.querySelector('select[name="mullion_type"]');
+            const geometrySelect = frameItem.querySelector('select[name="geometry"]');
             
             updateFrameFields(frameItem);
             updateFramePreview(frameItem);  // Initial preview update
@@ -1343,6 +1360,11 @@ document.addEventListener('DOMContentLoaded', () => {
             typeSelect.addEventListener('change', () => {
                 updateFrameFields(frameItem);
                 updateFramePreview(frameItem);  // Update preview on type change
+            });
+            
+            geometrySelect.addEventListener('change', () => {
+                updateFrameFields(frameItem);
+                updateFramePreview(frameItem);  // Update preview on geometry change
             });
             
             // Update preview on field changes
