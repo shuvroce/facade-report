@@ -715,82 +715,72 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // For pre-defined profiles, get data from cache
+        // For pre-defined profiles, use server-rendered preview with cached data
         if (profileType === 'Pre-defined') {
             const profileData = profileDataCache[profileName];
             if (profileData) {
-                const html = `
-                    <div class="profile-properties">
-                        ${profileData.area ? `<div class="property-item">
-                            <span class="property-label">Area:</span>
-                            <span class="property-value">${profileData.area}</span>
-                        </div>` : ''}
-                        ${profileData.I_xx ? `<div class="property-item">
-                            <span class="property-label">I<sub>xx</sub>:</span>
-                            <span class="property-value">${profileData.I_xx}</span>
-                        </div>` : ''}
-                        ${profileData.I_yy ? `<div class="property-item">
-                            <span class="property-label">I<sub>yy</sub>:</span>
-                            <span class="property-value">${profileData.I_yy}</span>
-                        </div>` : ''}
-                        ${profileData.tor_constant ? `<div class="property-item">
-                            <span class="property-label">J<sub>y</sub>:</span>
-                            <span class="property-value">${profileData.tor_constant}</span>
-                        </div>` : ''}
-                        ${profileData.F_y ? `<div class="property-item">
-                            <span class="property-label">F<sub>y</sub>:</span>
-                            <span class="property-value">${profileData.F_y}</span>
-                        </div>` : ''}
-                        ${profileData.phi_Mn ? `<div class="property-item">
-                            <span class="property-label">φM<sub>n</sub>:</span>
-                            <span class="property-value">${profileData.phi_Mn}</span>
-                        </div>` : ''}
-                    </div>
-                `;
-                previewContainer.innerHTML = html;
+                updatePreview(alumItem, 'alum_profile', (item) => {
+                    return profileData;
+                }, 'Profile data not found');
             } else {
                 previewContainer.innerHTML = '<p class="preview-placeholder">Profile data not found</p>';
             }
         } 
-        // For manual or stick profiles, show entered values
-        else if (profileType === 'Manual' || profileType === 'Stick') {
-            const fieldsContainer = alumItem.querySelector('.item-fields');
-            if (!fieldsContainer) return;
-
-            const values = {};
-            const fieldMap = {
-                'area': 'Area',
-                'I_xx': 'I<sub>xx</sub>',
-                'I_yy': 'I<sub>yy</sub>',
-                'F_y': 'F<sub>y</sub>',
-                'Mn_yield': 'M<sub>n</sub> Yield',
-                'Mn_lb': 'M<sub>n</sub> LB'
-            };
-
-            // Collect entered values
-            Object.keys(fieldMap).forEach(fieldName => {
-                const input = fieldsContainer.querySelector(`input[name="${fieldName}"]`);
-                if (input && input.value) {
-                    values[fieldName] = input.value;
+        // For stick profiles, only require basic dimensions
+        else if (profileType === 'Stick') {
+            updatePreview(alumItem, 'alum_profile', (item) => {
+                const fieldsContainer = item.querySelector('.item-fields');
+                if (!fieldsContainer) {
+                    throw new Error('No fields found');
                 }
-            });
 
-            // Generate HTML
-            let html = `<div class="profile-properties">
-                <div class="property-item">
-                    <span class="property-label">Profile:</span>
-                    <span class="property-value">${profileName}</span>
-                </div>`;
-            
-            Object.keys(values).forEach(key => {
-                html += `<div class="property-item">
-                    <span class="property-label">${fieldMap[key]}:</span>
-                    <span class="property-value">${values[key]}</span>
-                </div>`;
-            });
-            
-            html += '</div>';
-            previewContainer.innerHTML = html || '<p class="preview-placeholder">No properties entered</p>';
+                const payload = { profile_type: profileType, profile_name: profileName };
+                
+                // Collect all input values from the fields
+                fieldsContainer.querySelectorAll('input, select').forEach(input => {
+                    if (input.name) {
+                        payload[input.name] = input.value;
+                    }
+                });
+
+                // Validate required fields for Stick profiles (only basic dimensions)
+                const requiredFields = ['web_length', 'flange_length', 'web_thk', 'flange_thk', 'F_y'];
+                const missingFields = requiredFields.filter(field => !payload[field] || payload[field] === '');
+                
+                if (missingFields.length > 0) {
+                    throw new Error(`Missing fields: ${missingFields.join(', ')}`);
+                }
+
+                return payload;
+            }, 'Enter all dimensions and material properties');
+        }
+        // For manual profiles, require all properties
+        else if (profileType === 'Manual') {
+            updatePreview(alumItem, 'alum_profile', (item) => {
+                const fieldsContainer = item.querySelector('.item-fields');
+                if (!fieldsContainer) {
+                    throw new Error('No fields found');
+                }
+
+                const payload = { profile_type: profileType, profile_name: profileName };
+                
+                // Collect all input values from the fields
+                fieldsContainer.querySelectorAll('input, select').forEach(input => {
+                    if (input.name) {
+                        payload[input.name] = input.value;
+                    }
+                });
+
+                // Validate required fields for Manual profiles (all properties)
+                const requiredFields = ['web_length', 'flange_length', 'web_thk', 'flange_thk', 'F_y', 'Y', 'X', 'I_xx', 'I_yy', 'area', 'plastic_x', 'plastic_y'];
+                const missingFields = requiredFields.filter(field => !payload[field] || payload[field] === '');
+                
+                if (missingFields.length > 0) {
+                    throw new Error(`Missing fields: ${missingFields.join(', ')}`);
+                }
+
+                return payload;
+            }, 'Enter all profile properties');
         }
     }
 

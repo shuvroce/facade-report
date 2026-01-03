@@ -48,6 +48,36 @@
 </div>
 {% endmacro %}
 
+{# Aluminum Profile Preview #}
+{% macro alum_preview(result) %}
+<div class="profile-properties">
+    <div class="property-item">
+        <span class="property-label">Area:</span>
+        <span class="property-value">{{ result.area }} mm²</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">I<sub>xx</sub>:</span>
+        <span class="property-value">{{ result.I_xx }} mm⁴</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">I<sub>yy</sub>:</span>
+        <span class="property-value">{{ result.I_yy }} mm⁴</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">S<sub>x</sub>:</span>
+        <span class="property-value">{{ result.S_x }} mm³</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Z<sub>x</sub>:</span>
+        <span class="property-value">{{ result.Z_x }} mm³</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">φM<sub>n</sub>:</span>
+        <span class="property-value">{{ result.phi_Mn or '—' }} kN-m</span>
+    </div>
+</div>
+{% endmacro %}
+
 {# Glass Unit Preview #}
 {% macro glass_preview(result, glass_type) %}
 {% if glass_type == "sgu" or glass_type == "lgu" %}

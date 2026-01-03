@@ -98,6 +98,113 @@ def calc_steel_profile(profile_data: Any) -> Optional[Dict[str, float]]:
     }
 
 
+def calc_alum_stick_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
+    """
+    Calculate aluminum stick profile properties from basic dimensions.
+    Stick profiles only require: web_length, flange_length, web_thk, flange_thk, F_y
+    All other properties are calculated.
+    """
+    if not profile_data:
+        return None
+    
+    # Extract basic dimensions
+    web_length = _to_float(profile_data.get("web_length"))
+    flange_length = _to_float(profile_data.get("flange_length"))
+    web_thk = _to_float(profile_data.get("web_thk"))
+    flange_thk = _to_float(profile_data.get("flange_thk"))
+    F_y = _to_float(profile_data.get("F_y"))
+    
+    if not all([web_length, flange_length, web_thk, flange_thk, F_y]):
+        return None
+    
+    # Calculate geometric properties (similar to Stick profile in alum-cap.html)
+    area = web_length * flange_length - ((web_length - 2 * flange_thk) * (flange_length - 2 * web_thk))
+    I_xx = (flange_length * web_length**3 / 12) - ((flange_length - 2 * web_thk) * (web_length - 2 * flange_thk)**3 / 12)
+    I_yy = (web_length * flange_length**3 / 12) - ((web_length - 2 * flange_thk) * (flange_length - 2 * web_thk)**3 / 12)
+    Y = web_length / 2
+    X = flange_length / 2
+    S_x = I_xx / Y
+    S_y = I_yy / X
+    Z_x = ((flange_length * web_length**2) - ((flange_length - 2 * web_thk) * (web_length - 2 * flange_thk)**2)) / 4
+    tor_constant = (2 * flange_thk * web_thk * ((flange_length - web_thk)**2) * ((web_length - flange_thk)**2)) / (
+        flange_length * web_thk + web_length * flange_thk - (web_thk**2) - (flange_thk**2)
+    )
+    
+    # Calculate local buckling parameters (using m = 0.65 for Stick profiles)
+    web_b = web_length - 2 * (flange_thk - 0.5)
+    flange_b = flange_length - 2 * (web_thk - 0.5)
+    m = 0.65  # Fixed value for Stick profiles
+    
+    # Stress reduction factors
+    B_p = F_y * (1 + (F_y / (1500 * 6.895))**0.3333)
+    D_p = (B_p / 10) * ((B_p / 70000)**0.5)
+    B_br = 1.3 * F_y * (1 + (F_y / (340 * 6.895))**0.3333)
+    D_br = (B_br / 20) * ((6 * B_br / 70000)**0.5)
+    
+    # Slenderness ratios
+    flange_lambda1 = (B_p - F_y) / (1.6 * D_p) if D_p != 0 else 0
+    flange_lambda2 = (0.35 * B_p) / (1.6 * D_p) if D_p != 0 else 0
+    web_lambda1 = (B_br - 1.5 * F_y) / (m * D_br) if (m * D_br) != 0 else 0
+    web_lambda2 = (0.5 * B_br) / (m * D_br) if (m * D_br) != 0 else 0
+    
+    # Moment capacity by yielding
+    Mn_yield = min(Z_x * F_y, 1.5 * F_y * S_x) / 1000000
+    
+    # Web bending capacity
+    I_w = 2 * ((web_thk * web_b**3) / 12)
+    c_w = web_b / 2
+    
+    # Determine stress reduction factors based on slenderness
+    if (web_b / web_thk) <= web_lambda1:
+        F_b = 1.5 * F_y
+    else:
+        F_b = B_br - (m * D_br) * (web_b / web_thk)
+    
+    if (flange_b / flange_thk) <= flange_lambda1:
+        F_c = F_y
+    else:
+        F_c = B_p - (5 * D_p) * (flange_b / flange_thk)
+    
+    I_f = I_xx - I_w
+    c_f = (web_length - flange_thk) / 2
+    
+    Mn_lb = (F_b * (I_w / c_w) / 1000000) + (F_c * (I_f / c_f) / 1000000)
+    phi_Mn = 0.9 * min(Mn_yield, Mn_lb)
+    
+    return {
+        # Basic profile properties (for preview display)
+        "area": round(area, 1),
+        "I_xx": round(I_xx, 1),
+        "I_yy": round(I_yy, 1),
+        "web_thk": round(web_thk, 1),
+        "flange_thk": round(flange_thk, 1),
+        # Calculated section moduli
+        "S_x": round(S_x, 1),
+        "S_y": round(S_y, 1),
+        "Z_x": round(Z_x, 1),
+        "tor_constant": round(tor_constant, 1),
+        # Local buckling analysis
+        "web_b": round(web_b, 1),
+        "flange_b": round(flange_b, 1),
+        "m": round(m, 2),
+        "B_p": round(B_p, 1),
+        "D_p": round(D_p, 1),
+        "B_br": round(B_br, 1),
+        "D_br": round(D_br, 1),
+        "flange_lambda1": round(flange_lambda1, 2),
+        "flange_lambda2": round(flange_lambda2, 2),
+        "web_lambda1": round(web_lambda1, 2),
+        "web_lambda2": round(web_lambda2, 2),
+        "I_w": round(I_w, 1),
+        "F_b": round(F_b, 1),
+        "F_c": round(F_c, 1),
+        # Moment capacities
+        "Mn_yield": round(Mn_yield, 1),
+        "Mn_lb": round(Mn_lb, 1),
+        "phi_Mn": round(phi_Mn, 1),
+    }
+
+
 def calc_alum_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     """Calculate aluminum profile properties and local buckling analysis."""
     if not profile_data:
@@ -145,7 +252,7 @@ def calc_alum_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     web_lambda2 = (0.5 * B_br) / (m * D_br) if (m * D_br) != 0 else 0
     
     # Moment capacity by yielding
-    Mn_yield = min(Z_x * F_y, 1.5 * F_y * I_xx / Y)
+    Mn_yield = min(Z_x * F_y, 1.5 * F_y * I_xx / Y) / 1000000
     
     # Web bending capacity
     web_d = Y - web_b / 2
@@ -162,10 +269,21 @@ def calc_alum_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     else:
         F_c = B_p - (5 * D_p) * (flange_b / flange_thk)
     
+    Mn_lb = (F_b * (I_w / c_c) / 1000000) + (F_c * ((I_xx - I_w) / (web_b / 2)) / 1000000)
+    phi_Mn = 0.9 * min(Mn_yield, Mn_lb)
+    
     return {
+        # Basic profile properties (for preview display)
+        "area": round(area, 1),
+        "I_xx": round(I_xx, 1),
+        "I_yy": round(I_yy, 1),
+        "web_thk": round(web_thk, 1),
+        "flange_thk": round(flange_thk, 1),
+        # Calculated section moduli
         "S_x": round(S_x, 1),
         "S_y": round(S_y, 1),
         "Z_x": round(Z_x, 1),
+        # Local buckling analysis
         "web_b": round(web_b, 1),
         "flange_b": round(flange_b, 1),
         "c_c": round(c_c, 1),
@@ -183,8 +301,10 @@ def calc_alum_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         "I_w": round(I_w, 1),
         "F_b": round(F_b, 1),
         "F_c": round(F_c, 1),
-        "Mn_yield": round(Mn_yield / 1000000, 1),
-        "Mn_lb": round((F_b * (I_w / c_c) / 1000000) + (F_c * ((I_xx - I_w) / (web_b / 2)) / 1000000), 1),
+        # Moment capacities
+        "Mn_yield": round(Mn_yield, 1),
+        "Mn_lb": round(Mn_lb, 1),
+        "phi_Mn": round(phi_Mn, 1),
     }
 
 

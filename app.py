@@ -4,7 +4,7 @@ import tempfile
 from flask import Flask, render_template, request, send_file, jsonify, session
 from jinja2 import Environment, FileSystemLoader
 from report import generate_report_from_data, load_profile_data
-from calc_helpers import calc_steel_profile, calc_glass_unit, calc_frame, calc_connection, calc_anchorage
+from calc_helpers import calc_steel_profile, calc_alum_profile, calc_alum_stick_profile, calc_glass_unit, calc_frame, calc_connection, calc_anchorage
 try:
     from tkinter import Tk
     from tkinter.filedialog import askdirectory
@@ -37,6 +37,7 @@ def render_preview_html(item_type, result, extra_context=None):
     
     macro_map = {
         "steel_profile": "{% from 'preview_partials.html' import steel_preview %}{{ steel_preview(result) }}",
+        "alum_profile": "{% from 'preview_partials.html' import alum_preview %}{{ alum_preview(result) }}",
         "glass_unit": "{% from 'preview_partials.html' import glass_preview %}{{ glass_preview(result, glass_type) }}",
         "frame": "{% from 'preview_partials.html' import frame_preview %}{{ frame_preview(result) }}",
         "connection": "{% from 'preview_partials.html' import connection_preview %}{{ connection_preview(result) }}",
@@ -311,6 +312,13 @@ def calc_preview():
         
         if item_type == "steel_profile":
             result = calc_steel_profile(item_data)
+        elif item_type == "alum_profile":
+            # Check if it's a Stick profile or Manual/Pre-defined
+            profile_type = item_data.get("profile_type", "")
+            if profile_type == "Stick":
+                result = calc_alum_stick_profile(item_data)
+            else:
+                result = calc_alum_profile(item_data)
         elif item_type == "glass_unit":
             result = calc_glass_unit(item_data)
             extra_context["glass_type"] = item_data.get("glass_type", "sgu")
