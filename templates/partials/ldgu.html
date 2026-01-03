@@ -44,7 +44,7 @@
             <tr>
                 <td>Effective wind area for glass, <i>A<sub>eff</sub></i></td>
                 <td>=</td>
-                <td>{{ [gu.length * gu.width / 1000000, gu.length * (gu.length / 3) / 1000000] | max | round(2)}} <i>m<sup>2</sup></i></td>
+                <td>{{ calc.A_eff }} <i>m<sup>2</sup></i></td>
                 <td></td>
             </tr>
             <tr>
@@ -156,13 +156,13 @@
                 </tr>
                     <td>Load Share factor, <i>LS<sub>1</sub></i></td>
                     <td>=</td>
-                    <td>{{ calc.ldgu_ls1 | round(2) }}</td>
+                    <td>{{ calc.ldgu_ls1 }}</td>
                     <td><i>; ASTM E1300, Table 5</i></td>
                 </tr>
                 <tr>
                     <td>Load resisting capacity, <i>LR<sub>1</sub> = NFL<sub>1</sub> x GTF<sub>1</sub> x LS<sub>1</sub></i></td>
                     <td>=</td>
-                    <td>{{ calc.calc.ldgu_lr1 | round(2) }} <i>kPa</i></td>
+                    <td>{{ calc.ldgu_lr1 }} <i>kPa</i></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -213,13 +213,13 @@
                 </tr>
                     <td>Load Share factor, <i>LS<sub>2</sub></i></td>
                     <td>=</td>
-                    <td>{{ calc.ldgu_ls2 | round(2) }}</td>
+                    <td>{{ calc.ldgu_ls2 }}</td>
                     <td><i>; ASTM E1300, Table 5</i></td>
                 </tr>
                 <tr>
                     <td>Load resisting capacity, <i>LR<sub>2</sub> = NFL<sub>2</sub> x GTF<sub>2</sub> x LS<sub>2</sub></i></td>
                     <td>=</td>
-                    <td>{{ calc.calc.ldgu_lr2 | round(2) }} <i>kPa</i></td>
+                    <td>{{ calc.ldgu_lr2 }} <i>kPa</i></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -231,13 +231,13 @@
                 <tr>
                     <td>Load resisting capacity of the glass, <i>LR = min(LR<sub>1</sub>, LR<sub>2</sub>)</i></td>
                     <td>=</td>
-                    <td>{{ calc.ldgu_lr | round(2) }} <i>kPa</i></td>
+                    <td>{{ calc.ldgu_lr }} <i>kPa</i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Load resistance ratio = <i>P<sub>z</sub>/LR</i></td>
                     <td>=</td>
-                    <td>{{ calc.stress_ratio | round(2) }}</td>
+                    <td>{{ calc.stress_ratio }}</td>
                     <td class="{% if calc.stress_ratio < 1 %}ok{% else %}not-ok{% endif %}">
                         {% if calc.stress_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
@@ -275,19 +275,19 @@
                 <tr>
                     <td>Load × Area<sup>2</sup>, q<sub>1</sub> x A² **</td>
                     <td>=</td>
-                    <td>{{ gu.load1_x_area2}} <i>kN-m<sup>2</sup></i></td>
+                    <td>{{ gu.load1_x_area2 }} <i>kN-m<sup>2</sup></i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Aspect Ratio, <i>AR = a/b</i></td>
                     <td>=</td>
-                    <td>{{gu.length / gu.width | round(2) }}</td>
+                    <td>{{ calc.aspect_ratio }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Deflection, <i>δ<sub>1</sub></i></td>
                     <td>=</td>
-                    <td>{{gu.def1}} <i>mm</i></td>
+                    <td>{{ gu.def1 }} <i>mm</i></td>
                     <td><i>; from above chart</i></td>
                 </tr>
             </tbody>
@@ -321,19 +321,19 @@
                 <tr>
                     <td>Load × Area<sup>2</sup>, q<sub>2</sub> x A²</td>
                     <td>=</td>
-                    <td>{{ gu.load2_x_area2}} <i>kN-m<sup>2</sup></i></td>
+                    <td>{{ gu.load2_x_area2 }} <i>kN-m<sup>2</sup></i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Aspect Ratio, <i>AR = a/b</i></td>
                     <td>=</td>
-                    <td>{{ (gu.length / gu.width) | round(2) }}</td>
+                    <td>{{ calc.aspect_ratio }}</td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Deflection, <i>δ<sub>2</sub></i></td>
                     <td>=</td>
-                    <td>{{gu.def2}} <i>mm</i></td>
+                    <td>{{ gu.def2 }} <i>mm</i></td>
                     <td><i>; from above chart</i></td>
                 </tr>
             </tbody>
@@ -351,13 +351,13 @@
                 <tr>
                     <td>Allowable deflection, <i>δ<sub>a</sub></i></td>
                     <td>=</td>
-                    <td>{{ calc.allow_def | round(2) }} <i>mm</i></td>
+                    <td>{{ calc.allow_def }} <i>mm</i></td>
                     <td><i>; AS 1288:2006</i></td>
                 </tr>
                 <tr>
                     <td>Deflection ratio</td>
                     <td>=</td>
-                    <td>{{ calc.deflection_ratio | round(2) }} <i>mm</i></td>
+                    <td>{{ calc.deflection_ratio }} <i>mm</i></td>
                     <td class="{% if calc.deflection_ratio < 1 %}ok{% else %}not-ok{% endif %}">
                         {% if calc.deflection_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
@@ -395,7 +395,7 @@
             <tr>
                 <td>Bite size/width required, <i>t<sub>r</sub> = (P<sub>z</sub> × B) / (2 F<sub>s</sub>)</i></td>
                 <td>=</td>
-                <td>{{ calc.bite_req | round(2) }} <i>mm</i></td>
+                <td>{{ calc.bite_req }} <i>mm</i></td>
                 <td></td>
             </tr>
             <tr>
@@ -408,7 +408,7 @@
             <tr>
                 <td>Glue line thickness required, <i>e<sub>r</sub> = t<sub>r</sub> / 3</i></td>
                 <td>=</td>
-                <td>{{ calc.glue_req | round(2) }} <i>mm</i></td>
+                <td>{{ calc.glue_req }} <i>mm</i></td>
                 <td>; ≥ 6 <i>mm</i></td>
             </tr>
             <tr>
