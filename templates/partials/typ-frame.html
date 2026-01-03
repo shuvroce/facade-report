@@ -44,7 +44,7 @@
             <tr>
                 <td>Effective Glass thickness</td>
                 <td><i>t<sub>g</sub></i></td>
-                <td>{{ glass_thk }} <i>mm</i></td>
+                <td>{{ frame.glass_thk }} <i>mm</i></td>
                 <td></td>
             </tr>
             <tr>
@@ -56,19 +56,13 @@
             <tr>
                 <td>Self-weight of glass</td>
                 <td><i>DL<sub>g</sub> = t<sub>g</sub> × ρ<sub>g</sub></i></td>
-                <td>{{ (glass_thk | default(0)) * 0.025 }} <i>kN/m<sup>2</sup></i></td>
+                <td>{{ calc.glass_sw }} <i>kN/m<sup>2</sup></i></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Effective wind area for vertical frame</td>
                 <td><i>A<sub>eff</sub></i></td>
-                <td>
-                    {% if frame.frame_type == "Floor-to-floor" %}
-                        {{ [frame.length * frame.width / 1000000, frame.length * (frame.length / 3) / 1000000] | max}} <i>m<sup>2</sup></i>
-                    {% else %}
-                        {{ [(2 * frame.length) * frame.width / 1000000, (2 * frame.length) * (2 * frame.length / 3) / 1000000] | max}} <i>m<sup>2</sup></i>
-                    {% endif %}
-                </td>
+                <td>{{ calc.eff_area }}</td>
                 <td>
                     {% if frame.frame_type == "Continuous" %}
                         <i>; two span considered</i>
@@ -477,17 +471,17 @@
             </tr>
             <tr>
                 <td>Mullion</td>
-                <td>{{ calc.mul_mu | default(0) }}</td>
-                <td>{{ calc.mul_vu | default(0) }}</td>
-                <td>{{ calc.mul_def | default(0) }}</td>
+                <td>{{ calc.mul_mu }}</td>
+                <td>{{ calc.mul_vu }}</td>
+                <td>{{ calc.mul_def }}</td>
                 <td>–</td>
             </tr>
             <tr>
                 <td>Transom</td>
-                <td>{{ calc.tran_mu | default(0) }}</td>
-                <td>{{ calc.tran_vu | default(0) }}</td>
-                <td>{{ calc.tran_def_wind | default(0) }}</td>
-                <td>{{ calc.tran_def_dead | default(0) }}</td>
+                <td>{{ calc.tran_mu }}</td>
+                <td>{{ calc.tran_vu }}</td>
+                <td>{{ calc.tran_def_wind }}</td>
+                <td>{{ calc.tran_def_dead }}</td>
             </tr>
         </tbody>
     </table>
@@ -513,8 +507,8 @@
             </tr>
             <tr>
                 <td>–</td>
-                <td>{{ calc.joint_fy | default(0) }}</td>
-                <td>{{ calc.joint_fz | default(0) }}</td>
+                <td>{{ calc.joint_fy }}</td>
+                <td>{{ calc.joint_fz }}</td>
                 <td>–</td>
                 <td>–</td>
                 <td>–</td>
@@ -547,8 +541,8 @@
                 <tr>
                     <td>End Node</td>
                     <td>–</td>
-                    <td>{{ calc.reaction_Ry | default(0) }}</td>
-                    <td>{{ calc.reaction_Rz | default(0) }}</td>
+                    <td>{{ calc.reaction_Ry }}</td>
+                    <td>{{ calc.reaction_Rz }}</td>
                     <td>–</td>
                     <td>–</td>
                     <td>–</td>
@@ -557,8 +551,8 @@
                 <tr>
                     <td>Middle Node</td>
                     <td>–</td>
-                    <td>{{ calc.reaction_Ry | default(0) }}</td>
-                    <td>{{ calc.reaction_Rz | default(0) }}</td>
+                    <td>{{ calc.reaction_Ry }}</td>
+                    <td>{{ calc.reaction_Rz }}</td>
                     <td>–</td>
                     <td>–</td>
                     <td>–</td>
@@ -578,27 +572,27 @@
                 <tr>
                     <td>Max. bending moment, <i>M<sub>u</sub></i> (under ULS)</td>
                     <td>=</td>
-                    <td>{{ calc.mul_mu | default(0) }} <i>kN-m</i></td>
+                    <td>{{ calc.mul_mu }} <i>kN-m</i></td>
                     <td><i>; from 'Internal forces' table</i></td>
                 </tr>
                 <tr>
                     <td>Moment shared by alum. profile, <i>M<sub>ua</sub> = LS<sub>a</sub> × M<sub>u</sub></i></td>
                     <td>=</td>
-                    <td>{{ calc.mul_mu_a | default(0) }} <i>kN-m</i></td>
+                    <td>{{ calc.mul_mu_a }} <i>kN-m</i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>The design moment capacity,  <i>φM<sub>n</sub></i></td>
                     <td>=</td>
-                    <td>{{ calc.mul_phi_Mn_a | default(0) }} <i>kN-m</i></td>
+                    <td>{{ calc.mul_phi_Mn_a }} <i>kN-m</i></td>
                     <td><i>; from Chapter 4</i></td>
                 </tr>
                 <tr>
                     <td>P-M-M (D/C) ratio</td>
                     <td>=</td>
-                    <td>{{ calc.mul_dc_a | default(0) }} &nbsp;&nbsp;&nbsp; <1 </td>
-                    <td class="{% if (calc.mul_dc_a | default(0)) < 1 %}ok{% else %}not-ok{% endif %}">
-                        {% if (calc.mul_dc_a | default(0)) < 1 %} OK {% else %} NOT OK {% endif %}
+                    <td>{{ calc.mul_dc_a }} &nbsp;&nbsp;&nbsp; <1 </td>
+                    <td class="{% if calc.mul_dc_a < 1 %}ok{% else %}not-ok{% endif %}">
+                        {% if calc.mul_dc_a < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -610,27 +604,27 @@
                 <tr>
                     <td>Max. bending moment, <i>M<sub>u</sub></i> (under ULS)</td>
                     <td>=</td>
-                    <td>{{ calc.mul_mu | default(0) }} <i>kN-m</i></td>
+                    <td>{{ calc.mul_mu }} <i>kN-m</i></td>
                     <td><i>; from 'Internal forces' table</i></td>
                 </tr>
                 <tr>
                     <td>Moment shared by steel tube, <i>M<sub>us</sub> = LS<sub>s</sub> × M<sub>u</sub></i></td>
                     <td>=</td>
-                    <td>{{ calc.mul_mu_s | default(0) }} <i>kN-m</i></td>
+                    <td>{{ calc.mul_mu_s }} <i>kN-m</i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>The design moment capacity,  <i>φM<sub>n</sub></i></td>
                     <td>=</td>
-                    <td>{{ calc.mul_phi_Mn_s | default(0) }} <i>kN-m</i></td>
+                    <td>{{ calc.mul_phi_Mn_s }} <i>kN-m</i></td>
                     <td><i>; from Chapter 4</i></td>
                 </tr>
                 <tr>
                     <td>P-M-M (D/C) ratio</td>
                     <td>=</td>
-                    <td>{{ calc.mul_dc_s | default(0) }} &nbsp;&nbsp;&nbsp; <1 </td>
-                    <td class="{% if (calc.mul_dc_s | default(0)) < 1 %}ok{% else %}not-ok{% endif %}">
-                        {% if (calc.mul_dc_s | default(0)) < 1 %} OK {% else %} NOT OK {% endif %}
+                    <td>{{ calc.mul_dc_s }} &nbsp;&nbsp;&nbsp; <1 </td>
+                    <td class="{% if calc.mul_dc_s < 1 %}ok{% else %}not-ok{% endif %}">
+                        {% if calc.mul_dc_s < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -643,21 +637,21 @@
             <tr>
                 <td>Max. bending moment, <i>M<sub>u</sub></i> (under ULS)</td>
                 <td>=</td>
-                <td>{{ calc.mul_mu | default(0) }} <i>kN-m</i></td>
+                <td>{{ calc.mul_mu }} <i>kN-m</i></td>
                 <td><i>; from 'Internal forces' table</i></td>
             </tr>
             <tr>
                 <td>The design moment capacity,  <i>φM<sub>n</sub></i></td>
                 <td>=</td>
-                <td>{{ calc.mul_phi_Mn | default(0) }} <i>kN-m</i></td>
+                <td>{{ calc.mul_phi_Mn }} <i>kN-m</i></td>
                 <td><i>; from Chapter 4</i></td>
             </tr>
             <tr>
                 <td>P-M-M (D/C) ratio</td>
                 <td>=</td>
-                <td>{{ calc.mul_dc | default(0) }} &nbsp;&nbsp;&nbsp; <1 </td>
-                <td class="{% if (calc.mul_dc | default(0)) < 1 %}ok{% else %}not-ok{% endif %}">
-                    {% if (calc.mul_dc | default(0)) < 1 %} OK {% else %} NOT OK {% endif %}
+                <td>{{ calc.mul_dc }} &nbsp;&nbsp;&nbsp; <1 </td>
+                <td class="{% if calc.mul_dc < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if calc.mul_dc < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
@@ -670,15 +664,15 @@
             <tr>
                 <td>Max. deflection (under SLS), δ</td>
                 <td>=</td>
-                <td>{{ calc.mul_def | default(0) }} <i>mm</i></td>
+                <td>{{ calc.mul_def }} <i>mm</i></td>
                 <td><i>; from 'Internal forces table'</i></td>
             </tr>
             <tr>
                 <td>Max. allowable deflection, δ<sub>a</sub></td>
                 <td>=</td>
-                <td>{{ calc.mul_allow_def | default(0) }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
-                <td class="{% if (calc.mul_allow_def | default(0)) > (calc.mul_def | default(0)) %}ok{% else %}not-ok{% endif %}">
-                    {% if (calc.mul_allow_def | default(0)) > (calc.mul_def | default(0)) %} OK {% else %} NOT OK {% endif %}
+                <td>{{ calc.mul_allow_def }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
+                <td class="{% if calc.mul_allow_def > calc.mul_def %}ok{% else %}not-ok{% endif %}">
+                    {% if calc.mul_allow_def > calc.mul_def %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
@@ -694,21 +688,21 @@
             <tr>
                 <td>Max. bending moment, <i>M<sub>u</sub></i> (under ULS)</td>
                 <td>=</td>
-                <td>{{ calc.tran_mu | default(0) }} <i>kN-m</i></td>
+                <td>{{ calc.tran_mu }} <i>kN-m</i></td>
                 <td><i>; from 'Internal forces' table</i></td>
             </tr>
             <tr>
                 <td>The design moment capacity,  <i>φM<sub>n</sub></i></td>
                 <td>=</td>
-                <td>{{ calc.tran_phi_Mn | default(0) }} <i>kN-m</i></td>
+                <td>{{ calc.tran_phi_Mn }} <i>kN-m</i></td>
                 <td><i>; from Chapter 4</i></td>
             </tr>
             <tr>
                 <td>P-M-M (D/C) ratio</td>
                 <td>=</td>
-                <td>{{ calc.tran_dc | default(0) }} &nbsp;&nbsp;&nbsp; <1 </td>
-                <td class="{% if (calc.tran_dc | default(0)) < 1 %}ok{% else %}not-ok{% endif %}">
-                    {% if (calc.tran_dc | default(0)) < 1 %} OK {% else %} NOT OK {% endif %}
+                <td>{{ calc.tran_dc }} &nbsp;&nbsp;&nbsp; <1 </td>
+                <td class="{% if (calc.tran_dc) < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if (calc.tran_dc) < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
@@ -721,15 +715,15 @@
             <tr>
                 <td>Max. deflection (under SLS), δ</td>
                 <td>=</td>
-                <td>{{ calc.tran_def_wind | default(0) }} <i>mm</i></td>
+                <td>{{ calc.tran_def_wind }} <i>mm</i></td>
                 <td><i>; from 'Internal forces table'</i></td>
             </tr>
             <tr>
                 <td>Max. allowable deflection, δ<sub>a</sub></td>
                 <td>=</td>
-                <td>{{ calc.tran_allow_def | default(0) }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
-                <td class="{% if (calc.tran_allow_def | default(0)) > (calc.tran_def_wind | default(0)) %}ok{% else %}not-ok{% endif %}">
-                    {% if (calc.tran_allow_def | default(0)) > (calc.tran_def_wind | default(0)) %} OK {% else %} NOT OK {% endif %}
+                <td>{{ calc.tran_allow_def }} <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
+                <td class="{% if (calc.tran_allow_def) > (calc.tran_def_wind) %}ok{% else %}not-ok{% endif %}">
+                    {% if (calc.tran_allow_def) > (calc.tran_def_wind) %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
@@ -741,15 +735,15 @@
             <tr>
                 <td>Max. deflection (under SLS), δ</td>
                 <td>=</td>
-                <td>{{ calc.tran_def_dead | default(0) }} <i>mm</i></td>
+                <td>{{ calc.tran_def_dead }} <i>mm</i></td>
                 <td><i>; from 'Internal forces table'</i></td>
             </tr>
             <tr>
                 <td>Max. allowable deflection, δ<sub>a</sub></td>
                 <td>=</td>
                 <td>3.0 <i>mm</i> &nbsp;&nbsp;&nbsp; > δ </td>
-                <td class="{% if 3.0 > (calc.tran_def_dead | default(0)) %}ok{% else %}not-ok{% endif %}">
-                    {% if 3.0 > (calc.tran_def_dead | default(0)) %} OK {% else %} NOT OK {% endif %}
+                <td class="{% if 3.0 > (calc.tran_def_dead) %}ok{% else %}not-ok{% endif %}">
+                    {% if 3.0 > (calc.tran_def_dead) %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
