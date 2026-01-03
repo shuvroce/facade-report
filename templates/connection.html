@@ -21,12 +21,12 @@
             <tr>
                 <td>Wind load, <i>F<sub>y</sub> (kN)</i></td>
                 <td>{{ calc.joint_fy }}</td>
-                <td>{{ (calc.joint_fy * 1.6) }}</td>
+                <td>{{ (calc.joint_fy * 1.6) | round(2) }}</td>
             </tr>
             <tr>
                 <td>Dead load, <i>F<sub>z</sub> (kN)</i></td>
                 <td>{{ calc.joint_fz }}</td>
-                <td>{{ (calc.joint_fz * 1.4) }}</td>
+                <td>{{ (calc.joint_fz * 1.4) | round(2) }}</td>
             </tr>
         </tbody>
     </table>
@@ -156,7 +156,7 @@
                 <td>207</td>
                 <td>{{ calc.phi_Pnv }}</td>
                 <td>{{ calc.Vu }}</td>
-                <td>{{ (calc.Vu / calc.phi_Pnv) }}</td>
+                <td>{{ (calc.Vu / calc.phi_Pnv) | round(2) }}</td>
                 <td class="{% if (calc.Vu / calc.phi_Pnv) < 1 %}ok{% else %}not-ok{% endif %}">
                     {% if (calc.Vu / calc.phi_Pnv) < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
@@ -218,7 +218,7 @@
                 <td>207</td>
                 <td>{{ calc.phi_Pnot }}</td>
                 <td>{{ calc.R_zA }}</td>
-                <td>{{ (calc.R_zA / calc.phi_Pnot) }}</td>
+                <td>{{ (calc.R_zA / calc.phi_Pnot) | round(2) }}</td>
                 <td class="{% if (calc.R_zA / calc.phi_Pnot) < 1 %}ok{% else %}not-ok{% endif %}">
                     {% if (calc.R_zA / calc.phi_Pnot) < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
@@ -273,10 +273,10 @@
             <tr>
                 <td>0.5</td>
                 <td>{{ conn.head_dia }}</td>
-                <td>{{ ([conn.head_dia, 19.1] | min) }}</td>
+                <td>{{ calc.d_w }}</td>
                 <td>{{ calc.phi_Pnov }}</td>
                 <td>{{ calc.R_zA }}</td>
-                <td>{{ (calc.R_zA / calc.phi_Pnov) }}</td>
+                <td>{{ (calc.R_zA / calc.phi_Pnov) | round(2) }}</td>
                 <td class="{% if (calc.R_zA / calc.phi_Pnov) < 1 %}ok{% else %}not-ok{% endif %}">
                     {% if (calc.R_zA / calc.phi_Pnov) < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
@@ -328,10 +328,10 @@
                 <td>0.65</td>
                 <td>{{ calc.Vu }}</td>
                 <td>{{ calc.R_zA }}</td>
-                <td>{{ (calc.phi_Pnv / 0.5) }}</td>
-                <td>{{ (calc.phi_Pnov / 0.5) }}</td>
+                <td>{{ (calc.phi_Pnv / 0.5) | round(2) }}</td>
+                <td>{{ (calc.phi_Pnov / 0.5) | round(2) }}</td>
                 <td>{{ calc.beta_pullover }}</td>
-                <td>{{ (1.1 * 0.65) }}</td>
+                <td>{{ (1.1 * 0.65) | round(2) }}</td>
                 <td class="{% if calc.beta_pullover < (1.1 * 0.65) %}ok{% else %}not-ok{% endif %}">
                     {% if calc.beta_pullover < (1.1 * 0.65) %} OK {% else %} NOT OK {% endif %}
                 </td>
@@ -362,10 +362,10 @@
                 <td>0.6</td>
                 <td>{{ calc.Vu }}</td>
                 <td>{{ calc.R_zA }}</td>
-                <td>{{ (calc.phi_Pnv / 0.5) }}</td>
-                <td>{{ (calc.phi_Pnot / 0.5) }}</td>
+                <td>{{ (calc.phi_Pnv / 0.5) | round(2) }}</td>
+                <td>{{ (calc.phi_Pnot / 0.5) | round(2) }}</td>
                 <td>{{ calc.beta_pullout }}</td>
-                <td>{{ (1.15 * 0.6) }}</td>
+                <td>{{ (1.15 * 0.6) | round(2) }}</td>
                 <td class="{% if calc.beta_pullout < (1.15 * 0.6) %}ok{% else %}not-ok{% endif %}">
                     {% if calc.beta_pullout < (1.15 * 0.6) %} OK {% else %} NOT OK {% endif %}
                 </td>

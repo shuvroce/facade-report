@@ -769,6 +769,7 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: floa
         "R_zA": round(R_zB, 2),
         "R_yA": round(R_yB, 2),
         "Vu": round(resultant_shear, 2),
+        "d_w": round(d_w, 2),
         "phi_Pnv": round(phi_Pnv, 2),
         "phi_Pnot": round(phi_Pnot, 2),
         "phi_Pnov": round(phi_Pnov, 2),
