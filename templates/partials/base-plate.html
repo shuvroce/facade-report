@@ -163,7 +163,7 @@
             <td>0.9</td>
             <td>{{ bp_length }}</td>
             <td>{{ bp_width }}</td>
-            <td>{{ (bp_length * bp_width) }}</td>
+            <td>{{ (bp_length * bp_width) | round(2) }}</td>
             <td>{{ calc.bp_d }}</td>
             <td>{{ calc.bp_b }}</td>
             <td>{{ calc.bp_m }}</td>
@@ -347,7 +347,7 @@
             <td>{{ calc.bp_A1 }}</td>
             <td>{{ bp_width }}</td>
             <td>{{ bp_length }}</td>
-            <td>{{ (bp_length * bp_width) }}</td>
+            <td>{{ (bp_length * bp_width) | round(2) }}</td>
             <td class="{% if (bp_length * bp_width) > calc.bp_A1 %}ok{% else %}not-ok{% endif %}">
                 {% if (bp_length * bp_width) > calc.bp_A1 %} OK {% else %} NOT OK {% endif %}
             </td>
@@ -410,11 +410,11 @@
     <tbody>
         <tr>
             <td>0.65</td>
-            <td>{{ (bp_length * bp_width) }}</td>
-            <td>{{ (bp_length * bp_width) }}</td>
+            <td>{{ (bp_length * bp_width) | round(2) }}</td>
+            <td>{{ (bp_length * bp_width) | round(2) }}</td>
             <td>27.5</td>
             <td>{{ calc.bp_fp_max }}</td>
-            <td>{{ (calc.bp_Pu * 1000 / (bp_length * bp_width)) }}</td>
+            <td>{{ (calc.bp_Pu * 1000 / (bp_length * bp_width)) | round(2) }}</td>
             <td class="{% if calc.bp_fp_max > (calc.bp_Pu / (bp_length * bp_width)) %}ok{% else %}not-ok{% endif %}">
                 {% if calc.bp_fp_max > (calc.bp_Pu / (bp_length * bp_width)) %} OK {% else %} NOT OK {% endif %}
             </td>

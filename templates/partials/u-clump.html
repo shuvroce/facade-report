@@ -14,15 +14,15 @@
             </tr>
             <tr>
                 <td>Horizontal reaction, <i>R<sub>y</sub> (kN)</i></td>
-                <td>{{ calc.reaction_Ry | round(2) }}</td>
+                <td>{{ calc.reaction_Ry }}</td>
                 <td>–</td>
-                <td>{{ calc.design_Ry | round(2) }}</td>
+                <td>{{ calc.design_Ry }}</td>
             </tr>
             <tr>
                 <td>Vertical reaction, <i>R<sub>z</sub> (kN)</i></td>
-                <td>{{ calc.reaction_Rz | round(2) }}</td>
-                <td>{{ (calc.reaction_Rz * 1.4) | round(2)}}</td>
-                <td>{{ (calc.reaction_Rz * 0.9) | round(2)}}</td>
+                <td>{{ calc.reaction_Rz }}</td>
+                <td>{{ (calc.reaction_Rz * 1.4)}}</td>
+                <td>{{ (calc.reaction_Rz * 0.9)}}</td>
             </tr>
         </tbody>
     </table>
@@ -75,7 +75,7 @@
             <tr>
                 <td>Horizontal reaction force, <i>R<sub>y</sub></i></td>
                 <td>=</td>
-                <td>{{ calc.design_Ry | round(2) }} <i>kN</i></td>
+                <td>{{ calc.design_Ry }} <i>kN</i></td>
                 <td><i>; tension</i></td>
             </tr>
             <tr>
@@ -87,7 +87,7 @@
             <tr>
                 <td>Vertical reaction force, <i>R<sub>z</sub></i></td>
                 <td>=</td>
-                <td>{{ calc.design_Rz | round(2) }} <i>kN</i></td>
+                <td>{{ calc.design_Rz }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>

@@ -21,8 +21,8 @@
             <tr>
                 <td>Vertical reaction, <i>R<sub>z</sub> (kN)</i></td>
                 <td>{{ calc.reaction_Rz }}</td>
-                <td>{{ (calc.reaction_Rz * 1.4) }}</td>
-                <td>{{ (calc.reaction_Rz * 0.9) }}</td>
+                <td>{{ (calc.reaction_Rz * 1.4) | round(2) }}</td>
+                <td>{{ (calc.reaction_Rz * 0.9) | round(2) }}</td>
             </tr>
         </tbody>
     </table>
@@ -91,7 +91,7 @@
         <tr>
             <td style="text-align: right;">Horizontal force in single bolt = ({{ calc.Bx }} / 2)</td>
             <td>=</td>
-            <td>{{ (calc.Bx / 2) }} <i>kN</i></td>
+            <td>{{ (calc.Bx / 2) | round(2) }} <i>kN</i></td>
             <td><i>; 2 bolts</i></td>
         </tr>
         <tr>
@@ -106,7 +106,7 @@
         <tr>
             <td style="text-align: right;">Horizontal force in single bolt = ({{ calc.Ax }} / {{ anchor.top_anchor_nos }})</td>
             <td>=</td>
-            <td>{{ (calc.Ax / anchor.top_anchor_nos) }} <i>kN</i></td>
+            <td>{{ (calc.Ax / anchor.top_anchor_nos) | round(2) }} <i>kN</i></td>
             <td><i>; {{ anchor.top_anchor_nos }} bolts</i></td>
         </tr>
     </tbody>
@@ -127,7 +127,7 @@
         <tr>
             <td style="text-align: right;">Vertical force in single bolt = ({{ calc.By }} / 2)</td>
             <td>=</td>
-            <td>{{ (calc.By / 2) }} <i>kN</i></td>
+            <td>{{ (calc.By / 2) | round(2) }} <i>kN</i></td>
             <td><i>; 2 bolts</i></td>
         </tr>
         <tr>
@@ -148,7 +148,7 @@
         <tr>
             <td style="text-align: right;">Vertical force in single bolt = ({{ calc.Ay }} / {{ anchor.top_anchor_nos }})</td>
             <td>=</td>
-            <td>{{ (calc.Ay / anchor.top_anchor_nos) }} <i>kN</i></td>
+            <td>{{ (calc.Ay / anchor.top_anchor_nos) | round(2) }} <i>kN</i></td>
             <td><i>; {{ anchor.top_anchor_nos }} bolts</i></td>
         </tr>
     </tbody>

@@ -21,8 +21,8 @@
             <tr>
                 <td>Vertical reaction, <i>R<sub>z</sub> (kN)</i></td>
                 <td>{{ calc.reaction_Rz }}</td>
-                <td>{{ (calc.reaction_Rz * 1.4) }}</td>
-                <td>{{ (calc.reaction_Rz * 0.9) }}</td>
+                <td>{{ (calc.reaction_Rz * 1.4) | round(2) }}</td>
+                <td>{{ (calc.reaction_Rz * 0.9) | round(2) }}</td>
             </tr>
         </tbody>
     </table>
@@ -79,7 +79,7 @@
             <tr>
                 <td>Horizontal force in single bolt</td>
                 <td>=</td>
-                <td>{{ (calc.design_Ry / anchor.anchor_nos) }} <i>kN</i></td>
+                <td>{{ (calc.design_Ry / anchor.anchor_nos) | round(2) }} <i>kN</i></td>
                 <td><i>; {{ anchor.anchor_nos }} bolts</i></td>
             </tr>
             <tr>

@@ -272,7 +272,7 @@
         <tr>
             <td>0.7</td>
             <td>1.0</td>
-            <td>{{ N_p5 }}</td>
+            <td>{{ calc.N_p5 }}</td>
             <td>{{ calc.phi_Npn }}</td>
             <td>{{ calc.N_ua }}</td>
             <td>{{ calc.beta_N3 }}</td>
@@ -532,7 +532,7 @@
         <tr>
             <td>0.7</td>
             <td>2</td>
-            <td>{{ (calc.phi_Ncbg / 0.65) }}</td>
+            <td>{{ (calc.phi_Ncbg / 0.65) | round(2) }}</td>
             <td>{{ calc.phi_Vcp }}</td>
             <td>{{ calc.V_ug }}</td>
             <td>{{ calc.beta_V3 }}</td>
@@ -662,8 +662,8 @@
             <td>{{ anchor.anchor_dia }}</td>
             <td>360</td>
             <td>{{ calc.A_seN }}</td>
-            <td>{{ (0.75 * 360 * calc.A_seN / 1000) }}</td>
-            <td>{{ (0.2 * anchor.anchor_dia * (0.75 * 360 * calc.A_seN / 1000)) }}</td>
+            <td>{{ (0.75 * 360 * calc.A_seN / 1000) | round(2) }}</td>
+            <td>{{ (0.2 * anchor.anchor_dia * (0.75 * 360 * calc.A_seN / 1000)) | round(2) }}</td>
         </tr>
     </tbody>
 </table>
@@ -905,7 +905,7 @@
         <tr>
             <td>0.7</td>
             <td>2</td>
-            <td>{{ (calc.top_phi_Ncbg / 0.65) }}</td>
+            <td>{{ (calc.top_phi_Ncbg / 0.65) | round(2) }}</td>
             <td>{{ calc.top_phi_Vcp }}</td>
             <td>{{ calc.top_V_ug }}</td>
             <td>{{ calc.top_beta_V3 }}</td>
@@ -1156,7 +1156,7 @@
         <tr>
             <td>0.7</td>
             <td>1.0</td>
-            <td>{{ N_p5 }}</td>
+            <td>{{ calc.N_p5 }}</td>
             <td>{{ calc.front_phi_Npn }}</td>
             <td>{{ calc.front_N_ua }}</td>
             <td>{{ calc.front_beta_N3 }}</td>
@@ -1405,7 +1405,7 @@
         <tr>
             <td>0.7</td>
             <td>2</td>
-            <td>{{ (calc.front_phi_Ncbg / 0.65) }}</td>
+            <td>{{ (calc.front_phi_Ncbg / 0.65) | round(2) }}</td>
             <td>{{ calc.front_phi_Vcp }}</td>
             <td>{{ calc.front_V_ug }}</td>
             <td>{{ calc.front_beta_V3 }}</td>
@@ -1533,8 +1533,8 @@
             <td>{{ anchor.anchor_dia }}</td>
             <td>360</td>
             <td>{{ calc.A_seN }}</td>
-            <td>{{ (0.75 * 360 * calc.A_seN / 1000) }}</td>
-            <td>{{ (0.2 * anchor.anchor_dia * (0.75 * 360 * calc.A_seN / 1000)) }}</td>
+            <td>{{ (0.75 * 360 * calc.A_seN / 1000) | round(2) }}</td>
+            <td>{{ (0.2 * anchor.anchor_dia * (0.75 * 360 * calc.A_seN / 1000)) | round(2) }}</td>
         </tr>
     </tbody>
 </table>

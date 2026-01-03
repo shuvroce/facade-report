@@ -104,7 +104,7 @@
             <td>{{ calc.thr_Ab }}</td>
             <td>{{ calc.bolt_phi_Rn_shear }}</td>
             <td>{{ calc.bolt_Vu }}</td>
-            <td>{{ (calc.bolt_Vu / calc.bolt_phi_Rn_shear) }}</td>
+            <td>{{ (calc.bolt_Vu / calc.bolt_phi_Rn_shear) | round(2) }}</td>
             <td class="{% if (calc.bolt_Vu / calc.bolt_phi_Rn_shear) < 1 %}ok{% else %}not-ok{% endif %}">
                 {% if (calc.bolt_Vu / calc.bolt_phi_Rn_shear) < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
@@ -171,7 +171,7 @@
             <td>{{ calc.thr_bearing_phi_Rn2 }}</td>
             <td>{{ calc.bolt_phi_Rn_bear }}</td>
             <td>{{ calc.bolt_Vu }}</td>
-            <td>{{ (calc.bolt_Vu / calc.bolt_phi_Rn_bear) }}</td>
+            <td>{{ (calc.bolt_Vu / calc.bolt_phi_Rn_bear) | round(2) }}</td>
             <td class="{% if (calc.bolt_Vu / calc.bolt_phi_Rn_bear) < 1 %}ok{% else %}not-ok{% endif %}">
                 {% if (calc.bolt_Vu / calc.bolt_phi_Rn_bear) < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
@@ -207,8 +207,8 @@
             <td>{{ anchor.thr_bolt_dia }}</td>
             <td>450</td>
             <td>{{ calc.thr_bolt_AseN }}</td>
-            <td>{{ (0.75 * 450 * calc.thr_bolt_AseN / 1000) }}</td>
-            <td>{{ (0.2 * anchor.thr_bolt_dia * (0.75 * 450 * calc.thr_bolt_AseN / 1000)) }}</td>
+            <td>{{ (0.75 * 450 * calc.thr_bolt_AseN / 1000) | round(2) }}</td>
+            <td>{{ (0.2 * anchor.thr_bolt_dia * (0.75 * 450 * calc.thr_bolt_AseN / 1000)) | round(2) }}</td>
         </tr>
     </tbody>
 </table>
