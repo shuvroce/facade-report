@@ -4,7 +4,7 @@
         <tr>
             <td>Max. horizontal reaction force, F<sub>y</sub></td>
             <td>=</td>
-            <td>{{ calc.design_Ry | round(1) }} <i>kN</i></td>
+            <td>{{ calc.design_Ry }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
@@ -16,25 +16,25 @@
         <tr>
             <td>Shear force on each bolt, V<sub>h</sub></td>
             <td>=</td>
-            <td>{{ calc.thr_Vh | round(2) }} <i>kN</i></td>
+            <td>{{ calc.thr_Vh }} <i>kN</i></td>
             <td><i>; bolt in double shear</i></td>
         </tr>
         <tr>
             <td>Max. vertical reaction force, F<sub>z</sub></td>
             <td>=</td>
-            <td>{{ calc.design_Rz | round(1) }} <i>kN</i></td>
+            <td>{{ calc.design_Rz }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
             <td>Shear force on each bolt, V<sub>v</sub></td>
             <td>=</td>
-            <td>{{ calc.thr_Vv | round(2) }} <i>kN</i></td>
+            <td>{{ calc.thr_Vv }} <i>kN</i></td>
             <td><i>; bolt in double shear</i></td>
         </tr>
         <tr>
             <td>Resultant shear force, V<sub>u</sub>=√(V<sub>h</sub><sup>2</sup> + V<sub>v</sub><sup>2</sup>)</td>
             <td>=</td>
-            <td>{{ calc.bolt_Vu | round(2) }} <i>kN</i></td>
+            <td>{{ calc.bolt_Vu }} <i>kN</i></td>
             <td></td>
         </tr>
     </tbody>
@@ -101,12 +101,12 @@
             <td>700</td>
             <td>280</td>
             <td>{{ anchor.thr_bolt_dia }}</td>
-            <td>{{ calc.thr_Ab | round(1) }}</td>
-            <td>{{ calc.bolt_phi_Rn_shear | round(1) }}</td>
-            <td>{{ calc.bolt_Vu | round(2) }}</td>
-            <td>{{ (thr_Vu / thr_shear_phi_Rn) | round(2) }}</td>
-            <td class="{% if (thr_Vu / thr_shear_phi_Rn) < 1 %}ok{% else %}not-ok{% endif %}">
-                {% if (thr_Vu / thr_shear_phi_Rn) < 1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ calc.thr_Ab }}</td>
+            <td>{{ calc.bolt_phi_Rn_shear }}</td>
+            <td>{{ calc.bolt_Vu }}</td>
+            <td>{{ (calc.bolt_Vu / calc.bolt_phi_Rn_shear) }}</td>
+            <td class="{% if (calc.bolt_Vu / calc.bolt_phi_Rn_shear) < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if (calc.bolt_Vu / calc.bolt_phi_Rn_shear) < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -167,13 +167,13 @@
             <td>{{ anchor.fin_thk }}</td>
             <td>{{ anchor.thr_bolt_dia }}</td>
             <td>450</td>
-            <td>{{ calc.thr_bearing_phi_Rn1 | round(2) }}</td>
-            <td>{{ calc.thr_bearing_phi_Rn2 | round(2) }}</td>
-            <td>{{ calc.bolt_phi_Rn_bear | round(2) }}</td>
-            <td>{{ calc.bolt_Vu | round(2) }}</td>
-            <td>{{ (thr_Vu / thr_bearing_phi_Rn) | round(2) }}</td>
-            <td class="{% if (thr_Vu / thr_bearing_phi_Rn) < 1 %}ok{% else %}not-ok{% endif %}">
-                {% if (thr_Vu / thr_bearing_phi_Rn) < 1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ calc.thr_bearing_phi_Rn1 }}</td>
+            <td>{{ calc.thr_bearing_phi_Rn2 }}</td>
+            <td>{{ calc.bolt_phi_Rn_bear }}</td>
+            <td>{{ calc.bolt_Vu }}</td>
+            <td>{{ (calc.bolt_Vu / calc.bolt_phi_Rn_bear) }}</td>
+            <td class="{% if (calc.bolt_Vu / calc.bolt_phi_Rn_bear) < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if (calc.bolt_Vu / calc.bolt_phi_Rn_bear) < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -206,9 +206,9 @@
             <td>0.2</td>
             <td>{{ anchor.thr_bolt_dia }}</td>
             <td>450</td>
-            <td>{{ thr_bolt_AseN }}</td>
-            <td>{{ (0.75 * 450 * thr_bolt_AseN / 1000) | round(2) }}</td>
-            <td>{{ (0.2 * anchor.thr_bolt_dia * (0.75 * 450 * thr_bolt_AseN / 1000)) | round(1) }}</td>
+            <td>{{ calc.thr_bolt_AseN }}</td>
+            <td>{{ (0.75 * 450 * calc.thr_bolt_AseN / 1000) }}</td>
+            <td>{{ (0.2 * anchor.thr_bolt_dia * (0.75 * 450 * calc.thr_bolt_AseN / 1000)) }}</td>
         </tr>
     </tbody>
 </table>

@@ -1,9 +1,12 @@
 <h3>Design of Base Plate</h3>
-{% if anchor.clump_type == "L Clump Front" %}
+{% if anchor.clump_type == "L Clump" %}
 <div>
     <img style="width: 90mm;" src="assets/images/l-front-bp-plan.png">
 </div>
 {% endif %}
+
+{% set bp_length = calc.bp_length if anchor.clump_type != "L Clump" else calc.front_bp_length %}
+{% set bp_width = calc.bp_width if anchor.clump_type != "L Clump" else calc.front_bp_width %}
 
 <table class="borderless">
     <tbody>
@@ -30,13 +33,13 @@
         <tr>
             <td>Plate length, N</td>
             <td>=</td>
-            <td>{{ calc.bp_length }} <i>mm</i></td>
+            <td>{{ bp_length }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
             <td>Plate width, B</td>
             <td>=</td>
-            <td>{{ calc.bp_width }} <i>mm</i></td>
+            <td>{{ bp_width }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
@@ -48,7 +51,7 @@
     </tbody>
 </table>
 
-{% if anchor.clump_type == "L Clump Front" %}
+{% if anchor.clump_type == "L Clump" %}
 <div class="page__break"></div>
 {% endif %}
 <h4>Plate Thickness for Bearing Interface</h4>
@@ -158,9 +161,9 @@
     <tbody>
         <tr>
             <td>0.9</td>
-            <td>{{ calc.bp_length }}</td>
-            <td>{{ calc.bp_width }}</td>
-            <td>{{ (calc.bp_length * calc.bp_width) }}</td>
+            <td>{{ bp_length }}</td>
+            <td>{{ bp_width }}</td>
+            <td>{{ (bp_length * bp_width) }}</td>
             <td>{{ calc.bp_d }}</td>
             <td>{{ calc.bp_b }}</td>
             <td>{{ calc.bp_m }}</td>
@@ -204,7 +207,7 @@
     </tbody>
 </table>
 
-{% if anchor.clump_type != "L Clump Front" %}
+{% if anchor.clump_type != "L Clump" %}
 <div class="page__break-after"></div>
 {% endif %}
 
@@ -267,14 +270,14 @@
     <tbody>
         <tr>
             <td>0.9</td>
-            <td>{{ calc.N_ua }}</td>
+            <td>{{ calc.bp_Tu }}</td>
             <td>{{ calc.bp_x }}</td>
             <td>{{ calc.bp_tension_Mu }}</td>
             <td>{{ calc.bp_Beff }}</td>
             <td>{{ calc.bp_t_req_tension }}</td>
             <td>{{ anchor.bp_thk }}</td>
-            <td class="{% if anchor.bp_thk > bp_thk_tension %}ok{% else %}not-ok{% endif %}">
-                {% if anchor.bp_thk > bp_thk_tension %} OK {% else %} NOT OK {% endif %}
+            <td class="{% if anchor.bp_thk > calc.bp_t_req_tension %}ok{% else %}not-ok{% endif %}">
+                {% if anchor.bp_thk > calc.bp_t_req_tension %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -342,11 +345,11 @@
             <td>{{ calc.bp_Pu }}</td>
             <td>27.5</td>
             <td>{{ calc.bp_A1 }}</td>
-            <td>{{ calc.bp_width }}</td>
-            <td>{{ calc.bp_length }}</td>
-            <td>{{ (calc.bp_length * calc.bp_width) }}</td>
-            <td class="{% if (calc.bp_length * calc.bp_width) > calc.bp_A1 %}ok{% else %}not-ok{% endif %}">
-                {% if (calc.bp_length * calc.bp_width) > calc.bp_A1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ bp_width }}</td>
+            <td>{{ bp_length }}</td>
+            <td>{{ (bp_length * bp_width) }}</td>
+            <td class="{% if (bp_length * bp_width) > calc.bp_A1 %}ok{% else %}not-ok{% endif %}">
+                {% if (bp_length * bp_width) > calc.bp_A1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -407,13 +410,13 @@
     <tbody>
         <tr>
             <td>0.65</td>
-            <td>{{ (calc.bp_length * calc.bp_width) }}</td>
-            <td>{{ (calc.bp_length * calc.bp_width) }}</td>
+            <td>{{ (bp_length * bp_width) }}</td>
+            <td>{{ (bp_length * bp_width) }}</td>
             <td>27.5</td>
             <td>{{ calc.bp_fp_max }}</td>
-            <td>{{ (calc.bp_Pu * 1000 / (calc.bp_length * calc.bp_width)) }}</td>
-            <td class="{% if calc.bp_fp_max > (calc.bp_Pu / (calc.bp_length * calc.bp_width)) %}ok{% else %}not-ok{% endif %}">
-                {% if calc.bp_fp_max > (calc.bp_Pu / (calc.bp_length * calc.bp_width)) %} OK {% else %} NOT OK {% endif %}
+            <td>{{ (calc.bp_Pu * 1000 / (bp_length * bp_width)) }}</td>
+            <td class="{% if calc.bp_fp_max > (calc.bp_Pu / (bp_length * bp_width)) %}ok{% else %}not-ok{% endif %}">
+                {% if calc.bp_fp_max > (calc.bp_Pu / (bp_length * bp_width)) %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
