@@ -715,6 +715,7 @@ def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], glass_thk: flo
     embed_depth = _to_float(anchor.get("embed_depth")) or 100
     N_p5 = _to_float(anchor.get("N_p5")) or 20
     h_a = _to_float(anchor.get("h_a")) or 1000
+    bp_thk = _to_float(anchor.get("bp_thk")) or 5
 
     A_seN_lookup = {10: 58.0, 12: 84.3, 16: 156.7}
     A_seN = A_seN_lookup.get(int(anchor_dia)) if anchor_dia is not None else None
@@ -730,6 +731,7 @@ def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], glass_thk: flo
         "A_seN": A_seN,
         "N_p5": N_p5,
         "h_a": h_a,
+        "bp_thk": bp_thk,
     }
 
     if clump_type == "Box Clump":
@@ -998,6 +1000,7 @@ def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], glass_thk: flo
             "fin_Vh": round(fin_Vh, 2),
             "fin_Vv": round(fin_Vv, 2),
             "fin_t_req": round(fin_thk_req, 2),
+            "fin_thk": round(fin_thk, 2),
             "fin_phi_Rn_yield": round(fin_shear_phi_Rn_yield, 2),
             "fin_phi_Rn_rupture": round(fin_shear_phi_Rn_rupture, 2),
             "fin_phi_Rn_block": round(fin_block_phi_Rn, 2),
@@ -1292,6 +1295,7 @@ def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], glass_thk: flo
             "fin_Vh": round(fin_Vh, 2),
             "fin_Vv": round(fin_Vv, 2),
             "fin_t_req": round(fin_thk_req, 2),
+            "fin_thk": round(fin_thk, 2),
             "fin_phi_Rn_yield": round(fin_shear_phi_Rn_yield, 2),
             "fin_phi_Rn_rupture": round(fin_shear_phi_Rn_rupture, 2),
             "fin_phi_Rn_block": round(fin_block_phi_Rn, 2),

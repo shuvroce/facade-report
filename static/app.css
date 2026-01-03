@@ -501,6 +501,7 @@ nav {
 
 .add-category-btn {
     background: var(--btn-accent2);
+    padding: 8px 10px;
 }
 
 .remove-btn {
@@ -509,7 +510,7 @@ nav {
     right: 5px;
     background: var(--btn-danger);
     color: #fff;
-    padding: 5px 10px;
+    padding: 4px 8px;
     font-size: 12px;
 }
 

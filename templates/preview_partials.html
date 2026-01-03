@@ -398,7 +398,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>sa</sub>:</span>
-        <span class="property-value">{{ result.phi_Vsa or '—' }} kN</span>
+        <span class="property-value">{{ result.phi_Vsa or '—' }} kN
+            {% if result.phi_Vsa and result.phi_Vsa > result.V_ua %}<span class="status-icon pass">✓</span>
+            {% elif result.phi_Vsa %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">A<sub>VC</sub>:</span>
@@ -410,11 +414,19 @@
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>cbg</sub>:</span>
-        <span class="property-value">{{ result.phi_Vcbg or '—' }} kN</span>
+        <span class="property-value">{{ result.phi_Vcbg or '—' }} kN
+            {% if result.phi_Vcbg and result.phi_Vcbg > result.V_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.phi_Vcbg %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>cp</sub>:</span>
-        <span class="property-value">{{ result.phi_Vcp or '—' }} kN</span>
+        <span class="property-value">{{ result.phi_Vcp or '—' }} kN
+            {% if result.phi_Vcp and result.phi_Vcp > result.V_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.phi_Vcp %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Base plate</div>
@@ -448,7 +460,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">t<sub>req</sub> (Bearing):</span>
-        <span class="property-value">{{ result.bp_t_req_bear or '—' }} mm</span>
+        <span class="property-value">{{ result.bp_t_req_bear or '—' }} mm
+            {% if result.bp_t_req_bear and result.bp_t_req_bear < result.bp_thk %}<span class="status-icon pass">✓</span>
+            {% elif result.bp_t_req_bear %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
 {% elif result.clump_type == "U Clump" %}
@@ -471,7 +487,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">φN<sub>sa</sub>:</span>
-        <span class="property-value">{{ result.phi_Nsa or '—' }} kN</span>
+        <span class="property-value">{{ result.phi_Nsa or '—' }} kN
+            {% if result.phi_Nsa and result.phi_Nsa > result.N_ua %}<span class="status-icon pass">✓</span>
+            {% elif result.phi_Nsa %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">A<sub>NC</sub>:</span>
@@ -483,15 +503,27 @@
     </div>
     <div class="property-item">
         <span class="property-label">φN<sub>cbg</sub>:</span>
-        <span class="property-value">{{ result.phi_Ncbg or '—' }} kN</span>
+        <span class="property-value">{{ result.phi_Ncbg or '—' }} kN
+            {% if result.phi_Ncbg and result.phi_Ncbg > result.N_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.phi_Ncbg %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φN<sub>pn</sub>:</span>
-        <span class="property-value">{{ result.phi_Npn or '—' }} kN</span>
+        <span class="property-value">{{ result.phi_Npn or '—' }} kN
+            {% if result.phi_Npn and result.phi_Npn > result.N_ua %}<span class="status-icon pass">✓</span>
+            {% elif result.phi_Npn %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>sa</sub>:</span>
-        <span class="property-value">{{ result.phi_Vsa or '—' }} kN</span>
+        <span class="property-value">{{ result.phi_Vsa or '—' }} kN
+            {% if result.phi_Vsa and result.phi_Vsa > result.V_ua %}<span class="status-icon pass">✓</span>
+            {% elif result.phi_Vsa %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">A<sub>VC</sub>:</span>
@@ -503,15 +535,33 @@
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>cbg</sub>:</span>
-        <span class="property-value">{{ result.phi_Vcbg or '—' }} kN</span>
+        <span class="property-value">{{ result.phi_Vcbg or '—' }} kN
+            {% if result.phi_Vcbg and result.phi_Vcbg > result.V_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.phi_Vcbg %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>cp</sub>:</span>
-        <span class="property-value">{{ result.phi_Vcp or '—' }} kN</span>
+        <span class="property-value">{{ result.phi_Vcp or '—' }} kN
+            {% if result.phi_Vcp and result.phi_Vcp > result.V_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.phi_Vcp %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">Interaction:</span>
-        <span class="property-value">{{ result.interaction or '—' }}</span>
+        <span class="property-value">{{ result.interaction or '—' }}
+            {% if result.beta_N < 0.2 or result.beta_V < 0.2 %}
+                {% if result.interaction and result.interaction < 1.0 %}<span class="status-icon pass">✓</span>
+                {% elif result.interaction %}<span class="status-icon fail">✕</span>
+                {% endif %}
+            {% else %}
+                {% if result.interaction and result.interaction < 1.2 %}<span class="status-icon pass">✓</span>
+                {% elif result.interaction %}<span class="status-icon fail">✕</span>
+                {% endif %}
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Through bolt</div>
@@ -521,11 +571,19 @@
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Shear):</span>
-        <span class="property-value">{{ result.bolt_phi_Rn_shear or '—' }} kN</span>
+        <span class="property-value">{{ result.bolt_phi_Rn_shear or '—' }} kN
+            {% if result.bolt_phi_Rn_shear and result.bolt_phi_Rn_shear > result.bolt_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.bolt_phi_Rn_shear %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Bearing):</span>
-        <span class="property-value">{{ result.bolt_phi_Rn_bear or '—' }} kN</span>
+        <span class="property-value">{{ result.bolt_phi_Rn_bear or '—' }} kN
+            {% if result.bolt_phi_Rn_bear and result.bolt_phi_Rn_bear > result.bolt_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.bolt_phi_Rn_bear %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Fin plate</div>
@@ -535,19 +593,35 @@
     </div>
     <div class="property-item">
         <span class="property-label">t<sub>req</sub>:</span>
-        <span class="property-value">{{ result.fin_t_req or '—' }} mm</span>
+        <span class="property-value">{{ result.fin_t_req or '—' }} mm
+            {% if result.fin_t_req and result.fin_t_req < result.fin_thk %}<span class="status-icon pass">✓</span>
+            {% elif result.fin_t_req %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Shear yield):</span>
-        <span class="property-value">{{ result.fin_phi_Rn_yield or '—' }} kN</span>
+        <span class="property-value">{{ result.fin_phi_Rn_yield or '—' }} kN
+            {% if result.fin_phi_Rn_yield and result.fin_phi_Rn_yield > result.fin_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.fin_phi_Rn_yield %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Shear rupture):</span>
-        <span class="property-value">{{ result.fin_phi_Rn_rupture or '—' }} kN</span>
+        <span class="property-value">{{ result.fin_phi_Rn_rupture or '—' }} kN
+            {% if result.fin_phi_Rn_rupture and result.fin_phi_Rn_rupture > result.fin_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.fin_phi_Rn_rupture %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Block shear):</span>
-        <span class="property-value">{{ result.fin_phi_Rn_block or '—' }} kN</span>
+        <span class="property-value">{{ result.fin_phi_Rn_block or '—' }} kN
+            {% if result.fin_phi_Rn_block and result.fin_phi_Rn_block > result.fin_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.fin_phi_Rn_block %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Weld</div>
@@ -569,7 +643,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub>:</span>
-        <span class="property-value">{{ result.weld_phi_Rn or '—' }} kN</span>
+        <span class="property-value">{{ result.weld_phi_Rn or '—' }} kN
+            {% if result.weld_phi_Rn and result.weld_phi_Rn > result.weld_fR %}<span class="status-icon pass">✓</span>
+            {% elif result.weld_phi_Rn %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Base plate</div>
@@ -603,7 +681,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">t<sub>req</sub> (Bearing):</span>
-        <span class="property-value">{{ result.bp_t_req_bear or '—' }} mm</span>
+        <span class="property-value">{{ result.bp_t_req_bear or '—' }} mm
+            {% if result.bp_t_req_bear and result.bp_t_req_bear < result.bp_thk %}<span class="status-icon pass">✓</span>
+            {% elif result.bp_t_req_bear %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">T<sub>u</sub>:</span>
@@ -619,7 +701,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">t<sub>req</sub> (Tension):</span>
-        <span class="property-value">{{ result.bp_t_req_tension or '—' }} mm</span>
+        <span class="property-value">{{ result.bp_t_req_tension or '—' }} mm
+            {% if result.bp_t_req_tension and result.bp_t_req_tension < result.bp_thk %}<span class="status-icon pass">✓</span>
+            {% elif result.bp_t_req_tension %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
 {% elif result.clump_type == "L Clump" %}
@@ -634,7 +720,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>sa</sub>:</span>
-        <span class="property-value">{{ result.top_phi_Vsa or '—' }} kN</span>
+        <span class="property-value">{{ result.top_phi_Vsa or '—' }} kN
+            {% if result.top_phi_Vsa and result.top_phi_Vsa > result.top_V_ua %}<span class="status-icon pass">✓</span>
+            {% elif result.top_phi_Vsa %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">A<sub>VC</sub>:</span>
@@ -646,11 +736,19 @@
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>cbg</sub>:</span>
-        <span class="property-value">{{ result.top_phi_Vcbg or '—' }} kN</span>
+        <span class="property-value">{{ result.top_phi_Vcbg or '—' }} kN
+            {% if result.top_phi_Vcbg and result.top_phi_Vcbg > result.top_V_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.top_phi_Vcbg %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>cp</sub>:</span>
-        <span class="property-value">{{ result.top_phi_Vcp or '—' }} kN</span>
+        <span class="property-value">{{ result.top_phi_Vcp or '—' }} kN
+            {% if result.top_phi_Vcp and result.top_phi_Vcp > result.top_V_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.top_phi_Vcp %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Front anchor</div>
@@ -672,7 +770,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">φN<sub>sa</sub>:</span>
-        <span class="property-value">{{ result.front_phi_Nsa or '—' }} kN</span>
+        <span class="property-value">{{ result.front_phi_Nsa or '—' }} kN
+            {% if result.front_phi_Nsa and result.front_phi_Nsa > result.front_N_ua %}<span class="status-icon pass">✓</span>
+            {% elif result.front_phi_Nsa %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">A<sub>NC</sub>:</span>
@@ -683,16 +785,28 @@
         <span class="property-value">{{ result.A_NCO or '—' }} mm²</span>
     </div>
     <div class="property-item">
-        <span class="property-label">φN<sub>cbg</sub>:</span>
-        <span class="property-value">{{ result.front_phi_Ncbg or '—' }} kN</span>
+        <span class="property-label">φN<sub>cbg</sub>:</span>        
+        <span class="property-value">{{ result.front_phi_Ncbg or '—' }} kN
+            {% if result.front_phi_Ncbg and result.front_phi_Ncbg > result.front_N_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.front_phi_Ncbg %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
-        <span class="property-label">φN<sub>pn</sub>:</span>
-        <span class="property-value">{{ result.front_phi_Npn or '—' }} kN</span>
+        <span class="property-label">φN<sub>pn</sub>:</span>        
+        <span class="property-value">{{ result.front_phi_Npn or '—' }} kN
+            {% if result.front_phi_Npn and result.front_phi_Npn > result.front_N_ua %}<span class="status-icon pass">✓</span>
+            {% elif result.front_phi_Npn %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
-        <span class="property-label">φV<sub>sa</sub>:</span>
-        <span class="property-value">{{ result.front_phi_Vsa or '—' }} kN</span>
+        <span class="property-label">φV<sub>sa</sub>:</span>        
+        <span class="property-value">{{ result.front_phi_Vsa or '—' }} kN
+            {% if result.front_phi_Vsa and result.front_phi_Vsa > result.front_V_ua %}<span class="status-icon pass">✓</span>
+            {% elif result.front_phi_Vsa %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">A<sub>VC</sub>:</span>
@@ -704,15 +818,33 @@
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>cbg</sub>:</span>
-        <span class="property-value">{{ result.front_phi_Vcbg or '—' }} kN</span>
+        <span class="property-value">{{ result.front_phi_Vcbg or '—' }} kN
+            {% if result.front_phi_Vcbg and result.front_phi_Vcbg > result.front_V_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.front_phi_Vcbg %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>cp</sub>:</span>
-        <span class="property-value">{{ result.front_phi_Vcp or '—' }} kN</span>
+        <span class="property-value">{{ result.front_phi_Vcp or '—' }} kN
+            {% if result.front_phi_Vcp and result.front_phi_Vcp > result.front_V_ug %}<span class="status-icon pass">✓</span>
+            {% elif result.front_phi_Vcp %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">Interaction:</span>
-        <span class="property-value">{{ result.front_interaction or '—' }}</span>
+        <span class="property-value">{{ result.front_interaction or '—' }}
+            {% if result.front_beta_N < 0.2 or result.front_beta_V < 0.2 %}
+                {% if result.front_interaction and result.front_interaction < 1.0 %}<span class="status-icon pass">✓</span>
+                {% elif result.front_interaction %}<span class="status-icon fail">✕</span>
+                {% endif %}
+            {% else %}
+                {% if result.front_interaction and result.front_interaction < 1.2 %}<span class="status-icon pass">✓</span>
+                {% elif result.front_interaction %}<span class="status-icon fail">✕</span>
+                {% endif %}
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Through bolt</div>
@@ -722,11 +854,19 @@
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Shear):</span>
-        <span class="property-value">{{ result.bolt_phi_Rn_shear or '—' }} kN</span>
+        <span class="property-value">{{ result.bolt_phi_Rn_shear or '—' }} kN
+            {% if result.bolt_phi_Rn_shear and result.bolt_phi_Rn_shear > result.bolt_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.bolt_phi_Rn_shear %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Bearing):</span>
-        <span class="property-value">{{ result.bolt_phi_Rn_bear or '—' }} kN</span>
+        <span class="property-value">{{ result.bolt_phi_Rn_bear or '—' }} kN
+            {% if result.bolt_phi_Rn_bear and result.bolt_phi_Rn_bear > result.bolt_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.bolt_phi_Rn_bear %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Fin plate</div>
@@ -736,19 +876,35 @@
     </div>
     <div class="property-item">
         <span class="property-label">t<sub>req</sub>:</span>
-        <span class="property-value">{{ result.fin_t_req or '—' }} mm</span>
+        <span class="property-value">{{ result.fin_t_req or '—' }} mm
+            {% if result.fin_t_req and result.fin_t_req < result.fin_thk %}<span class="status-icon pass">✓</span>
+            {% elif result.fin_t_req %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Shear yield):</span>
-        <span class="property-value">{{ result.fin_phi_Rn_yield or '—' }} kN</span>
+        <span class="property-value">{{ result.fin_phi_Rn_yield or '—' }} kN
+            {% if result.fin_phi_Rn_yield and result.fin_phi_Rn_yield > result.fin_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.fin_phi_Rn_yield %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Shear rupture):</span>
-        <span class="property-value">{{ result.fin_phi_Rn_rupture or '—' }} kN</span>
+        <span class="property-value">{{ result.fin_phi_Rn_rupture or '—' }} kN
+            {% if result.fin_phi_Rn_rupture and result.fin_phi_Rn_rupture > result.fin_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.fin_phi_Rn_rupture %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub> (Block shear):</span>
-        <span class="property-value">{{ result.fin_phi_Rn_block or '—' }} kN</span>
+        <span class="property-value">{{ result.fin_phi_Rn_block or '—' }} kN
+            {% if result.fin_phi_Rn_block and result.fin_phi_Rn_block > result.fin_Vu %}<span class="status-icon pass">✓</span>
+            {% elif result.fin_phi_Rn_block %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Weld</div>
@@ -770,7 +926,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub>:</span>
-        <span class="property-value">{{ result.weld_phi_Rn or '—' }} kN</span>
+        <span class="property-value">{{ result.weld_phi_Rn or '—' }} kN
+            {% if result.weld_phi_Rn and result.weld_phi_Rn > result.weld_fR %}<span class="status-icon pass">✓</span>
+            {% elif result.weld_phi_Rn %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 
     <div class="property-break">Base plate</div>
@@ -812,7 +972,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">t<sub>req</sub> (Bearing):</span>
-        <span class="property-value">{{ result.bp_t_req_bear or '—' }} mm</span>
+        <span class="property-value">{{ result.bp_t_req_bear or '—' }} mm
+            {% if result.bp_t_req_bear and result.bp_t_req_bear < result.bp_thk %}<span class="status-icon pass">✓</span>
+            {% elif result.bp_t_req_bear %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
     <div class="property-item">
         <span class="property-label">T<sub>u</sub>:</span>
@@ -828,7 +992,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">t<sub>req</sub> (Tension):</span>
-        <span class="property-value">{{ result.bp_t_req_tension or '—' }} mm</span>
+        <span class="property-value">{{ result.bp_t_req_tension or '—' }} mm
+            {% if result.bp_t_req_tension and result.bp_t_req_tension < result.bp_thk %}<span class="status-icon pass">✓</span>
+            {% elif result.bp_t_req_tension %}<span class="status-icon fail">✕</span>
+            {% endif %}
+        </span>
     </div>
 {% endif %}
 </div>
