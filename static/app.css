@@ -488,7 +488,7 @@ nav {
 .add-btn {
     background: var(--btn-accent);
     color: #fff;
-    padding: 8px 10px;
+    padding: 6px 10px;
     border-radius: var(--radius-1);
     margin-top: 10px;
     font-weight: bold;
@@ -618,7 +618,7 @@ h3 {
     flex-wrap: wrap;
     row-gap: 10px;
     column-gap: 15px;
-    margin-top: 1.5rem;
+    margin-top: 0.3rem;
 }
 
 .include-area {
