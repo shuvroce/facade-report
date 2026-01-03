@@ -290,7 +290,7 @@
                         <tr>
                             <td></td>
                             <td>=</td>
-                            <td>{{ Mn_lb }} <i>kN-m</i></td>
+                            <td>{{ calc.Mn_lb }} <i>kN-m</i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -309,13 +309,13 @@
                         <tr>
                             <td>Nominal Moment Capacity, <i>M<sub>n</sub> = min( M<sub>np</sub> , M<sub>nlb</sub> , M<sub>nmb</sub> )</i></td>
                             <td>=</td>
-                            <td>{{ (phi_Mn / 0.9) | round(1) }} <i>kN-m</i></td>
+                            <td>{{ (calc.phi_Mn / 0.9) | round(1) }} <i>kN-m</i></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
                             <td>=</td>
-                            <td>{{ phi_Mn }} <i>kN-m</i></td>
+                            <td>{{ calc.phi_Mn }} <i>kN-m</i></td>
                             <td></td>
                         </tr>
                     </tbody>
