@@ -273,14 +273,14 @@ document.addEventListener('DOMContentLoaded', () => {
         },
         'irregular': {
             'Aluminum Only': [
-                'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
-                'mullion', 'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn',
-                'transom', 'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
+                'mullion', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
+                'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn',
+                'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
             ],
             'Aluminum + Steel': [
-                'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
-                'mullion', 'I_xa', 'I_xs', 'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn_a', 'mul_phi_Mn_s',
-                'transom', 'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
+                'mullion', 'steel', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
+                'I_xa', 'I_xs', 'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn_a', 'mul_phi_Mn_s',
+                'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
             ]
         }
     };
