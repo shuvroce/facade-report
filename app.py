@@ -98,11 +98,20 @@ def get_sap_figures(category_index):
         for fig in sap_figure_names
     ]
 
-def get_comp_profile_figures(category_index, mullion_name):
-    clean_name = mullion_name.strip()
+def get_comp_profile_figures(category_index, mullion_name, steel_name=""):
+    clean_mullion = mullion_name.strip()
+    clean_steel = steel_name.strip()
+    
+    # Combine mullion and steel thickness for composite profile
+    if clean_steel:
+        # Extract thickness from RHS specification (e.g., "RHS 85x50x2.5" -> "2.5")
+        steel_thickness = clean_steel.split('x')[-1] if 'x' in clean_steel else clean_steel
+        figure_name = f"{clean_mullion}+RHS {steel_thickness}.png"
+    else:
+        figure_name = f"{clean_mullion}.png"
     
     return [
-        {"name": f"{clean_name}.png", "category": f"Category {category_index}", "exists": False}
+        {"name": figure_name, "category": f"Category {category_index}", "exists": False}
     ]
 
 def get_rfem_figures(category_index, glass_index):
@@ -213,7 +222,6 @@ def check_figures():
                     if support_type == "Point Fixed":
                         required_figures.extend(get_rfem_figures(cat_idx, glass_idx))
             
-            # Add composite profile figures
             if "frames" in category:
                 for frame in category["frames"]:
                     # SAP analysis figures
@@ -225,8 +233,9 @@ def check_figures():
                     mullion_type = frame.get("mullion_type", "")
                     if mullion_type == "Aluminum + Steel":
                         mullion_name = frame.get("mullion", "")
+                        steel_name = frame.get("steel", "")
                         if mullion_name:
-                            required_figures.extend(get_comp_profile_figures(cat_idx, mullion_name))
+                            required_figures.extend(get_comp_profile_figures(cat_idx, mullion_name, steel_name))
     
     # Check existence of all figures
     required_figures = check_figure_existence(required_figures)

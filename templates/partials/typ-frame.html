@@ -100,7 +100,7 @@
                         {% if frame.mullion_type == "Aluminum Only" %}
                         <img style="width: 50mm;" src="assets/images/profiles/{{ frame.mullion }}.png" class="fig__50">
                         {% else %}
-                        <img style="width: 50mm;" src="{{ inputs_dir }}/{{ frame.mullion }}.png" class="fig__50">
+                        <img style="width: 50mm;" src="{{ inputs_dir }}/{{ frame.mullion }}+RHS {{ frame.steel.split('x')[-1] }}.png" class="fig__50">
                         {% endif %}
                         <figcaption>Mullion</figcaption>
                     </figure>
