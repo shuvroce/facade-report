@@ -10,7 +10,7 @@
         <tr>
             <td>Max. horizontal reaction force, R<sub>y</sub></td>
             <td>=</td>
-            <td>{{ design_Ry | round(1) }} <i>kN</i></td>
+            <td>{{ calc.design_Ry }} <i>kN</i></td>
             <td><i>
                 {% if anchor.clump_type != "Box Clump" %}
                     ; P<sub>u</sub>
@@ -20,7 +20,7 @@
         <tr>
             <td>Max. vertical reaction force, R<sub>z</sub></td>
             <td>=</td>
-            <td>{{ design_Rz | round(1) }} <i>kN</i></td>
+            <td>{{ calc.design_Rz }} <i>kN</i></td>
             <td><i>
                 {% if anchor.clump_type == "Box Clump" %}
                     ; P<sub>u</sub>
@@ -30,13 +30,13 @@
         <tr>
             <td>Plate length, N</td>
             <td>=</td>
-            <td>{{ bp_length_N }} <i>mm</i></td>
+            <td>{{ calc.bp_length }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
             <td>Plate width, B</td>
             <td>=</td>
-            <td>{{ bp_width_B }} <i>mm</i></td>
+            <td>{{ calc.bp_width }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
@@ -158,13 +158,13 @@
     <tbody>
         <tr>
             <td>0.9</td>
-            <td>{{ bp_length_N }}</td>
-            <td>{{ bp_width_B }}</td>
-            <td>{{ (bp_length_N * bp_width_B) | round(1) }}</td>
-            <td>{{ bp_d | round(1) }}</td>
-            <td>{{ bp_b | round(1) }}</td>
-            <td>{{ bp_m | round(2) }}</td>
-            <td>{{ bp_n | round(2) }}</td>
+            <td>{{ calc.bp_length }}</td>
+            <td>{{ calc.bp_width }}</td>
+            <td>{{ (calc.bp_length * calc.bp_width) }}</td>
+            <td>{{ calc.bp_d }}</td>
+            <td>{{ calc.bp_b }}</td>
+            <td>{{ calc.bp_m }}</td>
+            <td>{{ calc.bp_n }}</td>
         </tr>
     </tbody>
 </table>
@@ -188,17 +188,17 @@
     <tbody>
         <tr>
             {% if anchor.clump_type != "Box Clump" %}
-            <td>{{ bp_lambda_n | round(2) }}</td>
+            <td>{{ calc.bp_lambda_n }}</td>
             {% endif %}
-            <td>{{ bp_l | round(2) }}</td>
-            <td>{{ bp_Pu | round(2) }}</td>
-            <td>{{ bp_q | round(2) }}</td>
-            <td>{{ bp_bearing_Mu | round(2) }}</td>
+            <td>{{ calc.bp_l }}</td>
+            <td>{{ calc.bp_Pu }}</td>
+            <td>{{ calc.bp_q }}</td>
+            <td>{{ calc.bp_bearing_Mu }}</td>
             <td>345</td>
-            <td>{{ bp_thk_bearing | round(2) }}</td>
+            <td>{{ calc.bp_t_req_bear }}</td>
             <td>{{ anchor.bp_thk }}</td>
-            <td class="{% if anchor.bp_thk > bp_thk_bearing %}ok{% else %}not-ok{% endif %}">
-                {% if anchor.bp_thk > bp_thk_bearing %} OK {% else %} NOT OK {% endif %}
+            <td class="{% if anchor.bp_thk > calc.bp_t_req_bear %}ok{% else %}not-ok{% endif %}">
+                {% if anchor.bp_thk > calc.bp_t_req_bear %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -267,11 +267,11 @@
     <tbody>
         <tr>
             <td>0.9</td>
-            <td>{{ N_ua | round(1) }}</td>
-            <td>{{ bp_x | round(1) }}</td>
-            <td>{{ bp_tension_Mu | round(2) }}</td>
-            <td>{{ bp_Beff }}</td>
-            <td>{{ bp_thk_tension | round(2) }}</td>
+            <td>{{ calc.N_ua }}</td>
+            <td>{{ calc.bp_x }}</td>
+            <td>{{ calc.bp_tension_Mu }}</td>
+            <td>{{ calc.bp_Beff }}</td>
+            <td>{{ calc.bp_t_req_tension }}</td>
             <td>{{ anchor.bp_thk }}</td>
             <td class="{% if anchor.bp_thk > bp_thk_tension %}ok{% else %}not-ok{% endif %}">
                 {% if anchor.bp_thk > bp_thk_tension %} OK {% else %} NOT OK {% endif %}
@@ -339,14 +339,14 @@
     <tbody>
         <tr>
             <td>0.65</td>
-            <td>{{ bp_Pu | round(2) }}</td>
+            <td>{{ calc.bp_Pu }}</td>
             <td>27.5</td>
-            <td>{{ bp_A1 | round(2) }}</td>
-            <td>{{ bp_width_B }}</td>
-            <td>{{ bp_length_N }}</td>
-            <td>{{ (bp_length_N * bp_width_B) | round(1) }}</td>
-            <td class="{% if (bp_length_N * bp_width_B) > bp_A1 %}ok{% else %}not-ok{% endif %}">
-                {% if (bp_length_N * bp_width_B) > bp_A1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ calc.bp_A1 }}</td>
+            <td>{{ calc.bp_width }}</td>
+            <td>{{ calc.bp_length }}</td>
+            <td>{{ (calc.bp_length * calc.bp_width) }}</td>
+            <td class="{% if (calc.bp_length * calc.bp_width) > calc.bp_A1 %}ok{% else %}not-ok{% endif %}">
+                {% if (calc.bp_length * calc.bp_width) > calc.bp_A1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -407,13 +407,13 @@
     <tbody>
         <tr>
             <td>0.65</td>
-            <td>{{ (bp_length_N * bp_width_B) | round(1) }}</td>
-            <td>{{ (bp_length_N * bp_width_B) | round(1) }}</td>
+            <td>{{ (calc.bp_length * calc.bp_width) }}</td>
+            <td>{{ (calc.bp_length * calc.bp_width) }}</td>
             <td>27.5</td>
-            <td>{{ bp_fp_max | round(2) }}</td>
-            <td>{{ (bp_Pu * 1000 / (bp_length_N * bp_width_B)) | round(2) }}</td>
-            <td class="{% if bp_fp_max > (bp_Pu / (bp_length_N * bp_width_B)) %}ok{% else %}not-ok{% endif %}">
-                {% if bp_fp_max > (bp_Pu / (bp_length_N * bp_width_B)) %} OK {% else %} NOT OK {% endif %}
+            <td>{{ calc.bp_fp_max }}</td>
+            <td>{{ (calc.bp_Pu * 1000 / (calc.bp_length * calc.bp_width)) }}</td>
+            <td class="{% if calc.bp_fp_max > (calc.bp_Pu / (calc.bp_length * calc.bp_width)) %}ok{% else %}not-ok{% endif %}">
+                {% if calc.bp_fp_max > (calc.bp_Pu / (calc.bp_length * calc.bp_width)) %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>

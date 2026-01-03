@@ -29,55 +29,55 @@
             <tr>
                 <td>Torsional Constant</td>
                 <td><i>J<sub>y</sub></i></td>
-                <td>{{ tor_constant | round(1) }}</td>
+                <td>{{ calc.tor_constant | round(1) }}</td>
                 <td><i>mm<sup>4</sup></i></td>
             </tr>
             <tr>
                 <td>Area of cross-section</td>
                 <td>A</td>
-                <td>{{ area }}</td>
+                <td>{{ calc.area }}</td>
                 <td><i>mm<sup>2</sup></i></td>
             </tr>
             <tr>
                 <td>Moment of inertia about major axis</td>
                 <td>I<sub>x</sub></td>
-                <td>{{ I_xx }}</td>
+                <td>{{ calc.I_xx }}</td>
                 <td><i>mm<sup>4</sup></i></td>
             </tr>
             <tr>
                 <td>Moment of inertia about minor axis</td>
                 <td>I<sub>y</sub></td>
-                <td>{{ I_yy }}</td>
+                <td>{{ calc.I_yy }}</td>
                 <td><i>mm<sup>4</sup></i></td>
             </tr>
             <tr>
                 <td>Extreme fiber Distance from N.A (minor axis)</td>
                 <td>Y</td>
-                <td>{{ Y }}</td>
+                <td>{{ calc.Y }}</td>
                 <td><i>mm</i></td>
             </tr>
             <tr>
                 <td>Extreme fiber Distance from N.A (major axis)</td>
                 <td>X</td>
-                <td>{{ X }}</td>
+                <td>{{ calc.X }}</td>
                 <td><i>mm</i></td>
             </tr>
             <tr>
                 <td>Elastic section modulus about major axis</td>
                 <td><i>S<sub>x</sub> = I<sub>x</sub> / Y</i></td>
-                <td>{{ S_x }}</td>
+                <td>{{ calc.S_x }}</td>
                 <td><i>mm<sup>3</sup></i></td>
             </tr>
             <tr>
                 <td>Elastic section modulus about minor axis</td>
                 <td><i>S<sub>y</sub> = I<sub>y</sub> / X</i></td>
-                <td>{{ S_y }}</td>
+                <td>{{ calc.S_y }}</td>
                 <td><i>mm<sup>3</sup></i></td>
             </tr>
             <tr>
                 <td>Plastic section modulus about major axis</td>
                 <td><i>Z<sub>x</sub></i></td>
-                <td>{{ Z_x }}</td>
+                <td>{{ calc.Z_x }}</td>
                 <td><i>mm<sup>3</sup></i></td>
             </tr>
             <tr>
@@ -111,15 +111,15 @@
         <tbody>
             <tr>
                 <td>Flange</td>
-                <td>{{ b }}</td>
+                <td>{{ calc.b }}</td>
                 <td>{{ profile.thk }}</td>
-                <td>{{ lambda_f }}</td>
-                <td>{{ lambda_p_f }}</td>
-                <td>{{ lambda_r_f }}</td>
+                <td>{{ calc.lambda_f }}</td>
+                <td>{{ calc.lambda_p_f }}</td>
+                <td>{{ calc.lambda_r_f }}</td>
                 <td>
-                    {% if lambda_f < lambda_p_f %}
+                    {% if calc.lambda_f < calc.lambda_p_f %}
                         Compact
-                    {% elif lambda_f > lambda_r_f %}
+                    {% elif calc.lambda_f > calc.lambda_r_f %}
                         Slender
                     {% else %}
                         Non-compact
@@ -144,15 +144,15 @@
         <tbody>
             <tr>
                 <td>Web</td>
-                <td>{{ h }}</td>
+                <td>{{ calc.h }}</td>
                 <td>{{ profile.thk }}</td>
-                <td>{{ lambda_w }}</td>
-                <td>{{ lambda_p_w }}</td>
-                <td>{{ lambda_r_w }}</td>
+                <td>{{ calc.lambda_w }}</td>
+                <td>{{ calc.lambda_p_w }}</td>
+                <td>{{ calc.lambda_r_w }}</td>
                 <td>
-                    {% if lambda_w < lambda_p_w %}
+                    {% if calc.lambda_w < calc.lambda_p_w %}
                         Compact
-                    {% elif lambda_w > lambda_r_w %}
+                    {% elif calc.lambda_w > calc.lambda_r_w %}
                         Slender
                     {% else %}
                         Non-compact
@@ -170,17 +170,18 @@
             <tr>
                 <td>Nominal Moment Capacity, <i>M<sub>n</sub> = M<sub>p</sub> = Z F<sub>y</sub></i></td>
                 <td>=</td>
-                <td>{{ Mn }} <i>kN-m</i></td>
+                <td>{{ calc.Mn }} <i>kN-m</i></td>
                 <td></td>
             </tr>
             <tr>
                 <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
                 <td>=</td>
-                <td>{{ phi_Mn }} <i>kN-m</i></td>
+                <td>{{ calc.phi_Mn }} <i>kN-m</i></td>
                 <td></td>
             </tr>
         </tbody>
     </table>
 </div>
+
 
 

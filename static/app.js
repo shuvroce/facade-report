@@ -185,13 +185,81 @@ document.addEventListener('DOMContentLoaded', () => {
         'gtf': 'Glass Type Factor, GTF',
         'gtf1': 'Glass Type Factor of Outer Panel, GTF1',
         'gtf2': 'Glass Type Factor of Inner Panel, GTF2',
-        'load_x_area2': 'Load × Area², 0.7Pz x A² (kNm²)',
-        'load1_x_area2': 'Load × Area², 0.7q1 x A² (kNm²)',
-        'load2_x_area2': 'Load × Area², 0.7q2 x A² (kNm²)',
+        'load_x_area2': 'Load × Area² (kNm²)',
+        'load1_x_area2': 'Load × Area² (kNm²)',
+        'load2_x_area2': 'Load × Area² (kNm²)',
         'def': 'Deflection (mm)',
         'def1': 'Outer Panel Deflection (mm)',
         'def2': 'Inner Panel Deflection (mm)'
     };
+
+    /**
+     * Calculate and update value for load_x_area2 fields
+     * @param {HTMLElement} glassItem - The glass unit item container
+     */
+    function updateLoadAreaValue(glassItem) {
+        const fieldsContainer = glassItem.querySelector('.item-fields');
+        if (!fieldsContainer) return;
+
+        const glassType = glassItem.querySelector('select[name="glass_type"]')?.value;
+        const lengthInput = fieldsContainer.querySelector('input[name="length"]');
+        const widthInput = fieldsContainer.querySelector('input[name="width"]');
+        const windLoadInput = fieldsContainer.querySelector('input[name="wind_load"]');
+        const loadAreaInput = fieldsContainer.querySelector('input[name="load_x_area2"]');
+        const load1AreaInput = fieldsContainer.querySelector('input[name="load1_x_area2"]');
+        const load2AreaInput = fieldsContainer.querySelector('input[name="load2_x_area2"]');
+
+        const length = parseFloat(lengthInput?.value);
+        const width = parseFloat(widthInput?.value);
+        const windLoad = parseFloat(windLoadInput?.value);
+
+        if (length && width && windLoad) {
+            const area = (length * width) / 1000000; // Convert mm² to m²
+            
+            // For DGU and LDGU, calculate windLoad1 and windLoad2 based on load sharing
+            if (glassType === 'dgu' || glassType === 'ldgu') {
+                let thickness1, thickness2;
+                
+                if (glassType === 'dgu') {
+                    thickness1 = parseFloat(fieldsContainer.querySelector('input[name="thickness1"]')?.value);
+                    thickness2 = parseFloat(fieldsContainer.querySelector('input[name="thickness2"]')?.value);
+                } else if (glassType === 'ldgu') {
+                    const thickness1_1 = parseFloat(fieldsContainer.querySelector('input[name="thickness1_1"]')?.value) || 0;
+                    const thickness1_2 = parseFloat(fieldsContainer.querySelector('input[name="thickness1_2"]')?.value) || 0;
+                    thickness1 = thickness1_1 + thickness1_2;
+                    thickness2 = parseFloat(fieldsContainer.querySelector('input[name="thickness2"]')?.value);
+                }
+                
+                if (thickness1 && thickness2) {
+                    // Calculate load share factors
+                    const ls1 = (Math.pow(thickness1, 3) + Math.pow(thickness2, 3)) / Math.pow(thickness1, 3);
+                    const ls2 = (Math.pow(thickness1, 3) + Math.pow(thickness2, 3)) / Math.pow(thickness2, 3);
+                    
+                    // Calculate distributed wind loads
+                    const windLoad1 = windLoad / ls1;
+                    const windLoad2 = windLoad / ls2;
+                    
+                    const calculated1 = (0.7 * windLoad1 * Math.pow(area, 2)).toFixed(1);
+                    const calculated2 = (0.7 * windLoad2 * Math.pow(area, 2)).toFixed(1);
+                    
+                    // Update load1_x_area2 and load2_x_area2
+                    if (load1AreaInput && !load1AreaInput.value) {
+                        load1AreaInput.value = calculated1;
+                    }
+                    if (load2AreaInput && !load2AreaInput.value) {
+                        load2AreaInput.value = calculated2;
+                    }
+                }
+            } else {
+                // For SGU and LGU, use simple calculation
+                const calculated = (0.7 * windLoad * Math.pow(area, 2)).toFixed(1);
+                
+                if (loadAreaInput && !loadAreaInput.value) {
+                    loadAreaInput.value = calculated;
+                }
+            }
+        }
+    }
     
     // --- Frame Configuration ---
     const frameFields = {
@@ -232,19 +300,17 @@ document.addEventListener('DOMContentLoaded', () => {
     const anchorageFields = {
         'Box Clump': [
             'anchor_nos', 'anchor_dia', 'embed_depth',
-            'C_a1', 'h_a', 'bp_thk', 'bp_b'
+            'C_a1', 'h_a', 'bp_thk'
         ],
         'U Clump': [
             'anchor_nos', 'anchor_dia', 'embed_depth', 'C_a1', 
-            'thr_bolt_dia', 'fin_thk', 'fin_e', 'bp_thk', 'bp_d'
+            'thr_bolt_dia', 'fin_thk', 'fin_e', 'bp_thk'
         ],
-        'L Clump Top': [
-            'anchor_nos', 'anchor_dia', 'embed_depth',
-            'C_a1', 'h_a', 'bp_length_N', 'bp_width_B', 'bp_thk'
-        ],
-        'L Clump Front': [
-            'anchor_nos', 'anchor_dia', 'embed_depth', 'C_a1', 'thr_bolt_dia', 'fin_thk',
-            'fin_e', 'bp_length_N', 'bp_width_B', 'bp_thk', 'bp_d'
+        'L Clump': [
+            'top_anchor_nos', 'anchor_dia', 'embed_depth', 'top_C_a1', 'h_a',
+            'top_bp_length_N', 'top_bp_width_B',
+            'front_C_a1', 'thr_bolt_dia', 'fin_thk', 'fin_e',
+            'front_bp_length_N', 'front_bp_width_B', 'bp_thk'
         ]
     };
 
@@ -252,18 +318,65 @@ document.addEventListener('DOMContentLoaded', () => {
         'reaction_Ry': 'Horizontal Reaction, Ry (kN)',
         'reaction_Rz': 'Vertical Reaction, Rz (kN)',
         'anchor_nos': 'No. of Anchor bolt, n',
+        'top_anchor_nos': 'No. of Top Anchor bolt, n',
+        'front_anchor_nos': 'No. of Front Anchor bolt, n',
         'anchor_dia': 'Diameter of Anchor bolt, da (mm)',
         'embed_depth': 'Embed. Depth of Anchor, hef (mm)',
         'C_a1': 'Edge Distance, Ca1 (mm)',
+        'top_C_a1': 'Edge Distance of Top Anchor, Ca1 (mm)',
+        'front_C_a1': 'Edge Distance for Front Anchor, Ca1 (mm)',
         'h_a': 'Depth of Concrete Member, ha (mm)',
         'thr_bolt_dia': 'Diameter of Through bolt, db (mm)',
         'fin_thk': 'Thickness of Fin Plate (mm)',
         'fin_e': 'Eccentricity, e (mm)',
         'bp_length_N': 'Length of Base Plate, N (mm)',
+        'top_bp_length_N': 'Length of Top Base Plate, N (mm)',
+        'front_bp_length_N': 'Length of Front Base Plate, N (mm)',
         'bp_width_B': 'Width of Base Plate, B (mm)',
+        'top_bp_width_B': 'Width of Top Base Plate, B (mm)',
+        'front_bp_width_B': 'Width of Front Base Plate, B (mm)',
         'bp_thk': 'Thickness of Base Plate, t (mm)',
         'bp_d': 'Fin-to-fin distance, d (mm)',
-        'bp_b': 'Width of flange, b'
+        'bp_b': 'Width of flange, b (mm)'
+    };
+
+    // Default values for anchorage fields based on clump type
+    const anchorageDefaultValuesByType = {
+        'Box Clump': {
+            'anchor_nos': 4,
+            'anchor_dia': 12,
+            'embed_depth': 70,
+            'C_a1': 150,
+            'h_a': 150,
+            'bp_thk': 5
+        },
+        'U Clump': {
+            'anchor_nos': 4,
+            'anchor_dia': 12,
+            'embed_depth': 70,
+            'C_a1': 60,
+            'thr_bolt_dia': 10,
+            'fin_thk': 5,
+            'fin_e': 70,
+            'bp_thk': 6
+        },
+        'L Clump': {
+            'top_anchor_nos': 2,
+            'front_anchor_nos': 2,
+            'anchor_dia': 12,
+            'embed_depth': 70,
+            'top_C_a1': 150,
+            'front_C_a1': 60,
+            'h_a': 150,
+            'top_bp_length_N': 250,
+            'top_bp_width_B': 250,
+            'front_bp_length_N': 250,
+            'front_bp_width_B': 150,
+            'bp_thk': 6,
+            'thr_bolt_dia': 10,
+            'fin_thk': 5,
+            'fin_e': 70
+        },
     };
     
     
@@ -369,6 +482,25 @@ document.addEventListener('DOMContentLoaded', () => {
             
             fieldsContainer.appendChild(input);
         });
+
+        // Add listeners to update value for load_x_area2 fields
+        const lengthInput = fieldsContainer.querySelector('input[name="length"]');
+        const widthInput = fieldsContainer.querySelector('input[name="width"]');
+        const windLoadInput = fieldsContainer.querySelector('input[name="wind_load"]');
+        const thickness1Input = fieldsContainer.querySelector('input[name="thickness1"]');
+        const thickness2Input = fieldsContainer.querySelector('input[name="thickness2"]');
+        const thickness1_1Input = fieldsContainer.querySelector('input[name="thickness1_1"]');
+        const thickness1_2Input = fieldsContainer.querySelector('input[name="thickness1_2"]');
+        
+        [lengthInput, widthInput, windLoadInput, thickness1Input, thickness2Input, thickness1_1Input, thickness1_2Input].forEach(input => {
+            if (input) {
+                input.addEventListener('input', () => updateLoadAreaValue(glassItem));
+                input.addEventListener('change', () => updateLoadAreaValue(glassItem));
+            }
+        });
+
+        // Initial value calculation
+        updateLoadAreaValue(glassItem);
     }
     
     /**
@@ -1031,6 +1163,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         fieldsContainer.innerHTML = ''; 
 
+        // Get default values for this clump type
+        const defaultValues = anchorageDefaultValuesByType[selectedType] || {};
+
         requiredFields.forEach(fieldName => {
             let type = 'number'; 
             // Broad matching for number types in structural/clump fields
@@ -1043,6 +1178,11 @@ document.addEventListener('DOMContentLoaded', () => {
             input.step = '0.1';
             input.name = fieldName;
             input.placeholder = anchorageFieldPlaceholders[fieldName] || fieldName;
+            
+            // Set default value if available for this clump type
+            if (defaultValues[fieldName]) {
+                input.value = defaultValues[fieldName];
+            }
             
             fieldsContainer.appendChild(input);
         });
@@ -1311,7 +1451,55 @@ document.addEventListener('DOMContentLoaded', () => {
     
     // Initialize with default items - wait for profile options to load first
     profileOptionsPromise.then(() => {
-        addItem(document.getElementById('alum-profiles-list'), 'alum-profile-template');
+        // Add two pre-defined aluminum profiles by default (one mullion, one transom)
+        const alumProfilesListEl = document.getElementById('alum-profiles-list');
+        
+        // Add first profile (Mullion - profile starting with 'M')
+        addItem(alumProfilesListEl, 'alum-profile-template');
+        const mullionItem = alumProfilesListEl.lastElementChild;
+        if (mullionItem) {
+            const typeSelect = mullionItem.querySelector('select[name="profile_type"]');
+            if (typeSelect) {
+                typeSelect.value = 'Pre-defined';
+                typeSelect.dispatchEvent(new Event('change'));
+                
+                // Set to first available mullion profile (starting with 'M')
+                setTimeout(() => {
+                    const profileSelect = mullionItem.querySelector('select[name="profile_name"]');
+                    if (profileSelect) {
+                        const mullionProfile = Array.from(profileSelect.options).find(opt => opt.value.startsWith('M'));
+                        if (mullionProfile) {
+                            profileSelect.value = mullionProfile.value;
+                            profileSelect.dispatchEvent(new Event('change'));
+                        }
+                    }
+                }, 10);
+            }
+        }
+        
+        // Add second profile (Transom - profile starting with 'T')
+        addItem(alumProfilesListEl, 'alum-profile-template');
+        const transomItem = alumProfilesListEl.lastElementChild;
+        if (transomItem) {
+            const typeSelect = transomItem.querySelector('select[name="profile_type"]');
+            if (typeSelect) {
+                typeSelect.value = 'Pre-defined';
+                typeSelect.dispatchEvent(new Event('change'));
+                
+                // Set to first available transom profile (starting with 'T')
+                setTimeout(() => {
+                    const profileSelect = transomItem.querySelector('select[name="profile_name"]');
+                    if (profileSelect) {
+                        const transomProfile = Array.from(profileSelect.options).find(opt => opt.value.startsWith('T'));
+                        if (transomProfile) {
+                            profileSelect.value = transomProfile.value;
+                            profileSelect.dispatchEvent(new Event('change'));
+                        }
+                    }
+                }, 10);
+            }
+        }
+        
         addItem(document.getElementById('steel-profiles-list'), 'steel-profile-template');
         addItem(document.getElementById('categories-list'), 'category-template');
         
@@ -1460,6 +1648,22 @@ document.addEventListener('DOMContentLoaded', () => {
             typeSelect.dispatchEvent(new Event('change'));
         }
         fillFields(frameItem, data, new Set(['mullion_type']));
+        
+        // Trigger profile data population for mullion, transom, and steel selections
+        const mullionSelect = frameItem.querySelector('select[name="mullion"]');
+        if (mullionSelect && mullionSelect.value) {
+            populateProfileData(mullionSelect, 'mullion');
+        }
+        
+        const transomSelect = frameItem.querySelector('select[name="transom"]');
+        if (transomSelect && transomSelect.value) {
+            populateProfileData(transomSelect, 'transom');
+        }
+        
+        const steelSelect = frameItem.querySelector('select[name="steel"]');
+        if (steelSelect && steelSelect.value) {
+            populateProfileData(steelSelect, 'steel');
+        }
     }
 
     function hydrateAnchorageItem(anchorageItem, data = {}) {
@@ -1550,7 +1754,10 @@ document.addEventListener('DOMContentLoaded', () => {
         populateCategories(data.categories || []);
         
         // Trigger preview calculations after form is populated
-        triggerAllPreviews();
+        // Use a small delay to ensure all profile data is fully populated
+        setTimeout(() => {
+            triggerAllPreviews();
+        }, 100);
     }
 
     if (loadBtn && yamlFileInput) {

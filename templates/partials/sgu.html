@@ -109,23 +109,23 @@
                     </td>
                 </tr>
                 <tr>
-                    <td>Glass type factor, <i>GTF</i></td>
+                    <td>Glass type factor, <i>calc.gtf</i></td>
                     <td>=</td>
-                    <td>{{ gtf }}</td>
+                    <td>{{ calc.gtf }}</td>
                     <td><i>; ASTM E1300, Table 2</i></td>
                 </tr>
                 <tr>
-                    <td>Load resisting capacity, <i>LR = NFL x GTF</i></td>
+                    <td>Load resisting capacity, <i>LR = NFL x calc.gtf</i></td>
                     <td>=</td>
-                    <td>{{ sgu_lr }} <i>kPa</i></td>
+                    <td>{{ calc.sgu_lr }} <i>kPa</i></td>
                     <td></td>
                 </tr>
                 <tr>
                     <td>Load resistance ratio = <i>P<sub>z</sub>/LR</i></td>
                     <td>=</td>
-                    <td>{{ sgu_stress_ratio | round(2) }}</td>
-                    <td class="{% if sgu_stress_ratio < 1 %}ok{% else %}not-ok{% endif %}">
-                        {% if sgu_stress_ratio < 1 %} OK {% else %} NOT OK {% endif %}
+                    <td>{{ calc.stress_ratio | round(2) }}</td>
+                    <td class="{% if calc.stress_ratio < 1 %}ok{% else %}not-ok{% endif %}">
+                        {% if calc.stress_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -178,15 +178,15 @@
                 <tr>
                     <td>Allowable deflection, <i>δ<sub>a</sub></i></td>
                     <td>=</td>
-                    <td>{{ sgu_allow_def }} <i>mm</i></td>
+                    <td>{{ calc.allow_def }} <i>mm</i></td>
                     <td><i>; AS 1288:2006</i></td>
                 </tr>
                 <tr>
                     <td>Deflection ratio</td>
                     <td>=</td>
-                    <td>{{ sgu_def_ratio | round(2) }} <i>mm</i></td>
-                    <td class="{% if sgu_def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
-                        {% if sgu_def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
+                    <td>{{ calc.def_ratio | round(2) }} <i>mm</i></td>
+                    <td class="{% if calc.def_ratio < 1 %}ok{% else %}not-ok{% endif %}">
+                        {% if calc.def_ratio < 1 %} OK {% else %} NOT OK {% endif %}
                     </td>
                 </tr>
             </tbody>
@@ -223,30 +223,31 @@
             <tr>
                 <td>Bite size/width required, <i>t<sub>r</sub> = (P<sub>z</sub> × B) / (2 F<sub>s</sub>)</i></td>
                 <td>=</td>
-                <td>{{ bite_req | round(1) }} <i>mm</i></td>
+                <td>{{ calc.bite_req | round(1) }} <i>mm</i></td>
                 <td></td>
             </tr>
             <tr>
                 <td>Bite size/width provided, <i>t<sub>p</sub></i></td>
                 <td>=</td>
-                <td>{{ bite_pro }} <i>mm</i></td>
+                <td>{{ calc.bite_pro }} <i>mm</i></td>
                 <td><i>; ≥ t<sub>r</sub></i></td>
                 <td class="ok">OK</td>
             </tr>
             <tr>
                 <td>Glue line thickness required, <i>e<sub>r</sub> = t<sub>r</sub> / 3</i></td>
                 <td>=</td>
-                <td>{{ glue_req | round(1) }} <i>mm</i></td>
+                <td>{{ calc.glue_req | round(1) }} <i>mm</i></td>
                 <td>; ≥ 6 <i>mm</i></td>
             </tr>
             <tr>
                 <td>Glue line thickness provided, <i>e<sub>p</sub></i></td>
                 <td>=</td>
-                <td>{{ glue_pro }} <i>mm</i></td>
+                <td>{{ calc.glue_pro }} <i>mm</i></td>
                 <td><i>; ≥ e<sub>r</sub></i></td>
                 <td class="ok">OK</td>
             </tr>
         </tbody>
     </table>
 </div>
+
 

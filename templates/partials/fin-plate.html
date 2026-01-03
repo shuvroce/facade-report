@@ -4,7 +4,7 @@
         <tr>
             <td>Max. horizontal reaction force, R<sub>y</sub></td>
             <td>=</td>
-            <td>{{ design_Ry | round(1) }} <i>kN</i></td>
+            <td>{{ calc.design_Ry | round(1) }} <i>kN</i></td>
             <td rowspan="6">
                 {% if anchor.clump_type == "U Clump" %}
                     <img src="assets/images/u-fin-plate.png" class="fig__70">
@@ -21,22 +21,22 @@
         <tr>
             <td>Shear force on each plate, V<sub>h</sub></td>
             <td>=</td>
-            <td>{{ fin_Vh | round(1) }} <i>kN</i></td>
+            <td>{{ calc.fin_Vh | round(1) }} <i>kN</i></td>
         </tr>
         <tr>
             <td>Max. vertical reaction force, R<sub>z</sub></td>
             <td>=</td>
-            <td>{{ design_Rz | round(1) }} <i>kN</i></td>
+            <td>{{ calc.design_Rz | round(1) }} <i>kN</i></td>
         </tr>
         <tr>
             <td>Shear force on each plate, V<sub>v</sub></td>
             <td>=</td>
-            <td>{{ fin_Vv | round(1) }} <i>kN</i></td>
+            <td>{{ calc.fin_Vv | round(1) }} <i>kN</i></td>
         </tr>
         <tr>
             <td>Resultant shear force, <i>V<sub>u</sub> = √(V<sub>h</sub><sup>2</sup> + V<sub>v</sub><sup>2</sup>)</i></td>
             <td>=</td>
-            <td>{{ fin_Vu | round(1) }} <i>kN</i></td>
+            <td>{{ calc.fin_Vu | round(1) }} <i>kN</i></td>
         </tr>
     </tbody>
 </table>
@@ -110,12 +110,12 @@
     <tbody>
         <tr>
             <td>0.9</td>
-            <td>{{ fin_width }}</td>
-            <td>{{ fin_Vv | round(2) }}</td>
+            <td>{{ calc.fin_width }}</td>
+            <td>{{ calc.fin_Vv | round(2) }}</td>
             <td>{{ anchor.fin_e }}</td>
-            <td>{{ fin_Mu | round(2) }}</td>
+            <td>{{ calc.fin_Mu | round(2) }}</td>
             <td>345</td>
-            <td>{{ fin_thk_req | round(2) }}</td>
+            <td>{{ calc.fin_t_req | round(2) }}</td>
             <td>{{ anchor.fin_thk }}</td>
             <td class="{% if anchor.fin_thk > fin_thk_req %}ok{% else %}not-ok{% endif %}">
                 {% if anchor.fin_thk > fin_thk_req %} OK {% else %} NOT OK {% endif %}
@@ -153,11 +153,11 @@
         <tr>
             <td>1.0</td>
             <td>345</td>
-            <td>{{ fin_width }}</td>
+            <td>{{ calc.fin_width }}</td>
             <td>{{ anchor.fin_thk }}</td>
-            <td>{{ fin_width * anchor.fin_thk }}</td>
-            <td>{{ fin_shear_phi_Rn_yield | round(2) }}</td>
-            <td>{{ fin_Vu | round(2) }}</td>
+            <td>{{ calc.fin_width * anchor.fin_thk }}</td>
+            <td>{{ calc.fin_phi_Rn_yield | round(2) }}</td>
+            <td>{{ calc.fin_Vu | round(2) }}</td>
             <td class="{% if fin_shear_phi_Rn_yield > fin_Vu %}ok{% else %}not-ok{% endif %}">
                 {% if fin_shear_phi_Rn_yield > fin_Vu %} OK {% else %} NOT OK {% endif %}
             </td>
@@ -194,13 +194,13 @@
         <tr>
             <td>0.75</td>
             <td>450</td>
-            <td>{{ fin_width }}</td>
+            <td>{{ calc.fin_width }}</td>
             <td>{{ anchor.fin_thk }}</td>
             <td>{{ thr_bolt_nos }}</td>
-            <td>{{ fin_dh }}</td>
-            <td>{{ fin_rupture_Anv | round(1) }}</td>
-            <td>{{ fin_shear_phi_Rn_rupture | round(1) }}</td>
-            <td>{{ fin_Vu | round(2) }}</td>
+            <td>{{ calc.fin_dh }}</td>
+            <td>{{ calc.fin_rupture_Anv | round(1) }}</td>
+            <td>{{ calc.fin_phi_Rn_rupture | round(1) }}</td>
+            <td>{{ calc.fin_Vu | round(2) }}</td>
             <td class="{% if fin_shear_phi_Rn_rupture > fin_Vu %}ok{% else %}not-ok{% endif %}">
                 {% if fin_shear_phi_Rn_rupture > fin_Vu %} OK {% else %} NOT OK {% endif %}
             </td>
@@ -347,13 +347,13 @@
             <td>0.75</td>
             <td>345</td>
             <td>450</td>
-            <td>{{ fin_bgv }}</td>
-            <td>{{ fin_bnt }}</td>
+            <td>{{ calc.fin_bgv }}</td>
+            <td>{{ calc.fin_bnt }}</td>
             <td>{{ anchor.fin_thk }}</td>
             <td>{{ thr_bolt_nos }}</td>
-            <td>{{ fin_dh }}</td>
-            <td>{{ fin_bgv * anchor.fin_thk }}</td>
-            <td>{{ fin_block_Anv | round(2) }}</td>
+            <td>{{ calc.fin_dh }}</td>
+            <td>{{ calc.fin_bgv * anchor.fin_thk }}</td>
+            <td>{{ calc.fin_block_Anv | round(2) }}</td>
         </tr>
     </tbody>
 </table>
@@ -372,12 +372,12 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ fin_block_Ant | round(2) }}</td>
+            <td>{{ calc.fin_block_Ant | round(2) }}</td>
             <td>1.0</td>
-            <td>{{ fin_block_phi_Rn1 | round(1) }}</td>
-            <td>{{ fin_block_phi_Rn2 | round(1) }}</td>
-            <td>{{ fin_block_phi_Rn | round(1) }}</td>
-            <td>{{ fin_Vu | round(2) }}</td>
+            <td>{{ calc.fin_block_phi_Rn1 | round(1) }}</td>
+            <td>{{ calc.fin_block_phi_Rn2 | round(1) }}</td>
+            <td>{{ calc.fin_phi_Rn_block | round(1) }}</td>
+            <td>{{ calc.fin_Vu | round(2) }}</td>
             <td class="{% if fin_block_phi_Rn > fin_Vu %}ok{% else %}not-ok{% endif %}">
                 {% if fin_block_phi_Rn > fin_Vu %} OK {% else %} NOT OK {% endif %}
             </td>
@@ -392,7 +392,7 @@
         <tr>
             <td>Max. horizontal reaction force, F<sub>y</sub></td>
             <td>=</td>
-            <td>{{ design_Ry | round(1) }} <i>kN</i></td>
+            <td>{{ calc.design_Ry | round(1) }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
@@ -410,25 +410,25 @@
         <tr>
             <td class="pl-2">Length of single weld, d</td>
             <td>=</td>
-            <td>{{ fin_width }} <i>mm</i></td>
+            <td>{{ calc.fin_width }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
             <td class="pl-2">Total Length of weld, <i>L = 2d</i></td>
             <td>=</td>
-            <td>{{ fin_width * 2 }} <i>mm</i></td>
+            <td>{{ calc.fin_width * 2 }} <i>mm</i></td>
             <td></td>
         </tr>
         <tr>
             <td class="pl-2 pb-1">Tensile stress, <i>f<sub>n</sub> = P / L</i></td>
             <td class="pb-1">=</td>
-            <td class="pb-1">{{ weld_fn | round(1) }} <i>N/mm</i></td>
+            <td class="pb-1">{{ calc.weld_fn | round(1) }} <i>N/mm</i></td>
             <td class="pb-1"><i>; As line load</i></td>
         </tr>
         <tr>
             <td>Max. vertical reaction force, F<sub>z</sub></td>
             <td>=</td>
-            <td>{{ design_Rz | round(1) }} <i>kN</i></td>
+            <td>{{ calc.design_Rz | round(1) }} <i>kN</i></td>
             <td></td>
         </tr>
         <tr>
@@ -440,7 +440,7 @@
         <tr>
             <td class="pl-2 pb-1">Shear stress, <i>f<sub>v</sub> = V / L</i></td>
             <td class="pb-1">=</td>
-            <td class="pb-1">{{ weld_fv | round(1) }} <i>N/mm</i></td>
+            <td class="pb-1">{{ calc.weld_fv | round(1) }} <i>N/mm</i></td>
             <td class="pb-1"></td>
         </tr>
         <tr>
@@ -464,13 +464,13 @@
         <tr>
             <td class="pl-2 pb-1">Bending stress, <i>f<sub>b</sub> = M / Z<sub>w</sub></i></td>
             <td class="pb-1">=</td>
-            <td class="pb-1">{{ weld_fb | round(1) }} <i>N/mm</i></td>
+            <td class="pb-1">{{ calc.weld_fb | round(1) }} <i>N/mm</i></td>
             <td class="pb-1"></td>
         </tr>
         <tr>
             <td>Resultant stress, <i>f<sub>R</sub> = √(f<sub>n</sub><sup>2</sup> + f<sub>v</sub><sup>2</sup> + f<sub>b</sub><sup>2</sup>)</i></td>
             <td>=</td>
-            <td>{{ weld_fR | round(1) }} <i>N/mm</i></td>
+            <td>{{ calc.weld_fR | round(1) }} <i>N/mm</i></td>
             <td></td>
         </tr>
     </tbody>
@@ -524,7 +524,7 @@
             <td>482.7</td>
             <td>4.0</td>
             <td>{{ (0.75 * 0.6 * 482.7 * 0.707 * 4) | round(1) }}</td>
-            <td>{{ weld_fR | round(2) }}</td>
+            <td>{{ calc.weld_fR | round(2) }}</td>
             <td class="{% if (0.75 * 0.6 * 482.7 * 0.707 * 4) > weld_fR %}ok{% else %}not-ok{% endif %}">
                 {% if (0.75 * 0.6 * 482.7 * 0.707 * 4) > weld_fR %} OK {% else %} NOT OK {% endif %}
             </td>

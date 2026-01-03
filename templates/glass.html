@@ -1,93 +1,18 @@
 {% if cat.glass_units %}
 {% for gu in cat.glass_units %}
-    {% set glass_index = loop.index %}
 
-    {% set bite_req = ((gu.wind_load * gu.width) / (2 * 140)) %}
-    {% set bite_pro = (((bite_req * 2) | round(0, 'ceil')) / 2) %}
-    {% set glue_req = (bite_req / 3) %}
-    {% set glue_pro = [6.0, (((glue_req * 2) | round(0, 'ceil')) / 2)] | max %}
+    {% set calc = gu.result or gu._calc %}
 
     {% if gu.glass_type == "sgu" and gu.length < 5000 and gu.support_type != "Point Fixed" %}
-        {% if gu.grade == "FT" %}
-            {% set gtf = 4.0 %}
-        {% elif gu.grade == "HS" %}
-            {% set gtf = 2.0 %}
-        {% else %}
-            {% set gtf = 1.0 %}
-        {% endif %}
-
-        {% set sgu_lr = (gu.nfl * gtf) %}
-        {% set sgu_stress_ratio = (gu.wind_load / sgu_lr) %}
-        {% set sgu_allow_def = (gu.width / 60) %}
-        {% set sgu_def_ratio = (gu.def / sgu_allow_def) %}
         {% include "partials/sgu.html" %}
 
     {% elif gu.glass_type == "dgu" and gu.length < 5000 and gu.support_type != "Point Fixed" %}
-        {% set gtf_table = {
-            "AN": {"AN": (0.9, 0.9), "HS": (1.0, 1.9), "FT": (1.0, 3.8)},
-            "HS": {"AN": (1.9, 1.0), "HS": (1.8, 1.8), "FT": (1.9, 3.8)},
-            "FT": {"AN": (3.8, 1.0), "HS": (3.8, 1.9), "FT": (3.6, 3.6)},
-        } %}
-
-        {% macro glass_type_factor(grade1, grade2, table, index) %}
-            {{ table[grade1][grade2][index] }}
-        {% endmacro %}
-    
-        {% set dgu_ls1 = ((gu.thickness1 ** 3 + gu.thickness2 ** 3) / (gu.thickness1 ** 3)) %}
-        {% set dgu_ls2 = ((gu.thickness1 ** 3 + gu.thickness2 ** 3) / (gu.thickness2 ** 3)) %}
-
-        {% set gtf1 = glass_type_factor(gu.grade1, gu.grade2, gtf_table, 0) | float %}
-        {% set gtf2 = glass_type_factor(gu.grade1, gu.grade2, gtf_table, 1) | float %}
-
-        {% set dgu_lr1 = (gu.nfl1 * gtf1 * dgu_ls1) %}
-        {% set dgu_lr2 = (gu.nfl2 * gtf2 * dgu_ls2) %}
-        {% set dgu_lr = ([dgu_lr1, dgu_lr2] | min) %}
-        {% set dgu_stress_ratio = (gu.wind_load / dgu_lr) %}
-        {% set dgu_def = ([gu.def1, gu.def2] | max) %}
-        {% set dgu_allow_def = (gu.width / 90) %}
-        {% set dgu_def_ratio = (dgu_def / dgu_allow_def) %}
         {% include "partials/dgu.html" %}
 
     {% elif gu.glass_type == "lgu" and gu.length < 5000 and gu.support_type != "Point Fixed" %}
-        {% if gu.grade == "FT" %}
-            {% set gtf = 4.0 %}
-        {% elif gu.grade == "HS" %}
-            {% set gtf = 2.0 %}
-        {% else %}
-            {% set gtf = 1.0 %}
-        {% endif %}
-        
-        {% set lgu_lr = (gu.nfl * gtf) %}
-        {% set lgu_stress_ratio = (gu.wind_load / lgu_lr) %}
-        {% set lgu_allow_def = (gu.width / 60) %}
-        {% set lgu_def_ratio = (gu.def / lgu_allow_def) %}
         {% include "partials/lgu.html" %}
 
     {% elif gu.glass_type == "ldgu" and gu.length < 5000 and gu.support_type != "Point Fixed" %}
-        {% set gtf_table = {
-            "AN": {"AN": (0.9, 0.9), "HS": (1.0, 1.9), "FT": (1.0, 3.8)},
-            "HS": {"AN": (1.9, 1.0), "HS": (1.8, 1.8), "FT": (1.9, 3.8)},
-            "FT": {"AN": (3.8, 1.0), "HS": (3.8, 1.9), "FT": (3.6, 3.6)},
-        } %}
-
-        {% macro glass_type_factor(grade1, grade2, table, index) %}
-            {{ table[grade1][grade2][index] }}
-        {% endmacro %}
-
-        {% set ldgu_thickness1 = gu.thickness1_1 + gu.thickness1_1 %}
-        {% set ldgu_ls1 = ((ldgu_thickness1 ** 3 + gu.thickness2 ** 3) / (ldgu_thickness1 ** 3)) %}
-        {% set ldgu_ls2 = ((ldgu_thickness1 ** 3 + gu.thickness2 ** 3) / (gu.thickness2 ** 3)) %}
-
-        {% set gtf1 = glass_type_factor(gu.grade1, gu.grade2, gtf_table, 0) | float %}
-        {% set gtf2 = glass_type_factor(gu.grade1, gu.grade2, gtf_table, 1) | float %}
-
-        {% set ldgu_lr1 = (gu.nfl1 * gtf1 * ldgu_ls1) %}
-        {% set ldgu_lr2 = (gu.nfl2 * gtf2 * ldgu_ls2) %}
-        {% set ldgu_lr = ([ldgu_lr1, ldgu_lr2] | min) %}
-        {% set ldgu_stress_ratio = (gu.wind_load / ldgu_lr) %}
-        {% set ldgu_def = ([gu.def1, gu.def2] | max) %}
-        {% set ldgu_allow_def = (gu.width / 90) %}
-        {% set ldgu_def_ratio = (ldgu_def / ldgu_allow_def) %}
         {% include "partials/ldgu.html" %}
 
     {% else %}
@@ -97,4 +22,3 @@
 
 {% endfor %}
 {% endif %}
-

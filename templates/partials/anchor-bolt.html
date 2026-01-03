@@ -92,13 +92,13 @@
     <tbody>
         <tr>
             <td>0.75</td>
-            <td>{{ A_seN }}</td>
+            <td>{{ calc.A_seN }}</td>
             <td>500</td>
-            <td>{{ phi_Nsa | round(2) }}</td>
-            <td>{{ N_ua | round(1) }}</td>
-            <td>{{ beta_N1 | round(2) }}</td>
-            <td class="{% if beta_N1 < 1 %}ok{% else %}not-ok{% endif %}">
-                {% if beta_N1 < 1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ calc.phi_Nsa }}</td>
+            <td>{{ calc.N_ua }}</td>
+            <td>{{ calc.beta_N1 }}</td>
+            <td class="{% if calc.beta_N1 < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if calc.beta_N1 < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -195,11 +195,11 @@
     <tbody>
         <tr>
             <td>0.65</td>
-            <td>{{ A_NC | round(2) }}</td>
-            <td>{{ A_NCO | round(2) }}</td>
+            <td>{{ calc.A_NC }}</td>
+            <td>{{ calc.A_NCO }}</td>
             <td>{{ anchor.C_a1 }}</td>
             <td>1.0</td>
-            <td>{{ psi_edN | round(1) }}</td>
+            <td>{{ calc.psi_edN }}</td>
             <td>1.0</td>
             <td>1.0</td>
         </tr>
@@ -222,12 +222,12 @@
         <tr>
             <td>7</td>
             <td>1.0</td>
-            <td>{{ N_b | round(2) }}</td>
-            <td>{{ phi_Ncbg | round(2) }}</td>
-            <td>{{ N_ug | round(1) }}</td>
-            <td>{{ beta_N2 | round(2) }}</td>
-            <td class="{% if beta_N2 < 1 %}ok{% else %}not-ok{% endif %}">
-                {% if beta_N2 < 1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ calc.N_b }}</td>
+            <td>{{ calc.phi_Ncbg }}</td>
+            <td>{{ calc.N_ug }}</td>
+            <td>{{ calc.beta_N2 }}</td>
+            <td class="{% if calc.beta_N2 < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if calc.beta_N2 < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -277,11 +277,11 @@
             <td>0.7</td>
             <td>1.0</td>
             <td>{{ N_p5 }}</td>
-            <td>{{ phi_Npn | round(2) }}</td>
-            <td>{{ N_ua | round(1) }}</td>
-            <td>{{ beta_N3 | round(2) }}</td>
-            <td class="{% if beta_N3 < 1 %}ok{% else %}not-ok{% endif %}">
-                {% if beta_N3 < 1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ calc.phi_Npn }}</td>
+            <td>{{ calc.N_ua }}</td>
+            <td>{{ calc.beta_N3 }}</td>
+            <td class="{% if calc.beta_N3 < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if calc.beta_N3 < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -349,13 +349,13 @@
     <tbody>
         <tr>
             <td>0.65</td>
-            <td>{{ A_seN }}</td>
+            <td>{{ calc.A_seN }}</td>
             <td>500</td>
-            <td>{{ phi_Vsa | round(2) }}</td>
-            <td>{{ V_ua | round(1) }}</td>
-            <td>{{ beta_V1 | round(2) }}</td>
-            <td class="{% if beta_V1 < 1 %}ok{% else %}not-ok{% endif %}">
-                {% if beta_V1 < 1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ calc.phi_Vsa }}</td>
+            <td>{{ calc.V_ua }}</td>
+            <td>{{ calc.beta_V1 }}</td>
+            <td class="{% if calc.beta_V1 < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if calc.beta_V1 < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -454,8 +454,8 @@
     <tbody>
         <tr>
             <td>0.7</td>
-            <td>{{ A_VC | round(1) }}</td>
-            <td>{{ A_VCO | round(1) }}</td>
+            <td>{{ calc.A_VC }}</td>
+            <td>{{ calc.A_VCO }}</td>
             <td>{{ anchor.C_a1 }}</td>
             <td>–</td>
             <td>
@@ -466,9 +466,9 @@
                 {% endif %}
             </td>
             <td>1.0</td>
-            <td>{{ psi_edV | round(1) }}</td>
+            <td>{{ calc.psi_edV }}</td>
             <td>1.0</td>
-            <td>{{ psi_hV | round(1) }}</td>
+            <td>{{ calc.psi_hV }}</td>
         </tr>
     </tbody>
 </table>
@@ -486,13 +486,13 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ l_e }}</td>
-            <td>{{ V_b | round(2) }}</td>
-            <td>{{ phi_Vcbg | round(2) }}</td>
-            <td>{{ V_ug | round(1) }}</td>
-            <td>{{ beta_V2 | round(2) }}</td>
-            <td class="{% if beta_V2 < 1 %}ok{% else %}not-ok{% endif %}">
-                {% if beta_V2 < 1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ calc.l_e }}</td>
+            <td>{{ calc.V_b }}</td>
+            <td>{{ calc.phi_Vcbg }}</td>
+            <td>{{ calc.V_ug }}</td>
+            <td>{{ calc.beta_V2 }}</td>
+            <td class="{% if calc.beta_V2 < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if calc.beta_V2 < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -540,12 +540,12 @@
         <tr>
             <td>0.7</td>
             <td>2</td>
-            <td>{{ (phi_Ncbg / 0.65) | round(2) }}</td>
-            <td>{{ phi_Vcp | round(2) }}</td>
-            <td>{{ V_ug | round(1) }}</td>
-            <td>{{ beta_V3 | round(2) }}</td>
-            <td class="{% if beta_V3 < 1 %}ok{% else %}not-ok{% endif %}">
-                {% if beta_V3 < 1 %} OK {% else %} NOT OK {% endif %}
+            <td>{{ (calc.phi_Ncbg / 0.65) }}</td>
+            <td>{{ calc.phi_Vcp }}</td>
+            <td>{{ calc.V_ug }}</td>
+            <td>{{ calc.beta_V3 }}</td>
+            <td class="{% if calc.beta_V3 < 1 %}ok{% else %}not-ok{% endif %}">
+                {% if calc.beta_V3 < 1 %} OK {% else %} NOT OK {% endif %}
             </td>
         </tr>
     </tbody>
@@ -557,7 +557,7 @@
     <tbody>
         <tr>
             <td>
-                {% if beta_N < 0.2 or beta_V < 0.2 %}
+                {% if calc.beta_N < 0.2 or calc.beta_V < 0.2 %}
                 <i>β<sub>NV</sub> = (β<sub>N</sub>)<sup>ζ</sup> + (β<sub>V</sub>)<sup>ζ</sup> ≤ 1.0 &nbsp;&nbsp;&nbsp; (kN)</i>
                 {% else %}
                 <i>β<sub>NV</sub> = (β<sub>N</sub>)<sup>ζ</sup> + (β<sub>V</sub>)<sup>ζ</sup> ≤ 1.2 &nbsp;&nbsp;&nbsp; (kN)</i>
@@ -596,15 +596,15 @@
     </thead>
     <tbody>
         <tr>
-            <td>{{ beta_N | round(2) }}</td>
-            <td>{{ beta_V | round(2) }}</td>
+            <td>{{ calc.beta_N }}</td>
+            <td>{{ calc.beta_V }}</td>
             <td>1.67</td>
-            <td>{{ beta_NV | round(2) }}</td>
+            <td>{{ calc.interaction }}</td>
             <td>
-                {% if beta_N < 0.2 or beta_V < 0.2 %}
-                    <p class="{% if beta_NV < 1 %}ok{% else %}not-ok{% endif %}">{% if beta_NV < 1 %} OK {% else %} NOT OK {% endif %}</p>
+                {% if calc.beta_N < 0.2 or calc.beta_V < 0.2 %}
+                    <p class="{% if calc.beta_NV < 1 %}ok{% else %}not-ok{% endif %}">{% if calc.beta_NV < 1 %} OK {% else %} NOT OK {% endif %}</p>
                 {% else %}
-                    <p class="{% if beta_NV < 1.2 %}ok{% else %}not-ok{% endif %}">{% if beta_NV < 1.2 %} OK {% else %} NOT OK {% endif %}</p>
+                    <p class="{% if calc.beta_NV < 1.2 %}ok{% else %}not-ok{% endif %}">{% if calc.beta_NV < 1.2 %} OK {% else %} NOT OK {% endif %}</p>
                 {% endif %}
             </td>
         </tr>
@@ -669,9 +669,9 @@
             <td>0.2</td>
             <td>{{ anchor.anchor_dia }}</td>
             <td>360</td>
-            <td>{{ A_seN }}</td>
-            <td>{{ (0.75 * 360 * A_seN / 1000) | round(2) }}</td>
-            <td>{{ (0.2 * anchor.anchor_dia * (0.75 * 360 * A_seN / 1000)) | round(1) }}</td>
+            <td>{{ calc.A_seN }}</td>
+            <td>{{ (0.75 * 360 * calc.A_seN / 1000) }}</td>
+            <td>{{ (0.2 * anchor.anchor_dia * (0.75 * 360 * calc.A_seN / 1000)) }}</td>
         </tr>
     </tbody>
 </table>

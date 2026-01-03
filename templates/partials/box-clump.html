@@ -14,15 +14,15 @@
             </tr>
             <tr>
                 <td>Horizontal reaction, <i>R<sub>y</sub> (kN)</i></td>
-                <td>{{ reaction_Ry | round(2) }}</td>
+                <td>{{ calc.reaction_Ry | round(2) }}</td>
                 <td>–</td>
-                <td>{{ (reaction_Ry * 1.6) | round(2) }}</td>
+                <td>{{ calc.design_Ry | round(2) }}</td>
             </tr>
             <tr>
                 <td>Vertical reaction, <i>R<sub>z</sub> (kN)</i></td>
-                <td>{{ reaction_Rz | round(2) }}</td>
-                <td>{{ (reaction_Rz * 1.4) | round(2)}}</td>
-                <td>{{ (reaction_Rz * 0.9) | round(2)}}</td>
+                <td>{{ calc.reaction_Rz | round(2) }}</td>
+                <td>{{ (calc.reaction_Rz * 1.4) | round(2)}}</td>
+                <td>{{ (calc.reaction_Rz * 0.9) | round(2)}}</td>
             </tr>
         </tbody>
     </table>
@@ -39,7 +39,7 @@
             <tr>
                 <td>
                     <ul>
-                        <li>1 – {{ bp_length_N }} x {{ bp_width_B }} x {{ anchor.bp_thk }} mm – Base plate (50 gr.)</li>
+                        <li>1 – {{ calc.bp_length }} x {{ calc.bp_width }} x {{ anchor.bp_thk }} mm – Base plate (50 gr.)</li>
                         <li>{{ anchor.anchor_nos }} – M{{ anchor.anchor_dia }} x {{ anchor.embed_depth }}** Royal Bolt (Grade 5.8 / or Equivalent)</li>
                     </ul>
                 </td>
@@ -73,19 +73,19 @@
             <tr>
                 <td>Horizontal reaction force, <i>R<sub>y</sub></i></td>
                 <td>=</td>
-                <td>{{ design_Ry | round(2) }} <i>kN</i></td>
+                <td>{{ calc.design_Ry | round(2) }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td>Horizontal force in single bolt</td>
                 <td>=</td>
-                <td>{{ (design_Ry / anchor.anchor_nos) | round(2) }} <i>kN</i></td>
+                <td>{{ (calc.design_Ry / anchor.anchor_nos) | round(2) }} <i>kN</i></td>
                 <td><i>; {{ anchor.anchor_nos }} bolts</i></td>
             </tr>
             <tr>
                 <td>Vertical reaction force, <i>R<sub>z</sub></i></td>
                 <td>=</td>
-                <td>{{ design_Rz | round(2) }} <i>kN</i></td>
+                <td>{{ calc.design_Rz | round(2) }} <i>kN</i></td>
                 <td><i>; compression</i></td>
             </tr>
         </tbody>

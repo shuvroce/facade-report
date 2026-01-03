@@ -2,53 +2,7 @@
 {% for conn in cat.connections %}
 {% if conn.screw_dia %}
 
-{% if cat.frames %}
-    {% set _frame = cat.frames[0] %}
-{% endif %}
-
-{% if cat.glass_units %}
-    {% set thickness_list = [] %}
-    {% for unit in cat.glass_units %}
-        {% if unit.glass_type == 'sgu' %}
-            {% set _ = thickness_list.append(unit.thickness) %}
-        {% elif unit.glass_type in ['dgu', 'lgu'] %}
-            {% set _ = thickness_list.append(unit.thickness1 + unit.thickness2) %}
-        {% elif unit.glass_type in ['ldgu'] %}
-            {% set _ = thickness_list.append(unit.thickness1_1 + unit.thickness1_2 + unit.thickness2) %}
-        {% endif %}
-    {% endfor %}
-    {% set glass_thk = thickness_list | max %}
-{% endif %}
-
-{% if _frame.tran_spacing != _frame.length and _frame.frame_type != 'Floor-to-floor' %}
-    {% set tran_w_dead = (glass_thk * 0.025) * (_frame.width / 1000) %}
-    {% set tran_w_wind = _frame.wind_neg * (_frame.width / 1000) %}
-{% else %}
-    {% set tran_w_dead = (glass_thk * 0.025 / 2) * (_frame.width / 1000) %}
-    {% set tran_w_wind = (_frame.wind_neg / 2) * (_frame.width / 1000) %}
-{% endif %}
-
-{% set joint_fy = ((tran_w_wind * _frame.width / 1000) / 4) | round(2) %}
-{% set joint_fz = ((tran_w_dead * _frame.width / 1000) / 4) | round(2) %}
-
-{% set design_fy = joint_fy * 1.6 %}
-{% set design_fz = joint_fz * 1.4 %}
-
-{% set R_yA = design_fy / (conn.screw_nos / 2) %}
-{% set R_zA = design_fz / (conn.screw_nos / 2) %}
-{% set R_yB = design_fy / (conn.screw_nos / 2) %}
-{% set R_zB = design_fz / (conn.screw_nos / 2) %}
-{% set resultant_shear = (R_yB **2 + R_zB **2)** 0.5 %}
-
-{% set Pnv1 = 4.2 * (conn.t2**3 * conn.screw_dia)**0.5 * 207 %}
-{% set Pnv2 = 2.7 * (conn.t1 * conn.screw_dia) * 207 %}
-{% set Pnv3 = 2.7 * (conn.t2 * conn.screw_dia) * 207 %}
-{% set phi_Pnv = 0.5 * ([Pnv1, Pnv2, Pnv3] | min) / 1000 %}
-{% set phi_Pnot = 0.5 * 0.85 * conn.tc * conn.screw_dia * 207 / 1000 %}
-{% set d_w = [conn.head_dia, 19.1] | min %}
-{% set phi_Pnov = 0.5 * 1.5 * conn.t1 * d_w * 207 / 1000 %}
-{% set beta_pullover = (resultant_shear / (phi_Pnv / 0.5)) + (0.71 * R_zA / (phi_Pnov / 0.5)) %}
-{% set beta_pullout = (resultant_shear / (phi_Pnv / 0.5)) + (R_zA / (phi_Pnot / 0.5)) %}
+{% set calc = conn.result or conn._calc %}
 
 <div class="page__break"></div>
 <h2>Design of Connection</h2>
@@ -66,13 +20,13 @@
         <tbody>
             <tr>
                 <td>Wind load, <i>F<sub>y</sub> (kN)</i></td>
-                <td>{{ joint_fy | round(2) }}</td>
-                <td>{{ design_fy | round(2) }}</td>
+                <td>{{ calc.joint_fy }}</td>
+                <td>{{ (calc.joint_fy * 1.6) }}</td>
             </tr>
             <tr>
                 <td>Dead load, <i>F<sub>z</sub> (kN)</i></td>
-                <td>{{ joint_fz | round(2) }}</td>
-                <td>{{ design_fz | round(2) }}</td>
+                <td>{{ calc.joint_fz }}</td>
+                <td>{{ (calc.joint_fz * 1.4) }}</td>
             </tr>
         </tbody>
     </table>
@@ -96,31 +50,31 @@
             <tr>
                 <td>For screws on transom (A *), <i>R<sub>yA</sub> = F<sub>y</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ R_yA | round(2) }} <i>kN</i></td>
+                <td>{{ calc.R_yA }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td style="padding-left: 4rem;"><i>R<sub>zA</sub> = F<sub>z</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ R_zA | round(2) }} <i>kN</i></td>
+                <td>{{ calc.R_zA }} <i>kN</i></td>
                 <td><i>; tension</i></td>
             </tr>
             <tr>
                 <td>For screws on mullion (B *), <i>R<sub>yB</sub> = F<sub>y</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ R_yB | round(2) }} <i>kN</i></td>
+                <td>{{ calc.R_yA }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td style="padding-left: 4rem;"><i>R<sub>zB</sub> = F<sub>z</sub> / {{ conn.screw_nos / 2 }}</i></td>
                 <td>=</td>
-                <td>{{ R_zB | round(2) }} <i>kN</i></td>
+                <td>{{ calc.R_zA }} <i>kN</i></td>
                 <td><i>; shear</i></td>
             </tr>
             <tr>
                 <td>Resultant shear, <i>V<sub>u</sub> = √( R<sub>yB</sub><sup>2</sup> + R<sub>zB</sub><sup>2</sup> )</i></td>
                 <td>=</td>
-                <td>{{ resultant_shear | round(2) }} <i>kN</i></td>
+                <td>{{ calc.Vu }} <i>kN</i></td>
                 <td></td>
             </tr>
         </tbody>
@@ -200,11 +154,11 @@
                 <td>{{ conn.screw_dia }}</td>
                 <td>207</td>
                 <td>207</td>
-                <td>{{ phi_Pnv | round(2) }}</td>
-                <td>{{ resultant_shear | round(2) }}</td>
-                <td>{{ (resultant_shear / phi_Pnv) | round(2) }}</td>
-                <td class="{% if (resultant_shear / phi_Pnv) < 1 %}ok{% else %}not-ok{% endif %}">
-                    {% if (resultant_shear / phi_Pnv) < 1 %} OK {% else %} NOT OK {% endif %}
+                <td>{{ calc.phi_Pnv }}</td>
+                <td>{{ calc.Vu }}</td>
+                <td>{{ (calc.Vu / calc.phi_Pnv) }}</td>
+                <td class="{% if (calc.Vu / calc.phi_Pnv) < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if (calc.Vu / calc.phi_Pnv) < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
@@ -262,11 +216,11 @@
                 <td>{{ conn.tc }}</td>
                 <td>{{ conn.screw_dia }}</td>
                 <td>207</td>
-                <td>{{ phi_Pnot | round(2) }}</td>
-                <td>{{ R_zA | round(2) }}</td>
-                <td>{{ (R_zA / phi_Pnot) | round(2) }}</td>
-                <td class="{% if (R_zA / phi_Pnot) < 1 %}ok{% else %}not-ok{% endif %}">
-                    {% if (R_zA / phi_Pnot) < 1 %} OK {% else %} NOT OK {% endif %}
+                <td>{{ calc.phi_Pnot }}</td>
+                <td>{{ calc.R_zA }}</td>
+                <td>{{ (calc.R_zA / calc.phi_Pnot) }}</td>
+                <td class="{% if (calc.R_zA / calc.phi_Pnot) < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if (calc.R_zA / calc.phi_Pnot) < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
@@ -319,12 +273,12 @@
             <tr>
                 <td>0.5</td>
                 <td>{{ conn.head_dia }}</td>
-                <td>{{ d_w }}</td>
-                <td>{{ phi_Pnov | round(2) }}</td>
-                <td>{{ R_zA | round(2) }}</td>
-                <td>{{ (R_zA / phi_Pnov) | round(2) }}</td>
-                <td class="{% if (R_zA / phi_Pnov) < 1 %}ok{% else %}not-ok{% endif %}">
-                    {% if (R_zA / phi_Pnov) < 1 %} OK {% else %} NOT OK {% endif %}
+                <td>{{ ([conn.head_dia, 19.1] | min) }}</td>
+                <td>{{ calc.phi_Pnov }}</td>
+                <td>{{ calc.R_zA }}</td>
+                <td>{{ (calc.R_zA / calc.phi_Pnov) }}</td>
+                <td class="{% if (calc.R_zA / calc.phi_Pnov) < 1 %}ok{% else %}not-ok{% endif %}">
+                    {% if (calc.R_zA / calc.phi_Pnov) < 1 %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
@@ -372,14 +326,14 @@
         <tbody>
             <tr>
                 <td>0.65</td>
-                <td>{{ resultant_shear | round(2) }}</td>
-                <td>{{ R_zA | round(2) }}</td>
-                <td>{{ (phi_Pnv / 0.5) | round(2) }}</td>
-                <td>{{ (phi_Pnov / 0.5) | round(2) }}</td>
-                <td>{{ beta_pullover | round(2) }}</td>
-                <td>{{ (1.1 * 0.65) | round(2) }}</td>
-                <td class="{% if beta_pullover < (1.1 * 0.65) %}ok{% else %}not-ok{% endif %}">
-                    {% if beta_pullover < (1.1 * 0.65) %} OK {% else %} NOT OK {% endif %}
+                <td>{{ calc.Vu }}</td>
+                <td>{{ calc.R_zA }}</td>
+                <td>{{ (calc.phi_Pnv / 0.5) }}</td>
+                <td>{{ (calc.phi_Pnov / 0.5) }}</td>
+                <td>{{ calc.beta_pullover }}</td>
+                <td>{{ (1.1 * 0.65) }}</td>
+                <td class="{% if calc.beta_pullover < (1.1 * 0.65) %}ok{% else %}not-ok{% endif %}">
+                    {% if calc.beta_pullover < (1.1 * 0.65) %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
@@ -406,14 +360,14 @@
         <tbody>
             <tr>
                 <td>0.6</td>
-                <td>{{ resultant_shear | round(2) }}</td>
-                <td>{{ R_zA | round(2) }}</td>
-                <td>{{ (phi_Pnv / 0.5) | round(2) }}</td>
-                <td>{{ (phi_Pnot / 0.5) | round(2) }}</td>
-                <td>{{ beta_pullout | round(2) }}</td>
-                <td>{{ (1.15 * 0.6) | round(2) }}</td>
-                <td class="{% if beta_pullout < (1.15 * 0.6) %}ok{% else %}not-ok{% endif %}">
-                    {% if beta_pullout < (1.15 * 0.6) %} OK {% else %} NOT OK {% endif %}
+                <td>{{ calc.Vu }}</td>
+                <td>{{ calc.R_zA }}</td>
+                <td>{{ (calc.phi_Pnv / 0.5) }}</td>
+                <td>{{ (calc.phi_Pnot / 0.5) }}</td>
+                <td>{{ calc.beta_pullout }}</td>
+                <td>{{ (1.15 * 0.6) }}</td>
+                <td class="{% if calc.beta_pullout < (1.15 * 0.6) %}ok{% else %}not-ok{% endif %}">
+                    {% if calc.beta_pullout < (1.15 * 0.6) %} OK {% else %} NOT OK {% endif %}
                 </td>
             </tr>
         </tbody>
@@ -423,4 +377,5 @@
 {% endif %}
 {% endfor %}
 {% endif %}
+
 

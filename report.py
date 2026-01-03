@@ -5,6 +5,7 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 import pikepdf
+from calc_helpers import calc_steel_profile, calc_alum_profile, calc_glass_unit, calc_frame, calc_connection, calc_anchorage
 
 BASE_DIR = os.path.dirname(__file__)
 INPUT_YAML = os.path.join(BASE_DIR, "input.yaml")
@@ -35,6 +36,90 @@ def collapse_outlines(item):
         else:
             break
 
+def precompute_calculations(data):
+    """
+    Pre-compute all calculations using calc_helpers functions.
+    This adds calculated values to the data structure for use in templates.
+    """
+    if not data:
+        return data
+    
+    # Get profile data for calculations
+    alum_profiles_data = data.get("alum_profiles_data", [])
+    steel_profiles_data = data.get("steel_profiles_data", data.get("steel_profiles", []))
+    
+    # Pre-compute aluminum profile calculations
+    if alum_profiles_data:
+        for alum_profile in alum_profiles_data:
+            calc_result = calc_alum_profile(alum_profile)
+            if calc_result:
+                alum_profile["_calc"] = calc_result
+                alum_profile["result"] = calc_result
+    
+    # Pre-compute steel profile calculations
+    if steel_profiles_data:
+        for steel_profile in steel_profiles_data:
+            calc_result = calc_steel_profile(steel_profile)
+            if calc_result:
+                steel_profile["_calc"] = calc_result
+                steel_profile["result"] = calc_result
+    
+    # Process each category
+    categories = data.get("categories", [])
+    for cat in categories:
+        # Calculate glass thickness for this category
+        glass_thk = 0
+        if "glass_units" in cat:
+            thickness_list = []
+            for gu in cat["glass_units"]:
+                glass_type = gu.get("glass_type")
+                if glass_type == "sgu":
+                    thickness_list.append(gu.get("thickness", 0))
+                elif glass_type in ["dgu", "lgu"]:
+                    thickness_list.append(gu.get("thickness1", 0) + gu.get("thickness2", 0))
+                elif glass_type == "ldgu":
+                    thickness_list.append(
+                        gu.get("thickness1_1", 0) + gu.get("thickness1_2", 0) + gu.get("thickness2", 0)
+                    )
+            glass_thk = max(thickness_list) if thickness_list else 0
+        
+        # Pre-calculate glass unit values
+        if "glass_units" in cat:
+            for gu in cat["glass_units"]:
+                calc_result = calc_glass_unit(gu)
+                if calc_result:
+                    # Keep legacy _calc and also expose preview-style result
+                    gu["_calc"] = calc_result
+                    gu["result"] = calc_result
+        
+        # Pre-calculate frame values
+        if "frames" in cat:
+            for frame in cat["frames"]:
+                calc_result = calc_frame(frame, glass_thk, alum_profiles_data, steel_profiles_data)
+                if calc_result:
+                    frame["_calc"] = calc_result
+                    frame["result"] = calc_result
+        
+        # Pre-calculate connection values
+        if "connections" in cat and cat.get("connections") and "frames" in cat and cat["frames"]:
+            frame = cat["frames"][0]
+            for conn in cat["connections"]:
+                calc_result = calc_connection(conn, frame, glass_thk, alum_profiles_data)
+                if calc_result:
+                    conn["_calc"] = calc_result
+                    conn["result"] = calc_result
+        
+        # Pre-calculate anchorage values
+        if "anchorage" in cat and cat.get("anchorage") and "frames" in cat and cat["frames"]:
+            frame = cat["frames"][0]
+            for anchor in cat["anchorage"]:
+                calc_result = calc_anchorage(anchor, frame, glass_thk, alum_profiles_data)
+                if calc_result:
+                    anchor["_calc"] = calc_result
+                    anchor["result"] = calc_result
+    
+    return data
+
 def generate_report_from_data(
     data,
     out_pdf=None,
@@ -60,6 +145,9 @@ def generate_report_from_data(
             merged.update(profile_data)
             merged.update(data)
             data = merged
+    
+    # Pre-compute all calculations
+    data = precompute_calculations(data)
 
     tmp_created = False
     if out_pdf is None:
