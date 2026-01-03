@@ -150,6 +150,7 @@
     {% endif %}
 </div>
 
+{% if frame.geometry != "regular" %}
 <div>
     <h3>Software Input</h3>
     <div style="text-align: center;">
@@ -328,6 +329,122 @@
         </tbody>
     </table>
 </div>
+
+{% else %}
+<div>
+    <h3>Analysis</h3>
+    <div style="text-align: center;">
+        <figure>
+            {% if frame.frame_type == "Continuous" %}
+            <img src="assets/images/reg-model-cont.png" style="width: 100mm;">
+            {% else %}
+            <img src="assets/images/reg-model-sfgp.png" style="width: 100mm;">
+            {% endif %}
+            <figcaption>Model view</figcaption>
+        </figure>
+    </div>
+    <table class="borderless width__100 fig__table">
+        <tbody>
+            <tr>
+                <td>
+                    <figure>
+                        {% if frame.frame_type == "Continuous" %}
+                        <img style="width: 75mm;" src="assets/images/reg-dl-cont.png">
+                        {% else %}
+                        <img style="width: 75mm;" src="assets/images/reg-dl-sfgp.png">
+                        {% endif %}
+                        <figcaption>Dead load</figcaption>
+                    </figure>
+                </td>
+                <td>
+                    <figure>
+                        {% if frame.frame_type == "Continuous" %}
+                        <img style="width: 75mm;" src="assets/images/reg-wl-cont.png">
+                        {% else %}
+                        <img style="width: 75mm;" src="assets/images/reg-wl-sfgp.png">
+                        {% endif %}
+                        <figcaption>Wind load</figcaption>
+                    </figure>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="borderless width__100 fig__table align__center">
+        <tbody>
+            <tr>
+                <td>
+                    <figure>
+                        {% if frame.frame_type == "Continuous" %}
+                        <img style="width: 75mm;" src="assets/images/reg-bmd-cont.png">
+                        {% else %}
+                        <img style="width: 75mm;" src="assets/images/reg-bmd-sfgp.png">
+                        {% endif %}
+                        <figcaption>BMD about major axis (0.9D – 1.6W)</figcaption>
+                    </figure>
+                </td>
+                <td>
+                    <figure>
+                        {% if frame.frame_type == "Continuous" %}
+                        <img style="width: 75mm;" src="assets/images/reg-sfd-cont.png">
+                        {% else %}
+                        <img style="width: 75mm;" src="assets/images/reg-sfd-sfgp.png">
+                        {% endif %}
+                        <figcaption>SFD about major axis (0.9D – 1.6W)</figcaption>
+                    </figure>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="borderless width__100 fig__table align__center">
+        <tbody>
+            <tr>
+                <td>
+                    <figure>
+                        {% if frame.frame_type == "Continuous" %}
+                        <img style="width: 75mm;" src="assets/images/reg-def-cont.png">
+                        {% else %}
+                        <img style="width: 75mm;" src="assets/images/reg-def-sfgp.png">
+                        {% endif %}
+                        <figcaption>Deformed shape (D – 0.7W, contour)</figcaption>
+                    </figure>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="borderless width__100 fig__table align__center">
+        <tbody>
+            <tr>
+                <td>
+                    <figure>
+                        {% if frame.frame_type == "Continuous" %}
+                        <img style="width: 75mm;" src="assets/images/reg-joint-cont.png">
+                        {% else %}
+                        <img style="width: 75mm;" src="assets/images/reg-joint-sfgp.png">
+                        {% endif %}
+                        <figcaption>Joint Forces</figcaption>
+                    </figure>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="borderless width__100 fig__table align__center">
+        <tbody>
+            <tr>
+                <td>
+                    <figure>
+                        {% if frame.frame_type == "Continuous" %}
+                        <img style="width: 75mm;" src="assets/images/reg-reaction-cont.png">
+                        {% else %}
+                        <img style="width: 75mm;" src="assets/images/reg-reaction-sfgp.png">
+                        {% endif %}
+                        <figcaption>Support Reactions</figcaption>
+                    </figure>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+{% endif %}
 
 <div class="page__break">
     <h3>Analysis Summary</h3>
