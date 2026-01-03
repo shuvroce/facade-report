@@ -135,8 +135,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'flange_thk': 'Flange Thickness (mm)',
         'tor_constant': 'Torsional Constant (mm⁴)',
         'area': 'Area (mm²)',
-        'I_xx': 'Moment of Inertia about Major Axis, Ixx (mm⁴)',
-        'I_yy': 'Moment of Inertia about Minor Axis, Iyy (mm⁴)',
+        'I_xx': 'Major Moment of Inertia, Ixx (mm⁴)',
+        'I_yy': 'Minor Moment of Inertia, Iyy (mm⁴)',
         'Y': 'Extreme Fibre Distance, Y (mm)',
         'X': 'Extreme Fibre Distance, X (mm)',
         'plastic_x': 'Upper Region Centroid Distance, Plastic X',
@@ -411,6 +411,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let requiredFields = alumFields[selectedType] || [];
         
         fieldsContainer.innerHTML = '';
+        fieldsContainer.classList.add('form-section');
 
         requiredFields.forEach(fieldName => {
             let type = 'number';
@@ -423,6 +424,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create dropdown for pre-defined profiles
             if (selectedType === 'Pre-defined' && fieldName === 'profile_name') {
                 input = document.createElement('select');
+                input.id = fieldName;
                 input.name = fieldName;
                 
                 // Add profile options (first one will be default)
@@ -438,11 +440,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 input = document.createElement('input');
                 input.type = type;
                 input.step = '0.1';
+                input.id = fieldName;
                 input.name = fieldName;
-                input.placeholder = alumFieldPlaceholders[fieldName] || fieldName;
             }
             
-            fieldsContainer.appendChild(input);
+            // Create form-field wrapper with label
+            const formField = document.createElement('div');
+            formField.className = 'form-field';
+            
+            const label = document.createElement('label');
+            label.setAttribute('for', fieldName);
+            label.textContent = alumFieldPlaceholders[fieldName] || fieldName;
+            
+            formField.appendChild(label);
+            formField.appendChild(input);
+            fieldsContainer.appendChild(formField);
         });
     }
     
@@ -458,6 +470,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let requiredFields = glassFields[selectedType] || [];
         
         fieldsContainer.innerHTML = '';
+        fieldsContainer.classList.add('form-section');
 
         requiredFields.forEach(fieldName => {
             let type = 'text'; 
@@ -470,6 +483,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create dropdown for glass grade
             if (fieldName.match(/^grade/i)) {
                 input = document.createElement('select');
+                input.id = fieldName;
                 input.name = fieldName;
                 glassGradeOptions.forEach(option => {
                     const opt = document.createElement('option');
@@ -481,6 +495,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create dropdown for support type
             else if (fieldName === 'support_type') {
                 input = document.createElement('select');
+                input.id = fieldName;
                 input.name = fieldName;
                 supportTypeOptions.forEach(option => {
                     const opt = document.createElement('option');
@@ -494,11 +509,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 input = document.createElement('input');
                 input.type = type;
                 input.step = '0.1';
+                input.id = fieldName;
                 input.name = fieldName;
-                input.placeholder = glassFieldPlaceholders[fieldName] || fieldName;
             }
             
-            fieldsContainer.appendChild(input);
+            // Create form-field wrapper with label
+            const formField = document.createElement('div');
+            formField.className = 'form-field';
+            
+            const label = document.createElement('label');
+            label.setAttribute('for', fieldName);
+            label.textContent = glassFieldPlaceholders[fieldName] || fieldName;
+            
+            formField.appendChild(label);
+            formField.appendChild(input);
+            fieldsContainer.appendChild(formField);
         });
 
         // Add listeners to update value for load_x_area2 fields
@@ -1096,6 +1121,7 @@ document.addEventListener('DOMContentLoaded', () => {
         let requiredFields = (frameFields[selectedGeometry] && frameFields[selectedGeometry][selectedType]) || [];
         
         fieldsContainer.innerHTML = '';
+        fieldsContainer.classList.add('form-section');
 
         requiredFields.forEach(fieldName => {
             let input;
@@ -1103,6 +1129,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create dropdown for mullion (aluminum profiles without 'T' prefix)
             if (fieldName === 'mullion') {
                 input = document.createElement('select');
+                input.id = fieldName;
                 input.name = fieldName;
                 input.dataset.profileField = 'mullion'; // Mark as profile field
                 
@@ -1120,6 +1147,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create dropdown for transom (aluminum profiles with 'T' prefix)
             else if (fieldName === 'transom') {
                 input = document.createElement('select');
+                input.id = fieldName;
                 input.name = fieldName;
                 input.dataset.profileField = 'transom'; // Mark as profile field
                 
@@ -1137,6 +1165,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create dropdown for steel (steel profiles from steel-profiles-list)
             else if (fieldName === 'steel') {
                 input = document.createElement('select');
+                input.id = fieldName;
                 input.name = fieldName;
                 input.dataset.profileField = 'steel'; // Mark as profile field
                 
@@ -1161,11 +1190,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 input = document.createElement('input');
                 input.type = type;
                 input.step = '0.1';
+                input.id = fieldName;
                 input.name = fieldName;
-                input.placeholder = frameFieldPlaceholders[fieldName] || fieldName;
             }
             
-            fieldsContainer.appendChild(input);
+            // Create form-field wrapper with label
+            const formField = document.createElement('div');
+            formField.className = 'form-field';
+            
+            const label = document.createElement('label');
+            label.setAttribute('for', fieldName);
+            label.textContent = frameFieldPlaceholders[fieldName] || fieldName;
+            
+            formField.appendChild(label);
+            formField.appendChild(input);
+            fieldsContainer.appendChild(formField);
         });
     }
 
@@ -1181,7 +1220,8 @@ document.addEventListener('DOMContentLoaded', () => {
         
         let requiredFields = anchorageFields[selectedType] || [];
         
-        fieldsContainer.innerHTML = ''; 
+        fieldsContainer.innerHTML = '';
+        fieldsContainer.classList.add('form-section');
 
         // Get default values for this clump type
         const defaultValues = anchorageDefaultValuesByType[selectedType] || {};
@@ -1196,15 +1236,25 @@ document.addEventListener('DOMContentLoaded', () => {
             const input = document.createElement('input');
             input.type = type;
             input.step = '0.1';
+            input.id = fieldName;
             input.name = fieldName;
-            input.placeholder = anchorageFieldPlaceholders[fieldName] || fieldName;
             
             // Set default value if available for this clump type
             if (defaultValues[fieldName]) {
                 input.value = defaultValues[fieldName];
             }
             
-            fieldsContainer.appendChild(input);
+            // Create form-field wrapper with label
+            const formField = document.createElement('div');
+            formField.className = 'form-field';
+            
+            const label = document.createElement('label');
+            label.setAttribute('for', fieldName);
+            label.textContent = anchorageFieldPlaceholders[fieldName] || fieldName;
+            
+            formField.appendChild(label);
+            formField.appendChild(input);
+            fieldsContainer.appendChild(formField);
         });
     }
 

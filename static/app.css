@@ -6,7 +6,7 @@
     --transition-border: border-color 0.1s ease 0s;
 
     /* Layout Widths */
-    --container-width: 1200px;
+    --container-width: 1250px;
     --modal-width-max: 900px;
     --modal-width-calculator: 300px;
     --status-area-width: 265px;
@@ -698,6 +698,34 @@ textarea {
     height: 60px;
     resize: vertical;
     font-family: monospace;
+}
+
+/* --- Form Field Labels --- */
+.form-field {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 calc(50% - 15px);
+    min-width: 200px;
+}
+
+.form-field label {
+    font-size: 0.75rem;
+    font-weight: 500;
+    margin-bottom: 4px;
+    color: var(--text-secondary);
+    letter-spacing: 0.3px;
+    text-transform: none;
+}
+
+.form-field input,
+.form-field select,
+.form-field textarea {
+    flex: 1;
+    margin: 0;
+}
+
+.form-field textarea {
+    flex: 1 1 100%;
 }
 
 /* --- Dynamic Lists --- */

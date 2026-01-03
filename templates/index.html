@@ -124,11 +124,26 @@
                                 </h2>
                             </div>
                             <div class="form-section">
-                                <input type="text" name="project_info.ref_no" placeholder="Ref. No. (RFA-001/REV-02/AEL/CW/2025)" value="RFA-001/REV-02/AEL/CW/2025">
-                                <input type="text" name="project_info.project_name" placeholder="Project Name">
-                                <input type="text" name="project_info.project_client" placeholder="Project Client">
-                                <input type="text" name="project_info.rev_no" placeholder="Revision No." value="01">
-                                <input type="text" name="project_info.date" placeholder="Date (June 28, 2025)" value="June 28, 2025">
+                                <div class="form-field">
+                                    <label for="project_info.ref_no">Ref. No.</label>
+                                    <input type="text" id="project_info.ref_no" name="project_info.ref_no" value="RFA-001/REV-02/AEL/CW/2025">
+                                </div>
+                                <div class="form-field">
+                                    <label for="project_info.project_name">Project Name</label>
+                                    <input type="text" id="project_info.project_name" name="project_info.project_name">
+                                </div>
+                                <div class="form-field">
+                                    <label for="project_info.project_client">Project Client</label>
+                                    <input type="text" id="project_info.project_client" name="project_info.project_client">
+                                </div>
+                                <div class="form-field">
+                                    <label for="project_info.rev_no">Revision No.</label>
+                                    <input type="text" id="project_info.rev_no" name="project_info.rev_no" value="01">
+                                </div>
+                                <div class="form-field">
+                                    <label for="project_info.date">Date</label>
+                                    <input type="text" id="project_info.date" name="project_info.date" value="June 28, 2025">
+                                </div>
                             </div>
                             
                             <div class="include-area">
@@ -206,67 +221,145 @@
                                 <span>Wind Parameters</span>
                             </h2>
                             <div class="form-section">
-                                <input type="text" name="wind.location" placeholder="Location" value="Dhaka">
-                                <select name="wind.enclosure_type">
-                                    <option value="Enclosed">Enclosed</option>
-                                    <option value="Partially Enclosed">Partially Enclosed</option>
-                                    <option value="Open">Open</option>
-                                </select>
-                                <select name="wind.roof_type">
-                                    <option value="Flat">Flat Roof</option>
-                                    <option value="Monoslope">Monoslope Roof</option>
-                                    <option value="Gable">Gable Roof</option>
-                                    <option value="Hip">Hip Roof</option>
-                                </select>
-                                <input type="number" step="0.1" name="wind.wind_speed" placeholder="Wind Speed (m/s)" value="65.7">
-                                <input type="number" step="0.1" name="wind.b_height" placeholder="Building Height (m)">
-                                <input type="number" step="0.1" name="wind.b_length" placeholder="Building Length (m)">
-                                <input type="number" step="0.1" name="wind.b_width" placeholder="Building Width (m)">
-                                <select name="wind.exposure_cat">
-                                    <option value="A">Exposure A</option>
-                                    <option value="B">Exposure B</option>
-                                    <option value="C">Exposure C</option>
-                                </select>
-                                <select name="wind.occupancy_cat">
-                                    <option value="I">Occupancy I</option>
-                                    <option value="II">Occupancy II</option>
-                                    <option value="III">Occupancy III</option>
-                                    <option value="IV">Occupancy IV</option>
-                                </select>
-                                <select name="wind.Imp_factor">
-                                    <option value="1.0">I = 1.0</option>
-                                    <option value="0.77">I = 0.77</option>
-                                    <option value="0.87">I = 0.87</option>
-                                    <option value="1.15">I = 1.15</option>
-                                </select>
-                                <input type="number" step="0.1" name="wind.K_d" placeholder="Directionality Factor, Kd" value="0.85">
-                                <select name="wind.GC_pi">
-                                    <option value="0.18">GCpi 0.18 (Enclosed)</option>
-                                    <option value="0.55">GCpi 0.55 (Partially Enclosed)</option>
-                                    <option value="0">GCpi 0.0 (Open)</option>
-                                </select>
-                                <input type="number" step="0.1" name="wind.C_pl" placeholder="External Leeward Pressure Coefficient, Cpl" value="0.5">
-                                <input type="number" step="0.1" name="wind.q_zk" placeholder="Velocity Pressure (in terms of Kz.Kzt), qz">
-                                <input type="number" step="0.1" name="wind.K_ht" placeholder="Topographic Factor at H, Kht" value="1.0">
-                                <select name="wind.b_rigidity">
-                                    <option value="Rigid">Rigid</option>
-                                    <option value="Flexible">Flexible</option>
-                                </select>
-                                <input type="number" step="0.1" name="wind.b_freq" placeholder="Building Natural Frequency, fn (Hz)">
-                                <input type="number" step="0.1" name="wind.damping" placeholder="Damping Ratio" value="0.02">
-                                <input type="number" step="0.1" name="wind.gust_factor" placeholder="Gust Effect Factor, G" value="0.85">
-                                <select name="wind.topography_type">
-                                    <option value="Homogeneous">Homogeneous Topo.</option>
-                                    <option value="Hill">Hill Topo.</option>
-                                    <option value="Ridge">Ridge Topo.</option>
-                                    <option value="Escarpment">Escarpment Topo.</option>
-                                </select>
-                                <input type="text" name="wind.topo_crest_side" placeholder="Topo Crest Side">
-                                <input type="number" name="wind.topo_height" placeholder="Topo Height">
-                                <input type="number" name="wind.topo_length" placeholder="Topo Length">
-                                <input type="number" name="wind.topo_distance" placeholder="Topo Distance">
-                                <textarea name="wind.exposure_note" placeholder="Exposure Note"></textarea>
-                                <textarea name="wind.occupancy_note" placeholder="Occupancy Note">Likely to gather more than 300 people at the same time.</textarea>
+                                <div class="form-field">
+                                    <label for="wind.location">Location</label>
+                                    <input type="text" id="wind.location" name="wind.location" value="Dhaka">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.enclosure_type">Enclosure Type</label>
+                                    <select id="wind.enclosure_type" name="wind.enclosure_type">
+                                        <option value="Enclosed">Enclosed</option>
+                                        <option value="Partially Enclosed">Partially Enclosed</option>
+                                        <option value="Open">Open</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.roof_type">Roof Type</label>
+                                    <select id="wind.roof_type" name="wind.roof_type">
+                                        <option value="Flat">Flat Roof</option>
+                                        <option value="Monoslope">Monoslope Roof</option>
+                                        <option value="Gable">Gable Roof</option>
+                                        <option value="Hip">Hip Roof</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.wind_speed">Wind Speed (m/s)</label>
+                                    <input type="number" step="0.1" id="wind.wind_speed" name="wind.wind_speed" value="65.7">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.b_height">Building Height (m)</label>
+                                    <input type="number" step="0.1" id="wind.b_height" name="wind.b_height">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.b_length">Building Length (m)</label>
+                                    <input type="number" step="0.1" id="wind.b_length" name="wind.b_length">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.b_width">Building Width (m)</label>
+                                    <input type="number" step="0.1" id="wind.b_width" name="wind.b_width">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.exposure_cat">Exposure Category</label>
+                                    <select id="wind.exposure_cat" name="wind.exposure_cat">
+                                        <option value="A">Exposure A</option>
+                                        <option value="B">Exposure B</option>
+                                        <option value="C">Exposure C</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.occupancy_cat">Occupancy Category</label>
+                                    <select id="wind.occupancy_cat" name="wind.occupancy_cat">
+                                        <option value="I">Occupancy I</option>
+                                        <option value="II">Occupancy II</option>
+                                        <option value="III">Occupancy III</option>
+                                        <option value="IV">Occupancy IV</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.Imp_factor">Importance Factor</label>
+                                    <select id="wind.Imp_factor" name="wind.Imp_factor">
+                                        <option value="1.0">I = 1.0</option>
+                                        <option value="0.77">I = 0.77</option>
+                                        <option value="0.87">I = 0.87</option>
+                                        <option value="1.15">I = 1.15</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.K_d">Directionality Factor, Kd</label>
+                                    <input type="number" step="0.1" id="wind.K_d" name="wind.K_d" value="0.85">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.GC_pi">Internal Pressure Coefficient</label>
+                                    <select id="wind.GC_pi" name="wind.GC_pi">
+                                        <option value="0.18">GCpi 0.18 (Enclosed)</option>
+                                        <option value="0.55">GCpi 0.55 (Partially Enclosed)</option>
+                                        <option value="0">GCpi 0.0 (Open)</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.C_pl">External Leeward Pressure Coefficient, Cpl</label>
+                                    <input type="number" step="0.1" id="wind.C_pl" name="wind.C_pl" value="0.5">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.q_zk">Velocity Pressure, qz</label>
+                                    <input type="number" step="0.1" id="wind.q_zk" name="wind.q_zk">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.K_ht">Topographic Factor at H, Kht</label>
+                                    <input type="number" step="0.1" id="wind.K_ht" name="wind.K_ht" value="1.0">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.b_rigidity">Building Rigidity</label>
+                                    <select id="wind.b_rigidity" name="wind.b_rigidity">
+                                        <option value="Rigid">Rigid</option>
+                                        <option value="Flexible">Flexible</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.b_freq">Building Natural Frequency, fn (Hz)</label>
+                                    <input type="number" step="0.1" id="wind.b_freq" name="wind.b_freq">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.damping">Damping Ratio</label>
+                                    <input type="number" step="0.1" id="wind.damping" name="wind.damping" value="0.02">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.gust_factor">Gust Effect Factor, G</label>
+                                    <input type="number" step="0.1" id="wind.gust_factor" name="wind.gust_factor" value="0.85">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.topography_type">Topography Type</label>
+                                    <select id="wind.topography_type" name="wind.topography_type">
+                                        <option value="Homogeneous">Homogeneous Topo.</option>
+                                        <option value="Hill">Hill Topo.</option>
+                                        <option value="Ridge">Ridge Topo.</option>
+                                        <option value="Escarpment">Escarpment Topo.</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.topo_crest_side">Topography Crest Side</label>
+                                    <input type="text" id="wind.topo_crest_side" name="wind.topo_crest_side">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.topo_height">Topography Height</label>
+                                    <input type="number" id="wind.topo_height" name="wind.topo_height">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.topo_length">Topography Length</label>
+                                    <input type="number" id="wind.topo_length" name="wind.topo_length">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.topo_distance">Topography Distance</label>
+                                    <input type="number" id="wind.topo_distance" name="wind.topo_distance">
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.exposure_note">Exposure Note</label>
+                                    <textarea id="wind.exposure_note" name="wind.exposure_note"></textarea>
+                                </div>
+                                <div class="form-field">
+                                    <label for="wind.occupancy_note">Occupancy Note</label>
+                                    <textarea id="wind.occupancy_note" name="wind.occupancy_note">Likely to gather more than 300 people at the same time.</textarea>
+                                </div>
                             </div>
                         </div>
 
@@ -331,14 +424,26 @@
                         <div class="profile-input-section">
                             <button type="button" class="remove-btn sub-remove-btn">Remove</button>
                             <div class="item-header">
-                                <input type="text" name="profile_name" placeholder="Profile Name (e.g., RHS 110x54x2.5)" value="RHS 85x50x2.5">
+                                <div class="form-field">
+                                    <label for="profile_name">Profile Name</label>
+                                    <input type="text" id="profile_name" name="profile_name" value="RHS 85x50x2.5">
+                                </div>
                             </div>
                             <details class="profile-details" open>
                                 <summary class="profile-summary">Properties</summary>
-                                <div class="item-fields">
-                                    <input type="number" step="0.1" name="web_length" placeholder="Web Length (mm)" value="85">
-                                    <input type="number" step="0.1" name="flange_length" placeholder="Flange Length (mm)" value="50">
-                                    <input type="number" step="0.1" name="thk" placeholder="Thickness (mm)" value="2.5">
+                                <div class="item-fields form-section">
+                                    <div class="form-field">
+                                        <label for="web_length">Web Length (mm)</label>
+                                        <input type="number" step="0.1" id="web_length" name="web_length" value="85">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="flange_length">Flange Length (mm)</label>
+                                        <input type="number" step="0.1" id="flange_length" name="flange_length" value="50">
+                                    </div>
+                                    <div class="form-field">
+                                        <label for="thk">Thickness (mm)</label>
+                                        <input type="number" step="0.1" id="thk" name="thk" value="2.5">
+                                    </div>
                                 </div>
                             </details>
                         </div>
@@ -356,7 +461,10 @@
                 <div class="dynamic-item category-item" data-type="category">
                     <button type="button" class="remove-btn">Remove Category</button>
                     <div class="item-header">
-                        <input type="text" name="category_name" placeholder="Category Name (e.g., Typ. Cont. Façade)" value="Typ. Cont. Façade">
+                        <div class="form-field">
+                            <label for="category_name">Category Name</label>
+                            <input type="text" id="category_name" name="category_name" value="Typ. Cont. Façade">
+                        </div>
                     </div>
 
                     <details open>
@@ -391,12 +499,15 @@
                         <div class="sub-item-input-section">
                             <button type="button" class="remove-btn sub-remove-btn">Remove</button>
                             <div class="item-header">
-                                <select name="glass_type">
-                                    <option value="sgu">SGU (Single Glazed)</option>
-                                    <option value="dgu">DGU (Double Glazed)</option>
-                                    <option value="lgu">LGU (Laminated Glazed)</option>
-                                    <option value="ldgu">LDGU (Laminated DGU)</option>
-                                </select>
+                                <div class="form-field">
+                                    <label for="glass_type">Glass Type</label>
+                                    <select id="glass_type" name="glass_type">
+                                        <option value="sgu">SGU (Single Glazed)</option>
+                                        <option value="dgu">DGU (Double Glazed)</option>
+                                        <option value="lgu">LGU (Laminated Glazed)</option>
+                                        <option value="ldgu">LDGU (Laminated DGU)</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="item-fields"></div>
                         </div>
@@ -415,35 +526,50 @@
                     <div class="sub-item-container">
                         <div class="sub-item-input-section">
                             <button type="button" class="remove-btn sub-remove-btn">Remove</button>
-                            <div class="item-header">
-                                <select name="geometry">
-                                    <option value="regular">Regular (Auto Calc.)</option>
-                                    <option value="irregular">Irregular (Manual Calc.)</option>
-                                </select>
+                            <div class="item-header form-section">
+                                <div class="form-field">
+                                    <label for="geometry">Geometry</label>
+                                    <select id="geometry" name="geometry">
+                                        <option value="regular">Regular (Auto Calc.)</option>
+                                        <option value="irregular">Irregular (Manual Calc.)</option>
+                                    </select>
+                                </div>
                             </div> 
-                            <div class="item-header">
-                                <select name="mullion_type">
-                                    <option value="Aluminum Only">Aluminum Only</option>
-                                    <option value="Aluminum + Steel">Aluminum + Steel</option>
-                                </select>
-                                <select name="frame_type">
-                                    <option value="Continuous">Continuous</option>
-                                    <option value="Floor-to-floor">Floor-to-floor</option>
-                                </select>
+                            <div class="item-header form-section">
+                                <div class="form-field">
+                                    <label for="mullion_type">Mullion Type</label>
+                                    <select id="mullion_type" name="mullion_type">
+                                        <option value="Aluminum Only">Aluminum Only</option>
+                                        <option value="Aluminum + Steel">Aluminum + Steel</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="frame_type">Frame Type</label>
+                                    <select id="frame_type" name="frame_type">
+                                        <option value="Continuous">Continuous</option>
+                                        <option value="Floor-to-floor">Floor-to-floor</option>
+                                    </select>
+                                </div>
                             </div>
-                            <div class="item-header">
-                                <select name="zone">
-                                    <option value="Zone 4 (Mid Zone)">Zone 4 (Mid Zone)</option>
-                                    <option value="Zone 5 (Edge/Corner Zone)">Zone 5 (Edge/Corner Zone)</option>
-                                    <option value="Zone 1 (Roof Mid Zone)">Zone 1 (Roof Mid Zone)</option>
-                                    <option value="Zone 2 (Roof Edge Zone)">Zone 2 (Roof Edge Zone)</option>
-                                    <option value="Zone 3 (Roof Corner Zone)">Zone 3 (Roof Corner Zone)</option>
-                                </select>
-                                <select name="system_type">
-                                    <option value="Semi-unitized">Semi-unitized System</option>
-                                    <option value="Unitized">Unitized System</option>
-                                    <option value="Stick">Stick System</option>
-                                </select>
+                            <div class="item-header form-section">
+                                <div class="form-field">
+                                    <label for="zone">Zone</label>
+                                    <select id="zone" name="zone">
+                                        <option value="Zone 4 (Mid Zone)">Zone 4 (Mid Zone)</option>
+                                        <option value="Zone 5 (Edge/Corner Zone)">Zone 5 (Edge/Corner Zone)</option>
+                                        <option value="Zone 1 (Roof Mid Zone)">Zone 1 (Roof Mid Zone)</option>
+                                        <option value="Zone 2 (Roof Edge Zone)">Zone 2 (Roof Edge Zone)</option>
+                                        <option value="Zone 3 (Roof Corner Zone)">Zone 3 (Roof Corner Zone)</option>
+                                    </select>
+                                </div>
+                                <div class="form-field">
+                                    <label for="system_type">System Type</label>
+                                    <select id="system_type" name="system_type">
+                                        <option value="Semi-unitized">Semi-unitized System</option>
+                                        <option value="Unitized">Unitized System</option>
+                                        <option value="Stick">Stick System</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="item-fields"></div>
                         </div>
@@ -463,15 +589,36 @@
                         <div class="sub-item-input-section">
                             <button type="button" class="remove-btn sub-remove-btn">Remove</button>
                             <div class="item-header">
-                                <input type="number" step="2" name="screw_nos" placeholder="No. of Screw (e.g. 4, 6, 8, 12)" value="4">
+                                <div class="form-field">
+                                    <label for="screw_nos">No. of Screws</label>
+                                    <input type="number" step="2" id="screw_nos" name="screw_nos" value="4">
+                                </div>
                             </div>
-                            <div class="item-fields">
-                                <input type="number" step="0.1" name="screw_dia" placeholder="Diameter of Screw, d (mm) (e.g., 4.8)" value="4.8">
-                                <input type="text" name="cleat_size" placeholder="Cleat Size (e.g., 25 x 32 x 3.5 (L = 85))" value="25 x 32 x 3.5 (L = 85)">
-                                <input type="number" step="0.1" name="head_dia" placeholder="Diameter of Screw Head, dh (mm)" value="10.5">
-                                <input type="number" step="0.1" name="t1" placeholder="Screw Head Contacted Member Thickness, t1 (mm)" value="3.5">
-                                <input type="number" step="0.1" name="t2" placeholder="Screw Head Non-contacted Member Thickness, t2 (mm)" value="2.5">
-                                <input type="number" step="0.1" name="tc" placeholder="Lesser of Depth of penetration and thickness t2, (tc, mm)" value="2.5">
+                            <div class="item-fields form-section">
+                                <div class="form-field">
+                                    <label for="screw_dia">Screw Diameter, d (mm)</label>
+                                    <input type="number" step="0.1" id="screw_dia" name="screw_dia" value="4.8">
+                                </div>
+                                <div class="form-field">
+                                    <label for="cleat_size">Cleat Size</label>
+                                    <input type="text" id="cleat_size" name="cleat_size" value="25 x 32 x 3.5 (L = 85)">
+                                </div>
+                                <div class="form-field">
+                                    <label for="head_dia">Screw Head Diameter, dh (mm)</label>
+                                    <input type="number" step="0.1" id="head_dia" name="head_dia" value="10.5">
+                                </div>
+                                <div class="form-field">
+                                    <label for="t1">Thickness t1 (mm)</label>
+                                    <input type="number" step="0.1" id="t1" name="t1" value="3.5">
+                                </div>
+                                <div class="form-field">
+                                    <label for="t2">Thickness t2 (mm)</label>
+                                    <input type="number" step="0.1" id="t2" name="t2" value="2.5">
+                                </div>
+                                <div class="form-field">
+                                    <label for="tc">Depth of Penetration, tc (mm)</label>
+                                    <input type="number" step="0.1" id="tc" name="tc" value="2.5">
+                                </div>
                             </div>
                         </div>
                         <div class="sub-item-preview-mini">
@@ -490,11 +637,14 @@
                         <div class="sub-item-input-section">
                             <button type="button" class="remove-btn sub-remove-btn">Remove</button>
                             <div class="item-header">
-                                <select name="clump_type">
-                                    <option value="Box Clump">Box Clump</option>
-                                    <option value="U Clump">U Clump</option>
-                                    <option value="L Clump">L Clump</option>
-                                </select>
+                                <div class="form-field">
+                                    <label for="clump_type">Clump Type</label>
+                                    <select id="clump_type" name="clump_type">
+                                        <option value="Box Clump">Box Clump</option>
+                                        <option value="U Clump">U Clump</option>
+                                        <option value="L Clump">L Clump</option>
+                                    </select>
+                                </div>
                             </div>
                             <div class="item-fields"></div>
                         </div>
