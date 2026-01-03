@@ -400,9 +400,21 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     frame_length = _to_float(frame.get("length"))
     wind_neg = _to_float(frame.get("wind_neg"))
     tran_spacing = _to_float(frame.get("tran_spacing"))
+    geometry = frame.get("geometry", "regular")
     mullion_type = frame.get("mullion_type", "Aluminum Only")
     frame_type = frame.get("frame_type", "Continuous")
     glass_thk = _to_float(frame.get("glass_thk")) or glass_thk or 0
+    mul_mu = _to_float(frame.get("mul_mu"))
+    mul_vu = _to_float(frame.get("mul_vu"))
+    mul_def = _to_float(frame.get("mul_def"))
+    tran_mu = _to_float(frame.get("tran_mu"))
+    tran_vu = _to_float(frame.get("tran_vu"))
+    tran_def_wind = _to_float(frame.get("tran_def_wind"))
+    tran_def_dead = _to_float(frame.get("tran_def_dead"))
+    joint_fy = _to_float(frame.get("joint_fy"))
+    joint_fz = _to_float(frame.get("joint_fz"))
+    reaction_Ry = _to_float(frame.get("reaction_Ry"))
+    reaction_Rz = _to_float(frame.get("reaction_Rz"))
     
     glass_sw = glass_thk * 0.025
     if frame_type != "Continuous":
@@ -420,7 +432,7 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     # Mullion loads
     mul_w_dead = (glass_thk * 0.025 * frame_width / 1000)
     mul_w_wind = (wind_neg * frame_width / 1000)
-    mul_mu = round(1.6 * mul_w_wind * (frame_length / 1000) ** 2 / 8, 2)
+    mul_mu = round(1.6 * mul_w_wind * (frame_length / 1000) ** 2 / 8, 2) if geometry == "regular" else mul_mu
 
     # Transom loads
     if frame_type == "Continuous":
@@ -433,7 +445,7 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
         tran_w_dead = ((glass_thk * 0.025) / 2) * (frame_width / 1000)
         tran_w_wind = (wind_neg / 2) * (frame_width / 1000)
 
-    tran_mu = round(1.6 * tran_w_wind * (frame_width / 1000) ** 2 / 12, 2)
+    tran_mu = round(1.6 * tran_w_wind * (frame_width / 1000) ** 2 / 12, 2) if geometry == "regular" else tran_mu
 
     # Deflection limits
     if frame_length <= 4100:
@@ -477,35 +489,35 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
         ls_s = None
 
     if frame_type == "Floor-to-floor":
-        mul_def = (5 * 0.7 * mul_w_wind * frame_length**4) / (384 * 70000 * mul_Ix)
+        mul_def = (5 * 0.7 * mul_w_wind * frame_length**4) / (384 * 70000 * mul_Ix) if geometry == "regular" else mul_def
     elif frame_type == "Continuous":
-        mul_def = (0.7 * mul_w_wind * frame_length**4) / (185 * 70000 * mul_Ix)
+        mul_def = (0.7 * mul_w_wind * frame_length**4) / (185 * 70000 * mul_Ix) if geometry == "regular" else mul_def
     
     tran_Ix = transom_profile.get("I_xx", 0) if transom_profile else 0
     tran_Iy = transom_profile.get("I_yy", 0) if transom_profile else 0
     tran_phi_Mn = transom_profile.get("phi_Mn", 0) if transom_profile else 0
     tran_dc = round(tran_mu / tran_phi_Mn, 2) if tran_phi_Mn else None
-    tran_def_wind = (5 * 0.7 * tran_w_wind * frame_width**4) / (384 * 70000 * tran_Ix)
-    tran_def_dead = (5 * 0.7 * tran_w_dead * frame_width**4) / (384 * 70000 * tran_Iy)
-    tran_vu = round(1.6 * tran_w_wind * (frame_width / 1000) / 4, 2)
+    tran_def_wind = (5 * 0.7 * tran_w_wind * frame_width**4) / (384 * 70000 * tran_Ix) if geometry == "regular" else tran_def_wind
+    tran_def_dead = (5 * 0.7 * tran_w_dead * frame_width**4) / (384 * 70000 * tran_Iy) if geometry == "regular" else tran_def_dead
+    tran_vu = round(1.6 * tran_w_wind * (frame_width / 1000) / 4, 2) if geometry == "regular" else tran_vu
     
     # Calculate mullion shear and reactions based on frame type
     if frame_type == "Floor-to-floor":
-        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) / 2, 2)
-        reaction_Ry = mul_vu
-        reaction_Rz = round(mul_w_dead / 2, 2)
+        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) / 2, 2) if geometry == "regular" else mul_vu
+        reaction_Ry = mul_vu if geometry == "regular" else reaction_Ry
+        reaction_Rz = round(mul_w_dead / 2, 2) if geometry == "regular" else reaction_Rz
     elif frame_type == "Continuous":
-        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) * (5 / 8), 2)
-        reaction_Ry = round(mul_w_wind * (frame_length / 1000) * (10 / 8), 2)
-        reaction_Rz = mul_w_dead
+        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) * (5 / 8), 2) if geometry == "regular" else mul_vu
+        reaction_Ry = round(mul_w_wind * (frame_length / 1000) * (10 / 8), 2) if geometry == "regular" else reaction_Ry
+        reaction_Rz = mul_w_dead if geometry == "regular" else reaction_Rz
     else:
         mul_vu = 0
         reaction_Ry = 0
         reaction_Rz = 0
     
     # Calculate joint forces for connections
-    joint_fy = round(((tran_w_wind * frame_width / 1000) / 4), 2)
-    joint_fz = round(((tran_w_dead * frame_width / 1000) / 4), 2)
+    joint_fy = round(((tran_w_wind * frame_width / 1000) / 4), 2) if geometry == "regular" else joint_fy
+    joint_fz = round(((tran_w_dead * frame_width / 1000) / 4), 2) if geometry == "regular" else joint_fz
 
     return {
         "frame_type": frame_type,

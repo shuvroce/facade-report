@@ -274,13 +274,15 @@ document.addEventListener('DOMContentLoaded', () => {
         'irregular': {
             'Aluminum Only': [
                 'mullion', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
-                'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn',
-                'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
+                'mul_mu', 'mul_vu', 'mul_def',
+                'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead',
+                'joint_fy', 'joint_fz', 'reaction_Ry', 'reaction_Rz'
             ],
             'Aluminum + Steel': [
                 'mullion', 'steel', 'transom', 'length', 'width', 'tran_spacing', 'glass_thk', 'wind_pos', 'wind_neg',
-                'I_xa', 'I_xs', 'mul_mu', 'mul_vu', 'mul_def', 'mul_phi_Mn_a', 'mul_phi_Mn_s',
-                'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead', 'tran_phi_Mn'
+                'mul_mu', 'mul_vu', 'mul_def',
+                'tran_mu', 'tran_vu', 'tran_def_wind', 'tran_def_dead',
+                'joint_fy', 'joint_fz', 'reaction_Ry', 'reaction_Rz'
             ]
         }
     };
@@ -307,7 +309,11 @@ document.addEventListener('DOMContentLoaded', () => {
         'tran_vu': 'Transom Max. Shear, Vu (kN)',
         'tran_def_wind': 'Transom Max. Deflection (wind), δw (mm)',
         'tran_def_dead': 'Transom Max. Deflection (dead), δd (mm)',
-        'tran_phi_Mn': 'Transom Moment Capacity, φMn (kNm)'
+        'tran_phi_Mn': 'Transom Moment Capacity, φMn (kNm)',
+        'joint_fy': 'Horizontal Joint Force, fy (kN)',
+        'joint_fz': 'Vertical Joint Force, fz (kN)',
+        'reaction_Ry': 'Horizontal Reaction, Ry (kN)',
+        'reaction_Rz': 'Vertical Reaction, Rz (kN)'
     };
 
     // --- Anchorage Configuration ---
@@ -329,8 +335,6 @@ document.addEventListener('DOMContentLoaded', () => {
     };
 
     const anchorageFieldPlaceholders = {
-        'reaction_Ry': 'Horizontal Reaction, Ry (kN)',
-        'reaction_Rz': 'Vertical Reaction, Rz (kN)',
         'anchor_nos': 'No. of Anchor bolt, n',
         'top_anchor_nos': 'No. of Top Anchor bolt, n',
         'front_anchor_nos': 'No. of Front Anchor bolt, n',
