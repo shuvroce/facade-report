@@ -204,10 +204,7 @@ def check_figures():
                 "category": f"Category {cat_idx}",
                 "exists": False
             })
-            
-            # SAP analysis figures
-            required_figures.extend(get_sap_figures(cat_idx))
-            
+
             # Glass RFEM figures (only for Point Fixed support type)
             if "glass_units" in category:
                 for glass_idx, glass in enumerate(category["glass_units"], start=1):
@@ -219,8 +216,13 @@ def check_figures():
             # Add composite profile figures
             if "frames" in category:
                 for frame in category["frames"]:
-                    mullion_type = frame.get("mullion_type", "")
+                    # SAP analysis figures
+                    geometry = frame.get("geometry", "")
+                    if geometry != "regular":
+                        required_figures.extend(get_sap_figures(cat_idx))
                     
+                    # composite mullion figure
+                    mullion_type = frame.get("mullion_type", "")
                     if mullion_type == "Aluminum + Steel":
                         mullion_name = frame.get("mullion", "")
                         if mullion_name:
