@@ -152,7 +152,7 @@
                         <tr>
                             <td></td>
                             <td>=</td>
-                            <td>{{ (calc.Mn_yield / 1000000) }} <i>kN-m</i></td>
+                            <td>{{ (calc.Mn_yield) }} <i>kN-m</i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -194,11 +194,11 @@
                             <td>Both Edges</td>
                             <td>- {{ calc.c_c }}</td>
                             <td>{{ calc.c_o }}</td>
-                            <td>- {{ (calc.c_o / calc.c_c) }}</td>
+                            <td>- {{ (calc.c_o / calc.c_c) | round(2) }}</td>
                             <td>{{ calc.m }}</td>
                             <td>{{ calc.web_b }}</td>
                             <td>{{ ns.found_data.web_thk }}</td>
-                            <td>{{ (calc.web_b / ns.found_data.web_thk) }}</td>
+                            <td>{{ (calc.web_b / ns.found_data.web_thk) | round(2) }}</td>
                             <td>{{ calc.web_lambda1 }}</td>
                             <td>{{ calc.web_lambda2 }}</td>
                             <td>{{ calc.F_b }}</td>
@@ -213,7 +213,7 @@
                             <td>–</td>
                             <td>{{ calc.flange_b }}</td>
                             <td>{{ ns.found_data.flange_thk }}</td>
-                            <td>{{ (calc.flange_b / ns.found_data.flange_thk) }}</td>
+                            <td>{{ (calc.flange_b / ns.found_data.flange_thk) | round(2) }}</td>
                             <td>{{ calc.flange_lambda1 }}</td>
                             <td>{{ calc.flange_lambda2 }}</td>
                             <td>{{ calc.F_c }}</td>
@@ -236,7 +236,7 @@
                         <tr>
                             <td>Centroidal distance of element, d</td>
                             <td>=</td>
-                            <td>{{ web_d }} <i>mm</i></td>
+                            <td>{{ calc.web_d }} <i>mm</i></td>
                         </tr>
                         <tr>
                             <td>Moment of Inertia about NA, I<sub>w</sub></td>
@@ -251,7 +251,7 @@
                         <tr>
                             <td>Moment capacity, M<sub>nlb,w</sub></td>
                             <td>=</td>
-                            <td>{{ (calc.F_b * (calc.I_w / calc.c_c) / 1000000) }} <i>kNm</i></td>
+                            <td>{{ calc.Mn_lbw }} <i>kNm</i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -262,19 +262,19 @@
                         <tr>
                             <td>Moment of Inertia about NA, I<sub>f</sub></td>
                             <td>=</td>
-                            <td>{{ (ns.found_data.I_xx - calc.I_w) }} <i>mm<sup>4</sup></i></td>
+                            <td>{{ calc.I_f }} <i>mm<sup>4</sup></i></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td>NA's distance to element's thickness center, c<sub>f</sub></td>
                             <td>=</td>
-                            <td>{{ (calc.web_b / 2) }} <i>mm</i></td>
+                            <td>{{ calc.c_f }} <i>mm</i></td>
                             <td><i>; avg.</i></td>
                         </tr>
                         <tr>
                             <td>Moment capacity, M<sub>nlb,f</sub></td>
                             <td>=</td>
-                            <td>{{ (calc.F_c * ((ns.found_data.I_xx - calc.I_w) / (calc.web_b / 2)) / 1000000) }} <i>kNm</i></td>
+                            <td>{{ calc.Mn_lbf }} <i>kNm</i></td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -290,7 +290,7 @@
                         <tr>
                             <td></td>
                             <td>=</td>
-                            <td>{{ ((calc.F_b * (calc.I_w / calc.c_c) / 1000000) + (calc.F_c * ((ns.found_data.I_xx - calc.I_w) / (calc.web_b / 2)) / 1000000)) }} <i>kN-m</i></td>
+                            <td>{{ Mn_lb }} <i>kN-m</i></td>
                         </tr>
                     </tbody>
                 </table>
@@ -309,13 +309,13 @@
                         <tr>
                             <td>Nominal Moment Capacity, <i>M<sub>n</sub> = min( M<sub>np</sub> , M<sub>nlb</sub> , M<sub>nmb</sub> )</i></td>
                             <td>=</td>
-                            <td>{{ ([calc.Mn_yield, calc.Mn_lb] | min) }} <i>kN-m</i></td>
+                            <td>{{ (phi_Mn / 0.9) | round(1) }} <i>kN-m</i></td>
                             <td></td>
                         </tr>
                         <tr>
                             <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
                             <td>=</td>
-                            <td>{{ (([calc.Mn_yield, calc.Mn_lb] | min) * 0.9) }} <i>kN-m</i></td>
+                            <td>{{ phi_Mn }} <i>kN-m</i></td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -362,7 +362,7 @@
                         <tr>
                             <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
                             <td>=</td>
-                            <td>{{ (([ns.found_data.Mn_yield, ns.found_data.Mn_lb] | min) * 0.9) }} <i>kN-m</i></td>
+                            <td>{{ (([ns.found_data.Mn_yield, ns.found_data.Mn_lb] | min) * 0.9) | round(2) }} <i>kN-m</i></td>
                             <td></td>
                         </tr>
                     </tbody>
@@ -373,49 +373,6 @@
     {% endif %}
 
 {% elif profile.profile_type == "Stick" %}
-    {% set area = (profile.web_length * profile.flange_length - ((profile.web_length - 2 * profile.flange_thk) * (profile.flange_length - 2 * profile.web_thk))) %}
-    {% set I_xx = ((profile.flange_length * profile.web_length**3 / 12) - ((profile.flange_length - 2 * profile.web_thk) * (profile.web_length - 2 * profile.flange_thk)**3 ) / 12) %}
-    {% set I_yy = ((profile.web_length * profile.flange_length**3 / 12) - ((profile.web_length - 2 * profile.flange_thk) * (profile.flange_length - 2 * profile.web_thk)**3 ) / 12) %}
-    {% set Y = profile.web_length / 2 %}
-    {% set X = profile.flange_length / 2 %}
-    {% set S_x = (I_xx / Y) %}
-    {% set S_y = (I_yy / X) %}
-    {% set Z_x = (((profile.flange_length * profile.web_length**2) - ((profile.flange_length - 2 * profile.web_thk) * (profile.web_length - 2 * profile.flange_thk)**2)) / 4) %}
-    {% set tor_constant = (2 * profile.flange_thk * profile.web_thk * ((profile.flange_length - profile.web_thk)**2) * ((profile.web_length - profile.flange_thk)**2)) / (profile.flange_length * profile.web_thk + profile.web_length * profile.flange_thk - (profile.web_thk**2) - (profile.flange_thk**2)) %}
-
-    {% set web_b = profile.web_length - 2 * (profile.flange_thk - 0.5) %}
-    {% set flange_b = profile.flange_length - 2 * (profile.web_thk - 0.5) %}
-    {% set m = 0.65 %}
-
-    {% set B_p = profile.F_y * (1 + (profile.F_y / (1500 * 6.895))**0.3333) %}
-    {% set D_p = (B_p / 10) * ((B_p / 70000)**0.5) %}
-    {% set B_br = 1.3 * profile.F_y * (1 + (profile.F_y / (340 * 6.895))**0.3333) %}
-    {% set D_br = (B_br / 20) * ((6 * B_br / 70000)**0.5) %}
-
-    {% set flange_lambda1 = (B_p - profile.F_y) / (1.6 * D_p) %}
-    {% set flange_lambda2 = (0.35 * B_p) / (1.6 * D_p) %}
-    {% set web_lambda1 = (B_br - 1.5 * profile.F_y) / (m * D_br) %}
-    {% set web_lambda2 = (0.5 * B_br) / (m * D_br) %}
-
-    {% set I_w = 2 * ((profile.web_thk * web_b**3) / 12) %}
-    {% set c_w = web_b / 2 %}
-    {% set I_f = ns.found_data.I_xx - calc.I_w %}
-    {% set c_f = (profile.web_length - profile.flange_thk) / 2 %}
-
-    {% if (calc.web_b / profile.web_thk) <= web_lambda1 %}
-        {% set F_b = 1.5 * profile.F_y %}
-    {% else %}
-        {% set F_b = B_br - (m * D_br) * (calc.web_b / profile.web_thk) %}
-    {% endif %}
-
-    {% if (calc.flange_b / profile.flange_thk) <= flange_lambda1 %}
-        {% set F_c = profile.F_y %}
-    {% else %}
-        {% set F_c = B_p - (5 * D_p) * (flange_b / profile.flange_thk) %}
-    {% endif %}
-
-    {% set Mn_yield = [(Z_x * profile.F_y / 1000000), (1.5 * profile.F_y * S_x / 1000000)] | min %}
-
     <div class="page__break"></div>
     <h2>{{ profile.profile_name }}</h2>
     <div>
@@ -453,49 +410,49 @@
                 <tr>
                     <td>Torsional Constant</td>
                     <td><i>J<sub>y</sub></i></td>
-                    <td>{{ tor_constant }}</td>
+                    <td>{{ calc.tor_constant }}</td>
                     <td><i>mm<sup>4</sup></i></td>
                 </tr>
                 <tr>
                     <td>Area of cross-section</td>
                     <td>A</td>
-                    <td>{{ area }}</td>
+                    <td>{{ calc.area }}</td>
                     <td><i>mm<sup>2</sup></i></td>
                 </tr>
                 <tr>
                     <td>Moment of inertia about major axis</td>
                     <td>I<sub>x</sub></td>
-                    <td>{{ I_xx }}</td>
+                    <td>{{ calc.I_xx }}</td>
                     <td><i>mm<sup>4</sup></i></td>
                 </tr>
                 <tr>
                     <td>Moment of inertia about minor axis</td>
                     <td>I<sub>y</sub></td>
-                    <td>{{ I_yy }}</td>
+                    <td>{{ calc.I_yy }}</td>
                     <td><i>mm<sup>4</sup></i></td>
                 </tr>
                 <tr>
                     <td>Extreme fiber Distance from N.A (minor axis)</td>
                     <td>Y</td>
-                    <td>{{ Y }}</td>
+                    <td>{{ calc.Y }}</td>
                     <td><i>mm</i></td>
                 </tr>
                 <tr>
                     <td>Extreme fiber Distance from N.A (major axis)</td>
                     <td>X</td>
-                    <td>{{ X }}</td>
+                    <td>{{ calc.X }}</td>
                     <td><i>mm</i></td>
                 </tr>
                 <tr>
                     <td>Elastic section modulus about major axis</td>
                     <td><i>S<sub>x</sub> = I<sub>x</sub> / Y</i></td>
-                    <td>{{ S_x }}</td>
+                    <td>{{ calc.S_x }}</td>
                     <td><i>mm<sup>3</sup></i></td>
                 </tr>
                 <tr>
                     <td>Elastic section modulus about minor axis</td>
                     <td><i>S<sub>y</sub> = I<sub>y</sub> / X</i></td>
-                    <td>{{ S_y }}</td>
+                    <td>{{ calc.S_y }}</td>
                     <td><i>mm<sup>3</sup></i></td>
                 </tr>
                 <tr>
@@ -563,26 +520,26 @@
                         <td>Both Edges</td>
                         <td>{{ calc.web_b }}</td>
                         <td>{{ profile.web_thk }}</td>
-                        <td>{{ (calc.web_b / profile.web_thk) }}</td>
+                        <td>{{ (calc.web_b / profile.web_thk) | round(2) }}</td>
                         <td>{{ calc.web_lambda1 }}</td>
                         <td>{{ calc.web_lambda2 }}</td>
                         <td>{{ calc.F_b }}</td>
                         <td>{{ calc.I_w }}</td>
-                        <td>{{ c_w }}</td>
-                        <td>{{ ((calc.F_b * I_w / c_w) / 1000000) }}</td>
+                        <td>{{ calc.c_w }}</td>
+                        <td>{{ calc.Mn_lbw }}</td>
                     </tr>
                     <tr>
                         <td>UC (Flange)</td>
                         <td>Both Edges</td>
                         <td>{{ calc.flange_b }}</td>
                         <td>{{ profile.flange_thk }}</td>
-                        <td>{{ (flange_b / profile.flange_thk) }}</td>
+                        <td>{{ (flange_b / profile.flange_thk) | round(2) }}</td>
                         <td>{{ calc.flange_lambda1 }}</td>
                         <td>{{ calc.flange_lambda2 }}</td>
                         <td>{{ calc.F_c }}</td>
-                        <td>{{ I_f }}</td>
-                        <td>{{ c_f }}</td>
-                        <td>{{ ((calc.F_c * I_f / c_f) / 1000000) }}</td>
+                        <td>{{ calc.I_f }}</td>
+                        <td>{{ calc.c_f }}</td>
+                        <td>{{ calc.Mn_lbf }}</td>
                     </tr>
                 </tbody>
             </table>
@@ -591,8 +548,7 @@
                     <tr>
                         <td>Therefore, Total Moment Capacity, M<sub>nlb</sub></td>
                         <td>=</td>
-                        {% set Mn_lb = ((calc.F_b * I_w / c_w) / 1000000) + ((calc.F_c * I_f / c_f) / 1000000) %}
-                        <td>({{ ((calc.F_b * I_w / c_w) / 1000000) }} + {{ ((calc.F_c * I_f / c_f) / 1000000) }})</td>
+                        <td>({{ Mn_lbw }} + {{ Mn_lbf }})</td>
                         <td>=</td>
                         <td>{{ Mn_lb }} <i>kNm</i></td>
                     </tr>
@@ -640,13 +596,13 @@
                     <tr>
                         <td>Nominal Moment Capacity, <i>M<sub>n</sub> = min( M<sub>np</sub> , M<sub>nlb</sub> , M<sub>nmb</sub> )</i></td>
                         <td>=</td>
-                        <td>{{ ([Mn_yield, Mn_lb] | min) }} <i>kN-m</i></td>
+                        <td>{{ (phi_Mn / 0.9) | round(2) }} <i>kN-m</i></td>
                         <td></td>
                     </tr>
                     <tr>
                         <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
                         <td>=</td>
-                        <td>{{ (([Mn_yield, Mn_lb] | min) * 0.9) }} <i>kN-m</i></td>
+                        <td>{{ phi_Mn }} <i>kN-m</i></td>
                         <td></td>
                     </tr>
                 </tbody>
@@ -729,13 +685,13 @@
                 <tr>
                     <td>Elastic section modulus about major axis</td>
                     <td><i>S<sub>x</sub> = I<sub>x</sub> / Y</i></td>
-                    <td>{{ (profile.I_xx / profile.Y) }}</td>
+                    <td>{{ (profile.I_xx / profile.Y) | round(1) }}</td>
                     <td><i>mm<sup>3</sup></i></td>
                 </tr>
                 <tr>
                     <td>Elastic section modulus about minor axis</td>
                     <td><i>S<sub>y</sub> = I<sub>y</sub> / X</i></td>
-                    <td>{{ (profile.I_yy / profile.X) }}</td>
+                    <td>{{ (profile.I_yy / profile.X) | round(1) }}</td>
                     <td><i>mm<sup>3</sup></i></td>
                 </tr>
             </tbody>
@@ -766,7 +722,7 @@
                 <tr>
                     <td>Plastic section modulus about major axis</td>
                     <td><i>Z<sub>x</sub> = 0.5 A(x + y)</i></td>
-                    <td>{{ (0.5 * profile.area * (profile.plastic_x + profile.plastic_y)) }}</td>
+                    <td>{{ (0.5 * profile.area * (profile.plastic_x + profile.plastic_y)) | round(1) }}</td>
                     <td><i>mm<sup>3</sup></i></td>
                 </tr>
 
@@ -877,7 +833,7 @@
                     <tr>
                         <td>So, the design moment capacity, <i>φM<sub>n</sub> (; φ = 0.9)</i></td>
                         <td>=</td>
-                        <td>{{ (([profile.Mn_yield, profile.Mn_lb] | min) * 0.9) }} <i>kN-m</i></td>
+                        <td>{{ (([profile.Mn_yield, profile.Mn_lb] | min) * 0.9) | round(2) }} <i>kN-m</i></td>
                         <td></td>
                     </tr>
                 </tbody>

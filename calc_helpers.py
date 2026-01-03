@@ -168,7 +168,9 @@ def calc_alum_stick_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, 
     I_f = I_xx - I_w
     c_f = (web_length - flange_thk) / 2
     
-    Mn_lb = (F_b * (I_w / c_w) / 1000000) + (F_c * (I_f / c_f) / 1000000)
+    Mn_lbw = (F_b * (I_w / c_w) / 1000000)
+    Mn_lbf = (F_c * (I_f / c_f) / 1000000)
+    Mn_lb = Mn_lbw + Mn_lbf
     phi_Mn = 0.9 * min(Mn_yield, Mn_lb)
     
     return {
@@ -196,10 +198,15 @@ def calc_alum_stick_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, 
         "web_lambda1": round(web_lambda1, 2),
         "web_lambda2": round(web_lambda2, 2),
         "I_w": round(I_w, 1),
+        "I_f": round(I_f, 1),
+        "c_w": round(c_w, 1),
+        "c_f": round(c_f, 1),
         "F_b": round(F_b, 1),
         "F_c": round(F_c, 1),
         # Moment capacities
         "Mn_yield": round(Mn_yield, 1),
+        "Mn_lbw": round(Mn_lbw, 1),
+        "Mn_lbf": round(Mn_lbw, 1),
         "Mn_lb": round(Mn_lb, 1),
         "phi_Mn": round(phi_Mn, 1),
     }
@@ -269,7 +276,9 @@ def calc_alum_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
     else:
         F_c = B_p - (5 * D_p) * (flange_b / flange_thk)
     
-    Mn_lb = (F_b * (I_w / c_c) / 1000000) + (F_c * ((I_xx - I_w) / (web_b / 2)) / 1000000)
+    Mn_lbw = F_b * (I_w / c_c) / 1000000
+    Mn_lbf = F_c * (F_c * ((I_xx - I_w) / (web_b / 2)) / 1000000)
+    Mn_lb = Mn_lbw + Mn_lbf
     phi_Mn = 0.9 * min(Mn_yield, Mn_lb)
     
     return {
@@ -299,10 +308,15 @@ def calc_alum_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         "web_lambda2": round(web_lambda2, 2),
         "web_d": round(web_d, 1),
         "I_w": round(I_w, 1),
+        "I_f": round(I_xx - I_w, 1),
+        "c_w": round(c_c, 1),
+        "c_f": round(web_b / 2, 1),
         "F_b": round(F_b, 1),
         "F_c": round(F_c, 1),
         # Moment capacities
         "Mn_yield": round(Mn_yield, 1),
+        "Mn_lbw": round(Mn_lbw, 1),
+        "Mn_lbf": round(Mn_lbw, 1),
         "Mn_lb": round(Mn_lb, 1),
         "phi_Mn": round(phi_Mn, 1),
     }
