@@ -448,16 +448,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.name = fieldName;
             }
             
-            // Create form-field wrapper with label
-            const formField = document.createElement('div');
-            formField.className = 'form-field';
+            // Create form-field wrapper with label and optional unit
+            const labelText = alumFieldPlaceholders[fieldName] || fieldName;
+            const unit = extractUnitFromPlaceholder(labelText);
+            const formField = createFormField(input, labelText, unit);
             
-            const label = document.createElement('label');
-            label.setAttribute('for', fieldName);
-            label.textContent = alumFieldPlaceholders[fieldName] || fieldName;
-            
-            formField.appendChild(label);
-            formField.appendChild(input);
             fieldsContainer.appendChild(formField);
         });
     }
