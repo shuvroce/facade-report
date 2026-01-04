@@ -194,11 +194,11 @@ def external_pressure_coeff(b_length, b_width):
     C_pw = 0.8
     C_ps = -0.7
     
-    if b_length / b_width <= 1.0:
+    if b_width / b_length <= 1.0:
         C_pl = -0.5
-    elif b_length / b_width > 1.0 and b_length / b_width < 4:
+    elif b_width / b_length > 1.0 and b_width / b_length < 4:
         C_pl = -0.3
-    elif b_length / b_width >= 4:
+    elif b_width / b_length >= 4:
         C_pl = -0.2
     
     return C_pw, C_pl, C_ps

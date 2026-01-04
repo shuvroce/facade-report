@@ -1157,50 +1157,62 @@ document.addEventListener('DOMContentLoaded', () => {
     const exposureCatSelect = document.getElementById('wind.exposure_cat');
     const bFreqInput = document.getElementById('wind.b_freq');
     const dampingInput = document.getElementById('wind.damping');
+    const bRigiditySelect = document.getElementById('wind.b_rigidity');
 
     const triggerWindCalcs = debounce(() => {
         // Calculate external pressure coefficients from b_length and b_width
         const bLength = parseFloat(bLengthInput?.value) || 0;
         const bWidth = parseFloat(bWidthInput?.value) || 0;
 
-        if (bLength > 0 && bWidth > 0 && cPwInput && cPlInput && cPsInput) {
+        if (cPwInput && cPlInput && cPsInput) {
             const cPw = 0.8;
             const cPs = -0.7;
             let cPl = -0.5;
-            
-            if (bLength / bWidth <= 1.0) {
-                cPl = -0.5;
-            } else if (bLength / bWidth > 1.0 && bLength / bWidth < 4) {
-                cPl = -0.3;
-            } else if (bLength / bWidth >= 4) {
-                cPl = -0.2;
+
+            if (bLength > 0 && bWidth > 0) {
+                if (bWidth / bLength <= 1.0) {
+                    cPl = -0.5;
+                } else if (bWidth / bLength > 1.0 && bWidth / bLength < 4) {
+                    cPl = -0.3;
+                } else if (bWidth / bLength >= 4) {
+                    cPl = -0.2;
+                }
             }
 
+            // Always show the coefficients so the fields aren’t blank
             cPwInput.value = cPw.toFixed(2);
             cPlInput.value = cPl.toFixed(2);
             cPsInput.value = cPs.toFixed(2);
         }
 
-        // Calculate gust factor from building properties
-        if (gustFactorInput && bHeightInput && bLengthInput && bWidthInput && exposureCatSelect && bFreqInput && dampingInput) {
-            const bHeight = parseFloat(bHeightInput.value) || 0;
-            const bLength = parseFloat(bLengthInput.value) || 0;
-            const bWidth = parseFloat(bWidthInput.value) || 0;
-            const exposure = exposureCatSelect.value || 'B';
-            const bFreq = parseFloat(bFreqInput.value) || 1.2;
-            const damping = parseFloat(dampingInput.value) || 0.02;
-            const windSpeed = parseFloat(windSpeedInput?.value) || 0;
+        // Calculate gust factor based on building rigidity
+        if (gustFactorInput) {
+            const bRigidity = bRigiditySelect?.value || 'Rigid';
+            
+            if (bRigidity === 'Rigid') {
+                // Fixed value for rigid buildings
+                gustFactorInput.value = '0.85';
+            } else if (bRigidity === 'Flexible') {
+                // Calculate for flexible buildings
+                if (bHeightInput && bLengthInput && bWidthInput && exposureCatSelect && bFreqInput && dampingInput) {
+                    const bHeight = parseFloat(bHeightInput.value) || 0;
+                    const bLength = parseFloat(bLengthInput.value) || 0;
+                    const bWidth = parseFloat(bWidthInput.value) || 0;
+                    const exposure = exposureCatSelect.value || 'B';
+                    const bFreq = parseFloat(bFreqInput.value) || 1.2;
+                    const damping = parseFloat(dampingInput.value) || 0.02;
+                    const windSpeed = parseFloat(windSpeedInput?.value) || 0;
 
-            if (bHeight > 0 && bLength > 0 && bWidth > 0 && windSpeed > 0) {
-                // Simplified gust factor calculation (approximation)
-                // In production, you might want a server-side call for the full calculation
-                try {
-                    const gustVal = calculateGustFactorJS(bHeight, bLength, bWidth, windSpeed, bFreq, damping, exposure);
-                    if (gustVal) {
-                        gustFactorInput.value = gustVal.toFixed(3);
+                    if (bHeight > 0 && bLength > 0 && bWidth > 0 && windSpeed > 0) {
+                        try {
+                            const gustVal = calculateGustFactorJS(bHeight, bLength, bWidth, windSpeed, bFreq, damping, exposure);
+                            if (gustVal) {
+                                gustFactorInput.value = gustVal.toFixed(3);
+                            }
+                        } catch (e) {
+                            console.warn('Gust factor calculation error:', e);
+                        }
                     }
-                } catch (e) {
-                    console.warn('Gust factor calculation error:', e);
                 }
             }
         }
@@ -1268,6 +1280,10 @@ document.addEventListener('DOMContentLoaded', () => {
     if (exposureCatSelect) exposureCatSelect.addEventListener('change', triggerWindCalcs);
     if (bFreqInput) bFreqInput.addEventListener('input', triggerWindCalcs);
     if (dampingInput) dampingInput.addEventListener('input', triggerWindCalcs);
+    if (bRigiditySelect) bRigiditySelect.addEventListener('change', triggerWindCalcs);
+
+    // Run once on load to populate external pressure coefficients if values already exist
+    triggerWindCalcs();
 
 
 
