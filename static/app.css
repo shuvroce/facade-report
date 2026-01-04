@@ -625,6 +625,57 @@ h3 {
     margin-top: 0.3rem;
 }
 
+/* Wind Cards Container - 2 Column Grid */
+.wind-cards-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.wind-card {
+    background-color: var(--bg-secondary);
+    border: 1px solid var(--border-code);
+    border-radius: var(--radius-2);
+    /* box-shadow: 0 2px 4px var(--shadow-container); */
+    overflow: hidden;
+    transition: var(--transition-bg), var(--transition-border), box-shadow 200ms ease;
+}
+
+.wind-card-header {
+    /* display: flex; */
+    /* align-items: center; */
+    /* justify-content: space-between; */
+    padding: 1rem 1rem 0.2rem 1rem;
+    /* background-color: var(--bg-secondary); */
+    /* border-bottom: 1px solid var(--border-primary); */
+    user-select: none;
+    font-weight: 600;
+    color: var(--text-heading);
+    font-size: 0.95rem;
+    transition: var(--transition-bg), var(--transition-border);
+}
+
+.wind-card-content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    /* row-gap: 1rem; */
+    /* column-gap: 0; */
+}
+
+.wind-card-content .form-field {
+    flex: 1 1 100%;
+    min-width: unset;
+}
+
+/* Responsive Grid */
+@media (max-width: 768px) {
+    .wind-cards-container {
+        grid-template-columns: 1fr;
+    }
+}
+
 .include-area {
     margin-top: 2rem;
     background-color: var(--bg-secondary);
