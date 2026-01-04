@@ -300,6 +300,15 @@
                                         <span>Wind Parameters</span>
                                     </h2>
 
+                                    <div class="wind-notice">
+                                        <p>Wind load is calculated cosidering following assumptions –</p>
+                                        <ul>
+                                            <li>The building is regular</li>
+                                            <li>The building roof is flat</li>
+                                            <li>Building located in flat terrin</li>
+                                        </ul>
+                                    </div>
+
                                     <div class="wind-cards-container">
                                         <!-- 1. GEOMETRY -->
                                         <div class="wind-card">
@@ -829,7 +838,14 @@
         </div>
 
         <aside class="right-rail">
-            <h3>YAML Output</h3>
+            <div class="wind-preview-mini">
+                <h4>Wind Load</h4>
+                <div class="wind-preview-content">
+                    <p class="wind-preview-placeholder">Insufficient inputs</p>
+                </div>
+            </div>
+
+            <h4>YAML Output</h4>
             <pre id="yaml-output-display">Click 'Generate' to see the YAML output.</pre>
         </aside>
     </div>
