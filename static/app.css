@@ -540,6 +540,38 @@ nav {
     font-size: 0.8rem;
 }
 
+/* Compact tables for wind preview */
+.wind-preview-content .mini-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0.35rem 0 0.75rem 0;
+    font-size: 0.78rem;
+    table-layout: fixed;
+}
+
+.wind-preview-content .mini-table th,
+.wind-preview-content .mini-table td {
+    border: 1px solid var(--border-primary);
+    padding: 0.25rem 0.35rem;
+    text-align: center;
+    word-break: break-word;
+}
+
+.wind-preview-content .mini-table thead {
+    background: var(--bg-preview);
+    color: var(--text-heading);
+}
+
+.wind-preview-content .mini-table tbody tr:nth-child(odd) {
+    background: var(--bg-muted);
+}
+
+.wind-preview-content .note {
+    margin: 0.25rem 0 0.15rem 0;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+}
+
 
 .preview__container {
     display: flex;

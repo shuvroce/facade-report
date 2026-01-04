@@ -338,22 +338,9 @@ def compute_cladding_pressures(
     """Compute C&C pressures for each level and effective area."""
 
     floors, cumu_heights = parse_floor_heights(floor_heights)
-    def _normalize_levels(levels, total):
-        """Accept None, iterable, int, or space/comma string; return valid level list."""
-        if levels is None:
-            return list(range(1, total + 1))
-        if isinstance(levels, (int, float)):
-            levels = [int(levels)]
-        elif isinstance(levels, str):
-            parts = levels.replace(",", " ").split()
-            levels = [int(p) for p in parts if p.strip().isdigit()]
-        else:
-            levels = [int(lv) for lv in levels]
-
-        levels = [lv for lv in levels if 1 <= lv <= total]
-        return levels or list(range(1, total + 1))
-
-    levels_to_use = _normalize_levels(selected_levels, len(floors))
+    # Per requirement: evaluate only at the top floor (building height)
+    top_level = len(floors)
+    levels_to_use = [top_level]
     q_zk = base_velocity_pressure(wind_speed, K_d, Imp_factor)
 
     wall_results, roof_results = {}, {}
@@ -368,48 +355,46 @@ def compute_cladding_pressures(
         wall_rows = []
         roof_rows = []
 
-        for level in levels_to_use:
-            if level > len(cumu_heights):
-                continue
+        # Single level: top of building
+        level = levels_to_use[0]
+        height = cumu_heights[level - 1]
+        K_z = velocity_pressure_coeff(exposure_cat, height, WFRS="C&C")
+        K_zt = topographic_factor(
+            topography_type, topo_height, topo_length, topo_distance, height, exposure_cat, topo_crest_side
+        )
+        q_z = q_zk * K_z * K_zt
+        P_zi = q_z * GC_pi
 
-            height = cumu_heights[level - 1]
-            K_z = velocity_pressure_coeff(exposure_cat, height, WFRS="C&C")
-            K_zt = topographic_factor(
-                topography_type, topo_height, topo_length, topo_distance, height, exposure_cat, topo_crest_side
-            )
-            q_z = q_zk * K_z * K_zt
-            P_zi = q_z * GC_pi
+        wall_rows.append(
+            {
+                "level": level,
+                "A_eff": A_eff,
+                "height": round(height, 2),
+                "K_z": round(K_z, 2),
+                "K_zt": round(K_zt, 2),
+                "q_z": round(q_z, 2),
+                "P_zi": round(P_zi, 2),
+                "P_z4_pos": round(q_z * GCp_z4_p + P_zi, 2),
+                "P_z4_neg": round(q_z * GCp_z4_n - P_zi, 2),
+                "P_z5_pos": round(q_z * GCp_z5_p + P_zi, 2),
+                "P_z5_neg": round(q_z * GCp_z5_n - P_zi, 2),
+            }
+        )
 
-            wall_rows.append(
-                {
-                    "level": level,
-                    "A_eff": A_eff,
-                    "height": round(height, 2),
-                    "K_z": round(K_z, 2),
-                    "K_zt": round(K_zt, 2),
-                    "q_z": round(q_z, 2),
-                    "P_zi": round(P_zi, 2),
-                    "P_z4_pos": round(q_z * GCp_z4_p + P_zi, 2),
-                    "P_z4_neg": round(q_z * GCp_z4_n - P_zi, 2),
-                    "P_z5_pos": round(q_z * GCp_z5_p + P_zi, 2),
-                    "P_z5_neg": round(q_z * GCp_z5_n - P_zi, 2),
-                }
-            )
-
-            roof_rows.append(
-                {
-                    "level": level,
-                    "A_eff": A_eff,
-                    "height": round(height, 2),
-                    "K_z": round(K_z, 2),
-                    "K_zt": round(K_zt, 2),
-                    "q_z": round(q_z, 2),
-                    "P_zi": round(P_zi, 2),
-                    "P_z1_neg": round(q_z * GCp_z1_n - P_zi, 2),
-                    "P_z2_neg": round(q_z * GCp_z2_n - P_zi, 2),
-                    "P_z3_neg": round(q_z * GCp_z3_n - P_zi, 2),
-                }
-            )
+        roof_rows.append(
+            {
+                "level": level,
+                "A_eff": A_eff,
+                "height": round(height, 2),
+                "K_z": round(K_z, 2),
+                "K_zt": round(K_zt, 2),
+                "q_z": round(q_z, 2),
+                "P_zi": round(P_zi, 2),
+                "P_z1_neg": round(q_z * GCp_z1_n - P_zi, 2),
+                "P_z2_neg": round(q_z * GCp_z2_n - P_zi, 2),
+                "P_z3_neg": round(q_z * GCp_z3_n - P_zi, 2),
+            }
+        )
 
         wall_results[A_eff] = wall_rows
         roof_results[A_eff] = roof_rows

@@ -467,9 +467,7 @@ def wind_preview():
             selected_levels=None,
         )
 
-        preview_area = 10.0
-        wall_rows = wall_results.get(preview_area, [])
-        roof_rows = roof_results.get(preview_area, [])
+        area_keys = sorted(wall_results.keys())
         C_pw, C_pl, C_ps = external_pressure_coeff(b_length, b_width)
 
     except Exception as exc:
@@ -496,40 +494,53 @@ def wind_preview():
         for r in mwfrs_levels
     ]
 
-    cnc_headers_wall = ["Lvl", "z (m)", "+GCp4/5", "-GCp4", "-GCp5"]
-    cnc_rows_wall = [
-        {
-            "Lvl": r["level"],
-            "z (m)": r["height"],
-            "+GCp4/5": r["P_z4_pos"],
-            "-GCp4": r["P_z4_neg"],
-            "-GCp5": r["P_z5_neg"],
-        }
-        for r in wall_rows
-    ]
-
-    cnc_headers_roof = ["Lvl", "z (m)", "-GCp1", "-GCp2", "-GCp3"]
-    cnc_rows_roof = [
-        {
-            "Lvl": r["level"],
-            "z (m)": r["height"],
-            "-GCp1": r["P_z1_neg"],
-            "-GCp2": r["P_z2_neg"],
-            "-GCp3": r["P_z3_neg"],
-        }
-        for r in roof_rows
-    ]
-
     html_parts = [
         "<div class='wind-preview-block'>",
         f"<p class='note'>MWFRS summary: G={summary['gust_factor']}, Kd={K_d}, Cp(w/s/l)={C_pw}/{C_ps}/{C_pl}</p>",
         table_html(mwfrs_headers, mwfrs_rows),
-        "<p class='note'>C&C (walls) at A_eff=10 m²</p>",
-        table_html(cnc_headers_wall, cnc_rows_wall),
-        "<p class='note'>C&C (roof) at A_eff=10 m²</p>",
-        table_html(cnc_headers_roof, cnc_rows_roof),
-        "</div>",
     ]
+
+    cnc_headers_wall = ["A_eff (m²)", "Lvl", "z (m)", "+GCp4/5", "-GCp4", "-GCp5"]
+    cnc_headers_roof = ["A_eff (m²)", "Lvl", "z (m)", "-GCp1", "-GCp2", "-GCp3"]
+
+    for area in area_keys:
+        wall_rows = wall_results.get(area, [])
+        roof_rows = roof_results.get(area, [])
+
+        wall_rows_fmt = [
+            {
+                "A_eff (m²)": area,
+                "Lvl": r.get("level"),
+                "z (m)": r.get("height"),
+                "+GCp4/5": r.get("P_z4_pos"),
+                "-GCp4": r.get("P_z4_neg"),
+                "-GCp5": r.get("P_z5_neg"),
+            }
+            for r in wall_rows
+        ]
+
+        roof_rows_fmt = [
+            {
+                "A_eff (m²)": area,
+                "Lvl": r.get("level"),
+                "z (m)": r.get("height"),
+                "-GCp1": r.get("P_z1_neg"),
+                "-GCp2": r.get("P_z2_neg"),
+                "-GCp3": r.get("P_z3_neg"),
+            }
+            for r in roof_rows
+        ]
+
+        html_parts.extend(
+            [
+                f"<p class='note'>C&C walls @ A_eff={area} m² (top level)</p>",
+                table_html(cnc_headers_wall, wall_rows_fmt),
+                f"<p class='note'>C&C roof @ A_eff={area} m² (top level)</p>",
+                table_html(cnc_headers_roof, roof_rows_fmt),
+            ]
+        )
+
+    html_parts.append("</div>")
 
     return {"success": True, "html": "".join(html_parts)}
 
