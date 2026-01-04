@@ -11,6 +11,38 @@
 </head>
 
 <body>
+    <header class="topbar" aria-label="Workspace controls">
+        <div class="topbar-left">
+            <div class="logo-badge" aria-label="Facade Report">FR</div>
+            <button class="topbar-icon-btn" type="button" title="Open" aria-label="Open">
+                <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 19h16a1 1 0 0 0 1-1v-7H9l-2-3H3v10a1 1 0 0 0 1 1Z"></path>
+                    <path d="M4 8V6a1 1 0 0 1 1-1h5.5l2 3H22"></path>
+                </svg>
+            </button>
+            <button class="topbar-icon-btn" type="button" title="Save" aria-label="Save">
+                <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M5 5h12l2 2v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1Z"></path>
+                    <path d="M15 5v6H7V5"></path>
+                    <path d="M12 17.5v.01"></path>
+                </svg>
+            </button>
+            <p>Project Name</p>
+        </div>
+
+        <div class="topbar-right">
+            <div class="user-license" aria-label="License status">
+                <span class="status-dot status-active" aria-hidden="true"></span>
+                <span class="license-text">License: Active</span>
+            </div>
+            <div class="user-avatar" aria-hidden="true">JD</div>
+            <div class="user-meta" aria-label="Signed-in user">
+                <div class="user-name">Jane Doe</div>
+                <div class="user-role">Lead Engineer</div>
+            </div>
+        </div>
+    </header>
+
     <nav>
         <div class="nav_bar">
             <div class="tab_box">
@@ -309,53 +341,6 @@
                                     </div>
                                 </div>
 
-                                <!-- 3. TOPOGRAPHY -->
-                                <div class="wind-card">
-                                    <div class="wind-card-header">Topography</div>
-                                    <div class="wind-card-content form-section">
-                                        <div class="form-field">
-                                            <label for="wind.topography_type">Topography Type</label>
-                                            <select id="wind.topography_type" name="wind.topography_type">
-                                                <option value="Homogeneous">Homogeneous</option>
-                                                <option value="Hill">Hill</option>
-                                                <option value="Ridge">Ridge</option>
-                                                <option value="Escarpment">Escarpment</option>
-                                            </select>
-                                        </div>
-                                        <div class="form-field">
-                                            <label for="wind.topo_crest_side">Topography Crest Side</label>
-                                            <input type="text" id="wind.topo_crest_side" name="wind.topo_crest_side">
-                                        </div>
-                                        <div class="form-field">
-                                            <label for="wind.topo_height">Topography Height</label>
-                                            <div class="form-field-input-group">
-                                                <input type="number" id="wind.topo_height" name="wind.topo_height">
-                                                <span class="form-field-unit">m</span>
-                                            </div>
-                                        </div>
-                                        <div class="form-field">
-                                            <label for="wind.topo_length">Topography Length</label>
-                                            <div class="form-field-input-group">
-                                                <input type="number" id="wind.topo_length" name="wind.topo_length">
-                                                <span class="form-field-unit">m</span>
-                                            </div>
-                                        </div>
-                                        <div class="form-field">
-                                            <label for="wind.topo_distance">Topography Distance</label>
-                                            <div class="form-field-input-group">
-                                                <input type="number" id="wind.topo_distance" name="wind.topo_distance">
-                                                <span class="form-field-unit">m</span>
-                                            </div>
-                                        </div>
-                                        <div class="form-field">
-                                            <label for="wind.K_ht">Topographic Factor at H, Kht</label>
-                                            <div class="form-field-input-group">
-                                                <input type="number" step="0.1" id="wind.K_ht" name="wind.K_ht" value="1.0">
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-
                                 <!-- 4. GUST -->
                                 <div class="wind-card">
                                     <div class="wind-card-header">Gust Factor</div>
@@ -412,6 +397,53 @@
                                             <div class="form-field-input-group">
                                                 <input type="number" step="0.1" id="wind.q_zk" name="wind.q_zk">
                                                 <span class="form-field-unit">kPa</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- 3. TOPOGRAPHY -->
+                                <div class="wind-card">
+                                    <div class="wind-card-header">Topography</div>
+                                    <div class="wind-card-content form-section">
+                                        <div class="form-field">
+                                            <label for="wind.topography_type">Topography Type</label>
+                                            <select id="wind.topography_type" name="wind.topography_type">
+                                                <option value="Homogeneous">Homogeneous</option>
+                                                <option value="Hill">Hill</option>
+                                                <option value="Ridge">Ridge</option>
+                                                <option value="Escarpment">Escarpment</option>
+                                            </select>
+                                        </div>
+                                        <div class="form-field">
+                                            <label for="wind.topo_crest_side">Topography Crest Side</label>
+                                            <input type="text" id="wind.topo_crest_side" name="wind.topo_crest_side">
+                                        </div>
+                                        <div class="form-field">
+                                            <label for="wind.topo_height">Topography Height</label>
+                                            <div class="form-field-input-group">
+                                                <input type="number" id="wind.topo_height" name="wind.topo_height">
+                                                <span class="form-field-unit">m</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-field">
+                                            <label for="wind.topo_length">Topography Length</label>
+                                            <div class="form-field-input-group">
+                                                <input type="number" id="wind.topo_length" name="wind.topo_length">
+                                                <span class="form-field-unit">m</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-field">
+                                            <label for="wind.topo_distance">Topography Distance</label>
+                                            <div class="form-field-input-group">
+                                                <input type="number" id="wind.topo_distance" name="wind.topo_distance">
+                                                <span class="form-field-unit">m</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-field">
+                                            <label for="wind.K_ht">Topographic Factor at H, Kht</label>
+                                            <div class="form-field-input-group">
+                                                <input type="number" step="0.1" id="wind.K_ht" name="wind.K_ht" value="1.0">
                                             </div>
                                         </div>
                                     </div>

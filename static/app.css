@@ -10,6 +10,7 @@
     --modal-width-max: 900px;
     --modal-width-calculator: 300px;
     --status-area-width: 265px;
+    --topbar-height: 3.5rem;
 
     /* Border Radius */
     --radius-1: 4px;
@@ -174,6 +175,130 @@ body {
 
 /* ================ 3. LAYOUT COMPONENTS ================ */
 
+/* --- Top Bar --- */
+.topbar {
+    width: 100%;
+    height: var(--topbar-height);
+    padding: 0.5rem 1.75rem;
+    background: var(--bg-primary);
+    /* box-shadow: 0 4px 12px var(--shadow-container); */
+    border-bottom: 2px solid var(--border-primary);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    z-index: 10000;
+    transition: var(--transition-bg), var(--transition-border);
+}
+
+.topbar-left,
+.topbar-right {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.logo-badge {
+    width: 42px;
+    height: 42px;
+    border-radius: var(--radius-2);
+    background: var(--line-active);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+.topbar-icon-btn {
+    width: 40px;
+    height: 40px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    transition: transform 0.1s ease, opacity 0.15s ease;
+}
+
+.topbar-icon {
+    width: 20px;
+    height: 20px;
+    stroke: var(--text-primary);
+    stroke-width: 1.6;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+}
+
+.topbar-icon-btn:hover {
+    opacity: 0.85;
+}
+
+.topbar-icon-btn:active {
+    transform: translateY(1px);
+}
+
+.user-avatar {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--text-active), var(--color-blue));
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 800;
+}
+
+.user-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    line-height: 1.2;
+}
+
+.user-name {
+    font-weight: 700;
+    color: var(--text-heading);
+}
+
+.user-role {
+    color: var(--text-secondary);
+    font-size: 0.85rem;
+}
+
+.user-license {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    color: var(--text-secondary);
+}
+
+.status-dot {
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--color-green);
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.16);
+}
+
+.status-dot.status-inactive {
+    background: var(--color-red);
+    box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.16);
+}
+
+.license-text {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
 /* --- Navigation --- */
 nav {
     width: var(--container-width);
@@ -183,7 +308,7 @@ nav {
     border-radius: var(--radius-2) var(--radius-2) 0 0;
     border-bottom: 1px solid var(--border-primary);
     position: fixed;
-    top: 20px;
+    top: calc(var(--topbar-height) + 0.75rem);
     left: 50%;
     transform: translateX(-50%);
     box-shadow: 0 -6px 12px var(--shadow-nav);
@@ -214,7 +339,7 @@ nav {
     border-radius: 0 0 var(--radius-2) var(--radius-2);
     box-shadow: 0 6px 12px var(--shadow-container);
     position: fixed;
-    top: 5.7em;
+    top: calc(var(--topbar-height) + 4.5rem);
     bottom: 1.5rem;
     left: 50%;
     transform: translateX(-50%);
