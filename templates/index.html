@@ -243,20 +243,32 @@
                                     </select>
                                 </div>
                                 <div class="form-field">
-                                    <label for="wind.wind_speed">Wind Speed (m/s)</label>
-                                    <input type="number" step="0.1" id="wind.wind_speed" name="wind.wind_speed" value="65.7">
+                                    <label for="wind.wind_speed">Wind Speed</label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.wind_speed" name="wind.wind_speed" value="65.7">
+                                        <span class="form-field-unit">m/s</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
-                                    <label for="wind.b_height">Building Height (m)</label>
-                                    <input type="number" step="0.1" id="wind.b_height" name="wind.b_height">
+                                    <label for="wind.b_height">Building Height</label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.b_height" name="wind.b_height">
+                                        <span class="form-field-unit">m</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
-                                    <label for="wind.b_length">Building Length (m)</label>
-                                    <input type="number" step="0.1" id="wind.b_length" name="wind.b_length">
+                                    <label for="wind.b_length">Building Length</label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.b_length" name="wind.b_length">
+                                        <span class="form-field-unit">m</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
-                                    <label for="wind.b_width">Building Width (m)</label>
-                                    <input type="number" step="0.1" id="wind.b_width" name="wind.b_width">
+                                    <label for="wind.b_width">Building Width</label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.b_width" name="wind.b_width">
+                                        <span class="form-field-unit">m</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.exposure_cat">Exposure Category</label>
@@ -286,7 +298,10 @@
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.K_d">Directionality Factor, Kd</label>
-                                    <input type="number" step="0.1" id="wind.K_d" name="wind.K_d" value="0.85">
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.K_d" name="wind.K_d" value="0.85">
+                                        <span class="form-field-unit">—</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.GC_pi">Internal Pressure Coefficient, GCpi</label>
@@ -298,15 +313,24 @@
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.C_pl">External Leeward Pressure Coefficient, Cpl</label>
-                                    <input type="number" step="0.1" id="wind.C_pl" name="wind.C_pl" value="0.5">
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.C_pl" name="wind.C_pl" value="0.5">
+                                        <span class="form-field-unit">—</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.q_zk">Velocity Pressure, qz</label>
-                                    <input type="number" step="0.1" id="wind.q_zk" name="wind.q_zk">
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.q_zk" name="wind.q_zk">
+                                        <span class="form-field-unit">Pa</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.K_ht">Topographic Factor at H, Kht</label>
-                                    <input type="number" step="0.1" id="wind.K_ht" name="wind.K_ht" value="1.0">
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.K_ht" name="wind.K_ht" value="1.0">
+                                        <span class="form-field-unit">—</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.b_rigidity">Building Rigidity</label>
@@ -316,16 +340,25 @@
                                     </select>
                                 </div>
                                 <div class="form-field">
-                                    <label for="wind.b_freq">Building Natural Frequency, fn (Hz)</label>
-                                    <input type="number" step="0.1" id="wind.b_freq" name="wind.b_freq">
+                                    <label for="wind.b_freq">Building Natural Frequency, fn</label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.b_freq" name="wind.b_freq">
+                                        <span class="form-field-unit">Hz</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.damping">Damping Ratio</label>
-                                    <input type="number" step="0.1" id="wind.damping" name="wind.damping" value="0.02">
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.damping" name="wind.damping" value="0.02">
+                                        <span class="form-field-unit">—</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.gust_factor">Gust Effect Factor, G</label>
-                                    <input type="number" step="0.1" id="wind.gust_factor" name="wind.gust_factor" value="0.85">
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="wind.gust_factor" name="wind.gust_factor" value="0.85">
+                                        <span class="form-field-unit">—</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.topography_type">Topography Type</label>
@@ -342,15 +375,24 @@
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.topo_height">Topography Height</label>
-                                    <input type="number" id="wind.topo_height" name="wind.topo_height">
+                                    <div class="form-field-input-group">
+                                        <input type="number" id="wind.topo_height" name="wind.topo_height">
+                                        <span class="form-field-unit">m</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.topo_length">Topography Length</label>
-                                    <input type="number" id="wind.topo_length" name="wind.topo_length">
+                                    <div class="form-field-input-group">
+                                        <input type="number" id="wind.topo_length" name="wind.topo_length">
+                                        <span class="form-field-unit">m</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.topo_distance">Topography Distance</label>
-                                    <input type="number" id="wind.topo_distance" name="wind.topo_distance">
+                                    <div class="form-field-input-group">
+                                        <input type="number" id="wind.topo_distance" name="wind.topo_distance">
+                                        <span class="form-field-unit">m</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="wind.exposure_note">Exposure Note</label>
@@ -433,16 +475,25 @@
                                 <summary class="profile-summary">Properties</summary>
                                 <div class="item-fields form-section">
                                     <div class="form-field">
-                                        <label for="web_length">Web Length (mm)</label>
-                                        <input type="number" step="0.1" id="web_length" name="web_length" value="85">
+                                        <label for="web_length">Web Length</label>
+                                        <div class="form-field-input-group">
+                                            <input type="number" step="0.1" id="web_length" name="web_length" value="85">
+                                            <span class="form-field-unit">mm</span>
+                                        </div>
                                     </div>
                                     <div class="form-field">
-                                        <label for="flange_length">Flange Length (mm)</label>
-                                        <input type="number" step="0.1" id="flange_length" name="flange_length" value="50">
+                                        <label for="flange_length">Flange Length</label>
+                                        <div class="form-field-input-group">
+                                            <input type="number" step="0.1" id="flange_length" name="flange_length" value="50">
+                                            <span class="form-field-unit">mm</span>
+                                        </div>
                                     </div>
                                     <div class="form-field">
-                                        <label for="thk">Thickness (mm)</label>
-                                        <input type="number" step="0.1" id="thk" name="thk" value="2.5">
+                                        <label for="thk">Thickness</label>
+                                        <div class="form-field-input-group">
+                                            <input type="number" step="0.1" id="thk" name="thk" value="2.5">
+                                            <span class="form-field-unit">mm</span>
+                                        </div>
                                     </div>
                                 </div>
                             </details>
@@ -596,28 +647,43 @@
                             </div>
                             <div class="item-fields form-section">
                                 <div class="form-field">
-                                    <label for="screw_dia">Screw Diameter, d (mm)</label>
-                                    <input type="number" step="0.1" id="screw_dia" name="screw_dia" value="4.8">
+                                    <label for="screw_dia">Screw Diameter, d</label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="screw_dia" name="screw_dia" value="4.8">
+                                        <span class="form-field-unit">mm</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
                                     <label for="cleat_size">Cleat Size</label>
                                     <input type="text" id="cleat_size" name="cleat_size" value="25 x 32 x 3.5 (L = 85)">
                                 </div>
                                 <div class="form-field">
-                                    <label for="head_dia">Screw Head Diameter, d<sub>h</sub> (mm)</label>
-                                    <input type="number" step="0.1" id="head_dia" name="head_dia" value="10.5">
+                                    <label for="head_dia">Screw Head Diameter, d<sub>h</sub></label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="head_dia" name="head_dia" value="10.5">
+                                        <span class="form-field-unit">mm</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
-                                    <label for="t1">Thickness t<sub>1</sub> (mm)</label>
-                                    <input type="number" step="0.1" id="t1" name="t1" value="3.5">
+                                    <label for="t1">Thickness t<sub>1</sub></label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="t1" name="t1" value="3.5">
+                                        <span class="form-field-unit">mm</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
-                                    <label for="t2">Thickness t<sub>2</sub> (mm)</label>
-                                    <input type="number" step="0.1" id="t2" name="t2" value="2.5">
+                                    <label for="t2">Thickness t<sub>2</sub></label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="t2" name="t2" value="2.5">
+                                        <span class="form-field-unit">mm</span>
+                                    </div>
                                 </div>
                                 <div class="form-field">
-                                    <label for="tc">Depth of Penetration, t<sub>c</sub> (mm)</label>
-                                    <input type="number" step="0.1" id="tc" name="tc" value="2.5">
+                                    <label for="tc">Depth of Penetration, t<sub>c</sub></label>
+                                    <div class="form-field-input-group">
+                                        <input type="number" step="0.1" id="tc" name="tc" value="2.5">
+                                        <span class="form-field-unit">mm</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

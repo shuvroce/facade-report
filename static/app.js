@@ -463,6 +463,55 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     /**
+     * Create a form field with input and optional unit suffix
+     * @param {HTMLElement} input - The input element
+     * @param {string} label - The label text
+     * @param {string} [unit] - Optional unit suffix (e.g., 'mm', 'kPa')
+     * @returns {HTMLElement} The form-field div
+     */
+    function createFormField(input, label, unit) {
+        const formField = document.createElement('div');
+        formField.className = 'form-field';
+        
+        const labelEl = document.createElement('label');
+        labelEl.setAttribute('for', input.id);
+        labelEl.textContent = label;
+        
+        formField.appendChild(labelEl);
+        
+        if (unit && input.type === 'number') {
+            // Wrap input with unit in a form-field-input-group
+            const inputGroup = document.createElement('div');
+            inputGroup.className = 'form-field-input-group';
+            
+            inputGroup.appendChild(input);
+            
+            const unitSpan = document.createElement('span');
+            unitSpan.className = 'form-field-unit';
+            unitSpan.textContent = unit;
+            unitSpan.setAttribute('aria-hidden', 'true');
+            
+            inputGroup.appendChild(unitSpan);
+            formField.appendChild(inputGroup);
+        } else {
+            formField.appendChild(input);
+        }
+        
+        return formField;
+    }
+
+    /**
+     * Extract unit from placeholder text (e.g., "Glass Length (mm)" -> "mm")
+     * @param {string} placeholder - The placeholder text
+     * @returns {string|null} The extracted unit or null
+     */
+    function extractUnitFromPlaceholder(placeholder) {
+        if (!placeholder) return null;
+        const match = placeholder.match(/\(([^)]+)\)$/);
+        return match ? match[1] : null;
+    }
+
+    /**
      * Update glass unit fields based on selected glass type
      * @param {HTMLElement} glassItem - The glass unit item container
      */
@@ -517,16 +566,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.name = fieldName;
             }
             
-            // Create form-field wrapper with label
-            const formField = document.createElement('div');
-            formField.className = 'form-field';
+            // Create form-field wrapper with label and optional unit
+            const labelText = glassFieldPlaceholders[fieldName] || fieldName;
+            const unit = extractUnitFromPlaceholder(labelText);
+            const formField = createFormField(input, labelText, unit);
             
-            const label = document.createElement('label');
-            label.setAttribute('for', fieldName);
-            label.textContent = glassFieldPlaceholders[fieldName] || fieldName;
-            
-            formField.appendChild(label);
-            formField.appendChild(input);
             fieldsContainer.appendChild(formField);
         });
 
@@ -1188,16 +1232,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.name = fieldName;
             }
             
-            // Create form-field wrapper with label
-            const formField = document.createElement('div');
-            formField.className = 'form-field';
+            // Create form-field wrapper with label and optional unit
+            const labelText = frameFieldPlaceholders[fieldName] || fieldName;
+            const unit = extractUnitFromPlaceholder(labelText);
+            const formField = createFormField(input, labelText, unit);
             
-            const label = document.createElement('label');
-            label.setAttribute('for', fieldName);
-            label.textContent = frameFieldPlaceholders[fieldName] || fieldName;
-            
-            formField.appendChild(label);
-            formField.appendChild(input);
             fieldsContainer.appendChild(formField);
         });
     }
@@ -1238,16 +1277,11 @@ document.addEventListener('DOMContentLoaded', () => {
                 input.value = defaultValues[fieldName];
             }
             
-            // Create form-field wrapper with label
-            const formField = document.createElement('div');
-            formField.className = 'form-field';
+            // Create form-field wrapper with label and optional unit
+            const labelText = anchorageFieldPlaceholders[fieldName] || fieldName;
+            const unit = extractUnitFromPlaceholder(labelText);
+            const formField = createFormField(input, labelText, unit);
             
-            const label = document.createElement('label');
-            label.setAttribute('for', fieldName);
-            label.textContent = anchorageFieldPlaceholders[fieldName] || fieldName;
-            
-            formField.appendChild(label);
-            formField.appendChild(input);
             fieldsContainer.appendChild(formField);
         });
     }

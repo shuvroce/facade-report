@@ -749,6 +749,28 @@ textarea {
     flex: 1 1 100%;
 }
 
+/* --- Form Field Input Group (with units) --- */
+.form-field-input-group {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-field-input-group input {
+    flex: 1;
+    padding-right: 28px;
+}
+
+.form-field-unit {
+    position: absolute;
+    right: 12px;
+    font-size: 0.75rem;
+    color: var(--text-secondary);
+    pointer-events: none;
+    user-select: none;
+    font-weight: 500;
+}
+
 /* --- Dynamic Lists --- */
 .dynamic-list {
     border: 1px solid var(--border-secondary);
