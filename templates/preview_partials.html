@@ -657,23 +657,23 @@
     <div class="property-break">Weld</div>
     <div class="property-item">
         <span class="property-label">Tensile f<sub>n</sub>:</span>
-        <span class="property-value">{{ result.weld_fn or '—' }} MPa</span>
+        <span class="property-value">{{ result.weld_fn or '—' }} N/mm</span>
     </div>
     <div class="property-item">
         <span class="property-label">Shear f<sub>v</sub>:</span>
-        <span class="property-value">{{ result.weld_fv or '—' }} MPa</span>
+        <span class="property-value">{{ result.weld_fv or '—' }} N/mm</span>
     </div>
     <div class="property-item">
         <span class="property-label">Bending f<sub>b</sub>:</span>
-        <span class="property-value">{{ result.weld_fb or '—' }} MPa</span>
+        <span class="property-value">{{ result.weld_fb or '—' }} N/mm</span>
     </div>
     <div class="property-item">
         <span class="property-label">Resultant, f<sub>R</sub>:</span>
-        <span class="property-value">{{ result.weld_fR or '—' }} MPa</span>
+        <span class="property-value">{{ result.weld_fR or '—' }} N/mm</span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub>:</span>
-        <span class="property-value">{{ result.weld_phi_Rn or '—' }} kN
+        <span class="property-value">{{ result.weld_phi_Rn or '—' }} N/mm
             {% if result.weld_phi_Rn and result.weld_phi_Rn > result.weld_fR %}<span class="status-icon pass">✓</span>
             {% elif result.weld_phi_Rn %}<span class="status-icon fail">✕</span>
             {% endif %}
@@ -758,11 +758,11 @@
     </div>
     <div class="property-item">
         <span class="property-label">A<sub>VC</sub>:</span>
-        <span class="property-value">{{ result.top_A_VC or '—' }} kN</span>
+        <span class="property-value">{{ result.top_A_VC or '—' }} mm²</span>
     </div>
     <div class="property-item">
         <span class="property-label">A<sub>VCO</sub>:</span>
-        <span class="property-value">{{ result.top_A_VCO or '—' }} kN</span>
+        <span class="property-value">{{ result.top_A_VCO or '—' }} mm²</span>
     </div>
     <div class="property-item">
         <span class="property-label">φV<sub>cbg</sub>:</span>
@@ -940,23 +940,23 @@
     <div class="property-break">Weld</div>
     <div class="property-item">
         <span class="property-label">Tensile f<sub>n</sub>:</span>
-        <span class="property-value">{{ result.weld_fn or '—' }} MPa</span>
+        <span class="property-value">{{ result.weld_fn or '—' }} N/mm</span>
     </div>
     <div class="property-item">
         <span class="property-label">Shear f<sub>v</sub>:</span>
-        <span class="property-value">{{ result.weld_fv or '—' }} MPa</span>
+        <span class="property-value">{{ result.weld_fv or '—' }} N/mm</span>
     </div>
     <div class="property-item">
         <span class="property-label">Bending f<sub>b</sub>:</span>
-        <span class="property-value">{{ result.weld_fb or '—' }} MPa</span>
+        <span class="property-value">{{ result.weld_fb or '—' }} N/mm</span>
     </div>
     <div class="property-item">
         <span class="property-label">Resultant, f<sub>R</sub>:</span>
-        <span class="property-value">{{ result.weld_fR or '—' }} MPa</span>
+        <span class="property-value">{{ result.weld_fR or '—' }} N/mm</span>
     </div>
     <div class="property-item">
         <span class="property-label">φR<sub>n</sub>:</span>
-        <span class="property-value">{{ result.weld_phi_Rn or '—' }} kN
+        <span class="property-value">{{ result.weld_phi_Rn or '—' }} N/mm
             {% if result.weld_phi_Rn and result.weld_phi_Rn > result.weld_fR %}<span class="status-icon pass">✓</span>
             {% elif result.weld_phi_Rn %}<span class="status-icon fail">✕</span>
             {% endif %}
