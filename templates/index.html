@@ -13,7 +13,9 @@
 <body>
     <header class="topbar" aria-label="Workspace controls">
         <div class="topbar-left">
-            <div class="logo-badge" aria-label="Facade Report">FAD</div>
+            <div class="logo-badge" aria-label="Facade Report">
+                <img src="{{ url_for('static', filename='logo.png') }}" alt="Facade Report Logo" class="logo-image">
+            </div>
 
             <div class="header-btn">
                 <button class="topbar-icon-btn" type="button" title="Open" aria-label="Open" id="load-yaml-btn">
