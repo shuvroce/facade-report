@@ -58,9 +58,14 @@ def parse_floor_heights(floor_heights):
     cumu = list(np.cumsum(heights))
     return heights, cumu
 
+def importance_factor(occupancy_cat):
+    """Return ASCE-style importance factor from occupancy category."""
+    mapping = {"I": 0.77, "II": 1.0, "III": 1.15, "IV": 1.15}
+    return mapping.get(str(occupancy_cat), 1.0)
 
-def base_velocity_pressure(wind_speed, K_d, Imp_factor):
+def base_velocity_pressure(wind_speed, K_d, occupancy_cat):
     """Return q_z at z=10m without Kz/Kzt (0.000613 * Kd * V^2 * I)."""
+    Imp_factor = importance_factor(occupancy_cat)
     return 0.000613 * K_d * (wind_speed ** 2) * Imp_factor
 
 def topographic_factor(topography_type, topo_height, topo_length, topo_distance, z, exposure_cat, topo_crest_side):
@@ -252,7 +257,7 @@ def compute_mwfrs_pressures(
     b_width,
     K_d,
     wind_speed,
-    Imp_factor,
+    occupancy_cat,
     GC_pi,
     topography_type,
     topo_height,
@@ -279,6 +284,7 @@ def compute_mwfrs_pressures(
     ) or 1.0
     C_pw, C_pl, C_ps = external_pressure_coeff(b_length, b_width)
     gust_factor_value = gust_factor(b_height, b_length, b_width, wind_speed, b_freq, damping, exposure_cat)
+    Imp_factor = importance_factor(occupancy_cat)
 
     q_h = 0.000613 * K_h * K_ht * K_d * wind_speed ** 2 * Imp_factor
     P_hi = q_h * GC_pi
@@ -332,8 +338,7 @@ def compute_cladding_pressures(
     floor_heights,
     wind_speed,
     K_d,
-    Imp_factor,
-    selected_levels=None,
+    occupancy_cat
 ):
     """Compute C&C pressures for each level and effective area."""
 
@@ -341,7 +346,7 @@ def compute_cladding_pressures(
     # Per requirement: evaluate only at the top floor (building height)
     top_level = len(floors)
     levels_to_use = [top_level]
-    q_zk = base_velocity_pressure(wind_speed, K_d, Imp_factor)
+    q_zk = base_velocity_pressure(wind_speed, K_d, occupancy_cat)
 
     wall_results, roof_results = {}, {}
 

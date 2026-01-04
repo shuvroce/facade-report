@@ -9,7 +9,6 @@ from wind_load import (
     compute_mwfrs_pressures,
     compute_cladding_pressures,
     parse_floor_heights,
-    base_velocity_pressure,
     external_pressure_coeff,
 )
 try:
@@ -420,11 +419,12 @@ def wind_preview():
         b_width = _to_float(wind.get("b_width"))
         K_d = _to_float(wind.get("K_d"), 0.85)
         wind_speed = _to_float(wind.get("wind_speed"))
-        Imp_factor = _to_float(wind.get("Imp_factor"), 1.0)
+        # Imp_factor = _to_float(wind.get("Imp_factor"), 1.0)
         GC_pi = _to_float(wind.get("GC_pi"), 0.18)
         b_freq = _to_float(wind.get("b_freq"), 1.2)
         damping = _to_float(wind.get("damping"), 0.02)
         floor_heights = wind.get("b_floor_heights")
+        occupancy_cat = wind.get("occupancy_cat")
 
         topo_type = wind.get("topography_type", "Homogeneous")
         topo_height = _to_float(wind.get("topo_height"), 0.0)
@@ -440,7 +440,7 @@ def wind_preview():
             b_width,
             K_d,
             wind_speed,
-            Imp_factor,
+            occupancy_cat,
             GC_pi,
             topo_type,
             topo_height,
@@ -463,8 +463,7 @@ def wind_preview():
             floors,
             wind_speed,
             K_d,
-            Imp_factor,
-            selected_levels=None,
+            occupancy_cat
         )
 
         area_keys = sorted(wall_results.keys())
@@ -500,45 +499,47 @@ def wind_preview():
         table_html(mwfrs_headers, mwfrs_rows),
     ]
 
-    cnc_headers_wall = ["A_eff (m²)", "Lvl", "z (m)", "+GCp4/5", "-GCp4", "-GCp5"]
-    cnc_headers_roof = ["A_eff (m²)", "Lvl", "z (m)", "-GCp1", "-GCp2", "-GCp3"]
+    cnc_headers_wall = ["A_eff (m²)", "P_z4_pos", "P_z4_neg", "P_z5_pos", "P_z5_neg"]
+    cnc_headers_roof = ["A_eff (m²)", "P_z1_neg", "P_z2_neg", "P_z3_neg"]
+
+    wall_rows_fmt = []
+    roof_rows_fmt = []
 
     for area in area_keys:
-        wall_rows = wall_results.get(area, [])
-        roof_rows = roof_results.get(area, [])
+        wall_rows = wall_results.get(area) or []
+        roof_rows = roof_results.get(area) or []
 
-        wall_rows_fmt = [
-            {
-                "A_eff (m²)": area,
-                "Lvl": r.get("level"),
-                "z (m)": r.get("height"),
-                "+GCp4/5": r.get("P_z4_pos"),
-                "-GCp4": r.get("P_z4_neg"),
-                "-GCp5": r.get("P_z5_neg"),
-            }
-            for r in wall_rows
+        if wall_rows:
+            r = wall_rows[0]
+            wall_rows_fmt.append(
+                {
+                    "A_eff (m²)": area,
+                    "P_z4_pos": r.get("P_z4_pos"),
+                    "P_z4_neg": r.get("P_z4_neg"),
+                    "P_z5_pos": r.get("P_z5_pos"),
+                    "P_z5_neg": r.get("P_z5_neg"),
+                }
+            )
+
+        if roof_rows:
+            r = roof_rows[0]
+            roof_rows_fmt.append(
+                {
+                    "A_eff (m²)": area,
+                    "P_z1_neg": r.get("P_z1_neg"),
+                    "P_z2_neg": r.get("P_z2_neg"),
+                    "P_z3_neg": r.get("P_z3_neg"),
+                }
+            )
+
+    html_parts.extend(
+        [
+            "<p class='note'>C&C wall pressures at top level (all A_eff)</p>",
+            table_html(cnc_headers_wall, wall_rows_fmt),
+            "<p class='note'>C&C roof pressures at top level (all A_eff)</p>",
+            table_html(cnc_headers_roof, roof_rows_fmt),
         ]
-
-        roof_rows_fmt = [
-            {
-                "A_eff (m²)": area,
-                "Lvl": r.get("level"),
-                "z (m)": r.get("height"),
-                "-GCp1": r.get("P_z1_neg"),
-                "-GCp2": r.get("P_z2_neg"),
-                "-GCp3": r.get("P_z3_neg"),
-            }
-            for r in roof_rows
-        ]
-
-        html_parts.extend(
-            [
-                f"<p class='note'>C&C walls @ A_eff={area} m² (top level)</p>",
-                table_html(cnc_headers_wall, wall_rows_fmt),
-                f"<p class='note'>C&C roof @ A_eff={area} m² (top level)</p>",
-                table_html(cnc_headers_roof, roof_rows_fmt),
-            ]
-        )
+    )
 
     html_parts.append("</div>")
 
