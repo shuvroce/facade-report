@@ -37,6 +37,7 @@
     --text-active: #0869d1;
     --line-active: #0869d1;
     --text-value: #127060;
+    --text-label: #6e6e6e;
 
     /* Light Theme - Border Colors */
     --border-primary: #e6e6e6;
@@ -88,6 +89,7 @@ body.dark-theme {
     --text-active: #4db8ff;
     --line-active: #4db8ff;
     --text-value: #76b1a7;
+    --text-label: #959595;
 
     /* Dark Theme - Border Colors */
     --border-primary: #404040;
@@ -701,7 +703,7 @@ input[type="number"] {
 }
 
 select {
-    background-color: var(--bg-select);
+    /* background-color: var(--bg-select); */
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpolyline points='2,4 6,8 10,4' stroke='%23666' stroke-width='1.5' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 8px center;
@@ -730,10 +732,10 @@ textarea {
 }
 
 .form-field label {
-    font-size: 0.75rem;
+    font-size: 0.73rem;
     font-weight: 500;
     margin-bottom: 4px;
-    color: var(--text-secondary);
+    color: var(--text-label);
     letter-spacing: 0.3px;
     text-transform: none;
 }
