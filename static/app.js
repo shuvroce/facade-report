@@ -1858,6 +1858,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
         populateCategories(data.categories || []);
         
+        // Update header project name
+        const headerProjectName = document.getElementById('header-project-name');
+        if (headerProjectName && data.project_info && data.project_info.project_name) {
+            headerProjectName.textContent = data.project_info.project_name;
+        }
+        
         // Trigger preview calculations after form is populated
         // Use a small delay to ensure all profile data is fully populated
         setTimeout(() => {
@@ -2642,4 +2648,18 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     loadCurrentInputsDir();
+
+    // 7. BIND PROJECT NAME TO HEADER
+    const projectNameInput = document.getElementById('project_info.project_name');
+    const headerProjectName = document.getElementById('header-project-name');
+
+    if (projectNameInput && headerProjectName) {
+        // Update header when input changes
+        projectNameInput.addEventListener('input', (e) => {
+            headerProjectName.textContent = e.target.value || 'Project Name';
+        });
+
+        // Set initial value on load
+        headerProjectName.textContent = projectNameInput.value || 'Project Name';
+    }
 });
