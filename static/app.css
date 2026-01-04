@@ -6,12 +6,13 @@
     --transition-border: border-color 0.1s ease 0s;
 
     /* Layout Widths */
-    --container-width: 1250px;
+    --container-width: 1150px;
     --modal-width-max: 900px;
     --modal-width-calculator: 300px;
-    --status-area-width: 265px;
+    --status-area-width: 250px;
     --topbar-height: 3.5rem;
     --left-bar-width: 64px;
+    --right-bar-width: 25rem;
     --workspace-gap: 1rem;
 
     /* Border Radius */
@@ -420,7 +421,7 @@ nav {
 }
 
 .right-rail {
-    width: var(--status-area-width);
+    width: var(--right-bar-width);
     /* height: 100%; */
     padding: 0.75rem 0.6rem;
     background: var(--bg-primary);

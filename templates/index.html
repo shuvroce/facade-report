@@ -14,19 +14,26 @@
     <header class="topbar" aria-label="Workspace controls">
         <div class="topbar-left">
             <div class="logo-badge" aria-label="Facade Report">FR</div>
-            <button class="topbar-icon-btn" type="button" title="Open" aria-label="Open">
+            <button class="topbar-icon-btn" type="button" title="Open" aria-label="Open" id="load-yaml-btn">
                 <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M4 19h16a1 1 0 0 0 1-1v-7H9l-2-3H3v10a1 1 0 0 0 1 1Z"></path>
                     <path d="M4 8V6a1 1 0 0 1 1-1h5.5l2 3H22"></path>
                 </svg>
             </button>
-            <button class="topbar-icon-btn" type="button" title="Save" aria-label="Save">
+            <button class="topbar-icon-btn" type="button" title="Open" aria-label="Open" id="generate-yaml-btn">
+                <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 19h16a1 1 0 0 0 1-1v-7H9l-2-3H3v10a1 1 0 0 0 1 1Z"></path>
+                    <path d="M4 8V6a1 1 0 0 1 1-1h5.5l2 3H22"></path>
+                </svg>
+            </button>
+            <button class="topbar-icon-btn" type="button" title="Save" aria-label="Save" id="download-yaml-btn">
                 <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M5 5h12l2 2v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1Z"></path>
                     <path d="M15 5v6H7V5"></path>
                     <path d="M12 17.5v.01"></path>
                 </svg>
             </button>
+            <input type="file" id="yaml-file-input" accept=".yaml,.yml,.json,text/yaml" hidden>
             <p>Project Name</p>
         </div>
 
@@ -44,7 +51,7 @@
     </header>
 
     <aside class="left-rail" aria-label="Quick actions">
-        <button class="rail-btn" type="button" title="Help" aria-label="Help">
+        <button class="rail-btn" type="button" title="Help" aria-label="Help" id="add-figures-btn">
             <svg class="rail-icon" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="9"></circle>
                 <path d="M9.5 9a2.5 2.5 0 0 1 4.5 1.3c0 1.7-2 2.1-2 3.2"></path>
@@ -155,7 +162,7 @@
                                 <button class="small-btn" id="select-inputs-dir-btn">✎</button>
                                 <!-- <span id="figure-checking-status" style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 0.5rem; display: none;">Checking...</span> -->
                             </div>
-                            <button class="small-btn help-btn" id="add-figures-btn">?</button>
+                            <!-- <button class="small-btn help-btn" id="add-figures-btn">?</button> -->
                         </div>
                         <div id="inputs-dir-display" class="status-summary">
                             <strong>Dir:</strong> <span id="inputs-dir-path-display">Default</span>
@@ -518,17 +525,6 @@
                                 </div>
                             </div>
                         </form>
-
-                        <div class="output-container">
-                            <h3>YAML Section</h3>
-                            <div class="btn_yaml">
-                                <button class="action_btn" id="load-yaml-btn">Load</button>
-                                <button class="action_btn" id="generate-yaml-btn">Generate</button>
-                                <button class="action_btn" id="download-yaml-btn">Download</button>
-                                <input type="file" id="yaml-file-input" accept=".yaml,.yml,.json,text/yaml" hidden>
-                            </div>
-                            <pre id="yaml-output-display">Click 'Generate' to see the YAML output.</pre>
-                        </div>
                     </div>
 
                     <template id="alum-profile-template">
@@ -824,58 +820,10 @@
                 </div>
             </div>
         </div>
-        
-        <aside class="right-rail" aria-label="Quick actions">
-            <button class="rail-btn" type="button" title="Help" aria-label="Help">
-                <svg class="rail-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="12" r="9"></circle>
-                    <path d="M9.5 9a2.5 2.5 0 0 1 4.5 1.3c0 1.7-2 2.1-2 3.2"></path>
-                    <circle cx="12" cy="16.5" r="0.9"></circle>
-                </svg>
-            </button>
-            <button class="rail-btn" id="calculator-btn" type="button" title="Open calculator" aria-label="Open calculator">
-                <svg class="rail-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="4" y="3" width="16" height="18" rx="2"></rect>
-                    <line x1="4" y1="9" x2="20" y2="9"></line>
-                    <line x1="8" y1="13" x2="10" y2="13"></line>
-                    <line x1="14" y1="13" x2="16" y2="13"></line>
-                    <line x1="8" y1="17" x2="10" y2="17"></line>
-                    <line x1="14" y1="17" x2="16" y2="17"></line>
-                </svg>
-            </button>
-            <button class="rail-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
-                <svg id="theme-icon-sun" class="theme-icon sun hidden" viewBox="0 0 24 24" aria-hidden="true">
-                    <circle cx="12" cy="12" r="4"></circle>
-                    <line x1="12" y1="2" x2="12" y2="5"></line>
-                    <line x1="12" y1="19" x2="12" y2="22"></line>
-                    <line x1="4.22" y1="4.22" x2="6.34" y2="6.34"></line>
-                    <line x1="17.66" y1="17.66" x2="19.78" y2="19.78"></line>
-                    <line x1="2" y1="12" x2="5" y2="12"></line>
-                    <line x1="19" y1="12" x2="22" y2="12"></line>
-                    <line x1="4.22" y1="19.78" x2="6.34" y2="17.66"></line>
-                    <line x1="17.66" y1="6.34" x2="19.78" y2="4.22"></line>
-                </svg>
-                <svg id="theme-icon-moon" class="theme-icon moon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
-                </svg>
-            </button>
-            <button class="rail-btn" id="glass-nfl-chart-btn" type="button" title="Glass NFL chart" aria-label="Glass NFL chart">
-                <svg class="rail-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <rect x="4" y="10" width="3" height="8" rx="1"></rect>
-                    <rect x="10.5" y="7" width="3" height="11" rx="1"></rect>
-                    <rect x="17" y="4" width="3" height="14" rx="1"></rect>
-                    <polyline points="4 6 8 4 12 6 16 5 20 7" fill="none"></polyline>
-                </svg>
-            </button>
-            <button class="rail-btn" id="glass-deflection-chart-btn" type="button" title="Glass deflection chart" aria-label="Glass deflection chart">
-                <svg class="rail-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 18c3-6 7-9 10-6s5 0 6-4" fill="none"></path>
-                    <circle cx="4" cy="18" r="1"></circle>
-                    <circle cx="14" cy="12" r="1"></circle>
-                    <circle cx="20" cy="8" r="1"></circle>
-                    <circle cx="9" cy="10" r="1"></circle>
-                </svg>
-            </button>
+
+        <aside class="right-rail">
+            <h3>YAML Output</h3>
+            <pre id="yaml-output-display">Click 'Generate' to see the YAML output.</pre>
         </aside>
     </div>
 
