@@ -48,6 +48,7 @@
     --border-tertiary: #eee;
     --border-input: #e9e8e8;
     --border-code: #e9e8e8;
+    --border-header: #dadada;
 
     /* Light Theme - Shadow Colors */
     --shadow-nav: rgba(0, 0, 0, 0.1);
@@ -105,6 +106,7 @@ body.dark-theme {
     --border-tertiary: #3a3a3a;
     --border-input: #4a4a4a;
     --border-code: #2d2d2d;
+    --border-header: #404040;
 
     /* Dark Theme - Shadow Colors */
     --shadow-nav: rgba(0, 0, 0, 0.3);
@@ -193,7 +195,7 @@ body {
     padding: 0.5rem 1.5rem 0.5rem 0.7rem;
     background: var(--bg-primary);
     /* box-shadow: 0 4px 12px var(--shadow-container); */
-    border-bottom: 1px solid var(--border-primary);
+    border-bottom: 1px solid var(--border-header);
     position: fixed;
     top: 0;
     left: 0;
