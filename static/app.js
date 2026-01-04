@@ -1104,6 +1104,171 @@ document.addEventListener('DOMContentLoaded', () => {
         input.addEventListener('change', triggerWindPreview);
     });
 
+    // Initialize wind location dropdown
+    const windLocationSelect = document.getElementById('wind.location');
+    const windSpeedInput = document.getElementById('wind.wind_speed');
+    let windLocations = {};
+
+    async function initializeWindLocations() {
+        try {
+            const response = await fetch('/get_wind_locations');
+            if (response.ok) {
+                const data = await response.json();
+                if (data.locations) {
+                    data.locations.forEach(([location, speed]) => {
+                        windLocations[location] = speed;
+                        const option = document.createElement('option');
+                        option.value = location;
+                        option.textContent = `${location} (${speed} m/s)`;
+                        windLocationSelect.appendChild(option);
+                    });
+                    // Set default to Dhaka if available
+                    if (windLocations['Dhaka']) {
+                        windLocationSelect.value = 'Dhaka';
+                        windSpeedInput.value = windLocations['Dhaka'];
+                        triggerWindPreview();
+                    }
+                }
+            }
+        } catch (error) {
+            console.warn('Error loading wind locations:', error);
+        }
+    }
+
+    if (windLocationSelect) {
+        initializeWindLocations();
+        windLocationSelect.addEventListener('change', () => {
+            const location = windLocationSelect.value;
+            if (location && windLocations[location]) {
+                windSpeedInput.value = windLocations[location];
+                triggerWindPreview();
+            }
+        });
+    }
+
+    // Auto-calculate gust factor, external pressure coefficients
+    const gustFactorInput = document.getElementById('wind.gust_factor');
+    const cPwInput = document.getElementById('wind.C_pw');
+    const cPlInput = document.getElementById('wind.C_pl');
+    const cPsInput = document.getElementById('wind.C_ps');
+    const bLengthInput = document.getElementById('wind.b_length');
+    const bWidthInput = document.getElementById('wind.b_width');
+    const bHeightInput = document.getElementById('wind.b_height');
+    const exposureCatSelect = document.getElementById('wind.exposure_cat');
+    const bFreqInput = document.getElementById('wind.b_freq');
+    const dampingInput = document.getElementById('wind.damping');
+
+    const triggerWindCalcs = debounce(() => {
+        // Calculate external pressure coefficients from b_length and b_width
+        const bLength = parseFloat(bLengthInput?.value) || 0;
+        const bWidth = parseFloat(bWidthInput?.value) || 0;
+
+        if (bLength > 0 && bWidth > 0 && cPwInput && cPlInput && cPsInput) {
+            const cPw = 0.8;
+            const cPs = -0.7;
+            let cPl = -0.5;
+            
+            if (bLength / bWidth <= 1.0) {
+                cPl = -0.5;
+            } else if (bLength / bWidth > 1.0 && bLength / bWidth < 4) {
+                cPl = -0.3;
+            } else if (bLength / bWidth >= 4) {
+                cPl = -0.2;
+            }
+
+            cPwInput.value = cPw.toFixed(2);
+            cPlInput.value = cPl.toFixed(2);
+            cPsInput.value = cPs.toFixed(2);
+        }
+
+        // Calculate gust factor from building properties
+        if (gustFactorInput && bHeightInput && bLengthInput && bWidthInput && exposureCatSelect && bFreqInput && dampingInput) {
+            const bHeight = parseFloat(bHeightInput.value) || 0;
+            const bLength = parseFloat(bLengthInput.value) || 0;
+            const bWidth = parseFloat(bWidthInput.value) || 0;
+            const exposure = exposureCatSelect.value || 'B';
+            const bFreq = parseFloat(bFreqInput.value) || 1.2;
+            const damping = parseFloat(dampingInput.value) || 0.02;
+            const windSpeed = parseFloat(windSpeedInput?.value) || 0;
+
+            if (bHeight > 0 && bLength > 0 && bWidth > 0 && windSpeed > 0) {
+                // Simplified gust factor calculation (approximation)
+                // In production, you might want a server-side call for the full calculation
+                try {
+                    const gustVal = calculateGustFactorJS(bHeight, bLength, bWidth, windSpeed, bFreq, damping, exposure);
+                    if (gustVal) {
+                        gustFactorInput.value = gustVal.toFixed(3);
+                    }
+                } catch (e) {
+                    console.warn('Gust factor calculation error:', e);
+                }
+            }
+        }
+
+        triggerWindPreview();
+    }, 500);
+
+    /**
+     * Simplified JavaScript gust factor calculation
+     * Based on ASCE 7 methodology
+     */
+    function calculateGustFactorJS(b_height, b_length, b_width, wind_speed, b_freq, damping, exposure_cat) {
+        const exposureData = {
+            'A': { alpha: 0.25, b: 0.45, c: 0.30 },
+            'B': { alpha: 0.20, b: 0.35, c: 0.25 },
+            'C': { alpha: 0.15, b: 0.25, c: 0.20 }
+        };
+
+        const data = exposureData[exposure_cat] || exposureData['B'];
+        const alpha = data.alpha;
+        const b = data.b;
+        const c = data.c;
+
+        const epsilon = 0.333;
+        const z_min = 9.14;
+        const g_Q = 3.4;
+        const ll = 97.54;
+        const g_v = 3.4;
+
+        const z = Math.max(0.6 * b_height, z_min);
+        const I_z = c * Math.pow(10 / z, 1 / 6);
+        const L_z = ll * Math.pow(z / 10, epsilon);
+
+        const Q = Math.sqrt(1 / (1 + 0.63 * Math.pow((b_width + b_height) / L_z, 0.63)));
+        const log_term = Math.log(3600 * b_freq);
+        const g_R = Math.sqrt(2 * log_term) + 0.577 / Math.sqrt(2 * log_term);
+
+        const V_z = b * Math.pow(z / 10, alpha) * wind_speed;
+        const N1 = (b_freq * L_z) / V_z;
+        const R_n = (7.47 * N1) / Math.pow(1 + 10.3 * N1, 5 / 3);
+
+        const eta_h = 4.6 * b_freq * (b_height / V_z);
+        const eta_B = 4.6 * b_freq * (b_width / V_z);
+        const eta_L = 15.4 * b_freq * (b_length / V_z);
+
+        const eta_R = (eta) => (1 / eta) - (1 / (2 * eta * eta)) * (1 - Math.exp(-2 * eta));
+
+        const R_h = eta_R(eta_h);
+        const R_B = eta_R(eta_B);
+        const R_L = eta_R(eta_L);
+
+        const R = Math.sqrt((1 / damping) * R_n * R_h * R_B * (0.53 + 0.47 * R_L));
+
+        const temp1 = (g_Q * Q) ** 2;
+        const temp2 = (g_R * R) ** 2;
+        const temp3 = Math.sqrt(temp1 + temp2);
+        const temp4 = (1 + 1.7 * I_z * temp3) / (1 + 1.7 * g_v * I_z);
+
+        return 0.925 * temp4;
+    }
+
+    if (bLengthInput) bLengthInput.addEventListener('input', triggerWindCalcs);
+    if (bWidthInput) bWidthInput.addEventListener('input', triggerWindCalcs);
+    if (bHeightInput) bHeightInput.addEventListener('input', triggerWindCalcs);
+    if (exposureCatSelect) exposureCatSelect.addEventListener('change', triggerWindCalcs);
+    if (bFreqInput) bFreqInput.addEventListener('input', triggerWindCalcs);
+    if (dampingInput) dampingInput.addEventListener('input', triggerWindCalcs);
+
 
 
     /**

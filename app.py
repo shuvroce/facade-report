@@ -10,6 +10,7 @@ from wind_load import (
     compute_cladding_pressures,
     parse_floor_heights,
     external_pressure_coeff,
+    location_wind_speeds,
 )
 try:
     from tkinter import Tk
@@ -283,6 +284,14 @@ def get_profile_data():
     """Return full profile data including I_xx, I_yy, phi_Mn for all profiles"""
     profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
     return jsonify(profile_data)
+
+
+@app.route("/get_wind_locations")
+def get_wind_locations():
+    """Return all available wind locations with their wind speeds."""
+    return jsonify({
+        "locations": sorted(location_wind_speeds.items(), key=lambda x: x[0])
+    })
 
 
 # Preview summary
