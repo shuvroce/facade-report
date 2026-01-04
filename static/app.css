@@ -201,7 +201,15 @@ body {
 .topbar-right {
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 1rem;
+}
+
+.topbar-left {
+    gap: 2rem;
+}
+
+.header_projct-name {
+    font-size: 0.9rem;
 }
 
 .logo-badge {
@@ -217,9 +225,14 @@ body {
     letter-spacing: 0.5px;
 }
 
+.header-btn {
+    display: flex;
+    gap: 0.5rem;
+}
+
 .topbar-icon-btn {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
@@ -316,6 +329,11 @@ body {
     align-items: center;
     justify-content: center;
     font-weight: 800;
+    overflow: hidden;
+}
+
+.user-avatar img {
+    display: block;
 }
 
 .user-meta {
@@ -323,23 +341,26 @@ body {
     flex-direction: column;
     gap: 0.1rem;
     line-height: 1.2;
+    text-align: right;
 }
 
+
 .user-name {
-    font-weight: 700;
+    font-weight: 500;
     color: var(--text-heading);
+    font-size: 0.85rem;
 }
 
 .user-role {
     color: var(--text-secondary);
-    font-size: 0.85rem;
+    font-size: 0.75rem;
 }
 
 .user-license {
     display: flex;
     align-items: center;
     gap: 0.35rem;
-    font-size: 0.85rem;
+    font-size: 0.75rem;
     color: var(--text-secondary);
 }
 
@@ -423,14 +444,14 @@ nav {
 .right-rail {
     width: var(--right-bar-width);
     /* height: 100%; */
-    padding: 0.75rem 0.6rem;
+    padding: 1.5rem;
     background: var(--bg-primary);
     /* border: 1px solid var(--border-primary); */
     border-radius: var(--radius-2);
     box-shadow: 0 6px 16px var(--shadow-container);
     display: flex;
     flex-direction: column;
-    align-items: center;
+    /* align-items: center; */
     gap: 0.5rem;
     transition: var(--transition-bg), var(--transition-border), box-shadow 0.2s ease;
     overflow-y: auto;
@@ -679,20 +700,8 @@ nav {
     color: #fff;
 }
 
-#load-yaml-btn {
-    background-color: var(--btn-accent);
-}
-
-#generate-yaml-btn {
-    background-color: var(--btn-accent2);
-}
-
 #preview-btn {
     background-color: var(--btn-accent2);
-}
-
-#download-yaml-btn {
-    background-color: var(--btn-primary);
 }
 
 .add-btn {

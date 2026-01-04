@@ -13,28 +13,33 @@
 <body>
     <header class="topbar" aria-label="Workspace controls">
         <div class="topbar-left">
-            <div class="logo-badge" aria-label="Facade Report">FR</div>
-            <button class="topbar-icon-btn" type="button" title="Open" aria-label="Open" id="load-yaml-btn">
-                <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 19h16a1 1 0 0 0 1-1v-7H9l-2-3H3v10a1 1 0 0 0 1 1Z"></path>
-                    <path d="M4 8V6a1 1 0 0 1 1-1h5.5l2 3H22"></path>
-                </svg>
-            </button>
-            <button class="topbar-icon-btn" type="button" title="Open" aria-label="Open" id="generate-yaml-btn">
-                <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M4 19h16a1 1 0 0 0 1-1v-7H9l-2-3H3v10a1 1 0 0 0 1 1Z"></path>
-                    <path d="M4 8V6a1 1 0 0 1 1-1h5.5l2 3H22"></path>
-                </svg>
-            </button>
-            <button class="topbar-icon-btn" type="button" title="Save" aria-label="Save" id="download-yaml-btn">
-                <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
-                    <path d="M5 5h12l2 2v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1Z"></path>
-                    <path d="M15 5v6H7V5"></path>
-                    <path d="M12 17.5v.01"></path>
-                </svg>
-            </button>
+            <div class="logo-badge" aria-label="Facade Report">FAD</div>
+
+            <div class="header-btn">
+                <button class="topbar-icon-btn" type="button" title="Open" aria-label="Open" id="load-yaml-btn">
+                    <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M4 19h16a1 1 0 0 0 1-1v-7H9l-2-3H3v10a1 1 0 0 0 1 1Z"></path>
+                        <path d="M4 8V6a1 1 0 0 1 1-1h5.5l2 3H22"></path>
+                    </svg>
+                </button>
+                <button class="topbar-icon-btn" type="button" title="Generate" aria-label="Generate" id="generate-yaml-btn">
+                    <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M23 4v6h-6"></path>
+                        <path d="M1 20v-6h6"></path>
+                        <path d="M3.51 9a9 9 0 0 1 14.85-3.36M20.49 15a9 9 0 0 1-14.85 3.36"></path>
+                    </svg>
+                </button>
+                <button class="topbar-icon-btn" type="button" title="Save" aria-label="Save" id="download-yaml-btn">
+                    <svg class="topbar-icon" viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M5 5h12l2 2v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1Z"></path>
+                        <path d="M15 5v6H7V5"></path>
+                        <path d="M12 17.5v.01"></path>
+                    </svg>
+                </button>
+            </div>
+
             <input type="file" id="yaml-file-input" accept=".yaml,.yml,.json,text/yaml" hidden>
-            <p>Project Name</p>
+            <div class="header_projct-name">Project Name</div>
         </div>
 
         <div class="topbar-right">
@@ -42,10 +47,13 @@
                 <span class="status-dot status-active" aria-hidden="true"></span>
                 <span class="license-text">License: Active</span>
             </div>
-            <div class="user-avatar" aria-hidden="true">JD</div>
+            <span class="separator">|</span>
             <div class="user-meta" aria-label="Signed-in user">
-                <div class="user-name">Jane Doe</div>
-                <div class="user-role">Lead Engineer</div>
+                <div class="user-name">Md. Akram Hossain</div>
+                <div class="user-role">Structural Engineer</div>
+            </div>
+            <div class="user-avatar" aria-hidden="true">
+                <img src="" alt="">
             </div>
         </div>
     </header>
