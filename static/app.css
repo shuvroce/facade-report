@@ -70,6 +70,11 @@
     --color-green: #22c55e;
     --color-red: #ef4444;
     --color-blue: #0d6efd;
+
+    /* Branding */
+    --logo-image: url('logo.png');
+    --logo-image-dark: url('logo.png');
+    --logo-filter: none;
 }
 
 /* Dark Theme Colors */
@@ -118,6 +123,9 @@ body.dark-theme {
     --btn-accent-hover: #3a8de2;
     --btn-danger: #eb3f50;
     --btn-danger-hover: #c04c58;
+
+    --logo-image: var(--logo-image-dark);
+    --logo-filter: brightness(0) invert(1);
 }
 
 
@@ -182,7 +190,7 @@ body {
 .topbar {
     width: 100%;
     height: var(--topbar-height);
-    padding: 0.5rem 1.75rem;
+    padding: 0.5rem 1.5rem 0.5rem 0.7rem;
     background: var(--bg-primary);
     /* box-shadow: 0 4px 12px var(--shadow-container); */
     border-bottom: 1px solid var(--border-primary);
@@ -204,32 +212,22 @@ body {
     gap: 1rem;
 }
 
-.topbar-left {
-    gap: 2rem;
-}
-
 .header_projct-name {
     font-size: 0.9rem;
 }
 
 .logo-badge {
     width: 120px;
-    /* height: 42px; */
-    border-radius: var(--radius-2);
-    /* background: var(--line-active); */
-    color: #fff;
+    height: 42px;
+    background-image: var(--logo-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    font-weight: 800;
-    letter-spacing: 0.5px;
-}
-
-.logo-badge .logo-image {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    border-radius: var(--radius-2);
+    filter: var(--logo-filter);
+    overflow: hidden;
 }
 
 .header-btn {
