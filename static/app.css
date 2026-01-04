@@ -16,7 +16,6 @@
     --radius-2: 6px;
     --radius-3: 8px;
     --radius-4: 10px;
-    --radius-5: 50%;
 
     /* Light Theme - Background Colors */
     --bg-body: #f4f4f9;
@@ -444,7 +443,7 @@ nav {
     align-items: center;
     justify-content: center;
     border: none;
-    border-radius: 50px;
+    border-radius: var(--radius-1);
     cursor: pointer;
     font-weight: 700;
     transition: var(--transition-bg);
@@ -454,6 +453,7 @@ nav {
     padding: 10px 15px;
     margin-left: 10px;
     background-color: var(--btn-accent);
+    border-radius: 50px;
     color: #fff;
 }
 
