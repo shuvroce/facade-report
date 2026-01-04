@@ -128,7 +128,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const profileOptionsPromise = initializeProfileOptions();
 
     const alumFieldPlaceholders = {
-        'profile_name': 'Profile Name (e.g. M or St. M 125x60x2.5)',
+        'profile_name': 'Profile Name',
         'web_length': 'Web Length (mm)',
         'flange_length': 'Flange Length (mm)',
         'web_thk': 'Web Thickness (mm)',
@@ -139,8 +139,8 @@ document.addEventListener('DOMContentLoaded', () => {
         'I_yy': 'Minor Moment of Inertia, Iyy (mm⁴)',
         'Y': 'Extreme Fibre Distance, Y (mm)',
         'X': 'Extreme Fibre Distance, X (mm)',
-        'plastic_x': 'Upper Region Centroid Distance, Plastic X',
-        'plastic_y': 'Lower Region Centroid Distance, Plastic Y',
+        'plastic_x': 'Upper Region Centroid Distance, Plastic X (mm)',
+        'plastic_y': 'Lower Region Centroid Distance, Plastic Y (mm)',
         'F_y': 'Yield Strength, Fy (MPa)',
         'Mn_yield': 'Moment Capacity by Yielding, Mn (kNm)',
         'Mn_lb': 'Moment Capacity by Local Buckling, Mn (kNm)',
@@ -460,7 +460,7 @@ document.addEventListener('DOMContentLoaded', () => {
     /**
      * Create a form field with input and optional unit suffix
      * @param {HTMLElement} input - The input element
-     * @param {string} label - The label text
+     * @param {string} label - The label text (may include unit like "Glass Length (mm)")
      * @param {string} [unit] - Optional unit suffix (e.g., 'mm', 'kPa')
      * @returns {HTMLElement} The form-field div
      */
@@ -470,7 +470,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         const labelEl = document.createElement('label');
         labelEl.setAttribute('for', input.id);
-        labelEl.textContent = label;
+        
+        // Strip unit from label if it exists
+        let cleanLabel = label;
+        if (unit) {
+            cleanLabel = label.replace(/\s*\([^)]*\)\s*$/, '').trim();
+        }
+        labelEl.textContent = cleanLabel;
         
         formField.appendChild(labelEl);
         
@@ -522,7 +528,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         requiredFields.forEach(fieldName => {
             let type = 'text'; 
-            if (fieldName.match(/(thickness|def|load|gap|nfl|gtf)/i)) {
+            if (fieldName.match(/(thickness|def|load|gap|nfl|gtf|length|width)/i)) {
                 type = 'number';
             }
             
