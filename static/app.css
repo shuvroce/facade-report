@@ -860,7 +860,7 @@ h3 {
 }
 
 .wind-card {
-    background-color: var(--bg-secondary);
+    /* background-color: var(--bg-secondary); */
     border: 1px solid var(--border-code);
     border-radius: var(--radius-2);
     /* box-shadow: 0 2px 4px var(--shadow-container); */
