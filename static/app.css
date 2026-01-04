@@ -1324,6 +1324,10 @@ summary {
     gap: 0.5rem;
 }
 
+#inputs-dir-display {
+    flex-direction: column;
+}
+
 .status-summary-item {
     display: flex;
     gap: 0.2rem;
