@@ -70,6 +70,15 @@ document.addEventListener('DOMContentLoaded', () => {
     // Keep indicator aligned on resize
     window.addEventListener('resize', () => positionLine(document.querySelector('.tab_btn.active')));
 
+    // Small debounce helper for preview updates
+    function debounce(fn, delay = 400) {
+        let t;
+        return (...args) => {
+            clearTimeout(t);
+            t = setTimeout(() => fn(...args), delay);
+        };
+    }
+
     // 3. CONFIGURATION & CONSTANTS
     // --- Aluminum Profile Configuration ---
     const alumFields = {
@@ -1046,6 +1055,56 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
 
+    // --- WIND PREVIEW (MWFRS + C&C) ---
+    const windPreviewContainer = document.querySelector('.wind-preview-content');
+    const windInputs = document.querySelectorAll('[name^="wind."]');
+
+    function collectWindPayload() {
+        const data = {};
+        windInputs.forEach(input => {
+            const key = input.name.split('.')[1];
+            data[key] = input.value;
+        });
+        return data;
+    }
+
+    const coreWindFields = ['b_length', 'b_width', 'wind_speed', 'b_floor_heights'];
+
+    const triggerWindPreview = debounce(async () => {
+        if (!windPreviewContainer) return;
+        const payload = collectWindPayload();
+        const missing = coreWindFields.filter(k => !payload[k]);
+        if (missing.length) {
+            windPreviewContainer.innerHTML = '<p class="wind-preview-placeholder">Insufficient inputs</p>';
+            return;
+        }
+
+        windPreviewContainer.innerHTML = '<p class="wind-preview-placeholder">Calculating…</p>';
+
+        try {
+            const res = await fetch('/wind_preview', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ wind: payload })
+            });
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                const msg = data && data.error ? data.error : 'Calculation failed';
+                windPreviewContainer.innerHTML = `<p class="wind-preview-placeholder">${msg}</p>`;
+                return;
+            }
+            windPreviewContainer.innerHTML = data.html || '<p class="wind-preview-placeholder">No data</p>';
+        } catch (err) {
+            windPreviewContainer.innerHTML = '<p class="wind-preview-placeholder">Calculation error</p>';
+        }
+    }, 500);
+
+    windInputs.forEach(input => {
+        input.addEventListener('input', triggerWindPreview);
+        input.addEventListener('change', triggerWindPreview);
+    });
+
+
 
     /**
      * Get defined aluminum profiles from the Profiles tab
@@ -1846,6 +1905,8 @@ document.addEventListener('DOMContentLoaded', () => {
         document.querySelectorAll('[data-type="anchorage"]').forEach(item => {
             updateAnchoragePreview(item);
         });
+
+        triggerWindPreview();
     }
 
     function populateFormFromData(data = {}) {

@@ -297,15 +297,14 @@
                                             <path d="M4 6c1.5 1 4.5 1 6 0s4.5-1 6 0"></path>
                                             <path d="M4 18c1.5-1 4.5-1 6 0s4.5 1 6 0"></path>
                                         </svg>
-                                        <span>Wind Parameters</span>
+                                        <span>Wind Load</span>
                                     </h2>
 
                                     <div class="wind-notice">
-                                        <p>Wind load is calculated cosidering following assumptions –</p>
+                                        <p>Wind load is calculated considering the following assumptions –</p>
                                         <ul>
-                                            <li>The building is regular</li>
-                                            <li>The building roof is flat</li>
-                                            <li>Building located in flat terrin</li>
+                                            <li>Regular building</li>
+                                            <li>Flat roof</li>
                                         </ul>
                                     </div>
 
@@ -341,6 +340,13 @@
                                                     <label for="wind.b_height">Building Height</label>
                                                     <div class="form-field-input-group">
                                                         <input type="number" step="0.1" id="wind.b_height" name="wind.b_height">
+                                                        <span class="form-field-unit">m</span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-field">
+                                                    <label for="wind.b_floor_heights">Floor Heights (Separated by space)</label>
+                                                    <div class="form-field-input-group">
+                                                        <input type="text" id="wind.b_floor_heights" name="wind.b_floor_heights" placeholder="e.g. 3.2 3.0 3.0">
                                                         <span class="form-field-unit">m</span>
                                                     </div>
                                                 </div>
@@ -389,7 +395,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-field">
-                                                    <label for="wind.K_d">Directionality Factor, Kd</label>
+                                                    <label for="wind.K_d">Directionality Factor, K<sub>d</sub></label>
                                                     <div class="form-field-input-group">
                                                         <input type="number" step="0.1" id="wind.K_d" name="wind.K_d" value="0.85">
                                                     </div>
@@ -409,7 +415,7 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-field">
-                                                    <label for="wind.b_freq">Building Natural Frequency, fn</label>
+                                                    <label for="wind.b_freq">Building Natural Frequency, f<sub>n</sub></label>
                                                     <div class="form-field-input-group">
                                                         <input type="number" step="0.1" id="wind.b_freq" name="wind.b_freq" value="1.2">
                                                         <span class="form-field-unit">H<sub>z</sub></span>
@@ -435,7 +441,7 @@
                                             <div class="wind-card-header">Coefficients</div>
                                             <div class="wind-card-content form-section">
                                                 <div class="form-field">
-                                                    <label for="wind.GC_pi">Internal Pressure Coefficient, GCpi</label>
+                                                    <label for="wind.GC_pi">Internal Pressure Coefficient, GC<sub>pi</sub></label>
                                                     <select id="wind.GC_pi" name="wind.GC_pi">
                                                         <option value="0.18">0.18 (Enclosed)</option>
                                                         <option value="0.55">0.55 (Partially Enclosed)</option>
@@ -443,13 +449,13 @@
                                                     </select>
                                                 </div>
                                                 <div class="form-field">
-                                                    <label for="wind.C_pl">External Leeward Pressure Coefficient, Cpl</label>
+                                                    <label for="wind.C_pl">External Leeward Pressure Coefficient, C<sub>p</sub></label>
                                                     <div class="form-field-input-group">
                                                         <input type="number" step="0.1" id="wind.C_pl" name="wind.C_pl" value="0.5">
                                                     </div>
                                                 </div>
                                                 <div class="form-field">
-                                                    <label for="wind.q_zk">Velocity Pressure, qz</label>
+                                                    <label for="wind.q_zk">Velocity Pressure, q<sub>z</sub></label>
                                                     <div class="form-field-input-group">
                                                         <input type="number" step="0.1" id="wind.q_zk" name="wind.q_zk">
                                                         <span class="form-field-unit">kPa</span>
@@ -473,7 +479,10 @@
                                                 </div>
                                                 <div class="form-field">
                                                     <label for="wind.topo_crest_side">Topography Crest Side</label>
-                                                    <input type="text" id="wind.topo_crest_side" name="wind.topo_crest_side">
+                                                    <select id="wind.topo_crest_side" name="wind.topo_crest_side">
+                                                        <option value="Homogeneous">Upwind</option>
+                                                        <option value="Hill">Downwind</option>
+                                                    </select>
                                                 </div>
                                                 <div class="form-field">
                                                     <label for="wind.topo_height">Topography Height</label>
@@ -497,7 +506,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="form-field">
-                                                    <label for="wind.K_ht">Topographic Factor at H, Kht</label>
+                                                    <label for="wind.K_ht">Topographic Factor at H, K<sub>ht</sub></label>
                                                     <div class="form-field-input-group">
                                                         <input type="number" step="0.1" id="wind.K_ht" name="wind.K_ht" value="1.0">
                                                     </div>

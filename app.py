@@ -5,6 +5,13 @@ from flask import Flask, render_template, request, send_file, jsonify, session
 from jinja2 import Environment, FileSystemLoader
 from report import generate_report_from_data, load_profile_data
 from calc_helpers import calc_steel_profile, calc_alum_profile, calc_alum_stick_profile, calc_glass_unit, calc_frame, calc_connection, calc_anchorage
+from wind_load import (
+    compute_mwfrs_pressures,
+    compute_cladding_pressures,
+    parse_floor_heights,
+    base_velocity_pressure,
+    external_pressure_coeff,
+)
 try:
     from tkinter import Tk
     from tkinter.filedialog import askdirectory
@@ -390,6 +397,141 @@ def get_inputs_directory():
         "directory": current_dir,
         "is_default": current_dir == DEFAULT_INPUTS_DIR
     }
+
+
+def _to_float(val, default=0.0):
+    try:
+        if val is None:
+            return default
+        return float(val)
+    except (TypeError, ValueError):
+        return default
+
+
+@app.route("/wind_preview", methods=["POST"])
+def wind_preview():
+    """Quick API to preview wind pressures for MWFRS and C&C."""
+    payload = request.json or {}
+    wind = payload.get("wind") or {}
+
+    try:
+        exposure_cat = str(wind.get("exposure_cat", "A")).upper()
+        b_length = _to_float(wind.get("b_length"))
+        b_width = _to_float(wind.get("b_width"))
+        K_d = _to_float(wind.get("K_d"), 0.85)
+        wind_speed = _to_float(wind.get("wind_speed"))
+        Imp_factor = _to_float(wind.get("Imp_factor"), 1.0)
+        GC_pi = _to_float(wind.get("GC_pi"), 0.18)
+        b_freq = _to_float(wind.get("b_freq"), 1.2)
+        damping = _to_float(wind.get("damping"), 0.02)
+        floor_heights = wind.get("b_floor_heights")
+
+        topo_type = wind.get("topography_type", "Homogeneous")
+        topo_height = _to_float(wind.get("topo_height"), 0.0)
+        topo_length = _to_float(wind.get("topo_length"), 1.0)
+        topo_distance = _to_float(wind.get("topo_distance"), 0.0)
+        topo_side = wind.get("topo_crest_side", "Upwind")
+
+        floors, _ = parse_floor_heights(floor_heights)
+
+        summary, mwfrs_levels = compute_mwfrs_pressures(
+            exposure_cat,
+            b_length,
+            b_width,
+            K_d,
+            wind_speed,
+            Imp_factor,
+            GC_pi,
+            topo_type,
+            topo_height,
+            topo_length,
+            topo_distance,
+            topo_side,
+            floors,
+            b_freq,
+            damping,
+        )
+
+        wall_results, roof_results = compute_cladding_pressures(
+            GC_pi,
+            exposure_cat,
+            topo_type,
+            topo_height,
+            topo_length,
+            topo_distance,
+            topo_side,
+            floors,
+            wind_speed,
+            K_d,
+            Imp_factor,
+            selected_levels=None,
+        )
+
+        preview_area = 10.0
+        wall_rows = wall_results.get(preview_area, [])
+        roof_rows = roof_results.get(preview_area, [])
+        C_pw, C_pl, C_ps = external_pressure_coeff(b_length, b_width)
+
+    except Exception as exc:
+        return {"success": False, "error": str(exc)}, 400
+
+    def table_html(headers, rows):
+        head = "".join([f"<th>{h}</th>" for h in headers])
+        body = "".join([
+            "<tr>" + "".join([f"<td>{row.get(key, '')}</td>" for key in headers]) + "</tr>"
+            for row in rows
+        ])
+        return f"<table class='mini-table'><thead><tr>{head}</tr></thead><tbody>{body}</tbody></table>"
+
+    mwfrs_headers = ["Lvl", "z (m)", "Kz", "Kzt", "qz (kPa)", "P_wind (kPa)"]
+    mwfrs_rows = [
+        {
+            "Lvl": r["level"],
+            "z (m)": r["cumu_height"],
+            "Kz": r["K_z"],
+            "Kzt": r["K_zt"],
+            "qz (kPa)": r["q_z"],
+            "P_wind (kPa)": r["P_zw"],
+        }
+        for r in mwfrs_levels
+    ]
+
+    cnc_headers_wall = ["Lvl", "z (m)", "+GCp4/5", "-GCp4", "-GCp5"]
+    cnc_rows_wall = [
+        {
+            "Lvl": r["level"],
+            "z (m)": r["height"],
+            "+GCp4/5": r["P_z4_pos"],
+            "-GCp4": r["P_z4_neg"],
+            "-GCp5": r["P_z5_neg"],
+        }
+        for r in wall_rows
+    ]
+
+    cnc_headers_roof = ["Lvl", "z (m)", "-GCp1", "-GCp2", "-GCp3"]
+    cnc_rows_roof = [
+        {
+            "Lvl": r["level"],
+            "z (m)": r["height"],
+            "-GCp1": r["P_z1_neg"],
+            "-GCp2": r["P_z2_neg"],
+            "-GCp3": r["P_z3_neg"],
+        }
+        for r in roof_rows
+    ]
+
+    html_parts = [
+        "<div class='wind-preview-block'>",
+        f"<p class='note'>MWFRS summary: G={summary['gust_factor']}, Kd={K_d}, Cp(w/s/l)={C_pw}/{C_ps}/{C_pl}</p>",
+        table_html(mwfrs_headers, mwfrs_rows),
+        "<p class='note'>C&C (walls) at A_eff=10 m²</p>",
+        table_html(cnc_headers_wall, cnc_rows_wall),
+        "<p class='note'>C&C (roof) at A_eff=10 m²</p>",
+        table_html(cnc_headers_roof, cnc_rows_roof),
+        "</div>",
+    ]
+
+    return {"success": True, "html": "".join(html_parts)}
 
 
 @app.route("/open_folder_picker", methods=["GET"])
