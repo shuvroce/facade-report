@@ -9,7 +9,6 @@ from wind_load import (
     compute_mwfrs_pressures,
     compute_cladding_pressures,
     parse_floor_heights,
-    external_pressure_coeff,
     location_wind_speeds,
 )
 try:
@@ -493,7 +492,7 @@ def wind_preview():
         )
 
         area_keys = sorted(wall_results.keys())
-        C_pw, C_pl, C_ps = external_pressure_coeff(b_length, b_width)
+        # C_pw, C_pl, C_ps = external_pressure_coeff(b_length, b_width)
 
     except Exception as exc:
         return {"success": False, "error": str(exc)}, 400
@@ -521,7 +520,7 @@ def wind_preview():
 
     html_parts = [
         "<div class='wind-preview-block'>",
-        f"<p class='note'>MWFRS summary: G={summary['gust_factor']}, Kd={K_d}, Cp(w/s/l)={C_pw}/{C_ps}/{C_pl}</p>",
+        f"<p class='note'>MWFRS summary: G={summary['gust_factor']}, Kd={K_d}, Cp(w/s/l)={summary['C_pw']}/{summary['C_ps']}/{summary['C_pl']}</p>",
         table_html(mwfrs_headers, mwfrs_rows),
     ]
 

@@ -9,7 +9,6 @@ from calc_helpers import calc_steel_profile, calc_alum_profile, calc_glass_unit,
 from wind_load import (
     compute_mwfrs_pressures,
     compute_cladding_pressures,
-    external_pressure_coeff,
     parse_floor_heights,
     location_wind_speeds,
 )
@@ -114,18 +113,11 @@ def precompute_calculations(data):
                 wind.get("occupancy_cat"),
             )
 
-            C_pw, C_pl, C_ps = external_pressure_coeff(
-                _to_float(wind.get("b_length")), _to_float(wind.get("b_width"))
-            )
-
             wind["auto_calc"] = {
                 "summary": summary,
                 "mwfrs_levels": mwfrs_levels,
                 "wall_results": wall_results,
                 "roof_results": roof_results,
-                "C_pw": C_pw,
-                "C_pl": C_pl,
-                "C_ps": C_ps,
             }
             data["wind"] = wind
         except Exception as exc:

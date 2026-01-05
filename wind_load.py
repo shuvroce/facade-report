@@ -323,7 +323,11 @@ def compute_mwfrs_pressures(
             "P_hl": round(P_hl, 2),
             "P_hs": round(P_hs, 2),
             "gust_factor": round(gust_factor_value, 2),
-            "Imp_factor": round(Imp_factor, 2)
+            "Imp_factor": round(Imp_factor, 2),
+            "C_pw": round(C_pw, 2),
+            "C_pl": round(C_pl, 2),
+            "C_ps": round(C_ps, 2),
+            "wind_speed": round(wind_speed, 2),
         },
         results,
     )
