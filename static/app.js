@@ -2424,10 +2424,17 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
     
-    // Event: Download YAML button
+    // Event: Download YAML button (generates and downloads in one click)
     downloadBtn.addEventListener('click', () => {
-        const yamlContent = downloadBtn.getAttribute('data-yaml-content');
-        if (yamlContent) {
+        // Generate YAML from current form data
+        const formData = getFormData(form);
+        const yamlContent = toYamlString(formData);
+        
+        // Update the display
+        yamlOutputDisplay.textContent = yamlContent;
+        
+        // Download the YAML file
+        if (yamlContent.trim()) {
             downloadYaml(yamlContent, 'input.yaml');
         }
     });
