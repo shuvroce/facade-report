@@ -426,9 +426,6 @@ def calc_preview():
             profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
             alum_data = profile_data.get("alum_profiles_data", [])
             frame_data = item_data.get("frame", {})
-            # Add glass_thickness to frame_data for calculations
-            if "glass_thickness" in item_data:
-                frame_data["glass_thickness"] = item_data["glass_thickness"]
             result = calc_anchorage(item_data, frame_data, alum_data)
         else:
             return {"success": False, "error": "Unsupported item type"}, 400
