@@ -323,6 +323,7 @@ def compute_mwfrs_pressures(
             "P_hl": round(P_hl, 2),
             "P_hs": round(P_hs, 2),
             "gust_factor": gust_factor_value,
+            "Imp_factor": round(Imp_factor, 2)
         },
         results,
     )
@@ -351,7 +352,7 @@ def compute_cladding_pressures(
     wall_results, roof_results = {}, {}
 
     # Choose area list
-    area_list = [5.0, 10.0, 15.0, 20.0, 30.0, 46.5]
+    area_list = [5.0, 10.0, 20.0, 30.0, 40.0, 46.5]
 
     for A_eff in area_list:
         GCp_z4_p, GCp_z4_n, GCp_z5_p, GCp_z5_n = ext_pressure_coeff_wall_cladd(A_eff)

@@ -6,6 +6,12 @@ from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 import pikepdf
 from calc_helpers import calc_steel_profile, calc_alum_profile, calc_glass_unit, calc_frame, calc_connection, calc_anchorage
+from wind_load import (
+    compute_mwfrs_pressures,
+    compute_cladding_pressures,
+    external_pressure_coeff,
+    parse_floor_heights,
+)
 
 BASE_DIR = os.path.dirname(__file__)
 INPUT_YAML = os.path.join(BASE_DIR, "input.yaml")
@@ -13,6 +19,22 @@ OUT_PDF = os.path.join(BASE_DIR, "report.pdf")
 TEMPLATE_DIR = os.path.join(BASE_DIR, "templates")
 PROFILE_YAML = os.path.join(TEMPLATE_DIR, "assets", "profile.yaml")
 CSS_PATH = os.path.join(TEMPLATE_DIR, "assets", "css", "report.css")
+
+
+def _as_bool(value):
+    """Return True for common truthy strings/values."""
+    if isinstance(value, str):
+        return value.strip().lower() in {"yes", "true", "1", "on", "y"}
+    return bool(value)
+
+
+def _to_float(val, default=0.0):
+    try:
+        if val is None:
+            return default
+        return float(val)
+    except (TypeError, ValueError):
+        return default
 
 
 def load_profile_data(profile_yaml_path=None, template_dir=None):
@@ -43,6 +65,63 @@ def precompute_calculations(data):
     """
     if not data:
         return data
+
+    # Auto-compute wind results when requested
+    wind = data.get("wind") or {}
+    if _as_bool(wind.get("auto_load")):
+        try:
+            exposure_cat = str(wind.get("exposure_cat", "A")).upper()
+            floors, _ = parse_floor_heights(wind.get("b_floor_heights"))
+
+            summary, mwfrs_levels = compute_mwfrs_pressures(
+                exposure_cat,
+                _to_float(wind.get("b_length")),
+                _to_float(wind.get("b_width")),
+                _to_float(wind.get("K_d"), 0.85),
+                _to_float(wind.get("wind_speed")),
+                wind.get("occupancy_cat"),
+                _to_float(wind.get("GC_pi"), 0.18),
+                wind.get("topography_type", "Homogeneous"),
+                _to_float(wind.get("topo_height"), 0.0),
+                _to_float(wind.get("topo_length"), 1.0),
+                _to_float(wind.get("topo_distance"), 0.0),
+                wind.get("topo_crest_side", "Upwind"),
+                floors,
+                _to_float(wind.get("b_freq"), 1.2),
+                _to_float(wind.get("damping"), 0.02),
+            )
+
+            wall_results, roof_results = compute_cladding_pressures(
+                _to_float(wind.get("GC_pi"), 0.18),
+                exposure_cat,
+                wind.get("topography_type", "Homogeneous"),
+                _to_float(wind.get("topo_height"), 0.0),
+                _to_float(wind.get("topo_length"), 1.0),
+                _to_float(wind.get("topo_distance"), 0.0),
+                wind.get("topo_crest_side", "Upwind"),
+                floors,
+                _to_float(wind.get("wind_speed")),
+                _to_float(wind.get("K_d"), 0.85),
+                wind.get("occupancy_cat"),
+            )
+
+            C_pw, C_pl, C_ps = external_pressure_coeff(
+                _to_float(wind.get("b_length")), _to_float(wind.get("b_width"))
+            )
+
+            wind["auto_calc"] = {
+                "summary": summary,
+                "mwfrs_levels": mwfrs_levels,
+                "wall_results": wall_results,
+                "roof_results": roof_results,
+                "C_pw": C_pw,
+                "C_pl": C_pl,
+                "C_ps": C_ps,
+            }
+            data["wind"] = wind
+        except Exception as exc:
+            wind["auto_calc_error"] = str(exc)
+            data["wind"] = wind
     
     # Get profile data for calculations
     alum_profiles_data = data.get("alum_profiles_data", [])
@@ -84,7 +163,7 @@ def precompute_calculations(data):
             glass_thk = max(thickness_list) if thickness_list else 0
         
         # Pre-calculate glass unit values
-        if "glass_units" in cat:
+        if "glass_units" in cat and cat["glass_units"]:
             for gu in cat["glass_units"]:
                 calc_result = calc_glass_unit(gu)
                 if calc_result:
@@ -93,7 +172,7 @@ def precompute_calculations(data):
                     gu["result"] = calc_result
         
         # Pre-calculate frame values
-        if "frames" in cat:
+        if "frames" in cat and cat["frames"]:
             for frame in cat["frames"]:
                 calc_result = calc_frame(frame, glass_thk, alum_profiles_data, steel_profiles_data)
                 if calc_result:
@@ -103,7 +182,7 @@ def precompute_calculations(data):
         # Pre-calculate connection values
         if "connections" in cat and cat.get("connections") and "frames" in cat and cat["frames"]:
             frame = cat["frames"][0]
-            for conn in cat["connections"]:
+            for conn in cat["connections"] if cat["connections"] else []:
                 calc_result = calc_connection(conn, frame, glass_thk, alum_profiles_data)
                 if calc_result:
                     conn["_calc"] = calc_result
@@ -112,7 +191,7 @@ def precompute_calculations(data):
         # Pre-calculate anchorage values
         if "anchorage" in cat and cat.get("anchorage") and "frames" in cat and cat["frames"]:
             frame = cat["frames"][0]
-            for anchor in cat["anchorage"]:
+            for anchor in cat["anchorage"] if cat["anchorage"] else []:
                 calc_result = calc_anchorage(anchor, frame, glass_thk, alum_profiles_data)
                 if calc_result:
                     anchor["_calc"] = calc_result

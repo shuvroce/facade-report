@@ -1936,6 +1936,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+
+        // Handle inputs rendered outside the main form container (e.g., wind auto-load toggle)
+        if (prefix === 'wind') {
+            const autoLoadInput = document.querySelector('input[name="wind.auto_load"]');
+            if (autoLoadInput && Object.prototype.hasOwnProperty.call(groupData, 'auto_load')) {
+                const v = groupData.auto_load;
+                const normalized = typeof v === 'string' ? v.toLowerCase() : v;
+                autoLoadInput.checked = normalized === 'yes' || normalized === true || normalized === 'true' || normalized === 1 || normalized === '1';
+            }
+        }
     }
 
     function fillFields(container, values = {}, skipKeys = new Set()) {
@@ -2194,6 +2204,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
         // 4. Get Wind Parameters
         processSimpleInputs('[name^="wind."]', 'wind');
+
+        // Capture wind auto-load checkbox that lives outside the form
+        const autoLoadInput = document.querySelector('input[name="wind.auto_load"]');
+        if (autoLoadInput) {
+            data.wind = data.wind || {};
+            data.wind.auto_load = autoLoadInput.checked ? 'yes' : 'no';
+        }
     
         // 5. Get Categories
         const categoriesList = document.getElementById('categories-list');
@@ -2469,6 +2486,13 @@ document.addEventListener('DOMContentLoaded', () => {
     
         // 3. Get Wind Parameters
         processSimpleInputs('[name^="wind."]', 'wind');
+
+        // Capture wind auto-load checkbox that lives outside the form
+        const autoLoadInput = document.querySelector('input[name="wind.auto_load"]');
+        if (autoLoadInput) {
+            data.wind = data.wind || {};
+            data.wind.auto_load = autoLoadInput.checked ? 'yes' : 'no';
+        }
     
         // 4. Get Categories
         const categoriesList = document.getElementById('categories-list');

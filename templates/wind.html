@@ -2,6 +2,7 @@
     <h1>Wind Pressure Calculation</h1>
 </section>
 
+{% set calc = wind.auto_calc %}
 <section>
     <h2>Wind Pressure for 'MWFRS'</h2>
     <div>
@@ -51,7 +52,7 @@
             <tbody>
                 <tr>
                     <td>Building type</td>
-                    <td>{{ wind.enclosure_type }}, {{ wind.roof_type }} Roof</td>
+                    <td>{% if wind.GC_pi == 0.18 %}Enclosed{% elif wind.GC_pi == 0.55 %}Partially Enclosed{% else %}Open{% endif %}, Flat Roof</td>
                     <td></td>
                 </tr>
                 <tr>
@@ -94,7 +95,7 @@
                 </tr>
                 <tr>
                     <td>Importance factor, I</td>
-                    <td>{{ wind.Imp_factor }}</td>
+                    <td>{{ calc.summary.Imp_factor }}</td>
                     <td><i>BNBC 2020, Table 6.2.9</i></td>
                 </tr>
                 <tr>
@@ -124,11 +125,6 @@
                 <tr>
                     <td>Internal Pressure Cofficient, GC<sub>pi</sub></td>
                     <td>± {{ wind.GC_pi }}</td>
-                    <td></td>
-                </tr>
-                <tr>
-                    <td>Velocity Pressure, q<sub>z</sub></td>
-                    <td>{{ wind.q_zk }} <i>K<sub>z</sub> K<sub>zt</sub></i></td>
                     <td></td>
                 </tr>
             </tbody>
@@ -271,6 +267,55 @@
         <img src="assets/images/bnbc-kz.png">
     </div>
 
+    {% if wind.auto_load|default(false) %}
+        {% set calc = wind.auto_calc %}
+        {% if calc %}
+            <div class="page__break">
+                <table class="width__100">
+                    <caption>MWFRS Auto-Calculated Summary</caption>
+                    <tbody>
+                        <tr><td>Building height, H</td><td>{{ calc.summary.b_height }} m</td></tr>
+                        <tr><td>K<sub>h</sub></td><td>{{ calc.summary.K_h }}</td></tr>
+                        <tr><td>K<sub>ht</sub></td><td>{{ calc.summary.K_ht }}</td></tr>
+                        <tr><td>q<sub>h</sub> (kPa)</td><td>{{ calc.summary.q_h }}</td></tr>
+                        <tr><td>P<sub>hi</sub> (kPa)</td><td>{{ calc.summary.P_hi }}</td></tr>
+                        <tr><td>P<sub>hl</sub> (kPa)</td><td>{{ calc.summary.P_hl }}</td></tr>
+                        <tr><td>P<sub>hs</sub> (kPa)</td><td>{{ calc.summary.P_hs }}</td></tr>
+                        <tr><td>Gust factor, G</td><td>{{ calc.summary.gust_factor }}</td></tr>
+                        <tr><td>Coefficients, C<sub>p</sub> (w/s/l)</td><td>{{ calc.C_pw }} / {{ calc.C_ps }} / {{ calc.C_pl }}</td></tr>
+                    </tbody>
+                </table>
+
+                <table class="width__100 mt-1">
+                    <caption>MWFRS Pressures by Height</caption>
+                    <thead>
+                        <tr>
+                            <th>Level</th>
+                            <th>z (m)</th>
+                            <th>K<sub>z</sub></th>
+                            <th>K<sub>zt</sub></th>
+                            <th>q<sub>z</sub> (kPa)</th>
+                            <th>P<sub>wind</sub> (kPa)</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in calc.mwfrs_levels %}
+                        <tr>
+                            <td>{{ row.level }}</td>
+                            <td>{{ row.cumu_height }}</td>
+                            <td>{{ row.K_z }}</td>
+                            <td>{{ row.K_zt }}</td>
+                            <td>{{ row.q_z }}</td>
+                            <td>{{ row.P_zw }}</td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% else %}
+            <p class="footnote__content">Auto wind calculation failed: No data found.</p>
+        {% endif %}
+    {% else %}
     <div class="page__break">
         <table class="width__100 borderless fig__table">
             <caption>Wind pressure at different height z</caption>
@@ -283,6 +328,7 @@
             </tbody>
         </table>
     </div>
+    {% endif %}
 </section>
 
 
@@ -436,36 +482,116 @@
     </div>
     
     
-    <div class="page__break">
-        <div class="page__break_avoid">
-            <table class="width__100 borderless fig__table">
-                <caption>C&C Wind Pressure for wall component</caption>
-                <tbody>
-                    <tr>
-                        <td>
-                            <img src="{{ inputs_dir }}/wind-cnc-wall.png">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <p class="footnote__content">
-                Zone 5 (Edge) width, a = Min<sup>m</sup> of (10% of least horizontal dimension, 0.4h);
-                but not less than 0.9 m.
-            </p>
-        </div>
+    {% if wind.auto_load|default(false) %}
+        {% set calc = wind.auto_calc %}
+        {% if calc %}
+            <div class="page__break">
+                <h3>Components &amp; Cladding Auto-Calculated Pressures</h3>
+                <div class="page__break_avoid">
+                    <table class="width__100">
+                        <caption>Wall Components (Top Level)</caption>
+                        <thead>
+                            <tr>
+                                <th>A<sub>eff</sub> (m²)</th>
+                                <th>K<sub>z</sub></th>
+                                <th>K<sub>zt</sub></th>
+                                <th>q<sub>z</sub> (kPa)</th>
+                                <th>P<sub>zi</sub> (kPa)</th>
+                                <th>P<sub>z4+</sub></th>
+                                <th>P<sub>z4-</sub></th>
+                                <th>P<sub>z5+</sub></th>
+                                <th>P<sub>z5-</sub></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for area, rows in calc.wall_results.items() %}
+                                {% for row in rows %}
+                                <tr>
+                                    <td>{{ row.A_eff }}</td>
+                                    <td>{{ row.K_z }}</td>
+                                    <td>{{ row.K_zt }}</td>
+                                    <td>{{ row.q_z }}</td>
+                                    <td>{{ row.P_zi }}</td>
+                                    <td>{{ row.P_z4_pos }}</td>
+                                    <td>{{ row.P_z4_neg }}</td>
+                                    <td>{{ row.P_z5_pos }}</td>
+                                    <td>{{ row.P_z5_neg }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
 
-        <div class="page__break_avoid">
-            <table class="width__100 borderless fig__table">
-                <caption>C&C Wind Pressure for roof component</caption>
-                <tbody>
-                    <tr>
-                        <td>
-                            <img src="{{ inputs_dir }}/wind-cnc-roof.png">
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+                <div class="page__break_avoid mt-1">
+                    <table class="width__100">
+                        <caption>Roof Components (Top Level)</caption>
+                        <thead>
+                            <tr>
+                                <th>A<sub>eff</sub> (m²)</th>
+                                <th>K<sub>z</sub></th>
+                                <th>K<sub>zt</sub></th>
+                                <th>q<sub>z</sub> (kPa)</th>
+                                <th>P<sub>zi</sub> (kPa)</th>
+                                <th>P<sub>z1-</sub></th>
+                                <th>P<sub>z2-</sub></th>
+                                <th>P<sub>z3-</sub></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for area, rows in calc.roof_results.items() %}
+                                {% for row in rows %}
+                                <tr>
+                                    <td>{{ row.A_eff }}</td>
+                                    <td>{{ row.K_z }}</td>
+                                    <td>{{ row.K_zt }}</td>
+                                    <td>{{ row.q_z }}</td>
+                                    <td>{{ row.P_zi }}</td>
+                                    <td>{{ row.P_z1_neg }}</td>
+                                    <td>{{ row.P_z2_neg }}</td>
+                                    <td>{{ row.P_z3_neg }}</td>
+                                </tr>
+                                {% endfor %}
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        {% else %}
+            <p class="footnote__content">Auto wind calculation failed: No data found.</p>
+        {% endif %}
+    {% else %}
+        <div class="page__break">
+            <div class="page__break_avoid">
+                <table class="width__100 borderless fig__table">
+                    <caption>C&C Wind Pressure for wall component</caption>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img src="{{ inputs_dir }}/wind-cnc-wall.png">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="footnote__content">
+                    Zone 5 (Edge) width, a = Min<sup>m</sup> of (10% of least horizontal dimension, 0.4h);
+                    but not less than 0.9 m.
+                </p>
+            </div>
+
+            <div class="page__break_avoid">
+                <table class="width__100 borderless fig__table">
+                    <caption>C&C Wind Pressure for roof component</caption>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <img src="{{ inputs_dir }}/wind-cnc-roof.png">
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-    </div>
+    {% endif %}
 
 </section>
