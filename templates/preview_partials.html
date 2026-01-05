@@ -1031,3 +1031,80 @@
 {% endif %}
 </div>
 {% endmacro %}
+
+{# Wind Preview #}
+{% macro wind_table(headers, rows) %}
+<table class="mini-table">
+    <thead>
+        <tr>
+            {% for h in headers %}<th>{{ h.label|safe }}</th>{% endfor %}
+        </tr>
+    </thead>
+    <tbody>
+        {% if rows and rows|length > 0 %}
+            {% for row in rows %}
+            <tr>
+                {% for h in headers %}
+                    <td>{{ row.get(h.key, '') }}</td>
+                {% endfor %}
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr><td colspan="{{ headers|length }}" class="wind-empty">No data</td></tr>
+        {% endif %}
+    </tbody>
+</table>
+{% endmacro %}
+
+{% macro wind_preview(summary, mwfrs_rows, wall_rows_fmt, roof_rows_fmt) %}
+{% set mwfrs_headers = [
+    {"key": "Lvl", "label": "Lvl"},
+    {"key": "z", "label": "Cumu. (m)"},
+    {"key": "Kz", "label": "K<sub>z</sub>"},
+    {"key": "Kzt", "label": "K<sub>zt</sub>"},
+    {"key": "qz", "label": "q<sub>z</sub> (kPa)"},
+    {"key": "P_wind", "label": "P<sub>z</sub> (kPa)"}
+] %}
+
+{% set cnc_headers_wall = [
+    {"key": "A_eff", "label": "A<sub>eff</sub> (m²)"},
+    {"key": "P_z4_pos", "label": "P<sub>z4+</sub> (kPa)"},
+    {"key": "P_z4_neg", "label": "P<sub>z4−</sub> (kPa)"},
+    {"key": "P_z5_pos", "label": "P<sub>z5+</sub> (kPa)"},
+    {"key": "P_z5_neg", "label": "P<sub>z5−</sub> (kPa)"}
+] %}
+
+{% set cnc_headers_roof = [
+    {"key": "A_eff", "label": "A<sub>eff</sub> (m²)"},
+    {"key": "P_z1_neg", "label": "P<sub>z1−</sub> (kPa)"},
+    {"key": "P_z2_neg", "label": "P<sub>z2−</sub> (kPa)"},
+    {"key": "P_z3_neg", "label": "P<sub>z3−</sub> (kPa)"}
+] %}
+
+<div class="wind-result-summary">
+    <h4>At height h,</h4>
+    <ul>
+        <li><span class="label">Importance Factor:</span><span class="value">{{ summary.Imp_factor }}</span></li>
+        <li><span class="label">Leeward Ext. Coeffi:</span><span class="value">{{ summary.C_pl }}</span></li>
+        <li><span class="label">Gust Factor:</span><span class="value">{{ summary.gust_factor }}</span></li>
+        <li><span class="label">Int. Pressure:</span><span class="value">{{ summary.P_hi }} kPa</span></li>
+        <li><span class="label">Leeward Pressure:</span><span class="value">{{ summary.P_hl }} kPa</span></li>
+        <li><span class="label">Sidewall Pressure:</span><span class="value">{{ summary.P_hs }} kPa</span></li>
+    </ul>
+</div>
+
+<div class="wind-result">
+    <h4>MWFRS Pressures at height z</h4>
+    {{ wind_table(mwfrs_headers, mwfrs_rows) }}
+</div>
+
+<div class="wind-result">
+    <h4>C&amp;C Pressure for Walls at height h</h4>
+    {{ wind_table(cnc_headers_wall, wall_rows_fmt) }}
+</div>
+
+<div class="wind-result">
+    <h4>C&amp;C Pressure for Roof at height h</h4>
+    {{ wind_table(cnc_headers_roof, roof_rows_fmt) }}
+</div>
+{% endmacro %}

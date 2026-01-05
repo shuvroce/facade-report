@@ -519,15 +519,15 @@ nav {
     font-size: 0.8rem;
     font-weight: 600;
     color: var(--text-heading);
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border-primary);
+    /* padding-bottom: 0.5rem; */
+    margin-top: 1rem;
 }
 
 .wind-preview-content {
     flex: 1;
     overflow-y: auto;
     max-height: 250px;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     padding: 0.4rem 0;
 }
 
@@ -545,7 +545,7 @@ nav {
     width: 100%;
     border-collapse: collapse;
     margin: 0.35rem 0 0.75rem 0;
-    font-size: 0.78rem;
+    font-size: 0.75rem;
     table-layout: fixed;
 }
 
@@ -557,19 +557,24 @@ nav {
     word-break: break-word;
 }
 
-.wind-preview-content .mini-table thead {
-    background: var(--bg-preview);
-    color: var(--text-heading);
-}
-
-.wind-preview-content .mini-table tbody tr:nth-child(odd) {
-    background: var(--bg-muted);
-}
-
 .wind-preview-content .note {
     margin: 0.25rem 0 0.15rem 0;
     font-size: 0.75rem;
     color: var(--text-secondary);
+}
+
+.wind-result-summary h4 {
+    margin-top: 0;
+    margin-bottom: 0.5rem;
+}
+
+.wind-result-summary ul li {
+    list-style: circle;
+    margin-left: 1.5rem;
+}
+
+.wind-result-summary ul li .label {
+    margin-right: 0.3rem;
 }
 
 
@@ -697,7 +702,7 @@ nav {
 .sub-item-preview-content {
     flex: 1;
     overflow-y: auto;
-    max-height: 220px;
+    /* max-height: 220px; */
     font-size: 0.8rem;
     padding: 0.4rem 0;
 }

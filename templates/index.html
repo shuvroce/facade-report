@@ -354,13 +354,6 @@
                                                         <option value="">-- Select Location --</option>
                                                     </select>
                                                 </div>
-                                                <!-- <div class="form-field">
-                                                    <label for="wind.wind_speed">Wind Speed</label>
-                                                    <div class="form-field-input-group">
-                                                        <input type="number" step="0.1" id="wind.wind_speed" name="wind.wind_speed" readonly>
-                                                        <span class="form-field-unit">m/s</span>
-                                                    </div>
-                                                </div> -->
                                                 <div class="form-field">
                                                     <label for="wind.exposure_cat">Exposure Category</label>
                                                     <select id="wind.exposure_cat" name="wind.exposure_cat">
@@ -383,6 +376,14 @@
                                                     <div class="form-field-input-group">
                                                         <input type="number" step="0.1" id="wind.K_d" name="wind.K_d" value="0.85">
                                                     </div>
+                                                </div>
+                                                <div class="form-field">
+                                                    <label for="wind.GC_pi">Internal Pressure Coefficient, GC<sub>pi</sub></label>
+                                                    <select id="wind.GC_pi" name="wind.GC_pi">
+                                                        <option value="0.18">0.18 (Enclosed)</option>
+                                                        <option value="0.55">0.55 (Partially Enclosed)</option>
+                                                        <option value="0">0.0 (Open)</option>
+                                                    </select>
                                                 </div>
                                             </div>
                                         </div>
@@ -411,49 +412,6 @@
                                                         <input type="number" step="0.1" id="wind.damping" name="wind.damping" value="0.02">
                                                     </div>
                                                 </div>
-                                                <!-- <div class="form-field">
-                                                    <label for="wind.gust_factor">Gust Effect Factor, G</label>
-                                                    <div class="form-field-input-group">
-                                                        <input type="number" step="0.01" id="wind.gust_factor" name="wind.gust_factor" readonly>
-                                                        <span class="form-field-unit">(auto)</span>
-                                                    </div>
-                                                </div> -->
-                                            </div>
-                                        </div>
-
-                                        <!-- 5. COEFFICIENTS -->
-                                        <div class="wind-card">
-                                            <div class="wind-card-header">Coefficients</div>
-                                            <div class="wind-card-content form-section">
-                                                <div class="form-field">
-                                                    <label for="wind.GC_pi">Internal Pressure Coefficient, GC<sub>pi</sub></label>
-                                                    <select id="wind.GC_pi" name="wind.GC_pi">
-                                                        <option value="0.18">0.18 (Enclosed)</option>
-                                                        <option value="0.55">0.55 (Partially Enclosed)</option>
-                                                        <option value="0">0.0 (Open)</option>
-                                                    </select>
-                                                </div>
-                                                <!-- <div class="form-field">
-                                                    <label for="wind.C_pw">External Windward Pressure Coeff., C<sub>pw</sub></label>
-                                                    <div class="form-field-input-group">
-                                                        <input type="number" step="0.01" id="wind.C_pw" name="wind.C_pw" readonly>
-                                                        <span class="form-field-unit">(auto)</span>
-                                                    </div>
-                                                </div> -->
-                                                <!-- <div class="form-field">
-                                                    <label for="wind.C_pl">External Leeward Pressure Coeff., C<sub>pl</sub></label>
-                                                    <div class="form-field-input-group">
-                                                        <input type="number" step="0.01" id="wind.C_pl" name="wind.C_pl" readonly>
-                                                        <span class="form-field-unit">(auto)</span>
-                                                    </div>
-                                                </div> -->
-                                                <!-- <div class="form-field">
-                                                    <label for="wind.C_ps">External Side Pressure Coeff., C<sub>ps</sub></label>
-                                                    <div class="form-field-input-group">
-                                                        <input type="number" step="0.01" id="wind.C_ps" name="wind.C_ps" readonly>
-                                                        <span class="form-field-unit">(auto)</span>
-                                                    </div>
-                                                </div> -->
                                             </div>
                                         </div>
 
@@ -498,12 +456,6 @@
                                                         <span class="form-field-unit">m</span>
                                                     </div>
                                                 </div>
-                                                <!-- <div class="form-field">
-                                                    <label for="wind.K_ht">Topographic Factor at H, K<sub>ht</sub></label>
-                                                    <div class="form-field-input-group">
-                                                        <input type="number" step="0.1" id="wind.K_ht" name="wind.K_ht" value="1.0">
-                                                    </div>
-                                                </div> -->
                                             </div>
                                         </div>
 
