@@ -414,22 +414,22 @@ def calc_preview():
             steel_data = profile_data.get(
                 "steel_profiles_data", profile_data.get("steel_profiles", [])
             )
-            glass_thk = item_data.get("glass_thickness", 0)
-            result = calc_frame(item_data, glass_thk, alum_data, steel_data)
+            result = calc_frame(item_data, alum_data, steel_data)
         elif item_type == "connection":
             # Connection needs frame and profile data
             profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
             alum_data = profile_data.get("alum_profiles_data", [])
             frame_data = item_data.get("frame", {})
-            glass_thk = item_data.get("glass_thickness", 0)
-            result = calc_connection(item_data, frame_data, glass_thk, alum_data)
+            result = calc_connection(item_data, frame_data, alum_data)
         elif item_type == "anchorage":
             # Anchorage needs frame and profile data
             profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
             alum_data = profile_data.get("alum_profiles_data", [])
             frame_data = item_data.get("frame", {})
-            glass_thk = item_data.get("glass_thickness", 0)
-            result = calc_anchorage(item_data, frame_data, glass_thk, alum_data)
+            # Add glass_thickness to frame_data for calculations
+            if "glass_thickness" in item_data:
+                frame_data["glass_thickness"] = item_data["glass_thickness"]
+            result = calc_anchorage(item_data, frame_data, alum_data)
         else:
             return {"success": False, "error": "Unsupported item type"}, 400
     except Exception as exc:  # guard against bad inputs

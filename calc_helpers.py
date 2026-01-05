@@ -507,7 +507,7 @@ def calc_glass_unit(gu: Dict[str, Any]) -> Optional[Dict[str, float]]:
     return {"branch": "rfem", "note": "Point fixed or span >= 5000"}
 
 
-def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: list = None, steel_profiles: list = None) -> Optional[Dict[str, Any]]:
+def calc_frame(frame: Dict[str, Any], alum_profiles_data: list = None, steel_profiles: list = None) -> Optional[Dict[str, Any]]:
     """Replicates frame calculations from templates/frame.html for preview."""
     if not frame or alum_profiles_data is None:
         return None
@@ -539,7 +539,7 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     geometry = frame.get("geometry", "regular")
     mullion_type = frame.get("mullion_type", "Aluminum Only")
     frame_type = frame.get("frame_type", "Continuous")
-    glass_thk = _to_float(frame.get("glass_thk")) or glass_thk or 0
+    glass_thk = _to_float(frame.get("glass_thk")) or 0
     mul_mu = _to_float(frame.get("mul_mu"))
     mul_vu = _to_float(frame.get("mul_vu"))
     mul_def = _to_float(frame.get("mul_def"))
@@ -553,9 +553,9 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     reaction_Rz = _to_float(frame.get("reaction_Rz"))
     
     glass_sw = glass_thk * 0.025
-    if frame_type != "Continuous":
+    if frame_type == "Floor-to-floor":
         eff_area = max(frame_length * frame_width, frame_length**2 / 3) / 1000**2
-    else:
+    elif frame_type == "Continuous":
         _frame_length = frame_length * 2
         eff_area = max(_frame_length * frame_width, _frame_length**2 / 3) / 1000**2
 
@@ -583,6 +583,21 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
 
     tran_mu = round(1.6 * tran_w_wind * (frame_width / 1000) ** 2 / 12, 2) if geometry == "regular" else tran_mu
 
+    
+    # Calculate mullion shear and reactions based on frame type
+    if frame_type == "Floor-to-floor":
+        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) / 2, 2) if geometry == "regular" else mul_vu
+        reaction_Ry = round(mul_w_wind * (frame_length / 1000) / 2, 2) if geometry == "regular" else reaction_Ry
+        reaction_Rz = round(mul_w_dead * (frame_length / 1000) / 2, 2) if geometry == "regular" else reaction_Rz
+    elif frame_type == "Continuous":
+        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) * (5 / 8), 2) if geometry == "regular" else mul_vu
+        reaction_Ry = round(mul_w_wind * (frame_length / 1000) * (10 / 8), 2) if geometry == "regular" else reaction_Ry
+        reaction_Rz = round(mul_w_dead * (_frame_length / 1000), 2) if geometry == "regular" else reaction_Rz
+    else:
+        mul_vu = 0
+        reaction_Ry = 0
+        reaction_Rz = 0
+    
     # Deflection limits
     if frame_length <= 4100:
         mul_allow_def = frame_length / 175
@@ -637,20 +652,6 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     tran_def_dead = (5 * 0.7 * tran_w_dead * frame_width**4) / (384 * 70000 * tran_Iy) if geometry == "regular" else tran_def_dead
     tran_vu = round(1.6 * tran_w_wind * (frame_width / 1000) / 4, 2) if geometry == "regular" else tran_vu
     
-    # Calculate mullion shear and reactions based on frame type
-    if frame_type == "Floor-to-floor":
-        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) / 2, 2) if geometry == "regular" else mul_vu
-        reaction_Ry = mul_vu if geometry == "regular" else reaction_Ry
-        reaction_Rz = round(mul_w_dead / 2, 2) if geometry == "regular" else reaction_Rz
-    elif frame_type == "Continuous":
-        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) * (5 / 8), 2) if geometry == "regular" else mul_vu
-        reaction_Ry = round(mul_w_wind * (frame_length / 1000) * (10 / 8), 2) if geometry == "regular" else reaction_Ry
-        reaction_Rz = mul_w_dead if geometry == "regular" else reaction_Rz
-    else:
-        mul_vu = 0
-        reaction_Ry = 0
-        reaction_Rz = 0
-    
     # Calculate joint forces for connections
     joint_fy = round(((tran_w_wind * frame_width / 1000) / 4), 2) if geometry == "regular" else joint_fy
     joint_fz = round(((tran_w_dead * frame_width / 1000) / 4), 2) if geometry == "regular" else joint_fz
@@ -695,7 +696,7 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     }
 
 
-def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: list = None) -> Optional[Dict[str, Any]]:
+def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], alum_profiles_data: list = None) -> Optional[Dict[str, Any]]:
     """Replicates connection calculations from templates/connection.html for preview."""
     if not conn or not frame:
         return None
@@ -707,7 +708,7 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: floa
     frame_length = _to_float(frame.get("length"))
     frame_type = frame.get("frame_type", "Continuous")
     wind_neg = _to_float(frame.get("wind_neg")) or 0
-    glass_thk = _to_float(frame.get("glass_thk")) or glass_thk or 0
+    glass_thk = _to_float(frame.get("glass_thk")) or 0
 
     # Validate frame dimensions
     if not frame_width or not frame_length:
@@ -778,7 +779,7 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], glass_thk: floa
     }
 
 
-def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: list = None) -> Optional[Dict[str, Any]]:
+def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], alum_profiles_data: list = None) -> Optional[Dict[str, Any]]:
     """Replicates anchorage calculations from templates/anchorage.html for preview."""
     if not anchor or not frame:
         return None
@@ -786,11 +787,14 @@ def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], glass_thk: flo
     alum_profiles_data = alum_profiles_data or []
 
     # Get frame loads
+    geometry = frame.get("geometry", "regular")
     frame_width = _to_float(frame.get("width"))
     frame_length = _to_float(frame.get("length"))
     frame_type = frame.get("frame_type", "Continuous")
     wind_neg = _to_float(frame.get("wind_neg"))
-    glass_thk = _to_float(frame.get("glass_thickness")) or glass_thk or 0
+    glass_thk = _to_float(frame.get("glass_thickness")) or 0
+    reaction_Ry = _to_float(frame.get("reaction_Ry"))
+    reaction_Rz = _to_float(frame.get("reaction_Rz"))
 
     if not frame_width or not frame_length or wind_neg is None:
         return None
@@ -832,17 +836,22 @@ def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], glass_thk: flo
     if not web_length or not flange_length:
         return None
 
+    if frame_type == "Continuous":
+        _frame_length = frame_length * 2
+    
     mul_w_dead = (glass_thk * 0.025 * frame_width / 1000)
     mul_w_wind = (wind_neg * frame_width / 1000)
 
+    # Calculate mullion shear and reactions based on frame type
     if frame_type == "Floor-to-floor":
-        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) / 2, 2)
-        reaction_Rz = round(mul_w_dead / 2, 2)
-        reaction_Ry = mul_vu
-    else:  # Continuous
-        mul_vu = round(1.6 * mul_w_wind * (frame_length / 1000) * (5 / 8), 2)
-        reaction_Rz = round(mul_w_dead, 2)
-        reaction_Ry = mul_w_wind * (frame_length / 1000) * (10 / 8)
+        reaction_Ry = round(mul_w_wind * (frame_length / 1000) / 2, 2) if geometry == "regular" else reaction_Ry
+        reaction_Rz = round(mul_w_dead * (frame_length / 1000) / 2, 2) if geometry == "regular" else reaction_Rz
+    elif frame_type == "Continuous":
+        reaction_Ry = round(mul_w_wind * (frame_length / 1000) * (10 / 8), 2) if geometry == "regular" else reaction_Ry
+        reaction_Rz = round(mul_w_dead * (_frame_length / 1000), 2) if geometry == "regular" else reaction_Rz
+    else:
+        reaction_Ry = 0
+        reaction_Rz = 0
 
     design_Ry = reaction_Ry * 1.6
     design_Rz = reaction_Rz * 1.4

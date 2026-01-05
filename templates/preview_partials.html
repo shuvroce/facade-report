@@ -212,12 +212,12 @@
 {% macro frame_preview(result) %}
 <div class="profile-properties">
     <div class="property-item">
-        <span class="property-label">Glass DL:</span>
-        <span class="property-value">{{ result.glass_sw or '—' }} kPa</span>
-    </div>
-    <div class="property-item">
         <span class="property-label">Eff. Area:</span>
         <span class="property-value">{{ result.eff_area or '—' }} m²</span>
+    </div>
+    <div class="property-item">
+        <span class="property-label">Glass DL:</span>
+        <span class="property-value">{{ result.glass_sw or '—' }} kPa</span>
     </div>
     
     <div class="property-break">Mullion</div>
