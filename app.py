@@ -72,13 +72,21 @@ def merge_profile_data(report_data):
         return merged
     return report_data
 
-def get_required_wind_figures():
-    return [
-        {"name": "wind-location-map.png", "category": "Wind", "exists": False},
-        {"name": "wind-mwfrs.png", "category": "Wind", "exists": False},
-        {"name": "wind-cnc-wall.png", "category": "Wind", "exists": False},
-        {"name": "wind-cnc-roof.png", "category": "Wind", "exists": False}
-    ]
+def get_required_wind_figures(wind_data=None):
+    if not wind_data:
+        wind_data = {}
+    
+    if wind_data.get("auto_load") != "yes":
+        return [
+            {"name": "wind-location-map.png", "category": "Wind", "exists": False},
+            {"name": "wind-mwfrs.png", "category": "Wind", "exists": False},
+            {"name": "wind-cnc-wall.png", "category": "Wind", "exists": False},
+            {"name": "wind-cnc-roof.png", "category": "Wind", "exists": False}
+        ]
+    else:
+        return [
+            {"name": "wind-location-map.png", "category": "Wind", "exists": False}
+        ]
 
 def get_manual_profile_figures(profile_name):
     clean_name = profile_name.strip()
@@ -200,7 +208,8 @@ def check_figures():
     required_figures = []
     
     # Add wind figures (always required)
-    required_figures.extend(get_required_wind_figures())
+    wind_data = data.get("wind", {})
+    required_figures.extend(get_required_wind_figures(wind_data))
     
     # Add manual aluminum profile figures
     if "alum_profiles" in data:
