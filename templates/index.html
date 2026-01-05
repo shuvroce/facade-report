@@ -110,6 +110,34 @@
         </button>
     </aside>
 
+    <div class="figure-rail">
+        <div class="status_area">
+            <div class="">
+                <div class="status_heading_box">
+                    <div class="status_heading">
+                        <h3>Figures</h3>
+                        <button class="small-btn" id="refresh-figures-btn">↻</button>
+                        <button class="small-btn" id="select-inputs-dir-btn">✎</button>
+                        <!-- <span id="figure-checking-status" style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 0.5rem; display: none;">Checking...</span> -->
+                    </div>
+                    <!-- <button class="small-btn help-btn" id="add-figures-btn">?</button> -->
+                </div>
+                <div id="inputs-dir-display" class="status-summary">
+                    <strong>Dir:</strong> <span id="inputs-dir-path-display">Default</span>
+                </div>
+                <div id="figure-status-summary" class="status-summary"></div>
+            </div>
+            <div class="status-box-container">
+                <div class="status-box">
+                    <ul id="figure-status-list">
+                        <!-- Status items will be dynamically added here -->
+                    </ul>
+                </div>
+            </div>
+            
+        </div>
+    </div>
+
     <div class="workspace-shell">
         <div class="main__container">
             <nav>
@@ -160,16 +188,14 @@
                 </div>
             </nav>
             <div class="container">
-                <div class="status_area">
+                <!-- <div class="status_area">
                     <div class="">
                         <div class="status_heading_box">
                             <div class="status_heading">
                                 <h3>Figures</h3>
                                 <button class="small-btn" id="refresh-figures-btn">↻</button>
                                 <button class="small-btn" id="select-inputs-dir-btn">✎</button>
-                                <!-- <span id="figure-checking-status" style="font-size: 0.75rem; color: var(--text-secondary); margin-left: 0.5rem; display: none;">Checking...</span> -->
                             </div>
-                            <!-- <button class="small-btn help-btn" id="add-figures-btn">?</button> -->
                         </div>
                         <div id="inputs-dir-display" class="status-summary">
                             <strong>Dir:</strong> <span id="inputs-dir-path-display">Default</span>
@@ -179,12 +205,10 @@
                     <div class="status-box-container">
                         <div class="status-box">
                             <ul id="figure-status-list">
-                                <!-- Status items will be dynamically added here -->
                             </ul>
                         </div>
                     </div>
-                    
-                </div>
+                </div> -->
 
                 <div class="content__box">
                     <div>
@@ -805,8 +829,8 @@
                 </div>
             </div>
 
-            <h4>YAML Output</h4>
-            <pre id="yaml-output-display">Click 'Generate' to see the YAML output.</pre>
+            <!-- <h4>YAML Output</h4>
+            <pre id="yaml-output-display">Click 'Generate' to see the YAML output.</pre> -->
         </aside>
     </div>
 
