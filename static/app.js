@@ -1995,6 +1995,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function hydrateFrameItem(frameItem, data = {}) {
+        // Set geometry first if present
+        const geometrySelect = frameItem.querySelector('select[name="geometry"]');
+        if (geometrySelect && data.geometry) {
+            geometrySelect.value = data.geometry;
+            geometrySelect.dispatchEvent(new Event('change'));
+        }
+        
         const typeSelect = frameItem.querySelector('select[name="mullion_type"]');
         if (typeSelect) {
             if (data.mullion_type) {
@@ -2002,7 +2009,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             typeSelect.dispatchEvent(new Event('change'));
         }
-        fillFields(frameItem, data, new Set(['mullion_type']));
+        fillFields(frameItem, data, new Set(['mullion_type', 'geometry']));
         
         // Trigger profile data population for mullion, transom, and steel selections
         const mullionSelect = frameItem.querySelector('select[name="mullion"]');

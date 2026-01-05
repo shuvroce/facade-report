@@ -574,7 +574,7 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     if frame_type == "Continuous":
         tran_w_dead = (glass_thk * 0.025) * (frame_width / 1000)
         tran_w_wind = wind_neg * (frame_width / 1000)
-    elif tran_spacing < frame_length and frame_type != "Continuous":
+    elif tran_spacing and tran_spacing < frame_length and frame_type != "Continuous":
         tran_w_dead = (glass_thk * 0.025) * (frame_width / 1000)
         tran_w_wind = wind_neg * (frame_width / 1000)
     else:
@@ -607,16 +607,16 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
         ls_a = mul_Ix_a / mul_Ix if mul_Ix else 0
         ls_s = 1 - ls_a
         
-        mul_mu_a = mul_mu * ls_a
-        mul_mu_s = mul_mu * ls_s
-        mul_dc_a = round(mul_mu_a / mul_phi_Mn_a, 2) if mul_phi_Mn_a else None
-        mul_dc_s = round(mul_mu_s / mul_phi_Mn_s, 2) if mul_phi_Mn_s else None
+        mul_mu_a = (mul_mu * ls_a) if mul_mu is not None else None
+        mul_mu_s = (mul_mu * ls_s) if mul_mu is not None else None
+        mul_dc_a = round(mul_mu_a / mul_phi_Mn_a, 2) if (mul_mu_a is not None and mul_phi_Mn_a) else None
+        mul_dc_s = round(mul_mu_s / mul_phi_Mn_s, 2) if (mul_mu_s is not None and mul_phi_Mn_s) else None
         I_xa = mul_Ix_a
         I_xs = sp_I_xx
     else:
         mul_Ix = mullion_profile.get("I_xx", 0) if mullion_profile else 0
         mul_phi_Mn = mullion_profile.get("phi_Mn", 0) if mullion_profile else 0
-        mul_dc = round(mul_mu / mul_phi_Mn, 2) if mul_phi_Mn else None
+        mul_dc = round(mul_mu / mul_phi_Mn, 2) if (mul_mu is not None and mul_phi_Mn) else None
         mul_dc_a = None
         mul_dc_s = None
         I_xa = None
@@ -632,7 +632,7 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
     tran_Ix = transom_profile.get("I_xx", 0) if transom_profile else 0
     tran_Iy = transom_profile.get("I_yy", 0) if transom_profile else 0
     tran_phi_Mn = transom_profile.get("phi_Mn", 0) if transom_profile else 0
-    tran_dc = round(tran_mu / tran_phi_Mn, 2) if tran_phi_Mn else None
+    tran_dc = round(tran_mu / tran_phi_Mn, 2) if (tran_mu is not None and tran_phi_Mn) else None
     tran_def_wind = (5 * 0.7 * tran_w_wind * frame_width**4) / (384 * 70000 * tran_Ix) if geometry == "regular" else tran_def_wind
     tran_def_dead = (5 * 0.7 * tran_w_dead * frame_width**4) / (384 * 70000 * tran_Iy) if geometry == "regular" else tran_def_dead
     tran_vu = round(1.6 * tran_w_wind * (frame_width / 1000) / 4, 2) if geometry == "regular" else tran_vu
@@ -669,29 +669,29 @@ def calc_frame(frame: Dict[str, Any], glass_thk: float = 0, alum_profiles_data: 
         "ls_s": round(ls_s, 2) if ls_s is not None else None,
         "mul_w_wind": round(mul_w_wind, 2),
         "mul_w_dead": round(mul_w_dead, 2),
-        "mul_mu": round(mul_mu, 2),
-        "tran_mu": round(tran_mu, 2),
+        "mul_mu": round(mul_mu, 2) if mul_mu is not None else None,
+        "tran_mu": round(tran_mu, 2) if tran_mu is not None else None,
         "mul_phi_Mn": round(mul_phi_Mn, 2) if mullion_type != "Aluminum + Steel" else None,
         "mul_phi_Mn_a": round(mul_phi_Mn_a, 2) if mullion_type == "Aluminum + Steel" else None,
         "mul_phi_Mn_s": round(mul_phi_Mn_s, 2) if mullion_type == "Aluminum + Steel" else None,
         "mul_dc": round(mul_dc, 2) if mullion_type != "Aluminum + Steel" else None,
-        "mul_dc_a": round(mul_dc_a, 2) if mullion_type == "Aluminum + Steel" else None,
-        "mul_dc_s": round(mul_dc_s, 2) if mullion_type == "Aluminum + Steel" else None,
-        "mul_mu_a": round(mul_mu_a, 2) if mullion_type == "Aluminum + Steel" else None,
-        "mul_mu_s": round(mul_mu_s, 2) if mullion_type == "Aluminum + Steel" else None,
-        "mul_def": round(mul_def, 2),
+        "mul_dc_a": round(mul_dc_a, 2) if (mullion_type == "Aluminum + Steel" and mul_dc_a is not None) else None,
+        "mul_dc_s": round(mul_dc_s, 2) if (mullion_type == "Aluminum + Steel" and mul_dc_s is not None) else None,
+        "mul_mu_a": round(mul_mu_a, 2) if (mullion_type == "Aluminum + Steel" and mul_mu_a is not None) else None,
+        "mul_mu_s": round(mul_mu_s, 2) if (mullion_type == "Aluminum + Steel" and mul_mu_s is not None) else None,
+        "mul_def": round(mul_def, 2) if mul_def is not None else None,
         "mul_allow_def": round(mul_allow_def, 2),
         "tran_phi_Mn": round(tran_phi_Mn, 2),
-        "tran_dc": round(tran_dc, 2),
-        "tran_def_wind": round(tran_def_wind, 2),
-        "tran_def_dead": round(tran_def_dead, 2),
+        "tran_dc": round(tran_dc, 2) if tran_dc is not None else None,
+        "tran_def_wind": round(tran_def_wind, 2) if tran_def_wind is not None else None,
+        "tran_def_dead": round(tran_def_dead, 2) if tran_def_dead is not None else None,
         "tran_allow_def": round(tran_allow_def, 2),
-        "tran_vu": round(tran_vu, 2),
-        "mul_vu": round(mul_vu, 2),
-        "reaction_Ry": round(reaction_Ry, 2),
-        "reaction_Rz": round(reaction_Rz, 2),
-        "joint_fy": round(joint_fy, 2),
-        "joint_fz": round(joint_fz, 2),
+        "tran_vu": round(tran_vu, 2) if tran_vu is not None else None,
+        "mul_vu": round(mul_vu, 2) if mul_vu is not None else None,
+        "reaction_Ry": round(reaction_Ry, 2) if reaction_Ry is not None else None,
+        "reaction_Rz": round(reaction_Rz, 2) if reaction_Rz is not None else None,
+        "joint_fy": round(joint_fy, 2) if joint_fy is not None else None,
+        "joint_fz": round(joint_fz, 2) if joint_fz is not None else None,
     }
 
 
