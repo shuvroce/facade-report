@@ -775,8 +775,8 @@ def calc_connection(conn: Dict[str, Any], frame: Dict[str, Any], alum_profiles_d
     phi_Pnov = round(0.5 * 1.5 * t1 * d_w * 207 / 1000, 2)
 
     # Ratios
-    beta_pullover = (resultant_shear / phi_Pnv / 0.5) + (0.71 * R_zB / phi_Pnov / 0.5)
-    beta_pullout = (resultant_shear / phi_Pnv / 0.5) + (R_zB / phi_Pnot / 0.5)
+    beta_pullover = (resultant_shear / (phi_Pnv / 0.5)) + (0.71 * R_zB / (phi_Pnov / 0.5))
+    beta_pullout = (resultant_shear / (phi_Pnv / 0.5)) + (R_zB / (phi_Pnot / 0.5))
 
     return {
         "joint_fy": round(joint_fy, 2),
