@@ -1068,7 +1068,7 @@ document.addEventListener('DOMContentLoaded', () => {
         return data;
     }
 
-    const coreWindFields = ['b_length', 'b_width', 'wind_speed', 'b_floor_heights'];
+    const coreWindFields = ['b_length', 'b_width', 'location', 'b_floor_heights'];
 
     const triggerWindPreview = debounce(async () => {
         if (!windPreviewContainer) return;

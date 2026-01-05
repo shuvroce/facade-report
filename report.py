@@ -11,6 +11,7 @@ from wind_load import (
     compute_cladding_pressures,
     external_pressure_coeff,
     parse_floor_heights,
+    location_wind_speeds,
 )
 
 BASE_DIR = os.path.dirname(__file__)
@@ -73,12 +74,20 @@ def precompute_calculations(data):
             exposure_cat = str(wind.get("exposure_cat", "A")).upper()
             floors, _ = parse_floor_heights(wind.get("b_floor_heights"))
 
+            # Get wind speed from location if not provided
+            wind_speed = _to_float(wind.get("wind_speed"))
+            if not wind_speed or wind_speed == 0:
+                location = wind.get("location", "")
+                wind_speed = location_wind_speeds.get(location, 0)
+                if not wind_speed:
+                    raise ValueError("Wind speed must be provided or location must be selected")
+
             summary, mwfrs_levels = compute_mwfrs_pressures(
                 exposure_cat,
                 _to_float(wind.get("b_length")),
                 _to_float(wind.get("b_width")),
                 _to_float(wind.get("K_d"), 0.85),
-                _to_float(wind.get("wind_speed")),
+                wind_speed,
                 wind.get("occupancy_cat"),
                 _to_float(wind.get("GC_pi"), 0.18),
                 wind.get("topography_type", "Homogeneous"),
@@ -100,7 +109,7 @@ def precompute_calculations(data):
                 _to_float(wind.get("topo_distance"), 0.0),
                 wind.get("topo_crest_side", "Upwind"),
                 floors,
-                _to_float(wind.get("wind_speed")),
+                wind_speed,
                 _to_float(wind.get("K_d"), 0.85),
                 wind.get("occupancy_cat"),
             )

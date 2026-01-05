@@ -436,7 +436,15 @@ def wind_preview():
         b_length = _to_float(wind.get("b_length"))
         b_width = _to_float(wind.get("b_width"))
         K_d = _to_float(wind.get("K_d"), 0.85)
+        
+        # Get wind speed from location if not provided
         wind_speed = _to_float(wind.get("wind_speed"))
+        if not wind_speed or wind_speed == 0:
+            location = wind.get("location", "")
+            wind_speed = location_wind_speeds.get(location, 0)
+            if not wind_speed:
+                raise ValueError("Wind speed must be provided or location must be selected")
+        wind_speed = _to_float(wind_speed)
         # Imp_factor = _to_float(wind.get("Imp_factor"), 1.0)
         GC_pi = _to_float(wind.get("GC_pi"), 0.18)
         b_freq = _to_float(wind.get("b_freq"), 1.2)
