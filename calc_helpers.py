@@ -510,7 +510,9 @@ def calc_glass_unit(gu: Dict[str, Any]) -> Optional[Dict[str, float]]:
 
 def frame_loads(glass_thk, frame_type, frame_length, frame_width, tran_spacing, wind_neg):
     # Mullion loads
-    mul_w_dead = (glass_thk * 0.025 * frame_width / 1000)
+    glass_sw = glass_thk * 0.025
+    acc_sw = glass_sw * 0.5
+    mul_w_dead = ((glass_sw + acc_sw) * frame_width / 1000)
     mul_w_wind = (wind_neg * frame_width / 1000)
     
     # Transom loads
