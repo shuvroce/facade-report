@@ -1,7 +1,7 @@
 import os
 import yaml
 import tempfile
-from flask import Flask, render_template, request, send_file, jsonify, session
+from flask import Flask, render_template, request, send_file, jsonify, session, send_from_directory
 from jinja2 import Environment, FileSystemLoader
 from report import generate_report_from_data, load_profile_data
 from calc_helpers import (
@@ -206,6 +206,13 @@ def check_figure_existence(figures):
 @app.route("/")
 def index():
     return render_template("index.html")
+
+
+# Serve assets from templates/assets folder
+@app.route("/assets/<path:filename>")
+def serve_assets(filename):
+    assets_dir = os.path.join(TEMPLATE_DIR, "assets")
+    return send_from_directory(assets_dir, filename)
 
 
 @app.route("/generate_report", methods=["POST"])

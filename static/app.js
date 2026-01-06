@@ -31,6 +31,165 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // FIGURE STATUS PANEL TOGGLE
+    const figureStatusMenubar = document.getElementById('figure-status-menubar');
+    const figureRail = document.querySelector('.figure-rail');
+    const workspaceShell = document.querySelector('.workspace-shell');
+    
+    if (figureStatusMenubar && figureRail && workspaceShell) {
+        figureStatusMenubar.addEventListener('click', () => {
+            figureRail.classList.toggle('collapsed');
+            workspaceShell.classList.toggle('rail-collapsed');
+        });
+    }
+
+    // GLASS CHART MODAL MANAGEMENT
+    function openGlassChartModal(inputElement, fieldName) {
+        const modal = document.getElementById('glass-chart-modal');
+        const chartImage = document.getElementById('glass-chart-image');
+        const loadingDiv = document.getElementById('glass-chart-loading');
+        const glassItem = inputElement.closest('.dynamic-item');
+        
+        if (!modal || !glassItem) return;
+
+        // Get glass type and support type from form
+        const glassTypeSelect = glassItem.querySelector('select[name="glass_type"]');
+        const supportTypeSelect = glassItem.querySelector('select[name="support_type"]');
+        
+        if (!glassTypeSelect || !supportTypeSelect) return;
+
+        const glassType = glassTypeSelect.value.toLowerCase();
+        const supportType = supportTypeSelect.value;
+        
+        // Determine which thickness to use based on field name
+        let thicknessInput;
+        let typeFolder;
+        
+        // For LDGU: first panel (1) is laminated, second panel (2) is monolithic
+        if (glassType === 'ldgu') {
+            if (fieldName.match(/1$/)) {
+                // nfl1, def1 -> use chart_thickness, laminated
+                thicknessInput = glassItem.querySelector('input[name="chart_thickness"]');
+                typeFolder = 'laminated';
+            } else {
+                // nfl2, def2 -> use thickness2, monolithic
+                thicknessInput = glassItem.querySelector('input[name="thickness2"]');
+                typeFolder = 'monolithic';
+            }
+        } 
+        // For LGU: laminated, use chart_thickness
+        else if (glassType === 'lgu') {
+            thicknessInput = glassItem.querySelector('input[name="chart_thickness"]');
+            typeFolder = 'laminated';
+        }
+        // For DGU: monolithic, panel1: thickness1, panel2: thickness2
+        else if (glassType === 'dgu') {
+            if (fieldName.match(/1$/)) {
+                thicknessInput = glassItem.querySelector('input[name="thickness1"]');
+            } else {
+                thicknessInput = glassItem.querySelector('input[name="thickness2"]');
+            }
+            typeFolder = 'monolithic';
+        }
+        // For SGU: monolithic, use thickness
+        else {
+            thicknessInput = glassItem.querySelector('input[name="thickness"]');
+            typeFolder = 'monolithic';
+        }
+        
+        if (!thicknessInput) {
+            alert('Thickness input not found');
+            return;
+        }
+
+        const thickness = thicknessInput.value;
+        
+        if (!thickness) {
+            alert('Please enter glass thickness first');
+            return;
+        }
+
+        // Determine if it's NFL or deflection chart
+        let chartType = 'load'; // default to NFL/load chart
+        if (fieldName.match(/^def/i)) {
+            chartType = 'deflection';
+        }
+
+        // Map support type to folder
+        let supportFolder = 'four-edge';
+        if (supportType === 'Three Edges') supportFolder = 'three-edge';
+        else if (supportType === 'Two Edges') supportFolder = 'two-edge';
+        else if (supportType === 'One Edge') supportFolder = 'one-edge';
+
+        // Build chart image path (relative to templates folder being served)
+        let chartPath = '';
+        if (supportFolder === 'four-edge' || supportFolder === 'three-edge') {
+            chartPath = `assets/images/glass-${chartType}-charts/${typeFolder}/${supportFolder}/${thickness}mm.png`;
+        } else {
+            chartPath = `assets/images/glass-${chartType}-charts/${typeFolder}/${supportFolder}/all-thk.png`;
+        }
+
+        // Update modal
+        const titleEl = modal.querySelector('.glass-chart-modal-title');
+        const chartName = chartType === 'load' ? 'Non-factored Load (NFL) Chart' : 'Deflection Chart';
+        const panelInfo = glassType === 'ldgu' ? (fieldName.match(/1$/) ? ' (Outer Panel - Laminated)' : ' (Inner Panel - Monolithic)') : '';
+        titleEl.textContent = `${chartName} - ${thickness}mm${panelInfo}`;
+        
+        // Show loading and hide image
+        loadingDiv.style.display = 'block';
+        chartImage.style.display = 'none';
+
+        // Attempt to load image
+        const tempImg = new Image();
+        tempImg.onload = function() {
+            chartImage.src = chartPath;
+            chartImage.style.display = 'block';
+            loadingDiv.style.display = 'none';
+        };
+        tempImg.onerror = function() {
+            loadingDiv.innerHTML = `<p style="color: var(--color-red);">Chart not found: ${chartPath}<br>Looking for ${thickness}mm ${typeFolder} glass with ${supportFolder} support.</p>`;
+        };
+        tempImg.src = chartPath;
+
+        // Show modal
+        modal.classList.add('show');
+        document.body.style.overflow = 'hidden';
+    }
+
+    // Setup glass chart modal controls
+    const glassChartModal = document.getElementById('glass-chart-modal');
+    if (glassChartModal) {
+        // Close buttons
+        const closeBtn = glassChartModal.querySelector('.glass-chart-modal-close');
+        const closeFooterBtn = glassChartModal.querySelector('.glass-chart-close-btn');
+        
+        function closeChartModal() {
+            glassChartModal.classList.remove('show');
+            document.body.style.overflow = '';
+        }
+        
+        if (closeBtn) {
+            closeBtn.addEventListener('click', closeChartModal);
+        }
+        if (closeFooterBtn) {
+            closeFooterBtn.addEventListener('click', closeChartModal);
+        }
+        
+        // Click outside to close
+        glassChartModal.addEventListener('click', (e) => {
+            if (e.target === glassChartModal) {
+                closeChartModal();
+            }
+        });
+        
+        // ESC to close
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && glassChartModal.classList.contains('show')) {
+                closeChartModal();
+            }
+        });
+    }
+
     
     // 2. TAB NAVIGATION SYSTEM
     const tabs = document.querySelectorAll('.tab_btn');
@@ -471,9 +630,10 @@ document.addEventListener('DOMContentLoaded', () => {
      * @param {HTMLElement} input - The input element
      * @param {string} label - The label text (may include unit like "Glass Length (mm)")
      * @param {string} [unit] - Optional unit suffix (e.g., 'mm', 'kPa')
+     * @param {string} [fieldName] - Optional field name to check if chart button should be added
      * @returns {HTMLElement} The form-field div
      */
-    function createFormField(input, label, unit) {
+    function createFormField(input, label, unit, fieldName) {
         const formField = document.createElement('div');
         formField.className = 'form-field';
         
@@ -502,6 +662,24 @@ document.addEventListener('DOMContentLoaded', () => {
             unitSpan.setAttribute('aria-hidden', 'true');
             
             inputGroup.appendChild(unitSpan);
+            
+            // Add chart button for NFL and deflection fields
+            if (fieldName && fieldName.match(/^(nfl|def)/i)) {
+                const chartBtn = document.createElement('button');
+                chartBtn.type = 'button';
+                chartBtn.className = 'form-field-chart-btn';
+                chartBtn.title = 'View chart';
+                chartBtn.setAttribute('aria-label', 'View chart');
+                chartBtn.innerHTML = '<svg viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8" cy="8" r="1.5"/><path d="M21 15l-5-5L7 16.5"/></svg>';
+                
+                chartBtn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    openGlassChartModal(input, fieldName);
+                });
+                
+                inputGroup.appendChild(chartBtn);
+            }
+            
             formField.appendChild(inputGroup);
         } else {
             formField.appendChild(input);
@@ -579,7 +757,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Create form-field wrapper with label and optional unit
             const labelText = glassFieldPlaceholders[fieldName] || fieldName;
             const unit = extractUnitFromPlaceholder(labelText);
-            const formField = createFormField(input, labelText, unit);
+            const formField = createFormField(input, labelText, unit, fieldName);
             
             fieldsContainer.appendChild(formField);
         });

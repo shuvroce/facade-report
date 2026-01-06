@@ -11,6 +11,26 @@
 </head>
 
 <body>
+    <!-- Glass Chart Modal -->
+    <div id="glass-chart-modal" class="glass-chart-modal-overlay">
+        <div class="glass-chart-modal-dialog">
+            <div class="glass-chart-modal-header">
+                <h2 class="glass-chart-modal-title">Glass Reference Chart</h2>
+                <button type="button" class="glass-chart-modal-close" aria-label="Close modal">
+                    <svg viewBox="0 0 24 24"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+                </button>
+            </div>
+            <div class="glass-chart-modal-content">
+                <img id="glass-chart-image" src="" alt="Glass chart" style="display:none;">
+                <div id="glass-chart-loading" style="text-align: center; color: var(--text-secondary);">
+                    <p>Loading chart...</p>
+                </div>
+            </div>
+            <div class="glass-chart-modal-footer">
+                <button type="button" class="glass-chart-close-btn">Close</button>
+            </div>
+        </div>
+    </div>
     <header class="topbar" aria-label="Workspace controls">
         <div class="topbar-left">
             <div class="logo-badge" aria-label="Facade Report" role="img"></div>
@@ -58,6 +78,13 @@
     </header>
 
     <aside class="left-rail" aria-label="Quick actions">
+        <button class="rail-btn" id="figure-status-menubar" type="button" title="Status Panel" aria-label="Status Panel">
+            <svg class="rail-icon" viewBox="0 0 24 24" aria-hidden="true">
+                <line x1="3" y1="6" x2="21" y2="6"></line>
+                <line x1="3" y1="12" x2="21" y2="12"></line>
+                <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+        </button>
         <button class="rail-btn theme-toggle" id="theme-toggle" aria-label="Toggle dark mode">
             <svg id="theme-icon-sun" class="theme-icon sun hidden" viewBox="0 0 24 24" aria-hidden="true">
                 <circle cx="12" cy="12" r="4"></circle>
