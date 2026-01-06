@@ -544,8 +544,9 @@ nav {
 .wind-preview-content {
     flex: 1;
     overflow-y: auto;
-    /* max-height: 250px; */
-    max-height: calc(100vh - 250px);
+    /* height: 25rem; */
+    max-height: 350px;
+    /* max-height: calc(100vh - 250px); */
     font-size: 0.75rem;
     padding: 0.4rem 0;
 }
@@ -1625,15 +1626,20 @@ summary {
     transition: var(--transition-bg), var(--transition-border);
 }
 
-#yaml-output-display {
-    font-family: monospace;
-    color: var(--text-code);
-    white-space: pre-wrap;
+.yaml-output-container {
     background-color: var(--bg-code);
     padding: 15px;
     border-radius: var(--radius-2);
     border: 1px solid var(--border-code);
     transition: var(--transition-bg), var(--transition-border);
+}
+
+#yaml-output-display {
+    font-family: monospace;
+    color: var(--text-code);
+    white-space: pre-wrap;
+    max-height: 200px;
+    overflow-y: auto;
 }
 
 
