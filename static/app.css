@@ -2065,3 +2065,15 @@ summary {
 .glass-chart-close-btn:hover {
     background-color: var(--bg-input);
 }
+
+.category__summary-report {
+    display: flex;
+    gap: 1rem;
+}
+
+.category__summary-report .action_btn {
+    padding: 0.3rem 0.6rem;
+    border-radius: var(--radius-2);
+    background: var(--btn-accent2);
+    font-weight: normal;
+}

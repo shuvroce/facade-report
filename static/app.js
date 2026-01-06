@@ -2052,6 +2052,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const generateBtn = document.getElementById('generate-yaml-btn');
     const downloadBtn = document.getElementById('download-yaml-btn');
     const reportBtn = document.getElementById('generate-report-btn');
+    const summaryBtn = document.getElementById('generate-summary-report-btn');
     const yamlOutputDisplay = document.getElementById('yaml-output-display');
     const statusEl = document.getElementById('status-notification');
 
@@ -2551,6 +2552,37 @@ document.addEventListener('DOMContentLoaded', () => {
                 }, 900);
             });
     });
+    
+    summaryBtn.addEventListener('click', () => {
+        const formData = getFormData(form);
+        const yamlContent = toYamlString(formData);
+
+        // Display the generated YAML for user feedback
+        yamlOutputDisplay.textContent = yamlContent;
+
+        // Update UI: show processing and disable buttons
+        setStatus('Processing...', 'processing');
+        generateBtn.disabled = true;
+        reportBtn.disabled = true;
+        summaryBtn.disabled = true;
+
+        // Execute report generation and handle status updates in the async function
+        callPythonToGenerateSummaryReport(yamlContent)
+            .then(() => {
+                setStatus('Summary report generated successfully!', 'success');
+            })
+            .catch((err) => {
+                setStatus('Failed: ' + (err && err.message ? err.message : err), 'error');
+            })
+            .finally(() => {
+                // Re-enable after a short delay so user sees the result
+                setTimeout(() => {
+                    generateBtn.disabled = false;
+                    reportBtn.disabled = false;
+                    summaryBtn.disabled = false;
+                }, 900);
+            });
+    });
 
     /**
      * Call backend API to generate PDF report from YAML content
@@ -2598,6 +2630,52 @@ document.addEventListener('DOMContentLoaded', () => {
         })
         .catch(error => {
             console.error('Error during report generation:', error);
+            // Re-throw to be handled by the caller for UI update
+            throw error;
+        });
+    }
+    
+    function callPythonToGenerateSummaryReport(yamlContent) {
+        // Return the fetch promise so the caller can await/chain
+        return fetch('/generate_summary_report', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ yaml_content: yamlContent })
+        })
+        .then(response => {
+            if (!response.ok) {
+                return response.json().then(errJson => {
+                    const msg = errJson && errJson.error ? errJson.error : `Server responded with ${response.status}`;
+                    throw new Error(msg);
+                }).catch(() => {
+                    throw new Error(`Server responded with ${response.status}`);
+                });
+            }
+            return response.blob();
+        })
+        .then(blob => {
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+
+            // Try to set filename from YAML project name (optional)
+            let suggestedName = 'summary.pdf';
+            try {
+                const firstPart = yamlContent.split('\n').find(line => line.trim().startsWith('project_info.project_name:'));
+                if (firstPart) {
+                    const baseName = firstPart.split(':').slice(1).join(':').trim().replace(/\s+/g, '_');
+                    suggestedName = baseName ? `${baseName}_summary.pdf` : suggestedName;
+                }
+            } catch (e) { /* ignore */ }
+
+            a.download = suggestedName;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            window.URL.revokeObjectURL(url);
+        })
+        .catch(error => {
+            console.error('Error during summary report generation:', error);
             // Re-throw to be handled by the caller for UI update
             throw error;
         });

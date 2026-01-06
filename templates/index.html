@@ -533,15 +533,20 @@
                                 </div>
 
                                 <div class="content" data-tab="categories">
-                                    <h2 class="section-title">
-                                        <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
-                                            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-                                            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-                                            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
-                                            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
-                                        </svg>
-                                        <span>Categories</span>
-                                    </h2>
+                                    <div class="category__summary-report">
+                                        <h2 class="section-title">
+                                            <svg class="section-icon" viewBox="0 0 24 24" aria-hidden="true">
+                                                <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                                                <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                                                <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                                                <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                                            </svg>
+                                            <span>Categories</span>
+                                        </h2>
+                                        <div class="action_btn-box">
+                                            <button class="action_btn" id="generate-summary-report-btn" type="button" title="Generate summary report">Summary</button>
+                                        </div>
+                                    </div>
                                     <div class="category-dynamic-list" id="categories-list"></div>
                                     <button type="button" class="add-btn add-category-btn" data-list="categories-list" data-template="category-template">Add Category</button>
                                 </div>

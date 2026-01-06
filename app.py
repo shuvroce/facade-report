@@ -3,7 +3,7 @@ import yaml
 import tempfile
 from flask import Flask, render_template, request, send_file, jsonify, session, send_from_directory
 from jinja2 import Environment, FileSystemLoader
-from report import generate_report_from_data, load_profile_data
+from report import generate_report_from_data, generate_summary_report_from_data, load_profile_data
 from calc_helpers import (
     calc_steel_profile,
     calc_alum_profile,
@@ -243,6 +243,37 @@ def generate_report():
         pdf_path,
         as_attachment=True,
         download_name="report.pdf",
+        mimetype="application/pdf",
+    )
+
+@app.route("/generate_summary_report", methods=["POST"])
+def generate_summary_report():
+    if not request.json or "yaml_content" not in request.json:
+        return {"success": False, "error": "Missing yaml_content"}, 400
+
+    # Parse YAML content
+    yaml_content = request.json["yaml_content"]
+    report_data = yaml.safe_load(yaml_content) or {}
+
+    # Merge with profile data
+    report_data = merge_profile_data(report_data)
+
+    # Create temporary directory and determine output filename
+    temp_dir = tempfile.mkdtemp()
+    out_pdf = os.path.join(temp_dir, "summary.pdf")
+
+    # Generate PDF report
+    pdf_path = generate_summary_report_from_data(
+        data=report_data,
+        out_pdf=out_pdf,
+        template_dir=TEMPLATE_DIR,
+        inputs_dir=get_inputs_dir(),
+    )
+
+    return send_file(
+        pdf_path,
+        as_attachment=True,
+        download_name="summary.pdf",
         mimetype="application/pdf",
     )
 
