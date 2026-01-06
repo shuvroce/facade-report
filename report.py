@@ -304,7 +304,7 @@ def generate_summary_report_from_data(
         with pikepdf.Pdf.open(out_pdf, allow_overwriting_input=True) as pdf:
             pdf.docinfo["/Title"] = title
             pdf.docinfo["/Author"] = author
-            pdf.Root.PageMode = pikepdf.Name("/UseOutlines")
+            # pdf.Root.PageMode = pikepdf.Name("/UseOutlines")
             pdf.Root.PageLayout = pikepdf.Name("/SinglePage")
             if "/Outlines" in pdf.Root and "/First" in pdf.Root.Outlines:
                 pdf.Root.Outlines.Count = 0

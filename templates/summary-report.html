@@ -4,40 +4,173 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Structural Design Report (Summary)</title>
+    <title>Design Report Summary</title>
 
     <link rel="stylesheet" href="/css/katex.min.css">
     <link rel="stylesheet" href="/css/report.css">
 </head>
 
 <body>
-    {% include "common/header.html" %}
-    {% include "common/cover.html" %}
 
-    {% if include.toc|default(false) %}
-        {% include "common/toc.html" %}
-    {% endif%}
+<section class="page__header">
+    <div class="page__header_left">
+        <p class="page__header_title">Summary Report</p>
+        <div class="page__header_logo">
+            <img src="assets/images/logo.png">
+        </div>
+    </div>
+    <div class="page__header_right">
+        <p class="page__header_project">Project: {{ project_info.project_name }}</p>
+        <p class="page__header_date">Date: {{ project_info.date }}</p>
+    </div>
+</section>
 
-    {% include "common/intro.html" %}
-
-    {% if include.moment_capacity|default(false) %}
-        {% include "profile.html" %}
-    {% endif%}
-
-    {% if include.wind_pressure|default(false) %}
-        {% include "wind.html" %}
-    {% endif%}
-
-    {% if include.categories|default(false) and categories %}
-        {% for cat in categories %}
-            {% set loop_index = loop.index %}
-            {% include "category.html" %}
+{% if categories %}
+    {% for cat in categories %}
+    {% set loop_index = loop.index %}
+    <section>
+        {% if cat.frames %}
+        {% for frame in cat.frames %}
+        <p class="summary__cat-name">Category {{ loop_index }} | {{ cat.category_name }} | {{ frame.zone }}</p>
         {% endfor %}
-    {% endif%}
+        {% endif %}
 
-    {% if include.reference|default(false) %}
-        {% include "common/reference.html" %}
-    {% endif%}
+        <table class="width__100">
+        <thead>
+            <tr>
+                <th>Elements</th>
+                <th>Specs.</th>
+                <th>Loads</th>
+                <th>Forces / Results</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {% if cat.glass_units %}
+            <tr>
+                <td>Glass</td>
+                <td>
+                    {% for gu in cat.glass_units %}
+                    {% set calc = gu.result or gu._calc %}
+                    <p class="summary__td-item">
+                        {% if gu.glass_type == "sgu" %}
+                        {{ gu.length }} x {{ gu.width }} x ({{ gu.thickness }}) ({{ gu.grade }})
+                        {% elif gu.glass_type == "dgu" %}
+                        {{ gu.length }} x {{ gu.width }} x ({{ gu.thickness1 }} + {{ gu.gap }} + {{ gu.thickness2 }}) ({{ gu.grade1 }} + {{ gu.grade2 }})
+                        {% elif gu.glass_type == "lgu" %}
+                        {{ gu.length }} x {{ gu.width }} x ({{ gu.thickness1 }} + {{ gu.thickness_inner }} + {{ gu.thickness2 }}) ({{ gu.grade }})
+                        {% else %}
+                        {{ gu.length }} x {{ gu.width }} x ({{ gu.thickness1_1 }} + {{ gu.thickness_inner }} + {{ gu.thickness1_2 }} + {{ gu.gap }} + {{ gu.thickness2 }}) ({{ gu.grade1 }} + {{ gu.grade2 }})
+                        {% endif %}
+                    </p>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for gu in cat.glass_units %}
+                    {% set calc = gu.result or gu._calc %}
+                        <p class="summary__td-item">{{ gu.wind_load }} kPa</p>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for gu in cat.glass_units %}
+                    {% set calc = gu.result or gu._calc %}
+                    <p class="summary__td-item">
+                        {% if gu.glass_type == "sgu" %}<p class="summary__td-list"><span>LR: </span>{{ calc.sgu_lr }}</p>
+                        {% elif gu.glass_type == "dgu" %}<p class="summary__td-list"><span>LR: </span>{{ calc.dgu_lr }}</p>
+                        {% elif gu.glass_type == "lgu" %}<p class="summary__td-list"><span>LR: </span>{{ calc.lgu_lr }}</p>
+                        {% else %}<p><span>LR: </span>{{ calc.ldgu_lr }}</p>
+                        {% endif %}
+                        <p><span>δ: </span>{{ calc.deflection }}</p>
+                    </p>
+                    {% endfor %}
+                </td>
+            </tr>
+            {% endif %}
+            
+            
+            {% if cat.glass_units %}
+            <tr>
+                <td>Silicone</td>
+                <td>
+                    {% for gu in cat.glass_units %}
+                    {% set calc = gu.result or gu._calc %}
+                    <p class="summary__td-item">
+                        {{ calc.bite_req }} x {{ calc.glue_pro }}
+                    </p>
+                    {% endfor %}
+                </td>
+                <td>
+                    {% for gu in cat.glass_units %}
+                    {% set calc = gu.result or gu._calc %}
+                        <p class="summary__td-item">{{ gu.wind_load }} kPa</p>
+                    {% endfor %}
+                </td>
+                <td></td>
+            </tr>
+            {% endif %}
+
+
+            {% if cat.frames %}
+            {% for frame in cat.frames %}
+            {% set calc = frame.result or frame._calc %}
+            <tr>
+                <td>Frame <span>{% if calc.frame_type == "Continuous" %}(Cont.) {% else %}(Floor-to-floor) {% endif %}</span></td>
+                <td>
+                    {% if frame.mullion_type == "Aluminum Only" %}
+                    <p class="summary__td-list">{{ frame.mullion }} (6063-T6)</p>
+                    {% else %}
+                    <p class="summary__td-list">{{ frame.mullion }} (6063-T6) + {{ frame.steel }} (50 gr.)</p>
+                    {% endif %}
+                    <p class="summary__td-list">{{ frame.transom }} (6063-T5)</p>
+                </td>
+                <td>{{ frame.wind_neg }} kPa</td>
+                <td>
+                    <table class="summary__inside-table">
+                        <tbody>
+                            <tr><td></td><td>M</td><td>T</td></tr>
+                            <tr><td>Mu</td><td>M</td><td>T</td></tr>
+                            <tr><td>Vu</td><td>M</td><td>T</td></tr>
+                            <tr><td>δw</td><td>M</td><td>T</td></tr>
+                            <tr><td>δd</td><td>M</td><td>T</td></tr>
+                        </tbody>
+                    </table>
+                </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+
+            {% if cat.connections %}
+            {% for conn in cat.connections %}
+            {% set calc = conn.result or conn._calc %}
+            <tr>
+                <td>Connection</td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+
+            {% if cat.anchorage %}
+            {% for anchor in cat.anchorage %}
+            {% set calc = anchor.result or anchor._calc %}
+            <tr>
+                <td>Anchorage <span>{% if calc.clump_type == "Box Clump" %}(Box Clump) {% elif calc.clump_type == "U Clump" %}(U Clump) {% else %}(L Clump) {% endif %}</span></td>
+                <td></td>
+                <td></td>
+                <td></td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+
+        </tbody>
+        </table>
+
+    </section>
+    {% endfor %}
+{% endif%}
+
 </body>
-
 </html>
