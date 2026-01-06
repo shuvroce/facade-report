@@ -235,6 +235,11 @@ body {
 .header-btn {
     display: flex;
     gap: 0.5rem;
+    height: calc(var(--topbar-height) - 1.5rem);
+    padding-right: 1rem;
+    border-right: 1px solid var(--border-header);
+    align-items: center;
+    justify-content: center;
 }
 
 .topbar-icon-btn {
@@ -330,6 +335,7 @@ body {
     width: 42px;
     height: 42px;
     border-radius: 50%;
+    border: 3px solid var(--border-header);
     background: linear-gradient(135deg, var(--text-active), var(--color-blue));
     color: #fff;
     display: inline-flex;
@@ -370,8 +376,11 @@ body {
     display: flex;
     align-items: center;
     gap: 0.35rem;
+    height: calc(var(--topbar-height) - 1rem);
     font-size: 0.75rem;
     color: var(--text-secondary);
+    border-right: 1px solid var(--border-header);
+    padding-right: 1rem;
 }
 
 .status-dot {
