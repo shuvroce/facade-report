@@ -317,18 +317,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Glass Unit Configuration ---
     const glassFields = {
-        'sgu': ['length', 'width', 'thickness', 'grade', 'wind_load', 'support_type', 'nfl', 'load_x_area2', 'def'],
+        'sgu': ['length', 'width', 'thickness', 'grade', 'support_type', 'wind_load',  'nfl', 'load_x_area2', 'def'],
         'dgu': [
-            'length', 'width', 'thickness1', 'gap', 'thickness2', 'grade1', 'grade2', 'wind_load', 'support_type', 
+            'length', 'width', 'thickness1', 'gap', 'thickness2', 'grade1', 'grade2', 'support_type', 'wind_load',
             'nfl1', 'nfl2', 'load1_x_area2', 'load2_x_area2', 'def1', 'def2'
         ],
         'lgu': [
-            'length', 'width', 'thickness1', 'thickness_inner', 'thickness2', 'chart_thickness', 'grade', 'wind_load',
-            'support_type', 'nfl', 'load_x_area2', 'def'
+            'length', 'width', 'thickness1', 'thickness_inner', 'thickness2', 'chart_thickness', 'grade', 'support_type',
+            'wind_load', 'nfl', 'load_x_area2', 'def'
         ],
         'ldgu': [
             'length', 'width', 'thickness1_1', 'thickness_inner', 'thickness1_2', 'chart_thickness', 'gap', 'thickness2',
-            'grade1', 'grade2', 'wind_load', 'support_type', 'nfl1', 'nfl2', 'load1_x_area2', 'load2_x_area2', 'def1', 'def2'
+            'grade1', 'grade2', 'support_type', 'wind_load', 'nfl1', 'nfl2', 'load1_x_area2', 'load2_x_area2', 'def1', 'def2'
         ]
     };
 
@@ -491,18 +491,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- Anchorage Configuration ---
     const anchorageFields = {
         'Box Clump': [
-            'anchor_nos', 'anchor_dia', 'embed_depth',
-            'C_a1', 'h_a', 'bp_thk'
+            'bp_thk', 'anchor_nos', 'anchor_dia', 'embed_depth',
+            'C_a1', 'h_a'
         ],
         'U Clump': [
+            'bp_thk', 'fin_thk', 'fin_e',
             'anchor_nos', 'anchor_dia', 'embed_depth', 'C_a1', 
-            'thr_bolt_dia', 'fin_thk', 'fin_e', 'bp_thk'
+            'thr_bolt_dia'
         ],
         'L Clump': [
-            'top_anchor_nos', 'anchor_dia', 'embed_depth', 'top_C_a1', 'h_a',
-            'top_bp_length_N', 'top_bp_width_B',
-            'front_C_a1', 'thr_bolt_dia', 'fin_thk', 'fin_e',
-            'front_bp_length_N', 'front_bp_width_B', 'bp_thk'
+            'front_bp_length_N', 'front_bp_width_B', 'top_bp_length_N', 'top_bp_width_B', 'bp_thk',
+            'fin_thk', 'fin_e',
+            'top_anchor_nos', 'anchor_dia', 'embed_depth', 'front_C_a1', 'top_C_a1', 'h_a',
+            'thr_bolt_dia'
         ]
     };
 
