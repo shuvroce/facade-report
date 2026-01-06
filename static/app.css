@@ -807,7 +807,7 @@ nav {
 .action_btn-box .action_btn {
     padding: 10px 15px;
     margin-left: 10px;
-    background-color: var(--btn-accent);
+    background-color: var(--btn-primary);
     border-radius: 50px;
     color: #fff;
 }

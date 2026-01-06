@@ -168,8 +168,8 @@ def calc_alum_stick_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, 
     I_f = I_xx - I_w
     c_f = (web_length - flange_thk) / 2
     
-    Mn_lbw = (F_b * (I_w / c_w) / 1000000)
-    Mn_lbf = (F_c * (I_f / c_f) / 1000000)
+    Mn_lbw = ((F_b * I_w) / (c_w / 1000**2))
+    Mn_lbf = ((F_c * I_f) / (c_f / 1000**2))
     Mn_lb = Mn_lbw + Mn_lbf
     phi_Mn = 0.9 * min(Mn_yield, Mn_lb)
     
@@ -206,7 +206,7 @@ def calc_alum_stick_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, 
         # Moment capacities
         "Mn_yield": round(Mn_yield, 1),
         "Mn_lbw": round(Mn_lbw, 1),
-        "Mn_lbf": round(Mn_lbw, 1),
+        "Mn_lbf": round(Mn_lbf, 1),
         "Mn_lb": round(Mn_lb, 1),
         "phi_Mn": round(phi_Mn, 1),
     }
@@ -277,7 +277,7 @@ def calc_alum_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         F_c = B_p - (5 * D_p) * (flange_b / flange_thk)
     
     Mn_lbw = F_b * (I_w / c_c) / 1000000
-    Mn_lbf = F_c * (F_c * ((I_xx - I_w) / (web_b / 2)) / 1000000)
+    Mn_lbf = (F_c * ((I_xx - I_w) / (web_b / 2)) / 1000000)
     Mn_lb = Mn_lbw + Mn_lbf
     phi_Mn = 0.9 * min(Mn_yield, Mn_lb)
     
@@ -316,7 +316,7 @@ def calc_alum_profile(profile_data: Dict[str, Any]) -> Optional[Dict[str, Any]]:
         # Moment capacities
         "Mn_yield": round(Mn_yield, 1),
         "Mn_lbw": round(Mn_lbw, 1),
-        "Mn_lbf": round(Mn_lbw, 1),
+        "Mn_lbf": round(Mn_lbf, 1),
         "Mn_lb": round(Mn_lb, 1),
         "phi_Mn": round(phi_Mn, 1),
     }
@@ -511,7 +511,7 @@ def calc_glass_unit(gu: Dict[str, Any]) -> Optional[Dict[str, float]]:
 def frame_loads(glass_thk, frame_type, frame_length, frame_width, tran_spacing, wind_neg):
     # Mullion loads
     glass_sw = glass_thk * 0.025
-    acc_sw = glass_sw * 0.5
+    acc_sw = glass_sw * 0.3
     mul_w_dead = ((glass_sw + acc_sw) * frame_width / 1000)
     mul_w_wind = (wind_neg * frame_width / 1000)
     
@@ -595,6 +595,8 @@ def calc_frame(frame: Dict[str, Any], alum_profiles_data: list = None, steel_pro
     reaction_Rz = _to_float(frame.get("reaction_Rz"))
     
     glass_sw = glass_thk * 0.025
+    acc_sw = glass_sw * 0.3
+    
     if frame_type == "Floor-to-floor":
         eff_area = max(frame_length * frame_width, frame_length**2 / 3) / 1000**2
     elif frame_type == "Continuous":
@@ -687,6 +689,7 @@ def calc_frame(frame: Dict[str, Any], alum_profiles_data: list = None, steel_pro
         "steel_ref": steel_ref,
         "glass_thk": round(glass_thk, 1),
         "glass_sw": round(glass_sw, 2),
+        "acc_sw": round(acc_sw, 2),
         "eff_area": round(eff_area, 1),
         "I_xa": round(I_xa, 1) if I_xa is not None else None,
         "I_xs": round(I_xs, 1) if I_xs is not None else None,

@@ -147,22 +147,6 @@ def precompute_calculations(data):
     # Process each category
     categories = data.get("categories", [])
     for cat in categories:
-        # Calculate glass thickness for this category
-        glass_thk = 0
-        if "glass_units" in cat:
-            thickness_list = []
-            for gu in cat["glass_units"]:
-                glass_type = gu.get("glass_type")
-                if glass_type == "sgu":
-                    thickness_list.append(gu.get("thickness", 0))
-                elif glass_type in ["dgu", "lgu"]:
-                    thickness_list.append(gu.get("thickness1", 0) + gu.get("thickness2", 0))
-                elif glass_type == "ldgu":
-                    thickness_list.append(
-                        gu.get("thickness1_1", 0) + gu.get("thickness1_2", 0) + gu.get("thickness2", 0)
-                    )
-            glass_thk = max(thickness_list) if thickness_list else 0
-        
         # Pre-calculate glass unit values
         if "glass_units" in cat and cat["glass_units"]:
             for gu in cat["glass_units"]:
@@ -175,7 +159,7 @@ def precompute_calculations(data):
         # Pre-calculate frame values
         if "frames" in cat and cat["frames"]:
             for frame in cat["frames"]:
-                calc_result = calc_frame(frame, glass_thk, alum_profiles_data, steel_profiles_data)
+                calc_result = calc_frame(frame, alum_profiles_data, steel_profiles_data)
                 if calc_result:
                     frame["_calc"] = calc_result
                     frame["result"] = calc_result
@@ -184,7 +168,7 @@ def precompute_calculations(data):
         if "connections" in cat and cat.get("connections") and "frames" in cat and cat["frames"]:
             frame = cat["frames"][0]
             for conn in cat["connections"] if cat["connections"] else []:
-                calc_result = calc_connection(conn, frame, glass_thk, alum_profiles_data)
+                calc_result = calc_connection(conn, frame, alum_profiles_data)
                 if calc_result:
                     conn["_calc"] = calc_result
                     conn["result"] = calc_result
@@ -193,7 +177,7 @@ def precompute_calculations(data):
         if "anchorage" in cat and cat.get("anchorage") and "frames" in cat and cat["frames"]:
             frame = cat["frames"][0]
             for anchor in cat["anchorage"] if cat["anchorage"] else []:
-                calc_result = calc_anchorage(anchor, frame, glass_thk, alum_profiles_data)
+                calc_result = calc_anchorage(anchor, frame, alum_profiles_data)
                 if calc_result:
                     anchor["_calc"] = calc_result
                     anchor["result"] = calc_result
