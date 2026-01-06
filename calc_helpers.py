@@ -1191,15 +1191,14 @@ def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], alum_profiles_
         return result
 
     if clump_type == "L Clump":
+        front_bp_length_N = _to_float(anchor.get("front_bp_length_N")) or 250
+        front_bp_width_B = _to_float(anchor.get("front_bp_width_B")) or 150
+        top_bp_length_N = front_bp_length_N
+        top_bp_width_B = _to_float(anchor.get("top_bp_width_B")) or 250
         top_anchor_nos = _to_float(anchor.get("top_anchor_nos")) or 2
-        top_C_a1 = _to_float(anchor.get("top_C_a1")) or 150
-        top_bp_length_N = _to_float(anchor.get("top_bp_length_N")) or 250
-        top_bp_width_B = _to_float(anchor.get("top_bp_width_B")) or 150
-        
         front_anchor_nos = 2
         front_C_a1 = _to_float(anchor.get("front_C_a1")) or 60
-        front_bp_length_N = _to_float(anchor.get("front_bp_length_N")) or 250
-        front_bp_width_B = _to_float(anchor.get("front_bp_width_B")) or 250
+        top_C_a1 = _to_float(anchor.get("top_C_a1")) or 150
         fin_e = _to_float(anchor.get("fin_e")) or 70
         
         # Anchor bolt

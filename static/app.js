@@ -500,7 +500,7 @@ document.addEventListener('DOMContentLoaded', () => {
             'thr_bolt_dia'
         ],
         'L Clump': [
-            'front_bp_length_N', 'front_bp_width_B', 'top_bp_length_N', 'top_bp_width_B', 'bp_thk',
+            'front_bp_length_N', 'front_bp_width_B', 'top_bp_width_B', 'bp_thk',
             'fin_thk', 'fin_e',
             'top_anchor_nos', 'anchor_dia', 'embed_depth', 'front_C_a1', 'top_C_a1', 'h_a',
             'thr_bolt_dia'
@@ -524,7 +524,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'top_bp_length_N': 'Length of Top Base Plate, N (mm)',
         'front_bp_length_N': 'Length of Front Base Plate, N (mm)',
         'bp_width_B': 'Width of Base Plate, B (mm)',
-        'top_bp_width_B': 'Width of Top Base Plate, B (mm)',
+        'top_bp_width_B': 'Depth of Top Base Plate, H (mm)',
         'front_bp_width_B': 'Width of Front Base Plate, B (mm)',
         'bp_thk': 'Thickness of Base Plate, t (mm)',
         'bp_d': 'Fin-to-fin distance, d (mm)',
