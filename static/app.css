@@ -401,7 +401,7 @@ body {
     bottom: 1rem;
     left: calc(var(--left-bar-width) + var(--status-area-width) + 0.75rem);
     right: 0.75rem;
-    transition: left 0.3s ease;
+    transition: left 0.2s ease;
     /* left: 50%; */
     /* transform: translateX(-50%); */
 }
@@ -1152,7 +1152,7 @@ textarea {
 
 .form-field-unit {
     position: absolute;
-    right: 48px;
+    right: 0.6rem;
     font-size: 0.75rem;
     color: var(--text-secondary);
     pointer-events: none;
@@ -1164,26 +1164,24 @@ textarea {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 2.2rem;
-    height: 2.2rem;
+    width: 1.5rem;
+    height: 1.5rem;
     padding: 0;
-    border: 1px solid var(--border-input);
+    /* border: 1px solid var(--border-input); */
     border-radius: var(--radius-2);
-    background-color: var(--bg-input);
+    background-color: transparent;
     color: var(--text-secondary);
     cursor: pointer;
     transition: var(--transition);
-    flex-shrink: 0;
+    position: absolute;
+    right: 2.2rem;
+
 }
 
 .form-field-chart-btn:hover {
-    background-color: var(--bg-secondary);
-    border-color: var(--border-secondary);
+    /* background-color: var(--bg-secondary); */
+    /* border-color: var(--border-secondary); */
     color: var(--text-active);
-}
-
-.form-field-chart-btn:active {
-    background-color: var(--bg-preview);
 }
 
 .form-field-chart-btn svg {
@@ -1432,7 +1430,7 @@ summary {
     height: 100vh;
     width: var(--status-area-width);
     padding: 1rem 1rem;
-    transition: all 0.3s ease;
+    transition: all 0.2s ease;
     overflow: hidden;
 }
 
@@ -1950,10 +1948,10 @@ summary {
     box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
     max-width: 85vw;
     max-height: 90vh;
-    width: 800px;
+    width: 700px;
     display: flex;
     flex-direction: column;
-    animation: slideUp 0.3s ease;
+    animation: slideUp 0.2s ease;
 }
 
 @keyframes slideUp {
@@ -1971,7 +1969,7 @@ summary {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 1.5rem;
+    padding: 0.7rem 1.5rem;
     border-bottom: 1px solid var(--border-primary);
 }
 
@@ -2010,7 +2008,7 @@ summary {
 
 .glass-chart-modal-content {
     flex: 1;
-    padding: 1.5rem;
+    padding: 0.8rem;
     overflow: auto;
     display: flex;
     align-items: center;
@@ -2023,6 +2021,7 @@ summary {
     width: auto;
     height: auto;
     display: block;
+    border-radius: var(--radius-1);
 }
 
 .glass-chart-modal-footer {
