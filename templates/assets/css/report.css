@@ -837,7 +837,7 @@ table.summary__table th, td {
 .summary__td-item {
     display: flex;
     flex-direction: column;
-    gap: 2.5rem !important;
+    gap: 3rem !important;
 }
 
 .summary__td-list {
@@ -851,7 +851,7 @@ table.summary__table th, td {
     margin: 0 !important;
     font-weight: bold;
     font-style: italic;
-    padding-right: 0.2rem;
+    padding-right: 0.2rem !important;
 }
 
 .summary__side-heading {
