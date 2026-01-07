@@ -12,26 +12,26 @@
 
 <body>
 
-<section class="page__header">
-    <div class="page__header_left">
-        <p class="page__header_title">Summary Report</p>
-        <div class="page__header_logo">
+<section class="summary__header">
+    <div class="summary__header_left">
+        <p class="summary__header_title">Summary Report</p>
+        <div class="summary__header_logo">
             <img src="assets/images/logo.png">
         </div>
     </div>
-    <div class="page__header_right">
-        <p class="page__header_project">Project: {{ project_info.project_name }}</p>
-        <p class="page__header_date">Date: {{ project_info.date }}</p>
+    <div class="summary__header_right">
+        <div class="summary__header_project">Project: {{ project_info.project_name }}</div>
+        <div class="summary__header_date">Date: {{ project_info.date }}</div>
     </div>
 </section>
 
 {% if categories %}
     {% for cat in categories %}
     {% set loop_index = loop.index %}
-    <section>
+    <section class="summary__report">
         {% if cat.frames %}
         {% for frame in cat.frames %}
-        <p class="summary__cat-name">Category {{ loop_index }} | {{ cat.category_name }} | {{ frame.zone }}</p>
+        <div class="summary__cat-name">Category {{ loop_index }} | {{ cat.category_name }} | {{ frame.zone }}</div>
         {% endfor %}
         {% endif %}
 
@@ -52,7 +52,7 @@
                 <td>
                     {% for gu in cat.glass_units %}
                     {% set calc = gu.result or gu._calc %}
-                    <p class="summary__td-item">
+                    <div class="summary__td-item">
                         {% if gu.glass_type == "sgu" %}
                         {{ gu.length }} x {{ gu.width }} x ({{ gu.thickness }}) ({{ gu.grade }})
                         {% elif gu.glass_type == "dgu" %}
@@ -62,26 +62,30 @@
                         {% else %}
                         {{ gu.length }} x {{ gu.width }} x ({{ gu.thickness1_1 }} + {{ gu.thickness_inner }} + {{ gu.thickness1_2 }} + {{ gu.gap }} + {{ gu.thickness2 }}) ({{ gu.grade1 }} + {{ gu.grade2 }})
                         {% endif %}
-                    </p>
+                    </div>
                     {% endfor %}
                 </td>
                 <td>
                     {% for gu in cat.glass_units %}
                     {% set calc = gu.result or gu._calc %}
-                        <p class="summary__td-item">{{ gu.wind_load }} kPa</p>
+                        <div class="summary__td-item">{{ gu.wind_load }} kPa</div>
                     {% endfor %}
                 </td>
                 <td>
                     {% for gu in cat.glass_units %}
                     {% set calc = gu.result or gu._calc %}
-                    <p class="summary__td-item">
-                        {% if gu.glass_type == "sgu" %}<p class="summary__td-list"><span>LR: </span>{{ calc.sgu_lr }}</p>
-                        {% elif gu.glass_type == "dgu" %}<p class="summary__td-list"><span>LR: </span>{{ calc.dgu_lr }}</p>
-                        {% elif gu.glass_type == "lgu" %}<p class="summary__td-list"><span>LR: </span>{{ calc.lgu_lr }}</p>
-                        {% else %}<p><span>LR: </span>{{ calc.ldgu_lr }}</p>
-                        {% endif %}
-                        <p><span>δ: </span>{{ calc.deflection }}</p>
-                    </p>
+                    <div class="summary__td-item">
+                        <div class="summary__td-list">
+                            <div>
+                                {% if gu.glass_type == "sgu" %}<span>LR: </span>{{ calc.sgu_lr }} ({{ calc.stress_ratio }})
+                                {% elif gu.glass_type == "dgu" %}<span>LR: </span>{{ calc.dgu_lr }} ({{ calc.stress_ratio }})
+                                {% elif gu.glass_type == "lgu" %}<span>LR: </span>{{ calc.lgu_lr }} ({{ calc.stress_ratio }})
+                                {% else %}<span>LR: </span>{{ calc.ldgu_lr }}
+                                {% endif %}
+                            </div>
+                            <div><span>δ: </span>{{ calc.deflection }} ({{ calc.def_ratio }})</div>
+                        </div>
+                    </div>
                     {% endfor %}
                 </td>
             </tr>
@@ -94,15 +98,15 @@
                 <td>
                     {% for gu in cat.glass_units %}
                     {% set calc = gu.result or gu._calc %}
-                    <p class="summary__td-item">
+                    <div class="summary__td-item">
                         {{ calc.bite_req }} x {{ calc.glue_pro }}
-                    </p>
+                    </div>
                     {% endfor %}
                 </td>
                 <td>
                     {% for gu in cat.glass_units %}
                     {% set calc = gu.result or gu._calc %}
-                        <p class="summary__td-item">{{ gu.wind_load }} kPa</p>
+                        <div class="summary__td-item">{{ gu.wind_load }} kPa</div>
                     {% endfor %}
                 </td>
                 <td></td>
@@ -114,24 +118,29 @@
             {% for frame in cat.frames %}
             {% set calc = frame.result or frame._calc %}
             <tr>
-                <td>Frame <span>{% if calc.frame_type == "Continuous" %}(Cont.) {% else %}(Floor-to-floor) {% endif %}</span></td>
+                <td>Frame <span class="summary__side-heading">{% if calc.frame_type == "Continuous" %}(Cont.) {% else %}(Floor-to-floor) {% endif %}</span> <span class="summary__side-heading">({{ frame.length }} x {{ frame.width }})</span></td>
                 <td>
-                    {% if frame.mullion_type == "Aluminum Only" %}
-                    <p class="summary__td-list">{{ frame.mullion }} (6063-T6)</p>
-                    {% else %}
-                    <p class="summary__td-list">{{ frame.mullion }} (6063-T6) + {{ frame.steel }} (50 gr.)</p>
-                    {% endif %}
-                    <p class="summary__td-list">{{ frame.transom }} (6063-T5)</p>
+                    <div class="summary__td-list">
+                        {% if frame.mullion_type == "Aluminum Only" %}
+                        <div>{{ frame.mullion }} (6063-T6)</div>
+                        {% else %}
+                        <div>
+                            {{ frame.mullion }} (6063-T6) 
+                            <p style="padding-left: 1rem;">+ {{ frame.steel }} (50 gr.)</p>
+                        </div>
+                        {% endif %}
+                        <div>{{ frame.transom }} (6063-T5)</div>
+                    </div>
                 </td>
                 <td>{{ frame.wind_neg }} kPa</td>
-                <td>
-                    <table class="summary__inside-table">
+                <td style="padding: 0;">
+                    <table class="borderless align__center width__100 summary__inside-table">
                         <tbody>
                             <tr><td></td><td>M</td><td>T</td></tr>
-                            <tr><td>Mu</td><td>M</td><td>T</td></tr>
-                            <tr><td>Vu</td><td>M</td><td>T</td></tr>
-                            <tr><td>δw</td><td>M</td><td>T</td></tr>
-                            <tr><td>δd</td><td>M</td><td>T</td></tr>
+                            <tr><td>M<sub>u</sub></td><td>{{ calc.mul_mu }}</td><td>{{ calc.tran_mu }}</td></tr>
+                            <tr><td>V<sub>u</sub></td><td>{{ calc.mul_vu }}</td><td>{{ calc.tran_vu }}</td></tr>
+                            <tr><td>δ<sub>w</sub></td><td>{{ calc.mul_def }}</td><td>{{ calc.tran_def_wind }}</td></tr>
+                            <tr><td>δ<sub>d</sub></td><td>–</td><td>{{ calc.tran_def_dead }}</td></tr>
                         </tbody>
                     </table>
                 </td>
@@ -145,9 +154,19 @@
             {% set calc = conn.result or conn._calc %}
             <tr>
                 <td>Connection</td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>
+                    <div class="summary__td-list">
+                        <div>{{ conn.cleat_size }} – Cleat (6063-T6)</div>
+                        <div>{{ conn.screw_nos }} – M{{ conn.screw_dia }} x 25 – Screw</div>
+                    </div>
+                </td>
+                <td style="text-align: center;">–</td>
+                <td>
+                    <div class="summary__td-list">
+                        <div><span>F<sub>y</sub>: </span>{{ calc.joint_fy }} kN</div>
+                        <div><span>F<sub>z</sub>: </span>{{ calc.joint_fz }} kN</div>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
             {% endif %}
@@ -157,10 +176,34 @@
             {% for anchor in cat.anchorage %}
             {% set calc = anchor.result or anchor._calc %}
             <tr>
-                <td>Anchorage <span>{% if calc.clump_type == "Box Clump" %}(Box Clump) {% elif calc.clump_type == "U Clump" %}(U Clump) {% else %}(L Clump) {% endif %}</span></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>Anchorage <span class="summary__side-heading">{% if calc.clump_type == "Box Clump" %}(Box Clump) {% elif calc.clump_type == "U Clump" %}(U Clump) {% else %}(L Clump) {% endif %}</span></td>
+                <td>
+                    <div class="summary__td-list">
+                        {% if anchor.clump_type == "Box Clump" %}
+                            <div>1 – {{ calc.bp_length }} x {{ calc.bp_width }} x {{ anchor.bp_thk }} – Base plate (50 gr.)</div>
+                            <div>{{ anchor.anchor_nos }} – M{{ anchor.anchor_dia }} x {{ anchor.embed_depth }} – Royal bolt (Grade 5.8)</div>
+                        {% elif anchor.clump_type == "U Clump" %}
+                            <div>1 – {{ calc.bp_length }} x {{ calc.bp_width }} x {{ anchor.bp_thk }} – Base plate (50 gr.)</div>
+                            <div>2 – {{ calc.fin_length }} x {{ calc.fin_width }} x {{ anchor.fin_thk }} – Fin plate (50 gr.)</div>
+                            <div>{{ anchor.anchor_nos }} – M{{ anchor.anchor_dia }} x {{ anchor.embed_depth }} – Royal bolt (Grade 5.8)</div>
+                            <div>{{ calc.thr_bolt_nos }} – M{{ anchor.thr_bolt_dia }} x {{ calc.thr_bolt_length }} – Through bolt (SS A4-70)</div>
+                        {% else %}
+                            <div>1 – {{ anchor.front_bp_length_N }} x {{ anchor.front_bp_width_B }} x {{ anchor.bp_thk }}  – Base plate at front (50 gr.)</div>
+                            <div>1 – {{ anchor.top_bp_length_N }} x {{ anchor.top_bp_width_B }} x {{ anchor.bp_thk }} – Base plate at top (50 gr.)</div>
+                            <div>2 – {{ calc.fin_length }} x {{ calc.fin_width }} x {{ anchor.fin_thk }} – Fin plate (50 gr.)</div>
+                            <div>2 – M{{ anchor.anchor_dia }} x {{ anchor.embed_depth }} – Royal bolt at front (Grade 5.8)</div>
+                            <div>{{ anchor.top_anchor_nos }} – M{{ anchor.anchor_dia }} x {{ anchor.embed_depth }} – Royal bolt at top (Grade 5.8)</div>
+                            <div>{{ calc.thr_bolt_nos }} – M{{ anchor.thr_bolt_dia }} x {{ calc.thr_bolt_length }} – Through bolt (SS A4-70)</div>
+                        {% endif %}
+                    </div>
+                </td>
+                <td style="text-align: center;">–</td>
+                <td>
+                    <div class="summary__td-list">
+                        <div><span>R<sub>y</sub>: </span>{{ calc.reaction_Ry }} kN</div>
+                        <div><span>R<sub>z</sub>: </span>{{ calc.reaction_Rz }} kN</div>
+                    </div>
+                </td>
             </tr>
             {% endfor %}
             {% endif %}
