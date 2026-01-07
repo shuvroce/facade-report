@@ -367,10 +367,10 @@ def calc_glass_unit(gu: Dict[str, Any]) -> Optional[Dict[str, float]]:
             "def_ratio": round(sgu_def_ratio, 2),
             "allow_def": round(sgu_allow_def, 2),
             "deflection": round(defl, 2),
-            "bite_req": round(bite_req, 2),
-            "bite_pro": round(bite_pro, 2),
-            "glue_req": round(glue_req, 2),
-            "glue_pro": round(glue_pro, 2),
+            "bite_req": round(bite_req, 1),
+            "bite_pro": round(bite_pro, 1),
+            "glue_req": round(glue_req, 1),
+            "glue_pro": round(glue_pro, 1),
         }
 
     if glass_type == "dgu" and length < 5000 and support_type != "Point Fixed":
@@ -418,10 +418,10 @@ def calc_glass_unit(gu: Dict[str, Any]) -> Optional[Dict[str, float]]:
             "deflection1": round(def1, 2),
             "deflection2": round(def1, 2),
             "deflection": round(dgu_def, 2),
-            "bite_req": round(bite_req, 2),
-            "bite_pro": round(bite_pro, 2),
-            "glue_req": round(glue_req, 2),
-            "glue_pro": round(glue_pro, 2),
+            "bite_req": round(bite_req, 1),
+            "bite_pro": round(bite_pro, 1),
+            "glue_req": round(glue_req, 1),
+            "glue_pro": round(glue_pro, 1),
         }
 
     if glass_type == "lgu" and length < 5000 and support_type != "Point Fixed":
@@ -445,10 +445,10 @@ def calc_glass_unit(gu: Dict[str, Any]) -> Optional[Dict[str, float]]:
             "def_ratio": round(lgu_def_ratio, 2),
             "allow_def": round(lgu_allow_def, 2),
             "deflection": round(defl, 2),
-            "bite_req": round(bite_req, 2),
-            "bite_pro": round(bite_pro, 2),
-            "glue_req": round(glue_req, 2),
-            "glue_pro": round(glue_pro, 2),
+            "bite_req": round(bite_req, 1),
+            "bite_pro": round(bite_pro, 1),
+            "glue_req": round(glue_req, 1),
+            "glue_pro": round(glue_pro, 1),
         }
 
     if glass_type == "ldgu" and length < 5000 and support_type != "Point Fixed":
@@ -498,10 +498,10 @@ def calc_glass_unit(gu: Dict[str, Any]) -> Optional[Dict[str, float]]:
             "deflection1": round(def1, 2),
             "deflection2": round(def2, 2),
             "deflection": round(ldgu_def, 2),
-            "bite_req": round(bite_req, 2),
-            "bite_pro": round(bite_pro, 2),
-            "glue_req": round(glue_req, 2),
-            "glue_pro": round(glue_pro, 2),
+            "bite_req": round(bite_req, 1),
+            "bite_pro": round(bite_pro, 1),
+            "glue_req": round(glue_req, 1),
+            "glue_pro": round(glue_pro, 1),
         }
 
     return {"branch": "rfem", "note": "Point fixed or span >= 5000"}
@@ -1475,7 +1475,7 @@ def calc_anchorage(anchor: Dict[str, Any], frame: Dict[str, Any], alum_profiles_
             "bp_x": round(bp_x, 2),
             "bp_Beff": round(bp_Beff, 2),
             "bp_t_req_tension": round(bp_thk_tension, 2),
-            "top_bp_length": round(top_bp_length_N, 0),
+            "top_bp_length": top_bp_length_N,
             "top_bp_width": round(top_bp_width_B, 0),
             "front_bp_length": round(front_bp_length_N, 0),
             "front_bp_width": round(front_bp_width_B, 0),
