@@ -42,6 +42,7 @@
                 <th>Specs.</th>
                 <th>Loads</th>
                 <th>Forces / Results</th>
+                <th style="width: 65mm;">Remarks</th>
             </tr>
         </thead>
 
@@ -88,6 +89,7 @@
                     </div>
                     {% endfor %}
                 </td>
+                <td></td>
             </tr>
             {% endif %}
             
@@ -110,6 +112,7 @@
                     {% endfor %}
                 </td>
                 <td style="text-align: center;">–</td>
+                <td></td>
             </tr>
             {% endif %}
 
@@ -144,6 +147,7 @@
                         </tbody>
                     </table>
                 </td>
+                <td></td>
             </tr>
             {% endfor %}
             {% endif %}
@@ -167,6 +171,7 @@
                         <div><span>F<sub>z</sub>: </span>{{ calc.joint_fz }} kN</div>
                     </div>
                 </td>
+                <td></td>
             </tr>
             {% endfor %}
             {% endif %}
@@ -204,6 +209,7 @@
                         <div><span>R<sub>z</sub>: </span>{{ calc.reaction_Rz }} kN</div>
                     </div>
                 </td>
+                <td></td>
             </tr>
             {% endfor %}
             {% endif %}
