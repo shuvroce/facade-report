@@ -397,14 +397,22 @@
     
     <div style="text-align: center;">
         <figure>
-            <img src="assets/images/reg-mul-int-force1.png" style="width: 155mm;">
+            {% if frame.frame_type == "Continuous" %}
+            <img src="assets/images/reg-mul-int-force-cont1.png" style="width: 155mm;">
+            {% else %}
+            <img src="assets/images/reg-mul-int-force-sfgp1.png" style="width: 155mm;">
+            {% endif %}
             <figcaption>FBD of mullion with Load, SFD and BMD about major axis</figcaption>
         </figure>
     </div>
     
     <div style="text-align: center;">
         <figure>
-            <img src="assets/images/reg-mul-int-force2.png" style="width: 155mm;">
+            {% if frame.frame_type == "Continuous" %}
+            <img src="assets/images/reg-mul-int-force-cont2.png" style="width: 155mm;">
+            {% else %}
+            <img src="assets/images/reg-mul-int-force-sfgp2.png" style="width: 155mm;">
+            {% endif %}
             <figcaption>Deflection and reaction forces of mullion</figcaption>
         </figure>
     </div>
