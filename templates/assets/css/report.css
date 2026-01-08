@@ -832,12 +832,6 @@ ol.ref li::before {
     margin-bottom: 0.3rem;
 }
 
-
-table.summary__table th, td, tr {
-    padding: 0.35rem 0.3rem;
-    font-size: 10pt;
-}
-
 .summary__td-item {
     display: flex;
     flex-direction: column;
