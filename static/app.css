@@ -22,7 +22,7 @@
     --radius-4: 10px;
 
     /* Light Theme - Background Colors */
-    --bg-body: #f4f4f9;
+    --bg-body: #f3f2f0;
     --bg-primary: #fff;
     --bg-secondary: #fafafa;
     --bg-preview: #fff8cc;
@@ -427,7 +427,7 @@ body {
     /* align-items: stretch; */
     background: var(--bg-primary);
     border-radius: var(--radius-2);
-    /* box-shadow: 0 6px 12px var(--shadow-container); */
+    box-shadow: -2px -2px 12px var(--shadow-container);
 }
 
 nav {
@@ -476,7 +476,7 @@ nav {
     background: var(--bg-primary);
     /* border: 1px solid var(--border-primary); */
     border-radius: var(--radius-2);
-    /* box-shadow: 0 6px 16px var(--shadow-container); */
+    box-shadow: -2px -2px 12px var(--shadow-container);
     display: flex;
     flex-direction: column;
     /* align-items: center; */

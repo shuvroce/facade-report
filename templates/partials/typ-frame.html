@@ -336,108 +336,92 @@
     <div style="text-align: center;">
         <figure>
             {% if frame.frame_type == "Continuous" %}
-            <img src="assets/images/reg-model-cont.png" style="width: 100mm;">
+                {% if frame.tran_spacing < frame.length and frame.tran_spacing == (frame.length / 2) %}
+                <img src="assets/images/reg-model-cont1.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < frame.length and (frame.length - frame.tran_spacing) == frame.width %}
+                <img src="assets/images/reg-model-cont2.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < frame.length and (frame.length - frame.tran_spacing) < frame.width %}
+                <img src="assets/images/reg-model-cont3.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < (frame.length / 2) %}
+                <img src="assets/images/reg-model-cont4.png" style="width: 155mm;">
+                {% else %}
+                <img src="assets/images/reg-model-cont5.png" style="width: 155mm;">
+                {% endif %}
             {% else %}
-            <img src="assets/images/reg-model-sfgp.png" style="width: 100mm;">
+                {% if frame.tran_spacing < frame.length and frame.tran_spacing == (frame.length / 2) %}
+                <img src="assets/images/reg-model-sfgp1.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < frame.length and (frame.length - frame.tran_spacing) == frame.width %}
+                <img src="assets/images/reg-model-sfgp2.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < frame.length and (frame.length - frame.tran_spacing) < frame.width %}
+                <img src="assets/images/reg-model-sfgp3.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < (frame.length / 2) %}
+                <img src="assets/images/reg-model-sfgp4.png" style="width: 155mm;">
+                {% else %}
+                <img src="assets/images/reg-model-sfgp5.png" style="width: 155mm;">
+                {% endif %}
             {% endif %}
             <figcaption>Model view</figcaption>
         </figure>
     </div>
-    <table class="borderless width__100 fig__table">
+    
+    <div style="text-align: center;">
+        <figure>
+            {% if frame.frame_type == "Continuous" %}
+                {% if frame.tran_spacing < frame.length and frame.tran_spacing == (frame.length / 2) %}
+                <img src="assets/images/reg-load-dist-cont1.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < frame.length and (frame.length - frame.tran_spacing) == frame.width %}
+                <img src="assets/images/reg-load-dist-cont2.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < frame.length and (frame.length - frame.tran_spacing) < frame.width %}
+                <img src="assets/images/reg-load-dist-cont3.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < (frame.length / 2) %}
+                <img src="assets/images/reg-load-dist-cont4.png" style="width: 155mm;">
+                {% else %}
+                <img src="assets/images/reg-load-dist-cont5.png" style="width: 155mm;">
+                {% endif %}
+            {% else %}
+                {% if frame.tran_spacing < frame.length and frame.tran_spacing == (frame.length / 2) %}
+                <img src="assets/images/reg-load-dist-sfgp1.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < frame.length and (frame.length - frame.tran_spacing) == frame.width %}
+                <img src="assets/images/reg-load-dist-sfgp2.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < frame.length and (frame.length - frame.tran_spacing) < frame.width %}
+                <img src="assets/images/reg-load-dist-sfgp3.png" style="width: 155mm;">
+                {% elif frame.tran_spacing < (frame.length / 2) %}
+                <img src="assets/images/reg-load-dist-sfgp4.png" style="width: 155mm;">
+                {% else %}
+                <img src="assets/images/reg-load-dist-sfgp5.png" style="width: 155mm;">
+                {% endif %}
+            {% endif %}
+            <figcaption>Load distribution</figcaption>
+        </figure>
+    </div>
+    
+    <div style="text-align: center;">
+        <figure>
+            <img src="assets/images/reg-mul-int-force1.png" style="width: 155mm;">
+            <figcaption>FBD of mullion with Load, SFD and BMD about major axis</figcaption>
+        </figure>
+    </div>
+    
+    <div style="text-align: center;">
+        <figure>
+            <img src="assets/images/reg-mul-int-force2.png" style="width: 155mm;">
+            <figcaption>Deflection and reaction forces of mullion</figcaption>
+        </figure>
+    </div>
+
+    <table class="borderless fig__table width__100">
         <tbody>
             <tr>
                 <td>
                     <figure>
-                        {% if frame.frame_type == "Continuous" %}
-                        <img style="width: 75mm;" src="assets/images/reg-dl-cont.png">
-                        {% else %}
-                        <img style="width: 75mm;" src="assets/images/reg-dl-sfgp.png">
-                        {% endif %}
-                        <figcaption>Dead load</figcaption>
+                        <img src="assets/images/reg-tran-int-force1.png" style="width: 85mm;">
+                        <figcaption>FBD of transom with Load, SFD and BMD about major axis</figcaption>
                     </figure>
                 </td>
                 <td>
                     <figure>
-                        {% if frame.frame_type == "Continuous" %}
-                        <img style="width: 75mm;" src="assets/images/reg-wl-cont.png">
-                        {% else %}
-                        <img style="width: 75mm;" src="assets/images/reg-wl-sfgp.png">
-                        {% endif %}
-                        <figcaption>Wind load</figcaption>
-                    </figure>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="borderless width__100 fig__table align__center">
-        <tbody>
-            <tr>
-                <td>
-                    <figure>
-                        {% if frame.frame_type == "Continuous" %}
-                        <img style="width: 75mm;" src="assets/images/reg-bmd-cont.png">
-                        {% else %}
-                        <img style="width: 75mm;" src="assets/images/reg-bmd-sfgp.png">
-                        {% endif %}
-                        <figcaption>BMD about major axis (0.9D – 1.6W)</figcaption>
-                    </figure>
-                </td>
-                <td>
-                    <figure>
-                        {% if frame.frame_type == "Continuous" %}
-                        <img style="width: 75mm;" src="assets/images/reg-sfd-cont.png">
-                        {% else %}
-                        <img style="width: 75mm;" src="assets/images/reg-sfd-sfgp.png">
-                        {% endif %}
-                        <figcaption>SFD about major axis (0.9D – 1.6W)</figcaption>
-                    </figure>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="borderless width__100 fig__table align__center">
-        <tbody>
-            <tr>
-                <td>
-                    <figure>
-                        {% if frame.frame_type == "Continuous" %}
-                        <img style="width: 75mm;" src="assets/images/reg-def-cont.png">
-                        {% else %}
-                        <img style="width: 75mm;" src="assets/images/reg-def-sfgp.png">
-                        {% endif %}
-                        <figcaption>Deformed shape (D – 0.7W, contour)</figcaption>
-                    </figure>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="borderless width__100 fig__table align__center">
-        <tbody>
-            <tr>
-                <td>
-                    <figure>
-                        {% if frame.frame_type == "Continuous" %}
-                        <img style="width: 75mm;" src="assets/images/reg-joint-cont.png">
-                        {% else %}
-                        <img style="width: 75mm;" src="assets/images/reg-joint-sfgp.png">
-                        {% endif %}
-                        <figcaption>Joint Forces</figcaption>
-                    </figure>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="borderless width__100 fig__table align__center">
-        <tbody>
-            <tr>
-                <td>
-                    <figure>
-                        {% if frame.frame_type == "Continuous" %}
-                        <img style="width: 75mm;" src="assets/images/reg-reaction-cont.png">
-                        {% else %}
-                        <img style="width: 75mm;" src="assets/images/reg-reaction-sfgp.png">
-                        {% endif %}
-                        <figcaption>Support Reactions</figcaption>
+                        <img src="assets/images/reg-tran-int-force2.png" style="width: 85mm;">
+                        <figcaption>Deflection and reaction forces of transom</figcaption>
                     </figure>
                 </td>
             </tr>

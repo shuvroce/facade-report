@@ -42,3 +42,8 @@ Desktop.ini
 
 # screenshots
 Screenshot*.png
+
+# others
+*.dwg
+*.dwl
+*.dwl2
