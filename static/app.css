@@ -807,7 +807,7 @@ nav {
 .action_btn-box .action_btn {
     padding: 10px 15px;
     margin-left: 10px;
-    background-color: var(--btn-primary);
+    background-color: var(--btn-accent);
     border-radius: 50px;
     color: #fff;
 }
@@ -973,6 +973,10 @@ h3 {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+.wind-note-container {
     margin-top: 1.5rem;
 }
 
