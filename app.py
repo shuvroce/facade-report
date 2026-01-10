@@ -47,7 +47,6 @@ def set_inputs_dir(directory):
 
 
 def render_preview_html(item_type, result, extra_context=None):
-    """Render preview HTML using Jinja2 macros."""
     context = {"result": result}
     if extra_context:
         context.update(extra_context)
@@ -75,6 +74,13 @@ def sanitize_filename(name):
     safe_name = "".join(c for c in name if c.isalnum() or c in (" ", "_"))
     return safe_name.strip().replace(" ", "_")
 
+def _to_float(val, default=0.0):
+    try:
+        if val is None:
+            return default
+        return float(val)
+    except (TypeError, ValueError):
+        return default
 
 def merge_profile_data(report_data):
     profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
@@ -85,7 +91,7 @@ def merge_profile_data(report_data):
         return merged
     return report_data
 
-
+# FIGURE CHECKING
 def get_required_wind_figures(wind_data=None):
     if not wind_data:
         wind_data = {}
@@ -361,7 +367,6 @@ def input_helper():
 # Get profile names for dropdown
 @app.route("/get_profile_names")
 def get_profile_names():
-    """Return list of aluminum and steel profile names from profile.yaml"""
     profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
 
     alum_profiles = []
@@ -388,7 +393,6 @@ def get_profile_names():
 
 @app.route("/get_profile_data")
 def get_profile_data():
-    """Return full profile data including I_xx, I_yy, phi_Mn for all profiles"""
     profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
     return jsonify(profile_data)
 
@@ -402,29 +406,28 @@ def get_wind_locations():
 
 
 # Preview summary
-@app.route("/preview_summary", methods=["POST"])
-def preview_summary():
-    if not request.json or "yaml_content" not in request.json:
-        return {"success": False, "error": "Missing yaml_content"}, 400
+# @app.route("/preview_summary", methods=["POST"])
+# def preview_summary():
+#     if not request.json or "yaml_content" not in request.json:
+#         return {"success": False, "error": "Missing yaml_content"}, 400
 
-    # Parse YAML content
-    yaml_content = request.json["yaml_content"]
-    data = yaml.safe_load(yaml_content) or {}
+#     # Parse YAML content
+#     yaml_content = request.json["yaml_content"]
+#     data = yaml.safe_load(yaml_content) or {}
 
-    # Merge with profile data
-    data = merge_profile_data(data)
+#     # Merge with profile data
+#     data = merge_profile_data(data)
 
-    # Ensure nested dicts exist to avoid KeyErrors in template
-    data.setdefault("project_info", {})
-    data.setdefault("include", {})
-    data.setdefault("wind", {})
+#     # Ensure nested dicts exist to avoid KeyErrors in template
+#     data.setdefault("project_info", {})
+#     data.setdefault("include", {})
+#     data.setdefault("wind", {})
 
-    return render_template("summary.html", data=data)
+#     return render_template("summary.html", data=data)
 
 
 @app.route("/calc_preview", methods=["POST"])
 def calc_preview():
-    """Return fully rendered HTML for previews using Jinja templates."""
     payload = request.json or {}
     item_type = payload.get("item_type")
     item_data = payload.get("payload", {})
@@ -523,18 +526,8 @@ def get_inputs_directory():
     }
 
 
-def _to_float(val, default=0.0):
-    try:
-        if val is None:
-            return default
-        return float(val)
-    except (TypeError, ValueError):
-        return default
-
-
 @app.route("/wind_preview", methods=["POST"])
 def wind_preview():
-    """Quick API to preview wind pressures for MWFRS and C&C."""
     payload = request.json or {}
     wind = payload.get("wind") or {}
 

@@ -5,7 +5,15 @@ from pathlib import Path
 from jinja2 import Environment, FileSystemLoader
 from weasyprint import HTML, CSS
 import pikepdf
-from calc_helpers import calc_steel_profile, calc_alum_profile, calc_glass_unit, calc_frame, calc_connection, calc_anchorage
+from calc_helpers import (
+    calc_steel_profile,
+    calc_alum_stick_profile,
+    calc_alum_profile,
+    calc_glass_unit,
+    calc_frame,
+    calc_connection,
+    calc_anchorage,
+)
 from wind_load import (
     compute_mwfrs_pressures,
     compute_cladding_pressures,
@@ -22,7 +30,6 @@ CSS_PATH = os.path.join(TEMPLATE_DIR, "assets", "css", "report.css")
 
 
 def _as_bool(value):
-    """Return True for common truthy strings/values."""
     if isinstance(value, str):
         return value.strip().lower() in {"yes", "true", "1", "on", "y"}
     return bool(value)
@@ -59,10 +66,6 @@ def collapse_outlines(item):
             break
 
 def precompute_calculations(data):
-    """
-    Pre-compute all calculations using calc_helpers functions.
-    This adds calculated values to the data structure for use in templates.
-    """
     if not data:
         return data
 
@@ -125,7 +128,7 @@ def precompute_calculations(data):
             data["wind"] = wind
     
     # Get profile data for calculations
-    alum_profiles_data = data.get("alum_profiles_data", [])
+    alum_profiles_data = data.get("alum_profiles_data", data.get("steel_profiles", []))
     steel_profiles_data = data.get("steel_profiles_data", data.get("steel_profiles", []))
     
     # Pre-compute aluminum profile calculations
