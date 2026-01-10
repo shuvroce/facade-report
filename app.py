@@ -405,27 +405,6 @@ def get_wind_locations():
     )
 
 
-# Preview summary
-# @app.route("/preview_summary", methods=["POST"])
-# def preview_summary():
-#     if not request.json or "yaml_content" not in request.json:
-#         return {"success": False, "error": "Missing yaml_content"}, 400
-
-#     # Parse YAML content
-#     yaml_content = request.json["yaml_content"]
-#     data = yaml.safe_load(yaml_content) or {}
-
-#     # Merge with profile data
-#     data = merge_profile_data(data)
-
-#     # Ensure nested dicts exist to avoid KeyErrors in template
-#     data.setdefault("project_info", {})
-#     data.setdefault("include", {})
-#     data.setdefault("wind", {})
-
-#     return render_template("summary.html", data=data)
-
-
 @app.route("/calc_preview", methods=["POST"])
 def calc_preview():
     payload = request.json or {}

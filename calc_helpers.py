@@ -613,19 +613,19 @@ def calc_frame(frame: Dict[str, Any], alum_profiles_data: list = None, steel_pro
     
     # Aluminum + Steel
     if mullion_type == "Aluminum + Steel":
-        mul_Ix_a = mullion_profile.get("I_xx", 0) if mullion_profile else 0
-        mul_phi_Mn_a = mullion_profile.get("phi_Mn", 0) if mullion_profile else 0
+        mul_Ix_a = mullion_profile.get("I_xx", 0.001) if mullion_profile else 0.001
+        mul_phi_Mn_a = mullion_profile.get("phi_Mn", 0.001) if mullion_profile else 0.001
 
         # Steel moment of inertia from calculated steel profile
         if steel_calc:
-            sp_I_xx = steel_calc.get("I_xx", 0)
-            mul_phi_Mn_s = steel_calc.get("phi_Mn", 0)
+            sp_I_xx = steel_calc.get("I_xx", 0.001)
+            mul_phi_Mn_s = steel_calc.get("phi_Mn", 0.001)
         else:
-            sp_I_xx = 0
-            mul_phi_Mn_s = 0
+            sp_I_xx = 0.001
+            mul_phi_Mn_s = 0.001
 
         mul_Ix = mul_Ix_a + 3 * sp_I_xx
-        ls_a = mul_Ix_a / mul_Ix if mul_Ix else 0
+        ls_a = mul_Ix_a / mul_Ix if mul_Ix else 0.001
         ls_s = 1 - ls_a
         
         mul_mu_a = (mul_mu * ls_a) if mul_mu is not None else None
@@ -635,8 +635,8 @@ def calc_frame(frame: Dict[str, Any], alum_profiles_data: list = None, steel_pro
         I_xa = mul_Ix_a
         I_xs = sp_I_xx
     else:
-        mul_Ix = mullion_profile.get("I_xx", 0) if mullion_profile else 0
-        mul_phi_Mn = mullion_profile.get("phi_Mn", 0) if mullion_profile else 0
+        mul_Ix = mullion_profile.get("I_xx", 0.001) if mullion_profile else 0.001
+        mul_phi_Mn = mullion_profile.get("phi_Mn", 0.001) if mullion_profile else 0.001
         mul_dc = round(mul_mu / mul_phi_Mn, 2) if (mul_mu is not None and mul_phi_Mn) else None
         mul_dc_a = None
         mul_dc_s = None
@@ -652,11 +652,11 @@ def calc_frame(frame: Dict[str, Any], alum_profiles_data: list = None, steel_pro
     
     
     # Transom
-    tran_Ix = transom_profile.get("I_xx", 0) if transom_profile else 0
-    tran_Iy = transom_profile.get("I_yy", 0) if transom_profile else 0
+    tran_Ix = transom_profile.get("I_xx", 0.001) if transom_profile else 0.001
+    tran_Iy = transom_profile.get("I_yy", 0.001) if transom_profile else 0.001
     tran_mu = round(1.6 * tran_w_wind * (frame_width / 1000) ** 2 / 12, 2) if geometry == "regular" else tran_mu
     tran_vu = round(1.6 * tran_w_wind * (frame_width / 1000) / 4, 2) if geometry == "regular" else tran_vu
-    tran_phi_Mn = transom_profile.get("phi_Mn", 0) if transom_profile else 0
+    tran_phi_Mn = transom_profile.get("phi_Mn", 0.001) if transom_profile else 0.001
     tran_dc = round(tran_mu / tran_phi_Mn, 2) if (tran_mu is not None and tran_phi_Mn) else None
     tran_def_wind = (5 * 0.7 * tran_w_wind * frame_width**4) / (384 * 70000 * tran_Ix) if geometry == "regular" else tran_def_wind
     tran_def_dead = (5 * 0.7 * tran_w_dead * frame_width**4) / (384 * 70000 * tran_Iy) if geometry == "regular" else tran_def_dead
