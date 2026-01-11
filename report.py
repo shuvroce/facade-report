@@ -7,7 +7,6 @@ from weasyprint import HTML, CSS
 import pikepdf
 from calc_helpers import (
     calc_steel_profile,
-    calc_alum_stick_profile,
     calc_alum_profile,
     calc_glass_unit,
     calc_frame,
@@ -34,7 +33,6 @@ def _as_bool(value):
         return value.strip().lower() in {"yes", "true", "1", "on", "y"}
     return bool(value)
 
-
 def _to_float(val, default=0.0):
     try:
         if val is None:
@@ -42,18 +40,6 @@ def _to_float(val, default=0.0):
         return float(val)
     except (TypeError, ValueError):
         return default
-
-
-def load_profile_data(profile_yaml_path=None, template_dir=None):
-    if profile_yaml_path is None:
-        base_template_dir = template_dir or TEMPLATE_DIR
-        profile_yaml_path = os.path.join(base_template_dir, "assets", "profile.yaml")
-
-    if not os.path.exists(profile_yaml_path):
-        return {}
-
-    with open(profile_yaml_path, "r", encoding="utf-8") as f:
-        return yaml.safe_load(f) or {}
 
 def collapse_outlines(item):
     while item:
@@ -64,6 +50,38 @@ def collapse_outlines(item):
             item = item.Next
         else:
             break
+
+def load_profile_data(profile_yaml_path=None, template_dir=None):
+    if profile_yaml_path is None:
+        base_template_dir = template_dir or TEMPLATE_DIR
+        profile_yaml_path = os.path.join(base_template_dir, "assets", "profile.yaml")
+
+    if not os.path.exists(profile_yaml_path):
+        return {}
+
+    with open(profile_yaml_path, "r", encoding="utf-8") as f:
+        profile_data = yaml.safe_load(f) or {}
+    
+    # Also load manual/stick profiles from man_profile.yaml if it exists
+    base_template_dir = template_dir or TEMPLATE_DIR
+    man_profile_path = os.path.join(base_template_dir, "assets", "man_profile.yaml")
+    if os.path.exists(man_profile_path):
+        with open(man_profile_path, "r", encoding="utf-8") as f:
+            man_profile_data = yaml.safe_load(f) or {}
+            
+            # Merge manual aluminum profiles with predefined ones
+            if "alum_profiles_data" in man_profile_data:
+                if "alum_profiles_data" not in profile_data:
+                    profile_data["alum_profiles_data"] = []
+                profile_data["alum_profiles_data"].extend(man_profile_data["alum_profiles_data"])
+            
+            # Merge manual steel profiles with predefined ones
+            if "steel_profiles_data" in man_profile_data:
+                if "steel_profiles_data" not in profile_data:
+                    profile_data["steel_profiles_data"] = []
+                profile_data["steel_profiles_data"].extend(man_profile_data["steel_profiles_data"])
+    
+    return profile_data
 
 def precompute_calculations(data):
     if not data:

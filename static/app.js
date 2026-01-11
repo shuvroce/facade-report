@@ -1055,6 +1055,38 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Server returns fully rendered HTML
             container.innerHTML = data.html || '<p class="preview-placeholder">No data</p>';
+            
+            // For Stick and Manual aluminum/steel profiles, auto-save to man_profile.yaml
+            if ((itemType === 'alum_profile' || itemType === 'steel_profile') && 
+                (payload.profile_type === 'Stick' || payload.profile_type === 'Manual')) {
+                
+                // Merge the input payload with the calculation results to get complete profile data
+                const completeProfile = { ...payload };
+                if (data.result) {
+                    Object.assign(completeProfile, data.result);
+                }
+                
+                // Save to backend
+                try {
+                    const saveResponse = await fetch('/save_manual_profile', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            profile_type: itemType,
+                            profile: completeProfile
+                        })
+                    });
+                    
+                    if (saveResponse.ok) {
+                        const saveData = await saveResponse.json();
+                        console.log('Profile saved:', saveData.message);
+                    } else {
+                        console.error('Failed to save profile');
+                    }
+                } catch (saveErr) {
+                    console.error('Error saving profile:', saveErr);
+                }
+            }
         } catch (err) {
             container.innerHTML = '<p class="preview-placeholder">Calculation error</p>';
         }

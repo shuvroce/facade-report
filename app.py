@@ -7,7 +7,6 @@ from report import generate_report_from_data, generate_summary_report_from_data,
 from calc_helpers import (
     calc_steel_profile,
     calc_alum_profile,
-    calc_alum_stick_profile,
     calc_glass_unit,
     calc_frame,
     calc_connection,
@@ -90,6 +89,7 @@ def merge_profile_data(report_data):
         merged.update(report_data)
         return merged
     return report_data
+
 
 # FIGURE CHECKING
 def get_required_wind_figures(wind_data=None):
@@ -221,67 +221,86 @@ def serve_assets(filename):
     return send_from_directory(assets_dir, filename)
 
 
-@app.route("/generate_report", methods=["POST"])
-def generate_report():
-    if not request.json or "yaml_content" not in request.json:
-        return {"success": False, "error": "Missing yaml_content"}, 400
+# Figures
+@app.route("/open_folder_picker", methods=["GET"])
+def open_folder_picker():
+    if not TKINTER_AVAILABLE:
+        return {
+            "success": False,
+            "error": "Folder picker not available on this system",
+        }, 400
 
-    # Parse YAML content
-    yaml_content = request.json["yaml_content"]
-    report_data = yaml.safe_load(yaml_content) or {}
+    try:
+        # Hide the tkinter root window
+        root = Tk()
+        root.withdraw()
+        root.attributes("-topmost", True)
 
-    # Merge with profile data
-    report_data = merge_profile_data(report_data)
+        # Open folder picker dialog
+        selected_dir = askdirectory(title="Select Inputs Directory", mustexist=True)
 
-    # Create temporary directory and determine output filename
-    temp_dir = tempfile.mkdtemp()
-    out_pdf = os.path.join(temp_dir, "report.pdf")
+        root.destroy()
 
-    # Generate PDF report
-    pdf_path = generate_report_from_data(
-        data=report_data,
-        out_pdf=out_pdf,
-        template_dir=TEMPLATE_DIR,
-        inputs_dir=get_inputs_dir(),
-    )
+        if not selected_dir:
+            return {"success": False, "error": "No folder selected"}, 400
 
-    return send_file(
-        pdf_path,
-        as_attachment=True,
-        download_name="report.pdf",
-        mimetype="application/pdf",
-    )
+        # Validate directory exists
+        if not os.path.isdir(selected_dir):
+            return {
+                "success": False,
+                "error": f"Selected folder does not exist: {selected_dir}",
+            }, 400
 
-@app.route("/generate_summary_report", methods=["POST"])
-def generate_summary_report():
-    if not request.json or "yaml_content" not in request.json:
-        return {"success": False, "error": "Missing yaml_content"}, 400
+        # Set the directory in session
+        set_inputs_dir(selected_dir)
 
-    # Parse YAML content
-    yaml_content = request.json["yaml_content"]
-    report_data = yaml.safe_load(yaml_content) or {}
+        return {
+            "success": True,
+            "directory": selected_dir,
+            "message": "Inputs directory set successfully",
+        }
 
-    # Merge with profile data
-    report_data = merge_profile_data(report_data)
+    except Exception as e:
+        return {
+            "success": False,
+            "error": f"Error opening folder picker: {str(e)}",
+        }, 500
 
-    # Create temporary directory and determine output filename
-    temp_dir = tempfile.mkdtemp()
-    out_pdf = os.path.join(temp_dir, "summary.pdf")
 
-    # Generate PDF report
-    pdf_path = generate_summary_report_from_data(
-        data=report_data,
-        out_pdf=out_pdf,
-        template_dir=TEMPLATE_DIR,
-        inputs_dir=get_inputs_dir(),
-    )
+@app.route("/set_inputs_dir", methods=["POST"])
+def set_inputs_directory():
+    """Set the inputs directory from user selection"""
+    if not request.json or "directory" not in request.json:
+        return {"success": False, "error": "Missing directory path"}, 400
 
-    return send_file(
-        pdf_path,
-        as_attachment=True,
-        download_name="summary.pdf",
-        mimetype="application/pdf",
-    )
+    directory = request.json["directory"]
+
+    # Validate that the directory exists
+    if not os.path.isdir(directory):
+        return {
+            "success": False,
+            "error": f"Directory does not exist: {directory}",
+        }, 400
+
+    # Set the directory in session
+    set_inputs_dir(directory)
+
+    return {
+        "success": True,
+        "directory": directory,
+        "message": "Inputs directory set successfully",
+    }
+
+
+@app.route("/get_inputs_dir", methods=["GET"])
+def get_inputs_directory():
+    """Get the current inputs directory"""
+    current_dir = get_inputs_dir()
+    return {
+        "success": True,
+        "directory": current_dir,
+        "is_default": current_dir == DEFAULT_INPUTS_DIR,
+    }
 
 
 @app.route("/check_figures", methods=["POST"])
@@ -397,6 +416,61 @@ def get_profile_data():
     return jsonify(profile_data)
 
 
+@app.route("/save_manual_profile", methods=["POST"])
+def save_manual_profile():
+    """Save a manually calculated profile to man_profile.yaml"""
+    payload = request.json or {}
+    profile_type = payload.get("profile_type")  # "alum_profile" or "steel_profile"
+    profile_data = payload.get("profile", {})
+    
+    if not profile_type or not profile_data:
+        return {"success": False, "error": "Missing profile_type or profile data"}, 400
+    
+    try:
+        man_profile_path = os.path.join(TEMPLATE_DIR, "assets", "man_profile.yaml")
+        
+        # Load existing manual profiles
+        if os.path.exists(man_profile_path):
+            with open(man_profile_path, "r", encoding="utf-8") as f:
+                man_profiles = yaml.safe_load(f) or {}
+        else:
+            man_profiles = {"alum_profiles_data": [], "steel_profiles_data": []}
+        
+        # Determine which list to update
+        if profile_type == "alum_profile":
+            profile_list_key = "alum_profiles_data"
+        elif profile_type == "steel_profile":
+            profile_list_key = "steel_profiles_data"
+        else:
+            return {"success": False, "error": "Invalid profile_type"}, 400
+        
+        # Initialize list if not exists
+        if profile_list_key not in man_profiles:
+            man_profiles[profile_list_key] = []
+        
+        # Check if profile already exists and update, or add new
+        profile_name = profile_data.get("profile_name")
+        existing_index = None
+        for i, p in enumerate(man_profiles[profile_list_key]):
+            if p.get("profile_name") == profile_name:
+                existing_index = i
+                break
+        
+        if existing_index is not None:
+            man_profiles[profile_list_key][existing_index] = profile_data
+        else:
+            man_profiles[profile_list_key].append(profile_data)
+        
+        # Write back to file
+        with open(man_profile_path, "w", encoding="utf-8") as f:
+            yaml.dump(man_profiles, f, default_flow_style=False, sort_keys=False)
+        
+        return {"success": True, "message": f"Profile '{profile_name}' saved successfully"}
+    
+    except Exception as e:
+        return {"success": False, "error": str(e)}, 500
+
+
 @app.route("/get_wind_locations")
 def get_wind_locations():
     """Return all available wind locations with their wind speeds."""
@@ -405,6 +479,7 @@ def get_wind_locations():
     )
 
 
+# Preview
 @app.route("/calc_preview", methods=["POST"])
 def calc_preview():
     payload = request.json or {}
@@ -417,34 +492,24 @@ def calc_preview():
         if item_type == "steel_profile":
             result = calc_steel_profile(item_data)
         elif item_type == "alum_profile":
-            # Check if it's a Stick profile or Manual/Pre-defined
-            profile_type = item_data.get("profile_type", "")
-            if profile_type == "Stick":
-                result = calc_alum_stick_profile(item_data)
-            else:
-                result = calc_alum_profile(item_data)
+            result = calc_alum_profile(item_data)
         elif item_type == "glass_unit":
             result = calc_glass_unit(item_data)
             extra_context["glass_type"] = item_data.get("glass_type", "sgu")
         elif item_type == "frame":
             # Frame needs profile data
             profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
-            alum_data = profile_data.get("alum_profiles_data", [])
-            # Profile YAML uses "steel_profiles_data"; fallback keeps backward compatibility
-            steel_data = profile_data.get(
-                "steel_profiles_data", profile_data.get("steel_profiles", [])
-            )
+            alum_data = profile_data.get("alum_profiles_data", profile_data.get("alum_profiles", []))
+            steel_data = profile_data.get("steel_profiles_data", profile_data.get("steel_profiles", []))
             result = calc_frame(item_data, alum_data, steel_data)
         elif item_type == "connection":
-            # Connection needs frame and profile data
-            profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
-            alum_data = profile_data.get("alum_profiles_data", [])
+            # Connection needs frame data
             frame_data = item_data.get("frame", {})
-            result = calc_connection(item_data, frame_data, alum_data)
+            result = calc_connection(item_data, frame_data)
         elif item_type == "anchorage":
             # Anchorage needs frame and profile data
             profile_data = load_profile_data(template_dir=TEMPLATE_DIR)
-            alum_data = profile_data.get("alum_profiles_data", [])
+            alum_data = profile_data.get("alum_profiles_data", profile_data.get("alum_profiles", []))
             frame_data = item_data.get("frame", {})
             result = calc_anchorage(item_data, frame_data, alum_data)
         else:
@@ -466,43 +531,7 @@ def calc_preview():
     except Exception as e:
         return {"success": False, "error": f"Rendering error: {str(e)}"}, 400
 
-    return {"success": True, "html": html}
-
-
-@app.route("/set_inputs_dir", methods=["POST"])
-def set_inputs_directory():
-    """Set the inputs directory from user selection"""
-    if not request.json or "directory" not in request.json:
-        return {"success": False, "error": "Missing directory path"}, 400
-
-    directory = request.json["directory"]
-
-    # Validate that the directory exists
-    if not os.path.isdir(directory):
-        return {
-            "success": False,
-            "error": f"Directory does not exist: {directory}",
-        }, 400
-
-    # Set the directory in session
-    set_inputs_dir(directory)
-
-    return {
-        "success": True,
-        "directory": directory,
-        "message": "Inputs directory set successfully",
-    }
-
-
-@app.route("/get_inputs_dir", methods=["GET"])
-def get_inputs_directory():
-    """Get the current inputs directory"""
-    current_dir = get_inputs_dir()
-    return {
-        "success": True,
-        "directory": current_dir,
-        "is_default": current_dir == DEFAULT_INPUTS_DIR,
-    }
+    return {"success": True, "html": html, "result": result}
 
 
 @app.route("/wind_preview", methods=["POST"])
@@ -639,49 +668,69 @@ def wind_preview():
     return {"success": True, "html": html}
 
 
-@app.route("/open_folder_picker", methods=["GET"])
-def open_folder_picker():
-    if not TKINTER_AVAILABLE:
-        return {
-            "success": False,
-            "error": "Folder picker not available on this system",
-        }, 400
+# Report generation
+@app.route("/generate_report", methods=["POST"])
+def generate_report():
+    if not request.json or "yaml_content" not in request.json:
+        return {"success": False, "error": "Missing yaml_content"}, 400
 
-    try:
-        # Hide the tkinter root window
-        root = Tk()
-        root.withdraw()
-        root.attributes("-topmost", True)
+    # Parse YAML content
+    yaml_content = request.json["yaml_content"]
+    report_data = yaml.safe_load(yaml_content) or {}
 
-        # Open folder picker dialog
-        selected_dir = askdirectory(title="Select Inputs Directory", mustexist=True)
+    # Merge with profile data
+    report_data = merge_profile_data(report_data)
 
-        root.destroy()
+    # Create temporary directory and determine output filename
+    temp_dir = tempfile.mkdtemp()
+    out_pdf = os.path.join(temp_dir, "report.pdf")
 
-        if not selected_dir:
-            return {"success": False, "error": "No folder selected"}, 400
+    # Generate PDF report
+    pdf_path = generate_report_from_data(
+        data=report_data,
+        out_pdf=out_pdf,
+        template_dir=TEMPLATE_DIR,
+        inputs_dir=get_inputs_dir(),
+    )
 
-        # Validate directory exists
-        if not os.path.isdir(selected_dir):
-            return {
-                "success": False,
-                "error": f"Selected folder does not exist: {selected_dir}",
-            }, 400
+    return send_file(
+        pdf_path,
+        as_attachment=True,
+        download_name="report.pdf",
+        mimetype="application/pdf",
+    )
 
-        # Set the directory in session
-        set_inputs_dir(selected_dir)
 
-        return {
-            "success": True,
-            "directory": selected_dir,
-            "message": "Inputs directory set successfully",
-        }
+@app.route("/generate_summary_report", methods=["POST"])
+def generate_summary_report():
+    if not request.json or "yaml_content" not in request.json:
+        return {"success": False, "error": "Missing yaml_content"}, 400
 
-    except Exception as e:
-        return {
-            "success": False,
-            "error": f"Error opening folder picker: {str(e)}",
-        }, 500
+    # Parse YAML content
+    yaml_content = request.json["yaml_content"]
+    report_data = yaml.safe_load(yaml_content) or {}
+
+    # Merge with profile data
+    report_data = merge_profile_data(report_data)
+
+    # Create temporary directory and determine output filename
+    temp_dir = tempfile.mkdtemp()
+    out_pdf = os.path.join(temp_dir, "summary.pdf")
+
+    # Generate PDF report
+    pdf_path = generate_summary_report_from_data(
+        data=report_data,
+        out_pdf=out_pdf,
+        template_dir=TEMPLATE_DIR,
+        inputs_dir=get_inputs_dir(),
+    )
+
+    return send_file(
+        pdf_path,
+        as_attachment=True,
+        download_name="summary.pdf",
+        mimetype="application/pdf",
+    )
 
 
 # APPLICATION ENTRY POINT
