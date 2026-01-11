@@ -1,13 +1,14 @@
+// Main application initialization
 document.addEventListener('DOMContentLoaded', () => {
     
-    // 1. THEME MANAGEMENT
+    // 1. THEME MANAGEMENT - Handles light/dark mode with localStorage persistence
     const themeToggle = document.getElementById('theme-toggle');
     const sunIcon = document.getElementById('theme-icon-sun');
     const moonIcon = document.getElementById('theme-icon-moon');
     const body = document.body;
 
     /**
-     * Set theme and persist to localStorage
+     * Apply theme and save preference to localStorage
      * @param {string} theme - 'light' or 'dark'
      */
     function setTheme(theme) {
@@ -31,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // FIGURE STATUS PANEL TOGGLE
+    // 2. FIGURE STATUS PANEL TOGGLE - Collapses/expands figure requirements sidebar
     const figureStatusMenubar = document.getElementById('figure-status-menubar');
     const figureRail = document.querySelector('.figure-rail');
     const workspaceShell = document.querySelector('.workspace-shell');
@@ -43,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // GLASS CHART MODAL MANAGEMENT
+    // 3. GLASS CHART MODAL MANAGEMENT - Displays load/deflection charts based on glass properties
     function openGlassChartModal(inputElement, fieldName) {
         const modal = document.getElementById('glass-chart-modal');
         const chartImage = document.getElementById('glass-chart-image');
@@ -52,7 +53,7 @@ document.addEventListener('DOMContentLoaded', () => {
         
         if (!modal || !glassItem) return;
 
-        // Get glass type and support type from form
+        // Extract glass type and support configuration from form
         const glassTypeSelect = glassItem.querySelector('select[name="glass_type"]');
         const supportTypeSelect = glassItem.querySelector('select[name="support_type"]');
         
@@ -61,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const glassType = glassTypeSelect.value.toLowerCase();
         const supportType = supportTypeSelect.value;
         
-        // Determine which thickness to use based on field name
+        // Select appropriate thickness field and glass type folder based on glass configuration
         let thicknessInput;
         let typeFolder;
         
@@ -109,19 +110,19 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
-        // Determine if it's NFL or deflection chart
-        let chartType = 'load'; // default to NFL/load chart
+        // Determine chart type (NFL load vs. deflection) from field name
+        let chartType = 'load';
         if (fieldName.match(/^def/i)) {
             chartType = 'deflection';
         }
 
-        // Map support type to folder
+        // Map support type to corresponding folder structure
         let supportFolder = 'four-edge';
         if (supportType === 'Three Edges') supportFolder = 'three-edge';
         else if (supportType === 'Two Edges') supportFolder = 'two-edge';
         else if (supportType === 'One Edge') supportFolder = 'one-edge';
 
-        // Build chart image path (relative to templates folder being served)
+        // Construct image path: specific for 3/4-edge, generic for 1/2-edge supports
         let chartPath = '';
         if (supportFolder === 'four-edge' || supportFolder === 'three-edge') {
             chartPath = `assets/images/glass-${chartType}-charts/${typeFolder}/${supportFolder}/${thickness}mm.png`;
@@ -129,17 +130,16 @@ document.addEventListener('DOMContentLoaded', () => {
             chartPath = `assets/images/glass-${chartType}-charts/${typeFolder}/${supportFolder}/all-thk.png`;
         }
 
-        // Update modal
+        // Update modal title with chart type and thickness info
         const titleEl = modal.querySelector('.glass-chart-modal-title');
         const chartName = chartType === 'load' ? 'Non-factored Load (NFL) Chart' : 'Deflection Chart';
         const panelInfo = glassType === 'ldgu' ? (fieldName.match(/1$/) ? ' (Outer Panel - Laminated)' : ' (Inner Panel - Monolithic)') : '';
         titleEl.textContent = `${chartName} - ${thickness}mm${panelInfo}`;
         
-        // Show loading and hide image
+        // Load chart image with error handling
         loadingDiv.style.display = 'block';
         chartImage.style.display = 'none';
 
-        // Attempt to load image
         const tempImg = new Image();
         tempImg.onload = function() {
             chartImage.src = chartPath;
