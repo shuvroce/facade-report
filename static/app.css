@@ -1037,11 +1037,17 @@ h3 {
 }
 
 .include-checkbox {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
+    display: flex;
+    /* grid-template-columns: 1fr 1fr; */
     /* gap: 0.75rem 1rem; */
+    gap: 3rem;
     margin: 0.5rem 0;
     font-size: 0.85rem;
+}
+
+.include-checkbox-col {
+    display: flex;
+    flex-direction: column;
 }
 
 .wind-include-checkbox {
